@@ -1,0 +1,241 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "game.schema.json",
+  "title": "Capsule Panic GameState v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "ruleset",
+    "seed",
+    "rngState",
+    "width",
+    "height",
+    "board",
+    "active",
+    "nextQueue",
+    "phase",
+    "score",
+    "level",
+    "speed",
+    "obstaclesRemaining",
+    "tick",
+    "chainCount",
+    "capsuleSerial"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "ruleset": {
+      "const": "CP-CLASSIC-1"
+    },
+    "seed": {
+      "type": "string",
+      "minLength": 1
+    },
+    "rngState": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 4294967295
+      },
+      "minItems": 4,
+      "maxItems": 4
+    },
+    "width": {
+      "const": 8
+    },
+    "height": {
+      "const": 16
+    },
+    "board": {
+      "type": "array",
+      "minItems": 128,
+      "maxItems": 128,
+      "items": {
+        "oneOf": [
+          {
+            "type": "null"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "id",
+              "color"
+            ],
+            "properties": {
+              "kind": {
+                "const": "obstacle"
+              },
+              "id": {
+                "type": "string"
+              },
+              "color": {
+                "enum": [
+                  "cyan",
+                  "amber",
+                  "magenta"
+                ]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "id",
+              "capsuleId",
+              "part",
+              "color",
+              "linkedToId"
+            ],
+            "properties": {
+              "kind": {
+                "const": "segment"
+              },
+              "id": {
+                "type": "string"
+              },
+              "capsuleId": {
+                "type": "string"
+              },
+              "part": {
+                "enum": [
+                  0,
+                  1
+                ]
+              },
+              "color": {
+                "enum": [
+                  "cyan",
+                  "amber",
+                  "magenta"
+                ]
+              },
+              "linkedToId": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    "active": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "colors",
+            "x",
+            "y",
+            "orientation"
+          ],
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "colors": {
+              "type": "array",
+              "items": {
+                "enum": [
+                  "cyan",
+                  "amber",
+                  "magenta"
+                ]
+              },
+              "minItems": 2,
+              "maxItems": 2
+            },
+            "x": {
+              "type": "integer"
+            },
+            "y": {
+              "type": "integer"
+            },
+            "orientation": {
+              "enum": [
+                0,
+                1,
+                2,
+                3
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "nextQueue": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": {
+          "enum": [
+            "cyan",
+            "amber",
+            "magenta"
+          ]
+        },
+        "minItems": 2,
+        "maxItems": 2
+      },
+      "minItems": 1,
+      "maxItems": 1
+    },
+    "phase": {
+      "enum": [
+        "READY",
+        "FALLING",
+        "RESOLVING",
+        "PAUSED",
+        "WON",
+        "LOST"
+      ]
+    },
+    "score": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "level": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 20
+    },
+    "speed": {
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ]
+    },
+    "obstaclesRemaining": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 128
+    },
+    "tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "chainCount": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "capsuleSerial": {
+      "type": "integer",
+      "minimum": 0
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Capsule Panic Puzzle v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "id",
+    "ruleset",
+    "initialState",
+    "capsules",
+    "maxCapsules",
+    "objective"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "id": {
+      "type": "string"
+    },
+    "ruleset": {
+      "const": "CP-CLASSIC-1"
+    },
+    "initialState": {
+      "$ref": "game.schema.json"
+    },
+    "capsules": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": {
+          "enum": [
+            "cyan",
+            "amber",
+            "magenta"
+          ]
+        },
+        "minItems": 2,
+        "maxItems": 2
+      }
+    },
+    "maxCapsules": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "objective": {
+      "enum": [
+        "CLEAR_ALL",
+        "REACH_SCORE"
+      ]
+    },
+    "targetScore": {
+      "type": "integer",
+      "minimum": 0
+    }
+  }
+}
