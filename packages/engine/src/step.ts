@@ -1,4 +1,4 @@
-import type { ActiveCapsule, Cell, GameCommand, GameState, Transition } from '@capsule-panic/contracts';
+import type { ActiveCapsule, Cell, GameCommand, GameState, Orientation, Transition } from '@capsule-panic/contracts';
 import { capsuleCells } from './capsule';
 import { cellAt, inBounds } from './board';
 import { EventLog } from './events';
@@ -22,6 +22,14 @@ export function step(state: Readonly<GameState>, command: GameCommand): Transiti
             if (!canPlace(state.board, moved)) return refused(state);
             log.emit('MOVED', { x: moved.x, y: moved.y });
             return { state: { ...state, active: moved }, events: log.events };
+        }
+        case 'ROTATE_CW':
+        case 'ROTATE_CCW': {
+            const orientation = ((active.orientation + (command.type === 'ROTATE_CW' ? 1 : 3)) % 4) as Orientation;
+            const rotated = { ...active, orientation };
+            if (!canPlace(state.board, rotated)) return refused(state);
+            log.emit('ROTATED', { orientation });
+            return { state: { ...state, active: rotated }, events: log.events };
         }
         default:
             return refused(state);
