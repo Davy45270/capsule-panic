@@ -16,8 +16,8 @@ la conception détaillée et les plans de travail sont tenus hors de ce dépôt.
   `Date`, `localStorage`, `fetch`, `performance`, `requestAnimationFrame`, ni `Math.random`, et n'importent ni
   `react`, ni `react-dom`, ni `pixi.js` (imposé par oxlint, vérifié par `tests/engine-purity.test.ts`).
   Aucune fonction publique du moteur ne modifie son argument ; tout aléa passe par l'état RNG de la partie.
-- **Dépendances d'exécution** : `ajv` (contrats) seulement pour l'instant ; puis `react`, `react-dom`, `pixi.js`
-  dans l'application et le rendu. Rien d'autre sans accord.
+- **Dépendances d'exécution** : `ajv` (contrats), `pixi.js` (rendu), `react` et `react-dom` (application).
+  Rien d'autre sans accord.
 - **Licences** : code MIT ; art original CC BY 4.0 ; aucune dépendance GPL, AGPL, LGPL, SSPL ou CC BY-SA
   (`npm run check:licenses`).
 - **Aucune télémétrie, aucune requête réseau** à l'exécution hors fichiers de l'application.
@@ -26,7 +26,11 @@ la conception détaillée et les plans de travail sont tenus hors de ce dépôt.
 
 - `packages/contracts` : types publics, schémas JSON, validation d'un état (schéma puis invariants).
 - `packages/engine` : PRNG seedé, génération du plateau, transitions pures (`createGame`, `step`), sérialisation.
-- `apps/web` : application Vite et PWA ; le build sort dans `dist/` à la racine.
+- `packages/input` : touches du clavier et gestes tactiles → commandes de jeu.
+- `packages/renderer` : art original (formes et couleurs décrites une fois) et vue PixiJS du réacteur ; aucune règle.
+- `apps/web` : application React (écrans, HUD, boutons tactiles), boucle à pas fixe, IndexedDB, PWA ; le build sort
+  dans `dist/` à la racine. `?graine=<texte>` dans l'adresse fixe la partie (tests, partage).
+- **Aucun son** : le jeu n'a ni musique ni effets sonores.
 
 ## Tests : ciblés, jamais la suite complète
 

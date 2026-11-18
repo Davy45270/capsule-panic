@@ -14,6 +14,12 @@ npm run lint
 npm test
 ```
 
+## Commandes
+
+Clavier : ← → déplacer, ↓ descendre d'une case, Espace poser d'un coup, X ou ↑ pivoter (Z dans l'autre sens),
+P ou Échap pause. Écran tactile : les boutons sous le réacteur, ou les gestes (toucher pour pivoter, glisser pour
+déplacer, glisser vers le bas pour poser), désactivables dans les options.
+
 Voir `AGENTS.md` pour les règles du dépôt.
 
 ## Crédits et licences
