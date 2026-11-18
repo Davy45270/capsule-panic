@@ -90,6 +90,7 @@ export function Game({ initial, settings, onEnd, onMenu, onSave }: { initial: Ga
                 <button className="icon" aria-label={paused ? 'Reprendre' : 'Pause'} onClick={() => send('PAUSE')}>{paused ? '▶' : '⏸'}</button>
             </header>
             <div className="reactor" ref={host} data-ready={ready ? 'oui' : 'non'} role="img" aria-label="Chambre du réacteur"
+                data-capsule={state.active ? `${state.active.id} ${String(state.active.x)},${String(state.active.y)},${String(state.active.orientation)}` : ''}
                 onPointerDown={onPointerDown} onPointerUp={onPointerUp} />
             <nav className="pad" aria-label="Commandes">
                 {BUTTONS.map(([type, symbol, label]) => <button key={type} aria-label={label} onClick={() => send(type)}>{symbol}</button>)}
