@@ -5,6 +5,10 @@
   "license": "MIT",
   "type": "module",
   "dependencies": {
-    "@capsule-panic/engine": "0.1.0"
+    "@capsule-panic/engine": "0.1.0",
+    "@capsule-panic/input": "0.1.0",
+    "@capsule-panic/renderer": "0.1.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
   }
 }
