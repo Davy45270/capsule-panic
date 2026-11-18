@@ -48,9 +48,9 @@ export function gravityStep(board: readonly Cell[]): { board: Cell[]; moved: str
 export const MAX_GRAVITY_STEPS = 128 * 16;
 
 /** Répète les micro-pas jusqu'à stabilité ; `onStep` reçoit les composants déplacés à chaque pas. */
-export function settle(board: readonly Cell[], onStep?: (moved: string[]) => void): { board: Cell[]; steps: number } {
+export function settle(board: readonly Cell[], onStep?: (moved: string[]) => void, maxSteps = MAX_GRAVITY_STEPS): { board: Cell[]; steps: number } {
     let current = [...board];
-    for (let steps = 0; steps <= MAX_GRAVITY_STEPS; steps++) {
+    for (let steps = 0; steps <= maxSteps; steps++) {
         const next = gravityStep(current);
         if (next.moved.length === 0) return { board: current, steps };
         onStep?.(next.moved);

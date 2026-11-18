@@ -76,7 +76,5 @@ export function step(state: Readonly<GameState>, command: GameCommand): Transiti
             log.emit('ROTATED', { orientation });
             return { state: { ...state, active: rotated }, events: log.events };
         }
-        default:
-            return refused(state);
     }
 }

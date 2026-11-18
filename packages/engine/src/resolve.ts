@@ -14,11 +14,11 @@ type Emit = (type: 'MATCH_REMOVED' | 'GRAVITY_STEP' | 'CASCADE_END', payload: un
  * Boucle de résolution : tant qu'il y a des alignements (cherchés seulement sur un plateau stable), chaîne + 1,
  * suppression simultanée, score `chaîne × (100 × obstacles + 10 × segments)`, gravité jusqu'à stabilité.
  */
-export function resolve(board: readonly Cell[], emit: Emit = () => undefined): { board: Cell[]; scoreDelta: number; chain: number; obstaclesRemoved: number } {
+export function resolve(board: readonly Cell[], emit: Emit = () => undefined, maxCycles = MAX_CYCLES): { board: Cell[]; scoreDelta: number; chain: number; obstaclesRemoved: number } {
     let current = [...board];
     let chain = 0, scoreDelta = 0, obstaclesRemoved = 0;
     for (let matches = findMatches(current); matches.size > 0; matches = findMatches(current)) {
-        if (++chain > MAX_CYCLES) throw new Error('resolution did not end');
+        if (++chain > maxCycles) throw new Error('resolution did not end');
         const removed = removeCells(current, matches);
         const points = chain * (POINTS_PER_OBSTACLE * removed.obstacles + POINTS_PER_SEGMENT * removed.segments);
         scoreDelta += points;

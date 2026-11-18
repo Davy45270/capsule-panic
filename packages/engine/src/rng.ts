@@ -21,7 +21,11 @@ export function seedToState(seed: string): RngState {
     h2 ^= h1;
     h3 ^= h1;
     h4 ^= h1;
-    const state: RngState = [h1 >>> 0, h2 >>> 0, h3 >>> 0, h4 >>> 0];
+    return nonZero([h1 >>> 0, h2 >>> 0, h3 >>> 0, h4 >>> 0]);
+}
+
+/** xoshiro reste bloqué sur l'état nul : il est remplacé par une constante fixe. */
+export function nonZero(state: RngState): RngState {
     return state.every(v => v === 0) ? [0x9e3779b9, 0x243f6a88, 0xb7e15162, 0x6a09e667] : state;
 }
 
