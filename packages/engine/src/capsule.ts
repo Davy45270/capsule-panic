@@ -1,5 +1,6 @@
 import { COLORS, ORIENTATION_OFFSETS } from '@capsule-panic/contracts';
-import type { ActiveCapsule, Color, Position } from '@capsule-panic/contracts';
+import type { ActiveCapsule, Cell, Color, Position } from '@capsule-panic/contracts';
+import { cellAt, inBounds } from './board';
 import { randomInt } from './rng';
 import type { RngState } from './rng';
 
@@ -17,4 +18,9 @@ export function drawCapsuleColors(rng: Readonly<RngState>): [[Color, Color], Rng
     const [a, s1] = randomInt(COLORS.length, rng);
     const [b, s2] = randomInt(COLORS.length, s1);
     return [[COLORS[a] as Color, COLORS[b] as Color], s2];
+}
+
+/** Vrai si la capsule tient dans le plateau sans toucher une case verrouillée. */
+export function canPlace(board: readonly Cell[], c: Pick<ActiveCapsule, 'x' | 'y' | 'orientation'>): boolean {
+    return capsuleCells(c).every(({ x, y }) => inBounds(x, y) && cellAt(board, x, y) === null);
 }
