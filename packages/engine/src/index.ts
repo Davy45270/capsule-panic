@@ -6,3 +6,4 @@ export { findMatches } from './match';
 export { generateBoard, obstacleCount, GenerationError } from './generate';
 export { seedToState } from './rng';
 export type { RngState } from './rng';
+export { step, canPlace } from './step';
