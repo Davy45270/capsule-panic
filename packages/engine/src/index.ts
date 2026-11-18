@@ -7,3 +7,6 @@ export { generateBoard, obstacleCount, GenerationError } from './generate';
 export { seedToState } from './rng';
 export type { RngState } from './rng';
 export { step, canPlace, getLandingProjection } from './step';
+export { resolve } from './resolve';
+export { getAvailableMoves } from './moves';
+export type { Move } from './moves';
