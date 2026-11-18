@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "lib": [
+      "ES2022",
+      "DOM"
+    ],
+    "strict": true,
+    "resolveJsonModule": true,
+    "noUncheckedIndexedAccess": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "allowImportingTsExtensions": true
+  },
+  "include": [
+    "apps/web/src",
+    "apps/web/*.ts",
+    "packages/*/src",
+    "packages/*/test",
+    "tests",
+    "scripts/**/*.ts",
+    "*.ts"
+  ]
+}
