@@ -80,7 +80,7 @@ def retoucher(planche, fiche, travail, cellules):
             magick(resultat, "(", reference, "(", couche, "-alpha", "copy", ")",
                    "-compose", "DstIn", "-composite", ")", "-gravity", "northwest",
                    "-geometry", "+0+0", "-compose", "Over", "-composite", f"PNG32:{resultat}")
-    for couleur, region in fiche.get("recolorations", []):
+    for couleur, region, *_ in fiche.get("recolorations", []):
         source = ["-crop", region, "+repage"] if region else []
         teinte = travail / f"teinte-{identifiant}.png"
         # Ancre les tons moyens sur le jeton tout en conservant ombres et reflets.
@@ -102,3 +102,52 @@ def retoucher(planche, fiche, travail, cellules):
         else:
             teinte.replace(resultat)
     return reference, resultat
+
+
+JETONS_A2 = {"#38BDF8": "cyan", "#F472B6": "magenta", "#FBBF24": "ambre"}
+
+
+def _sommets(dessin):
+    return sum(len(polygone.split()) for polygone in dessin.split("polygon")[1:])
+
+
+def transformations_derive(fiche):
+    """Ce que retoucher() fait vraiment à la fiche, dans l'ordre, en chaînes « recoloration <de>→<vers> »
+    ou « retouche <quoi> ». Un dérivé sans transformation n'existe pas : la liste est toujours non vide."""
+    etapes = []
+    if "composante" in fiche:
+        x, y = fiche["composante"]
+        etapes.append(f"retouche composante connexe seule (alpha > 50 % contenant {x},{y}, dilatée Disk:3) : "
+                      "voisins de la planche retirés")
+    if "silhouette" in fiche:
+        etapes.append(f"retouche masque de silhouette ({_sommets(fiche['silhouette'])} sommets) : "
+                      "hors silhouette rendu transparent")
+        if "effacer" in fiche:
+            etapes.append(f"retouche gélule bicolore effacée ({_sommets(fiche['effacer'])} sommets)")
+    if "veste" in fiche:
+        etapes.append("recoloration blanc→#202554")
+        etapes.append(f"retouche blouse blanche recolorée ({fiche['veste'].count('polygon')} polygones) : niveaux de "
+                      "gris colorisés à 74 %, plis et encrage conservés, alpha de la planche")
+    if "peinture" in fiche:
+        etapes.append("retouche badge à fiole masqué (rectangle arrondi #3f4864 cerné #252d45, rabat #49536d)")
+    if "gant" in fiche:
+        gant = fiche["gant"]
+        etapes.append(f"retouche masque du gant rétabli (clarté > {gant['seuil']}, {len(gant['graines'])} graines, "
+                      "dilaté Disk:2) : pixels de la planche recomposés sur la veste")
+    for source, destination in fiche.get("raccords", []):
+        etapes.append(f"retouche libellé peint effacé : bande {source} étirée sur {destination}")
+    if "cellule" in fiche:
+        cote, x, y = fiche["cellule"]
+        etapes.append(f"retouche gélule remplacée par cellule (cellule-cyan.svg, {cote} px en +{x}+{y})")
+        if "premier_plan" in fiche:
+            etapes.append(f"retouche main recomposée au premier plan depuis la planche "
+                          f"({_sommets(fiche['premier_plan'])} sommets)")
+    for couleur, region, *origine in fiche.get("recolorations", []):
+        de = origine[0] if origine else "teinte d'origine"
+        zone = f"zone {region}, pixels R > B seulement" if region else "toute la découpe"
+        etapes.append(f"recoloration {de}→{couleur}")
+        etapes.append(f"retouche jeton {JETONS_A2.get(couleur, couleur)} A2 ({zone}) : luminance sur la rampe "
+                      f"#080e22→{couleur}→#fff8ff, ombres et reflets conservés")
+    if not etapes:
+        raise ValueError(f"dérivé sans transformation : {fiche['id']}")
+    return etapes

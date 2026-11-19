@@ -11,7 +11,7 @@
       "raison": "Mouvement de deux cellules reliées",
       "svg": "packages/assets/source/svg/chute-animations-jeu.svg",
       "planche": "Capsule_Panic_Assets_Gameplay_02.png",
-      "element_remplace": "86x131+1199+430",
+      "element_remplace": "117x107+1196+450",
       "transformations": [
         "rendu SVG",
         "atlas json-hash"
@@ -125,7 +125,7 @@
     },
     {
       "id": "sprite-barre-partie",
-      "origine": "planche",
+      "origine": "dérivé",
       "planche": "Capsule_Panic_Assets_Gameplay_02.png",
       "boite": [
         270,
@@ -136,6 +136,10 @@
       "transformation": "découpe + nettoyage raster",
       "source_retouche": "packages/assets/source/composants-maquettes.retouches.json",
       "transformations": [
+        "retouche libellé peint effacé : bande 20x25+95+3 étirée sur 223x25+2+3",
+        "retouche libellé peint effacé : bande 12x12+213+32 étirée sur 225x12+0+32"
+      ],
+      "etapes": [
         "crop",
         "retouche raster ImageMagick",
         "resize",
@@ -145,7 +149,7 @@
     },
     {
       "id": "sprite-panneau-suivant-partie",
-      "origine": "planche",
+      "origine": "dérivé",
       "planche": "Capsule_Panic_Assets_Gameplay_02.png",
       "boite": [
         70,
@@ -156,6 +160,9 @@
       "transformation": "découpe + nettoyage raster",
       "source_retouche": "packages/assets/source/composants-maquettes.retouches.json",
       "transformations": [
+        "retouche libellé peint effacé : bande 53x6+8+81 étirée sur 54x40+8+38"
+      ],
+      "etapes": [
         "crop",
         "retouche raster ImageMagick",
         "resize",
@@ -165,7 +172,7 @@
     },
     {
       "id": "sprite-cadre-statistiques-reussite",
-      "origine": "planche",
+      "origine": "dérivé",
       "planche": "Capsule_Panic_Assets_Gameplay_02.png",
       "boite": [
         218,
@@ -176,6 +183,9 @@
       "transformation": "découpe + nettoyage raster",
       "source_retouche": "packages/assets/source/composants-maquettes.retouches.json",
       "transformations": [
+        "retouche libellé peint effacé : bande 3x80+48+14 étirée sur 153x80+51+14"
+      ],
+      "etapes": [
         "crop",
         "retouche raster ImageMagick",
         "resize",
@@ -185,7 +195,7 @@
     },
     {
       "id": "sprite-jouer-accueil",
-      "origine": "planche",
+      "origine": "dérivé",
       "planche": "Capsule_Panic_Assets_Gameplay_02.png",
       "boite": [
         159,
@@ -196,6 +206,10 @@
       "transformation": "découpe + nettoyage raster",
       "source_retouche": "packages/assets/source/composants-maquettes.retouches.json",
       "transformations": [
+        "retouche masque de silhouette (10 sommets) : hors silhouette rendu transparent",
+        "retouche libellé peint effacé : bande 7x29+137+7 étirée sur 78x29+58+7"
+      ],
+      "etapes": [
         "crop",
         "retouche raster ImageMagick",
         "resize",
@@ -205,7 +219,7 @@
     },
     {
       "id": "sprite-options-accueil",
-      "origine": "planche",
+      "origine": "dérivé",
       "planche": "Capsule_Panic_Assets_Gameplay_02.png",
       "boite": [
         161,
@@ -216,6 +230,9 @@
       "transformation": "découpe + nettoyage raster",
       "source_retouche": "packages/assets/source/composants-maquettes.retouches.json",
       "transformations": [
+        "retouche libellé peint effacé : bande 9x25+140+7 étirée sur 79x25+62+7"
+      ],
+      "etapes": [
         "crop",
         "retouche raster ImageMagick",
         "resize",
@@ -225,7 +242,7 @@
     },
     {
       "id": "sprite-credits-accueil",
-      "origine": "planche",
+      "origine": "dérivé",
       "planche": "Capsule_Panic_Assets_Gameplay_02.png",
       "boite": [
         159,
@@ -236,6 +253,9 @@
       "transformation": "découpe + nettoyage raster",
       "source_retouche": "packages/assets/source/composants-maquettes.retouches.json",
       "transformations": [
+        "retouche libellé peint effacé : bande 9x25+140+6 étirée sur 79x25+63+6"
+      ],
+      "etapes": [
         "crop",
         "retouche raster ImageMagick",
         "resize",
@@ -245,7 +265,7 @@
     },
     {
       "id": "sprite-ruban-reussite",
-      "origine": "planche",
+      "origine": "dérivé",
       "planche": "Capsule_Panic_Assets_Gameplay_02.png",
       "boite": [
         244,
@@ -256,6 +276,9 @@
       "transformation": "découpe + nettoyage raster",
       "source_retouche": "packages/assets/source/composants-maquettes.retouches.json",
       "transformations": [
+        "retouche libellé peint effacé : bande 5x39+215+66 étirée sur 195x39+27+66"
+      ],
+      "etapes": [
         "crop",
         "retouche raster ImageMagick",
         "resize",
@@ -265,7 +288,7 @@
     },
     {
       "id": "sprite-suivant-reussite",
-      "origine": "planche",
+      "origine": "dérivé",
       "planche": "Capsule_Panic_Assets_Gameplay_02.png",
       "boite": [
         191,
@@ -276,6 +299,9 @@
       "transformation": "découpe + nettoyage raster",
       "source_retouche": "packages/assets/source/composants-maquettes.retouches.json",
       "transformations": [
+        "retouche libellé peint effacé : bande 6x25+150+10 étirée sur 137x25+15+10"
+      ],
+      "etapes": [
         "crop",
         "retouche raster ImageMagick",
         "resize",
@@ -285,7 +311,7 @@
     },
     {
       "id": "sprite-rejouer-reussite",
-      "origine": "planche",
+      "origine": "dérivé",
       "planche": "Capsule_Panic_Assets_Gameplay_02.png",
       "boite": [
         185,
@@ -296,6 +322,9 @@
       "transformation": "découpe + nettoyage raster",
       "source_retouche": "packages/assets/source/composants-maquettes.retouches.json",
       "transformations": [
+        "retouche libellé peint effacé : bande 9x25+153+8 étirée sur 86x25+72+8"
+      ],
+      "etapes": [
         "crop",
         "retouche raster ImageMagick",
         "resize",
@@ -305,7 +334,7 @@
     },
     {
       "id": "sprite-menu-reussite",
-      "origine": "planche",
+      "origine": "dérivé",
       "planche": "Capsule_Panic_Assets_Gameplay_02.png",
       "boite": [
         185,
@@ -316,6 +345,9 @@
       "transformation": "découpe + nettoyage raster",
       "source_retouche": "packages/assets/source/composants-maquettes.retouches.json",
       "transformations": [
+        "retouche libellé peint effacé : bande 10x25+145+8 étirée sur 64x25+83+8"
+      ],
+      "etapes": [
         "crop",
         "retouche raster ImageMagick",
         "resize",
@@ -355,7 +387,7 @@
     },
     {
       "id": "sprite-cadre-score-compteurs-maquettes-jeu",
-      "origine": "planche",
+      "origine": "dérivé",
       "planche": "Capsule_Panic_Assets_Gameplay_02.png",
       "boite": [
         148,
@@ -366,6 +398,9 @@
       "transformation": "découpe + nettoyage raster",
       "source_retouche": "packages/assets/source/compteurs-maquettes-jeu.retouches.json",
       "transformations": [
+        "retouche libellé peint effacé : bande 5x24+10+28 étirée sur 89x24+32+28"
+      ],
+      "etapes": [
         "crop",
         "retouche raster ImageMagick",
         "resize",
@@ -375,7 +410,7 @@
     },
     {
       "id": "sprite-cadre-niveau-compteurs-maquettes-jeu",
-      "origine": "planche",
+      "origine": "dérivé",
       "planche": "Capsule_Panic_Assets_Gameplay_02.png",
       "boite": [
         118,
@@ -386,6 +421,9 @@
       "transformation": "découpe + nettoyage raster",
       "source_retouche": "packages/assets/source/compteurs-maquettes-jeu.retouches.json",
       "transformations": [
+        "retouche libellé peint effacé : bande 5x23+10+28 étirée sur 45x23+36+28"
+      ],
+      "etapes": [
         "crop",
         "retouche raster ImageMagick",
         "resize",
@@ -518,7 +556,7 @@
     },
     {
       "id": "sprite-fioles-sous-logo",
-      "origine": "planche",
+      "origine": "dérivé",
       "planche": "Capsule_Panic_Assets_Gameplay_02.png",
       "boite": [
         138,
@@ -529,6 +567,9 @@
       "transformation": "découpe + nettoyage raster",
       "source_retouche": "packages/assets/source/fioles-logo.retouches.json",
       "transformations": [
+        "retouche masque de silhouette (18 sommets) : hors silhouette rendu transparent"
+      ],
+      "etapes": [
         "crop",
         "retouche raster ImageMagick",
         "resize",
@@ -734,7 +775,7 @@
     },
     {
       "id": "sprite-bloc-bleu-plateau-jeu",
-      "origine": "planche",
+      "origine": "dérivé",
       "planche": "Capsule_Panic_Assets_Gameplay_02.png",
       "boite": [
         82,
@@ -745,6 +786,10 @@
       "transformation": "découpe + recoloration (jetons A2)",
       "source_retouche": "packages/assets/source/plateau-jeu.retouches.json",
       "transformations": [
+        "recoloration bleu 196–213°→#38BDF8",
+        "retouche jeton cyan A2 (toute la découpe) : luminance sur la rampe #080e22→#38BDF8→#fff8ff, ombres et reflets conservés"
+      ],
+      "etapes": [
         "crop",
         "retouche raster ImageMagick",
         "resize",
@@ -754,7 +799,7 @@
     },
     {
       "id": "sprite-bloc-rouge-plateau-jeu",
-      "origine": "planche",
+      "origine": "dérivé",
       "planche": "Capsule_Panic_Assets_Gameplay_02.png",
       "boite": [
         82,
@@ -765,6 +810,10 @@
       "transformation": "découpe + recoloration (jetons A2)",
       "source_retouche": "packages/assets/source/plateau-jeu.retouches.json",
       "transformations": [
+        "recoloration rouge 358–2°→#F472B6",
+        "retouche jeton magenta A2 (toute la découpe) : luminance sur la rampe #080e22→#F472B6→#fff8ff, ombres et reflets conservés"
+      ],
+      "etapes": [
         "crop",
         "retouche raster ImageMagick",
         "resize",
@@ -774,7 +823,7 @@
     },
     {
       "id": "sprite-bloc-jaune-plateau-jeu",
-      "origine": "planche",
+      "origine": "dérivé",
       "planche": "Capsule_Panic_Assets_Gameplay_02.png",
       "boite": [
         83,
@@ -785,6 +834,99 @@
       "transformation": "découpe + recoloration (jetons A2)",
       "source_retouche": "packages/assets/source/plateau-jeu.retouches.json",
       "transformations": [
+        "recoloration jaune 32–53°→#FBBF24",
+        "retouche jeton ambre A2 (toute la découpe) : luminance sur la rampe #080e22→#FBBF24→#fff8ff, ombres et reflets conservés"
+      ],
+      "etapes": [
+        "crop",
+        "retouche raster ImageMagick",
+        "resize",
+        "atlas json-hash"
+      ],
+      "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
+    },
+    {
+      "id": "sprite-trainee-longue-chute-jeu",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Gameplay_02.png",
+      "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544",
+      "boite": [
+        31,
+        51,
+        1275,
+        431
+      ],
+      "marge": 0,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-trainee-verrouillage-jeu",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Gameplay_02.png",
+      "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544",
+      "boite": [
+        23,
+        12,
+        1351,
+        431
+      ],
+      "marge": 0,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-fleche-descente-jeu",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Gameplay_02.png",
+      "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544",
+      "boite": [
+        19,
+        28,
+        1587,
+        526
+      ],
+      "marge": 0,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-fleche-rotation-bas-jeu",
+      "origine": "dérivé",
+      "planche": "Capsule_Panic_Assets_Gameplay_02.png",
+      "boite": [
+        49,
+        39,
+        1446,
+        507
+      ],
+      "transformation": "découpe + composante isolée (bout de la capsule voisine retiré)",
+      "source_retouche": "packages/assets/source/traits-animations-jeu.retouches.json",
+      "transformations": [
+        "retouche composante connexe seule (alpha > 50 % contenant 45,15, dilatée Disk:3) : voisins de la planche retirés"
+      ],
+      "etapes": [
         "crop",
         "retouche raster ImageMagick",
         "resize",
@@ -798,7 +940,7 @@
       "raison": "Mouvement de deux cellules reliées",
       "svg": "packages/assets/source/svg/chute-animations-apercu.svg",
       "planche": "Capsule_Panic_Assets_Gameplay_03.png",
-      "element_remplace": "135x71+1302+272",
+      "element_remplace": "78x66+1291+279",
       "transformations": [
         "rendu SVG",
         "atlas json-hash"
@@ -1120,7 +1262,7 @@
     },
     {
       "id": "sprite-cadre-score-compteurs-maquettes-apercu",
-      "origine": "planche",
+      "origine": "dérivé",
       "planche": "Capsule_Panic_Assets_Gameplay_03.png",
       "boite": [
         100,
@@ -1131,6 +1273,9 @@
       "transformation": "découpe + nettoyage raster",
       "source_retouche": "packages/assets/source/compteurs-maquettes-apercu.retouches.json",
       "transformations": [
+        "retouche libellé peint effacé : bande 5x24+10+29 étirée sur 74x24+15+29"
+      ],
+      "etapes": [
         "crop",
         "retouche raster ImageMagick",
         "resize",
@@ -1140,7 +1285,7 @@
     },
     {
       "id": "sprite-cadre-niveau-compteurs-maquettes-apercu",
-      "origine": "planche",
+      "origine": "dérivé",
       "planche": "Capsule_Panic_Assets_Gameplay_03.png",
       "boite": [
         79,
@@ -1151,6 +1296,9 @@
       "transformation": "découpe + nettoyage raster",
       "source_retouche": "packages/assets/source/compteurs-maquettes-apercu.retouches.json",
       "transformations": [
+        "retouche libellé peint effacé : bande 5x24+10+29 étirée sur 47x24+18+29"
+      ],
+      "etapes": [
         "crop",
         "retouche raster ImageMagick",
         "resize",
@@ -1380,7 +1528,7 @@
     },
     {
       "id": "sprite-ligne-elimination-apercu",
-      "origine": "planche",
+      "origine": "dérivé",
       "planche": "Capsule_Panic_Assets_Gameplay_03.png",
       "boite": [
         117,
@@ -1391,6 +1539,10 @@
       "transformation": "découpe + recoloration (jetons A2)",
       "source_retouche": "packages/assets/source/effets-maquettes.retouches.json",
       "transformations": [
+        "recoloration rouge 345–5°→#F472B6",
+        "retouche jeton magenta A2 (zone 113x29+1+1, pixels R > B seulement) : luminance sur la rampe #080e22→#F472B6→#fff8ff, ombres et reflets conservés"
+      ],
+      "etapes": [
         "crop",
         "retouche raster ImageMagick",
         "resize",
@@ -1805,7 +1957,7 @@
     },
     {
       "id": "sprite-bloc-bleu-plateau-apercu",
-      "origine": "planche",
+      "origine": "dérivé",
       "planche": "Capsule_Panic_Assets_Gameplay_03.png",
       "boite": [
         60,
@@ -1816,6 +1968,10 @@
       "transformation": "découpe + recoloration (jetons A2)",
       "source_retouche": "packages/assets/source/plateau-apercu.retouches.json",
       "transformations": [
+        "recoloration bleu 198–217°→#38BDF8",
+        "retouche jeton cyan A2 (toute la découpe) : luminance sur la rampe #080e22→#38BDF8→#fff8ff, ombres et reflets conservés"
+      ],
+      "etapes": [
         "crop",
         "retouche raster ImageMagick",
         "resize",
@@ -1825,7 +1981,7 @@
     },
     {
       "id": "sprite-bloc-rouge-plateau-apercu",
-      "origine": "planche",
+      "origine": "dérivé",
       "planche": "Capsule_Panic_Assets_Gameplay_03.png",
       "boite": [
         61,
@@ -1836,6 +1992,10 @@
       "transformation": "découpe + recoloration (jetons A2)",
       "source_retouche": "packages/assets/source/plateau-apercu.retouches.json",
       "transformations": [
+        "recoloration rouge 355–2°→#F472B6",
+        "retouche jeton magenta A2 (toute la découpe) : luminance sur la rampe #080e22→#F472B6→#fff8ff, ombres et reflets conservés"
+      ],
+      "etapes": [
         "crop",
         "retouche raster ImageMagick",
         "resize",
@@ -1845,7 +2005,7 @@
     },
     {
       "id": "sprite-bloc-jaune-plateau-apercu",
-      "origine": "planche",
+      "origine": "dérivé",
       "planche": "Capsule_Panic_Assets_Gameplay_03.png",
       "boite": [
         61,
@@ -1856,6 +2016,10 @@
       "transformation": "découpe + recoloration (jetons A2)",
       "source_retouche": "packages/assets/source/plateau-apercu.retouches.json",
       "transformations": [
+        "recoloration jaune 34–53°→#FBBF24",
+        "retouche jeton ambre A2 (toute la découpe) : luminance sur la rampe #080e22→#FBBF24→#fff8ff, ombres et reflets conservés"
+      ],
+      "etapes": [
         "crop",
         "retouche raster ImageMagick",
         "resize",
@@ -1865,7 +2029,7 @@
     },
     {
       "id": "sprite-segment-bleu-plateau-apercu",
-      "origine": "planche",
+      "origine": "dérivé",
       "planche": "Capsule_Panic_Assets_Gameplay_03.png",
       "boite": [
         56,
@@ -1876,6 +2040,10 @@
       "transformation": "découpe + recoloration (jetons A2)",
       "source_retouche": "packages/assets/source/plateau-apercu.retouches.json",
       "transformations": [
+        "recoloration bleu 199–218°→#38BDF8",
+        "retouche jeton cyan A2 (toute la découpe) : luminance sur la rampe #080e22→#38BDF8→#fff8ff, ombres et reflets conservés"
+      ],
+      "etapes": [
         "crop",
         "retouche raster ImageMagick",
         "resize",
@@ -1885,7 +2053,7 @@
     },
     {
       "id": "sprite-segment-rouge-plateau-apercu",
-      "origine": "planche",
+      "origine": "dérivé",
       "planche": "Capsule_Panic_Assets_Gameplay_03.png",
       "boite": [
         57,
@@ -1896,6 +2064,10 @@
       "transformation": "découpe + recoloration (jetons A2)",
       "source_retouche": "packages/assets/source/plateau-apercu.retouches.json",
       "transformations": [
+        "recoloration rouge 355–2°→#F472B6",
+        "retouche jeton magenta A2 (toute la découpe) : luminance sur la rampe #080e22→#F472B6→#fff8ff, ombres et reflets conservés"
+      ],
+      "etapes": [
         "crop",
         "retouche raster ImageMagick",
         "resize",
@@ -1905,7 +2077,7 @@
     },
     {
       "id": "sprite-segment-jaune-plateau-apercu",
-      "origine": "planche",
+      "origine": "dérivé",
       "planche": "Capsule_Panic_Assets_Gameplay_03.png",
       "boite": [
         59,
@@ -1916,6 +2088,10 @@
       "transformation": "découpe + recoloration (jetons A2)",
       "source_retouche": "packages/assets/source/plateau-apercu.retouches.json",
       "transformations": [
+        "recoloration jaune 31–53°→#FBBF24",
+        "retouche jeton ambre A2 (toute la découpe) : luminance sur la rampe #080e22→#FBBF24→#fff8ff, ombres et reflets conservés"
+      ],
+      "etapes": [
         "crop",
         "retouche raster ImageMagick",
         "resize",
@@ -1924,8 +2100,30 @@
       "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
     },
     {
-      "id": "sprite-tutoriel-aligner",
+      "id": "sprite-trainee-chute-apercu",
       "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a",
+      "boite": [
+        14,
+        15,
+        1343,
+        281
+      ],
+      "marge": 0,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-tutoriel-aligner",
+      "origine": "dérivé",
       "planche": "Capsule_Panic_Assets_Gameplay_03.png",
       "boite": [
         160,
@@ -1936,6 +2134,10 @@
       "transformation": "découpe + recoloration (jetons A2)",
       "source_retouche": "packages/assets/source/tutoriel-apercu.retouches.json",
       "transformations": [
+        "recoloration rouge 352–3°→#F472B6",
+        "retouche jeton magenta A2 (zone 140x36+10+66, pixels R > B seulement) : luminance sur la rampe #080e22→#F472B6→#fff8ff, ombres et reflets conservés"
+      ],
+      "etapes": [
         "crop",
         "retouche raster ImageMagick",
         "resize",
@@ -2637,7 +2839,7 @@
     },
     {
       "id": "sprite-chercheuse-origine",
-      "origine": "planche",
+      "origine": "dérivé",
       "planche": "Capsule_Panic_Assets_Planche_01.png",
       "boite": [
         375,
@@ -2648,6 +2850,15 @@
       "transformation": "découpe + retouche (signes médicaux retirés)",
       "source_retouche": "packages/assets/source/personnages-origine.retouches.json",
       "transformations": [
+        "retouche masque de silhouette (13 sommets) : hors silhouette rendu transparent",
+        "retouche gélule bicolore effacée (11 sommets)",
+        "recoloration blanc→#202554",
+        "retouche blouse blanche recolorée (7 polygones) : niveaux de gris colorisés à 74 %, plis et encrage conservés, alpha de la planche",
+        "retouche badge à fiole masqué (rectangle arrondi #3f4864 cerné #252d45, rabat #49536d)",
+        "retouche gélule remplacée par cellule (cellule-cyan.svg, 61 px en +303+171)",
+        "retouche main recomposée au premier plan depuis la planche (10 sommets)"
+      ],
+      "etapes": [
         "crop",
         "retouche raster ImageMagick",
         "resize",
@@ -2662,7 +2873,7 @@
     },
     {
       "id": "sprite-responsable-origine",
-      "origine": "planche",
+      "origine": "dérivé",
       "planche": "Capsule_Panic_Assets_Planche_01.png",
       "boite": [
         340,
@@ -2673,6 +2884,13 @@
       "transformation": "découpe + retouche (signes médicaux retirés)",
       "source_retouche": "packages/assets/source/personnages-origine.retouches.json",
       "transformations": [
+        "retouche composante connexe seule (alpha > 50 % contenant 150,250, dilatée Disk:3) : voisins de la planche retirés",
+        "recoloration blanc→#202554",
+        "retouche blouse blanche recolorée (5 polygones) : niveaux de gris colorisés à 74 %, plis et encrage conservés, alpha de la planche",
+        "retouche badge à fiole masqué (rectangle arrondi #3f4864 cerné #252d45, rabat #49536d)",
+        "retouche masque du gant rétabli (clarté > 0.35, 6 graines, dilaté Disk:2) : pixels de la planche recomposés sur la veste"
+      ],
+      "etapes": [
         "crop",
         "retouche raster ImageMagick",
         "resize",

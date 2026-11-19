@@ -33,7 +33,7 @@ it('[E176] [E312] chaque entrée porte origine, planche, licence et titulaire, s
         expect(entree.planche?.fichier, entree.chemin).toMatch(/^[\w.-]+\.png$/u);
         expect(entree.planche?.sha256, entree.chemin).toMatch(/^[a-f0-9]{64}$/u);
         if (entree.type === 'sprite') {
-            expect(['découpe', 'redessin', 'retouche'], entree.chemin).toContain(entree.origine);
+            expect(['découpe', 'redessin', 'dérivé'], entree.chemin).toContain(entree.origine);
             expect(entree.boite, entree.chemin).toMatch(/^\d+x\d+\+\d+\+\d+$/u);
         } else {
             expect(entree.cadres?.length, entree.chemin).toBeGreaterThan(0);

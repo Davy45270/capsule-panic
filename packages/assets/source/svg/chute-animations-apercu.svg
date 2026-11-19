@@ -1,5 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 224 120">
-<g transform="translate(14 7) scale(.68)" opacity="1">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 156 132">
+<!-- Cadrage relevé sur Gameplay_03 : boîte 78x66+1291+279 (viewBox au double) ; capsules 27x55+1295+283 et 24x53+1341+288 -->
+<g transform="translate(6.5 5.9) scale(0.595)">
 <g transform="translate(0 0)">
 <defs><linearGradient id="motif-0-volume-cyan" x2="0" y2="1"><stop stop-color="#38BDF8"/><stop offset="1" stop-color="#1467C8"/></linearGradient></defs>
 <polygon points="19,6 77,6 90,19 90,77 77,90 19,90 6,77 6,19" fill="url(#motif-0-volume-cyan)" stroke="#001E40" stroke-width="5" stroke-linejoin="round"/>
@@ -18,7 +19,7 @@
 <path d="M42 82h12v28H42Z" fill="#6BCEF3"/>
 <path d="M46 87h4v18h-4Z" fill="#FDFDFD"/>
 </g>
-<g transform="translate(118 32) scale(.48)" opacity="1">
+<g transform="translate(96.5 16.0) scale(0.573)">
 <g transform="translate(0 0)">
 <defs><linearGradient id="motif-1-volume-cyan" x2="0" y2="1"><stop stop-color="#38BDF8"/><stop offset="1" stop-color="#1467C8"/></linearGradient></defs>
 <polygon points="19,6 77,6 90,19 90,77 77,90 19,90 6,77 6,19" fill="url(#motif-1-volume-cyan)" stroke="#001E40" stroke-width="5" stroke-linejoin="round"/>
@@ -36,12 +37,5 @@
 <path d="M36 80h24v32H36Z" fill="#001E40"/>
 <path d="M42 82h12v28H42Z" fill="#6BCEF3"/>
 <path d="M46 87h4v18h-4Z" fill="#FDFDFD"/>
-</g>
-<g transform="translate(93 18) scale(.32)" opacity="1">
-<g transform="rotate(0 48 48)">
-  <path d="M34 0h28v16l-5 7H39l-5-7z" fill="#001E40"/>
-  <path d="M39 0h18v15l-4 3H43l-4-3z" fill="#6BCEF3"/>
-  <path d="M45 0h6v14h-6z" fill="#FDFDFD"/>
-</g>
 </g>
 </svg>

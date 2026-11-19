@@ -9,7 +9,7 @@
       "redessines": [
         {
           "id": "sprite-chute-animations-jeu",
-          "boite": "86x131+1199+430",
+          "boite": "117x107+1196+450",
           "element": "packages/assets/sprites/sprite-chute-animations-jeu.png"
         },
         {
@@ -44,56 +44,88 @@
       "atlas": "packages/assets/atlas/composants-maquettes@2x.png",
       "atlas_json": "packages/assets/atlas/composants-maquettes@2x.json",
       "redessines": [],
-      "retouches": [
+      "derives": [
         {
           "id": "sprite-barre-partie",
           "boite": "270x44+297+305",
-          "element": "packages/assets/sprites/sprite-barre-partie.png"
+          "element": "packages/assets/sprites/sprite-barre-partie.png",
+          "transformations": [
+            "retouche libellé peint effacé : bande 20x25+95+3 étirée sur 223x25+2+3",
+            "retouche libellé peint effacé : bande 12x12+213+32 étirée sur 225x12+0+32"
+          ]
         },
         {
           "id": "sprite-panneau-suivant-partie",
           "boite": "70x100+501+419",
-          "element": "packages/assets/sprites/sprite-panneau-suivant-partie.png"
+          "element": "packages/assets/sprites/sprite-panneau-suivant-partie.png",
+          "transformations": [
+            "retouche libellé peint effacé : bande 53x6+8+81 étirée sur 54x40+8+38"
+          ]
         },
         {
           "id": "sprite-cadre-statistiques-reussite",
           "boite": "218x106+910+451",
-          "element": "packages/assets/sprites/sprite-cadre-statistiques-reussite.png"
+          "element": "packages/assets/sprites/sprite-cadre-statistiques-reussite.png",
+          "transformations": [
+            "retouche libellé peint effacé : bande 3x80+48+14 étirée sur 153x80+51+14"
+          ]
         },
         {
           "id": "sprite-jouer-accueil",
           "boite": "159x44+105+521",
-          "element": "packages/assets/sprites/sprite-jouer-accueil.png"
+          "element": "packages/assets/sprites/sprite-jouer-accueil.png",
+          "transformations": [
+            "retouche masque de silhouette (10 sommets) : hors silhouette rendu transparent",
+            "retouche libellé peint effacé : bande 7x29+137+7 étirée sur 78x29+58+7"
+          ]
         },
         {
           "id": "sprite-options-accueil",
           "boite": "161x39+103+645",
-          "element": "packages/assets/sprites/sprite-options-accueil.png"
+          "element": "packages/assets/sprites/sprite-options-accueil.png",
+          "transformations": [
+            "retouche libellé peint effacé : bande 9x25+140+7 étirée sur 79x25+62+7"
+          ]
         },
         {
           "id": "sprite-credits-accueil",
           "boite": "159x38+104+682",
-          "element": "packages/assets/sprites/sprite-credits-accueil.png"
+          "element": "packages/assets/sprites/sprite-credits-accueil.png",
+          "transformations": [
+            "retouche libellé peint effacé : bande 9x25+140+6 étirée sur 79x25+63+6"
+          ]
         },
         {
           "id": "sprite-ruban-reussite",
           "boite": "244x126+898+327",
-          "element": "packages/assets/sprites/sprite-ruban-reussite.png"
+          "element": "packages/assets/sprites/sprite-ruban-reussite.png",
+          "transformations": [
+            "retouche libellé peint effacé : bande 5x39+215+66 étirée sur 195x39+27+66"
+          ]
         },
         {
           "id": "sprite-suivant-reussite",
           "boite": "191x45+925+569",
-          "element": "packages/assets/sprites/sprite-suivant-reussite.png"
+          "element": "packages/assets/sprites/sprite-suivant-reussite.png",
+          "transformations": [
+            "retouche libellé peint effacé : bande 6x25+150+10 étirée sur 137x25+15+10"
+          ]
         },
         {
           "id": "sprite-rejouer-reussite",
           "boite": "185x40+929+617",
-          "element": "packages/assets/sprites/sprite-rejouer-reussite.png"
+          "element": "packages/assets/sprites/sprite-rejouer-reussite.png",
+          "transformations": [
+            "retouche libellé peint effacé : bande 9x25+153+8 étirée sur 86x25+72+8"
+          ]
         },
         {
           "id": "sprite-menu-reussite",
           "boite": "185x42+929+662",
-          "element": "packages/assets/sprites/sprite-menu-reussite.png"
+          "element": "packages/assets/sprites/sprite-menu-reussite.png",
+          "transformations": [
+            "retouche libellé peint effacé : bande 10x25+145+8 étirée sur 64x25+83+8"
+          ]
         }
       ]
     },
@@ -123,16 +155,22 @@
       "atlas": "packages/assets/atlas/compteurs-maquettes-jeu@2x.png",
       "atlas_json": "packages/assets/atlas/compteurs-maquettes-jeu@2x.json",
       "redessines": [],
-      "retouches": [
+      "derives": [
         {
           "id": "sprite-cadre-score-compteurs-maquettes-jeu",
           "boite": "148x60+959+793",
-          "element": "packages/assets/sprites/sprite-cadre-score-compteurs-maquettes-jeu.png"
+          "element": "packages/assets/sprites/sprite-cadre-score-compteurs-maquettes-jeu.png",
+          "transformations": [
+            "retouche libellé peint effacé : bande 5x24+10+28 étirée sur 89x24+32+28"
+          ]
         },
         {
           "id": "sprite-cadre-niveau-compteurs-maquettes-jeu",
           "boite": "118x60+1120+793",
-          "element": "packages/assets/sprites/sprite-cadre-niveau-compteurs-maquettes-jeu.png"
+          "element": "packages/assets/sprites/sprite-cadre-niveau-compteurs-maquettes-jeu.png",
+          "transformations": [
+            "retouche libellé peint effacé : bande 5x23+10+28 étirée sur 45x23+36+28"
+          ]
         }
       ]
     },
@@ -165,11 +203,14 @@
       "atlas": "packages/assets/atlas/fioles-logo@2x.png",
       "atlas_json": "packages/assets/atlas/fioles-logo@2x.json",
       "redessines": [],
-      "retouches": [
+      "derives": [
         {
           "id": "sprite-fioles-sous-logo",
           "boite": "138x91+136+180",
-          "element": "packages/assets/sprites/sprite-fioles-sous-logo.png"
+          "element": "packages/assets/sprites/sprite-fioles-sous-logo.png",
+          "transformations": [
+            "retouche masque de silhouette (18 sommets) : hors silhouette rendu transparent"
+          ]
         }
       ]
     },
@@ -238,21 +279,51 @@
       "atlas": "packages/assets/atlas/plateau-jeu@2x.png",
       "atlas_json": "packages/assets/atlas/plateau-jeu@2x.json",
       "redessines": [],
-      "retouches": [
+      "derives": [
         {
           "id": "sprite-bloc-bleu-plateau-jeu",
           "boite": "82x83+1359+53",
-          "element": "packages/assets/sprites/sprite-bloc-bleu-plateau-jeu.png"
+          "element": "packages/assets/sprites/sprite-bloc-bleu-plateau-jeu.png",
+          "transformations": [
+            "recoloration bleu 196–213°→#38BDF8",
+            "retouche jeton cyan A2 (toute la découpe) : luminance sur la rampe #080e22→#38BDF8→#fff8ff, ombres et reflets conservés"
+          ]
         },
         {
           "id": "sprite-bloc-rouge-plateau-jeu",
           "boite": "82x83+1462+53",
-          "element": "packages/assets/sprites/sprite-bloc-rouge-plateau-jeu.png"
+          "element": "packages/assets/sprites/sprite-bloc-rouge-plateau-jeu.png",
+          "transformations": [
+            "recoloration rouge 358–2°→#F472B6",
+            "retouche jeton magenta A2 (toute la découpe) : luminance sur la rampe #080e22→#F472B6→#fff8ff, ombres et reflets conservés"
+          ]
         },
         {
           "id": "sprite-bloc-jaune-plateau-jeu",
           "boite": "83x83+1565+54",
-          "element": "packages/assets/sprites/sprite-bloc-jaune-plateau-jeu.png"
+          "element": "packages/assets/sprites/sprite-bloc-jaune-plateau-jeu.png",
+          "transformations": [
+            "recoloration jaune 32–53°→#FBBF24",
+            "retouche jeton ambre A2 (toute la découpe) : luminance sur la rampe #080e22→#FBBF24→#fff8ff, ombres et reflets conservés"
+          ]
+        }
+      ]
+    },
+    {
+      "planche": "Capsule_Panic_Assets_Gameplay_02.png",
+      "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544",
+      "decoupe": "packages/assets/source/Capsule_Panic_Assets_Gameplay_02.traits-animations-jeu.decoupe.json",
+      "atlas": "packages/assets/atlas/traits-animations-jeu@2x.png",
+      "atlas_json": "packages/assets/atlas/traits-animations-jeu@2x.json",
+      "redessines": [],
+      "derives": [
+        {
+          "id": "sprite-fleche-rotation-bas-jeu",
+          "boite": "49x39+1446+507",
+          "element": "packages/assets/sprites/sprite-fleche-rotation-bas-jeu.png",
+          "transformations": [
+            "retouche composante connexe seule (alpha > 50 % contenant 45,15, dilatée Disk:3) : voisins de la planche retirés"
+          ]
         }
       ]
     },
@@ -265,7 +336,7 @@
       "redessines": [
         {
           "id": "sprite-chute-animations-apercu",
-          "boite": "135x71+1302+272",
+          "boite": "78x66+1291+279",
           "element": "packages/assets/sprites/sprite-chute-animations-apercu.png"
         },
         {
@@ -347,16 +418,22 @@
       "atlas": "packages/assets/atlas/compteurs-maquettes-apercu@2x.png",
       "atlas_json": "packages/assets/atlas/compteurs-maquettes-apercu@2x.json",
       "redessines": [],
-      "retouches": [
+      "derives": [
         {
           "id": "sprite-cadre-score-compteurs-maquettes-apercu",
           "boite": "100x64+1196+616",
-          "element": "packages/assets/sprites/sprite-cadre-score-compteurs-maquettes-apercu.png"
+          "element": "packages/assets/sprites/sprite-cadre-score-compteurs-maquettes-apercu.png",
+          "transformations": [
+            "retouche libellé peint effacé : bande 5x24+10+29 étirée sur 74x24+15+29"
+          ]
         },
         {
           "id": "sprite-cadre-niveau-compteurs-maquettes-apercu",
           "boite": "79x64+1297+616",
-          "element": "packages/assets/sprites/sprite-cadre-niveau-compteurs-maquettes-apercu.png"
+          "element": "packages/assets/sprites/sprite-cadre-niveau-compteurs-maquettes-apercu.png",
+          "transformations": [
+            "retouche libellé peint effacé : bande 5x24+10+29 étirée sur 47x24+18+29"
+          ]
         }
       ]
     },
@@ -367,11 +444,15 @@
       "atlas": "packages/assets/atlas/effets-maquettes@2x.png",
       "atlas_json": "packages/assets/atlas/effets-maquettes@2x.json",
       "redessines": [],
-      "retouches": [
+      "derives": [
         {
           "id": "sprite-ligne-elimination-apercu",
           "boite": "117x32+922+442",
-          "element": "packages/assets/sprites/sprite-ligne-elimination-apercu.png"
+          "element": "packages/assets/sprites/sprite-ligne-elimination-apercu.png",
+          "transformations": [
+            "recoloration rouge 345–5°→#F472B6",
+            "retouche jeton magenta A2 (zone 113x29+1+1, pixels R > B seulement) : luminance sur la rampe #080e22→#F472B6→#fff8ff, ombres et reflets conservés"
+          ]
         }
       ]
     },
@@ -442,38 +523,70 @@
       "atlas": "packages/assets/atlas/plateau-apercu@2x.png",
       "atlas_json": "packages/assets/atlas/plateau-apercu@2x.json",
       "redessines": [],
-      "retouches": [
+      "derives": [
         {
           "id": "sprite-bloc-bleu-plateau-apercu",
           "boite": "60x62+1252+49",
-          "element": "packages/assets/sprites/sprite-bloc-bleu-plateau-apercu.png"
+          "element": "packages/assets/sprites/sprite-bloc-bleu-plateau-apercu.png",
+          "transformations": [
+            "recoloration bleu 198–217°→#38BDF8",
+            "retouche jeton cyan A2 (toute la découpe) : luminance sur la rampe #080e22→#38BDF8→#fff8ff, ombres et reflets conservés"
+          ]
         },
         {
           "id": "sprite-bloc-rouge-plateau-apercu",
           "boite": "61x62+1321+49",
-          "element": "packages/assets/sprites/sprite-bloc-rouge-plateau-apercu.png"
+          "element": "packages/assets/sprites/sprite-bloc-rouge-plateau-apercu.png",
+          "transformations": [
+            "recoloration rouge 355–2°→#F472B6",
+            "retouche jeton magenta A2 (toute la découpe) : luminance sur la rampe #080e22→#F472B6→#fff8ff, ombres et reflets conservés"
+          ]
         },
         {
           "id": "sprite-bloc-jaune-plateau-apercu",
           "boite": "61x62+1391+49",
-          "element": "packages/assets/sprites/sprite-bloc-jaune-plateau-apercu.png"
+          "element": "packages/assets/sprites/sprite-bloc-jaune-plateau-apercu.png",
+          "transformations": [
+            "recoloration jaune 34–53°→#FBBF24",
+            "retouche jeton ambre A2 (toute la découpe) : luminance sur la rampe #080e22→#FBBF24→#fff8ff, ombres et reflets conservés"
+          ]
         },
         {
           "id": "sprite-segment-bleu-plateau-apercu",
           "boite": "56x54+938+49",
-          "element": "packages/assets/sprites/sprite-segment-bleu-plateau-apercu.png"
+          "element": "packages/assets/sprites/sprite-segment-bleu-plateau-apercu.png",
+          "transformations": [
+            "recoloration bleu 199–218°→#38BDF8",
+            "retouche jeton cyan A2 (toute la découpe) : luminance sur la rampe #080e22→#38BDF8→#fff8ff, ombres et reflets conservés"
+          ]
         },
         {
           "id": "sprite-segment-rouge-plateau-apercu",
           "boite": "57x54+1009+49",
-          "element": "packages/assets/sprites/sprite-segment-rouge-plateau-apercu.png"
+          "element": "packages/assets/sprites/sprite-segment-rouge-plateau-apercu.png",
+          "transformations": [
+            "recoloration rouge 355–2°→#F472B6",
+            "retouche jeton magenta A2 (toute la découpe) : luminance sur la rampe #080e22→#F472B6→#fff8ff, ombres et reflets conservés"
+          ]
         },
         {
           "id": "sprite-segment-jaune-plateau-apercu",
           "boite": "59x54+1081+49",
-          "element": "packages/assets/sprites/sprite-segment-jaune-plateau-apercu.png"
+          "element": "packages/assets/sprites/sprite-segment-jaune-plateau-apercu.png",
+          "transformations": [
+            "recoloration jaune 31–53°→#FBBF24",
+            "retouche jeton ambre A2 (toute la découpe) : luminance sur la rampe #080e22→#FBBF24→#fff8ff, ombres et reflets conservés"
+          ]
         }
       ]
+    },
+    {
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a",
+      "decoupe": "packages/assets/source/Capsule_Panic_Assets_Gameplay_03.traits-animations-apercu.decoupe.json",
+      "atlas": "packages/assets/atlas/traits-animations-apercu@2x.png",
+      "atlas_json": "packages/assets/atlas/traits-animations-apercu@2x.json",
+      "redessines": []
     },
     {
       "planche": "Capsule_Panic_Assets_Gameplay_03.png",
@@ -498,11 +611,15 @@
           "element": "packages/assets/sprites/sprite-tutoriel-eliminer.png"
         }
       ],
-      "retouches": [
+      "derives": [
         {
           "id": "sprite-tutoriel-aligner",
           "boite": "160x122+843+798",
-          "element": "packages/assets/sprites/sprite-tutoriel-aligner.png"
+          "element": "packages/assets/sprites/sprite-tutoriel-aligner.png",
+          "transformations": [
+            "recoloration rouge 352–3°→#F472B6",
+            "retouche jeton magenta A2 (zone 140x36+10+66, pixels R > B seulement) : luminance sur la rampe #080e22→#F472B6→#fff8ff, ombres et reflets conservés"
+          ]
         }
       ]
     },
@@ -643,16 +760,32 @@
       "atlas": "packages/assets/atlas/personnages-origine@2x.png",
       "atlas_json": "packages/assets/atlas/personnages-origine@2x.json",
       "redessines": [],
-      "retouches": [
+      "derives": [
         {
           "id": "sprite-chercheuse-origine",
           "boite": "375x361+2+11",
-          "element": "packages/assets/sprites/sprite-chercheuse-origine.png"
+          "element": "packages/assets/sprites/sprite-chercheuse-origine.png",
+          "transformations": [
+            "retouche masque de silhouette (13 sommets) : hors silhouette rendu transparent",
+            "retouche gélule bicolore effacée (11 sommets)",
+            "recoloration blanc→#202554",
+            "retouche blouse blanche recolorée (7 polygones) : niveaux de gris colorisés à 74 %, plis et encrage conservés, alpha de la planche",
+            "retouche badge à fiole masqué (rectangle arrondi #3f4864 cerné #252d45, rabat #49536d)",
+            "retouche gélule remplacée par cellule (cellule-cyan.svg, 61 px en +303+171)",
+            "retouche main recomposée au premier plan depuis la planche (10 sommets)"
+          ]
         },
         {
           "id": "sprite-responsable-origine",
           "boite": "340x310+2+385",
-          "element": "packages/assets/sprites/sprite-responsable-origine.png"
+          "element": "packages/assets/sprites/sprite-responsable-origine.png",
+          "transformations": [
+            "retouche composante connexe seule (alpha > 50 % contenant 150,250, dilatée Disk:3) : voisins de la planche retirés",
+            "recoloration blanc→#202554",
+            "retouche blouse blanche recolorée (5 polygones) : niveaux de gris colorisés à 74 %, plis et encrage conservés, alpha de la planche",
+            "retouche badge à fiole masqué (rectangle arrondi #3f4864 cerné #252d45, rabat #49536d)",
+            "retouche masque du gant rétabli (clarté > 0.35, 6 graines, dilaté Disk:2) : pixels de la planche recomposés sur la veste"
+          ]
         }
       ]
     },

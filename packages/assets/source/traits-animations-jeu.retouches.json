@@ -1,0 +1,11 @@
+[
+  {
+    "id": "fleche-rotation-bas-jeu",
+    "boite": "49x39+1446+507",
+    "composante": [
+      45,
+      15
+    ],
+    "transformation": "découpe + composante isolée (bout de la capsule voisine retiré)"
+  }
+]

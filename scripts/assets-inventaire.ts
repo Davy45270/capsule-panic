@@ -13,7 +13,7 @@ import { pathToFileURL } from 'node:url';
 const DOSSIER = 'packages/assets';
 export const FICHIER_INVENTAIRE = `${DOSSIER}/assets.inventaire.json`;
 
-type Origine = 'découpe' | 'redessin' | 'retouche';
+type Origine = 'découpe' | 'redessin' | 'dérivé';
 
 interface Fiche {
     id: string;
@@ -58,11 +58,12 @@ export interface Inventaire {
 const lireJson = (racine: string, fichier: string): unknown =>
     JSON.parse(readFileSync(join(racine, DOSSIER, fichier), 'utf8'));
 
-/** Origine normalisée : découpe brute, découpe retouchée, ou élément redessiné. */
+/** Origine normalisée : découpe brute, dérivé (retouché ou recoloré depuis la planche), ou élément redessiné. */
 function origine(fiche: Fiche): Origine {
     if (fiche.origine.startsWith('redessiné')) return 'redessin';
+    if (fiche.origine === 'dérivé') return 'dérivé';
     if (fiche.origine !== 'planche') throw new Error(`origine inconnue pour ${fiche.id} : ${fiche.origine}`);
-    return fiche.source_retouche ? 'retouche' : 'découpe';
+    return 'découpe';
 }
 
 /** Boîte au format largeurxhauteur+x+y ; provenance.json la donne en [largeur, hauteur, x, y]. */

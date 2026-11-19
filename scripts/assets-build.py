@@ -16,7 +16,7 @@ import tempfile
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
-from assets_retouche import retoucher
+from assets_retouche import retoucher, transformations_derive
 
 ASSETS = Path("packages/assets")
 PLANCHES_DEFAUT = Path.home() / "Projets/jeux/assets/planches/capsule-panic"
@@ -108,13 +108,16 @@ def construire_groupe(table, planches, outils, aseprite, travail):
             dimensions, x, y = fiche["boite"].split("+")
             largeur, hauteur = dimensions.split("x")
             personnage = "signes_retires" in fiche
+            # Un sprite retouché ou recoloré est un DÉRIVÉ de sa planche : planche, zone, transformations
+            # appliquées (les mêmes que dans chaine.json, `derives`). `etapes` garde la chaîne d'outils.
             provenance = {
-                "id": f"sprite-{identifiant}", "origine": "planche", "planche": data["planche"],
+                "id": f"sprite-{identifiant}", "origine": "dérivé", "planche": data["planche"],
                 "boite": list(map(int, (largeur, hauteur, x, y))),
                 "transformation": "découpe + retouche (signes médicaux retirés)" if personnage
                 else fiche["transformation"],
                 "source_retouche": str(liste),
-                "transformations": ["crop", "retouche raster ImageMagick", "resize", "atlas json-hash"],
+                "transformations": transformations_derive(fiche),
+                "etapes": ["crop", "retouche raster ImageMagick", "resize", "atlas json-hash"],
             }
             if personnage:
                 provenance["signes_retires"] = fiche["signes_retires"]
@@ -203,9 +206,10 @@ def construire_groupe(table, planches, outils, aseprite, travail):
                            "atlas": str(ASSETS / "atlas" / image.name),
                            "atlas_json": str(ASSETS / "atlas" / mapping.name),
                            "redessines": references,
-                           **({"retouches": [{"id": f"sprite-{fiche['id']}", "boite": fiche["boite"],
-                                              "element": str(ASSETS / "sprites" / f"sprite-{fiche['id']}.png")}
-                                             for fiche in retouches]} if retouches else {})})
+                           **({"derives": [{"id": f"sprite-{fiche['id']}", "boite": fiche["boite"],
+                                            "element": str(ASSETS / "sprites" / f"sprite-{fiche['id']}.png"),
+                                            "transformations": transformations_derive(fiche)}
+                                           for fiche in retouches]} if retouches else {})})
             if controles:
                 miniatures = travail / f"controle-{groupe}"
                 miniatures.mkdir()

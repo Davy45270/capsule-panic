@@ -104,6 +104,7 @@ it('[E009] [E018] [E310] provenance, sources et licence couvrent chaque cadre', 
             planche: string;
             planche_sha256: string;
             transformations: string[];
+            etapes?: string[];
             boite?: number[];
             element_remplace?: string;
             svg?: string;
@@ -122,12 +123,13 @@ it('[E009] [E018] [E310] provenance, sources et licence couvrent chaque cadre', 
         expect(alphaCoin(sprite), fiche.id).toBe(0);
         expect(fiche.planche).toMatch(/\.png$/u);
         expect(fiche.planche_sha256).toMatch(/^[a-f0-9]{64}$/u);
-        expect(fiche.transformations).toContain('atlas json-hash');
+        // Un dérivé porte ses transformations de pixels ; la chaîne d'outils est dans `etapes`.
+        expect(fiche.origine === 'dérivé' ? fiche.etapes : fiche.transformations).toContain('atlas json-hash');
         if (fiche.origine === 'redessiné (marque)') {
             expect(fiche.element_remplace).toMatch(/^\d+x\d+\+\d+\+\d+$/u);
             expect(readFileSync(fiche.svg ?? '', 'utf8')).toContain('<svg');
         } else {
-            expect(fiche.origine).toBe('planche');
+            expect(['planche', 'dérivé']).toContain(fiche.origine);
             expect(fiche.boite).toHaveLength(4);
             expect(fiche.boite?.every(v => Number.isInteger(v) && v >= 0)).toBe(true);
         }

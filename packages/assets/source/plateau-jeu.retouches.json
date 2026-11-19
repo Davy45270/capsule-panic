@@ -5,7 +5,8 @@
     "recolorations": [
       [
         "#38BDF8",
-        null
+        null,
+        "bleu 196–213°"
       ]
     ],
     "transformation": "découpe + recoloration (jetons A2)"
@@ -16,7 +17,8 @@
     "recolorations": [
       [
         "#F472B6",
-        null
+        null,
+        "rouge 358–2°"
       ]
     ],
     "transformation": "découpe + recoloration (jetons A2)"
@@ -27,7 +29,8 @@
     "recolorations": [
       [
         "#FBBF24",
-        null
+        null,
+        "jaune 32–53°"
       ]
     ],
     "transformation": "découpe + recoloration (jetons A2)"

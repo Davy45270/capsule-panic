@@ -1,0 +1,17 @@
+{
+  "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+  "marge": 0,
+  "taille": 64,
+  "elements": [
+    {
+      "id": "trainee-chute-apercu",
+      "boite": [
+        14,
+        15,
+        1343,
+        281
+      ],
+      "ancre": "centre"
+    }
+  ]
+}

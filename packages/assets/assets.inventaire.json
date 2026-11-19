@@ -26,8 +26,8 @@
     },
     {
       "chemin": "packages/assets/atlas/animations-apercu@2x.png",
-      "sha256": "e450accd182eee30ca2ef8b0c6f4ca930871c0810af69f58d71eff87b6a10472",
-      "taille": 26400,
+      "sha256": "77b9bff42bb21c186c662272dbb5c27cfdffa26c06f9ace53e336f1d3395fa98",
+      "taille": 27899,
       "type": "atlas",
       "origines": [
         "redessin"
@@ -48,8 +48,8 @@
     },
     {
       "chemin": "packages/assets/atlas/animations-apercu@2x.webp",
-      "sha256": "9cbf226bab833b0b4895e7f83372e3f26afde2da6cf71cf85d116470768d204b",
-      "taille": 22982,
+      "sha256": "167800e584db92bfb33ca5324941e83f447534497ec82e373e4c6704fcfacb61",
+      "taille": 23582,
       "type": "atlas",
       "origines": [
         "redessin"
@@ -92,8 +92,8 @@
     },
     {
       "chemin": "packages/assets/atlas/animations-apercu@3x.png",
-      "sha256": "f4df8f569ea7c6ef7f2bfc83ca9f876698e5ee42d414ef19dc1ba79f07f3b7d3",
-      "taille": 40486,
+      "sha256": "935de448406b2be0246e3c40f4b83bff881fdfa8df3d45bd054cc41424958360",
+      "taille": 42505,
       "type": "atlas",
       "origines": [
         "redessin"
@@ -114,8 +114,8 @@
     },
     {
       "chemin": "packages/assets/atlas/animations-apercu@3x.webp",
-      "sha256": "2e81fbeca8a94bd442d20da6166b5bdb056264da5de09d1fd56d3b88d2eca008",
-      "taille": 33800,
+      "sha256": "b2012e7f4d57318246fa635311c30f231d3f167eb0b2803e0b0fee8dca034b39",
+      "taille": 35232,
       "type": "atlas",
       "origines": [
         "redessin"
@@ -158,8 +158,8 @@
     },
     {
       "chemin": "packages/assets/atlas/animations-jeu@2x.png",
-      "sha256": "e450accd182eee30ca2ef8b0c6f4ca930871c0810af69f58d71eff87b6a10472",
-      "taille": 26400,
+      "sha256": "66bf3ae03b028561c0f9c7934c869cac298e4a28573461887078b8174052ed61",
+      "taille": 26531,
       "type": "atlas",
       "origines": [
         "redessin"
@@ -180,8 +180,8 @@
     },
     {
       "chemin": "packages/assets/atlas/animations-jeu@2x.webp",
-      "sha256": "9cbf226bab833b0b4895e7f83372e3f26afde2da6cf71cf85d116470768d204b",
-      "taille": 22982,
+      "sha256": "a2904e1bc625438c982c86e9727cb1211b0b8892b3d12b5c96f3d72b4f68b4b3",
+      "taille": 22448,
       "type": "atlas",
       "origines": [
         "redessin"
@@ -224,8 +224,8 @@
     },
     {
       "chemin": "packages/assets/atlas/animations-jeu@3x.png",
-      "sha256": "f4df8f569ea7c6ef7f2bfc83ca9f876698e5ee42d414ef19dc1ba79f07f3b7d3",
-      "taille": 40486,
+      "sha256": "cf3d73a48e9ab7d80a130e1df17dae5e27ac1d5c836014a7d8880ecb2309daa8",
+      "taille": 41298,
       "type": "atlas",
       "origines": [
         "redessin"
@@ -246,8 +246,8 @@
     },
     {
       "chemin": "packages/assets/atlas/animations-jeu@3x.webp",
-      "sha256": "2e81fbeca8a94bd442d20da6166b5bdb056264da5de09d1fd56d3b88d2eca008",
-      "taille": 33800,
+      "sha256": "418e762624a9f7dd8107d9a754f29a276f9e039efd3ca583f734644043ce9875",
+      "taille": 33780,
       "type": "atlas",
       "origines": [
         "redessin"
@@ -1064,7 +1064,7 @@
       "taille": 3937,
       "type": "atlas",
       "origines": [
-        "retouche"
+        "dérivé"
       ],
       "cadres": [
         "sprite-barre-partie",
@@ -1092,7 +1092,7 @@
       "taille": 34488,
       "type": "atlas",
       "origines": [
-        "retouche"
+        "dérivé"
       ],
       "cadres": [
         "sprite-barre-partie",
@@ -1120,7 +1120,7 @@
       "taille": 27598,
       "type": "atlas",
       "origines": [
-        "retouche"
+        "dérivé"
       ],
       "cadres": [
         "sprite-barre-partie",
@@ -1148,7 +1148,7 @@
       "taille": 4001,
       "type": "atlas",
       "origines": [
-        "retouche"
+        "dérivé"
       ],
       "cadres": [
         "sprite-barre-partie",
@@ -1176,7 +1176,7 @@
       "taille": 66829,
       "type": "atlas",
       "origines": [
-        "retouche"
+        "dérivé"
       ],
       "cadres": [
         "sprite-barre-partie",
@@ -1204,7 +1204,7 @@
       "taille": 53286,
       "type": "atlas",
       "origines": [
-        "retouche"
+        "dérivé"
       ],
       "cadres": [
         "sprite-barre-partie",
@@ -1580,7 +1580,7 @@
       "taille": 1033,
       "type": "atlas",
       "origines": [
-        "retouche"
+        "dérivé"
       ],
       "cadres": [
         "sprite-cadre-niveau-compteurs-maquettes-apercu",
@@ -1600,7 +1600,7 @@
       "taille": 10676,
       "type": "atlas",
       "origines": [
-        "retouche"
+        "dérivé"
       ],
       "cadres": [
         "sprite-cadre-niveau-compteurs-maquettes-apercu",
@@ -1620,7 +1620,7 @@
       "taille": 7604,
       "type": "atlas",
       "origines": [
-        "retouche"
+        "dérivé"
       ],
       "cadres": [
         "sprite-cadre-niveau-compteurs-maquettes-apercu",
@@ -1640,7 +1640,7 @@
       "taille": 1035,
       "type": "atlas",
       "origines": [
-        "retouche"
+        "dérivé"
       ],
       "cadres": [
         "sprite-cadre-niveau-compteurs-maquettes-apercu",
@@ -1660,7 +1660,7 @@
       "taille": 20462,
       "type": "atlas",
       "origines": [
-        "retouche"
+        "dérivé"
       ],
       "cadres": [
         "sprite-cadre-niveau-compteurs-maquettes-apercu",
@@ -1680,7 +1680,7 @@
       "taille": 14324,
       "type": "atlas",
       "origines": [
-        "retouche"
+        "dérivé"
       ],
       "cadres": [
         "sprite-cadre-niveau-compteurs-maquettes-apercu",
@@ -1700,7 +1700,7 @@
       "taille": 1024,
       "type": "atlas",
       "origines": [
-        "retouche"
+        "dérivé"
       ],
       "cadres": [
         "sprite-cadre-niveau-compteurs-maquettes-jeu",
@@ -1720,7 +1720,7 @@
       "taille": 7455,
       "type": "atlas",
       "origines": [
-        "retouche"
+        "dérivé"
       ],
       "cadres": [
         "sprite-cadre-niveau-compteurs-maquettes-jeu",
@@ -1740,7 +1740,7 @@
       "taille": 5132,
       "type": "atlas",
       "origines": [
-        "retouche"
+        "dérivé"
       ],
       "cadres": [
         "sprite-cadre-niveau-compteurs-maquettes-jeu",
@@ -1760,7 +1760,7 @@
       "taille": 1026,
       "type": "atlas",
       "origines": [
-        "retouche"
+        "dérivé"
       ],
       "cadres": [
         "sprite-cadre-niveau-compteurs-maquettes-jeu",
@@ -1780,7 +1780,7 @@
       "taille": 13943,
       "type": "atlas",
       "origines": [
-        "retouche"
+        "dérivé"
       ],
       "cadres": [
         "sprite-cadre-niveau-compteurs-maquettes-jeu",
@@ -1800,7 +1800,7 @@
       "taille": 9566,
       "type": "atlas",
       "origines": [
-        "retouche"
+        "dérivé"
       ],
       "cadres": [
         "sprite-cadre-niveau-compteurs-maquettes-jeu",
@@ -1959,7 +1959,7 @@
       "type": "atlas",
       "origines": [
         "découpe",
-        "retouche"
+        "dérivé"
       ],
       "cadres": [
         "sprite-anneau-apercu",
@@ -1989,7 +1989,7 @@
       "type": "atlas",
       "origines": [
         "découpe",
-        "retouche"
+        "dérivé"
       ],
       "cadres": [
         "sprite-anneau-apercu",
@@ -2019,7 +2019,7 @@
       "type": "atlas",
       "origines": [
         "découpe",
-        "retouche"
+        "dérivé"
       ],
       "cadres": [
         "sprite-anneau-apercu",
@@ -2049,7 +2049,7 @@
       "type": "atlas",
       "origines": [
         "découpe",
-        "retouche"
+        "dérivé"
       ],
       "cadres": [
         "sprite-anneau-apercu",
@@ -2079,7 +2079,7 @@
       "type": "atlas",
       "origines": [
         "découpe",
-        "retouche"
+        "dérivé"
       ],
       "cadres": [
         "sprite-anneau-apercu",
@@ -2109,7 +2109,7 @@
       "type": "atlas",
       "origines": [
         "découpe",
-        "retouche"
+        "dérivé"
       ],
       "cadres": [
         "sprite-anneau-apercu",
@@ -2390,7 +2390,7 @@
       "taille": 605,
       "type": "atlas",
       "origines": [
-        "retouche"
+        "dérivé"
       ],
       "cadres": [
         "sprite-fioles-sous-logo"
@@ -2409,7 +2409,7 @@
       "taille": 9329,
       "type": "atlas",
       "origines": [
-        "retouche"
+        "dérivé"
       ],
       "cadres": [
         "sprite-fioles-sous-logo"
@@ -2428,7 +2428,7 @@
       "taille": 6500,
       "type": "atlas",
       "origines": [
-        "retouche"
+        "dérivé"
       ],
       "cadres": [
         "sprite-fioles-sous-logo"
@@ -2447,7 +2447,7 @@
       "taille": 612,
       "type": "atlas",
       "origines": [
-        "retouche"
+        "dérivé"
       ],
       "cadres": [
         "sprite-fioles-sous-logo"
@@ -2466,7 +2466,7 @@
       "taille": 17753,
       "type": "atlas",
       "origines": [
-        "retouche"
+        "dérivé"
       ],
       "cadres": [
         "sprite-fioles-sous-logo"
@@ -2485,7 +2485,7 @@
       "taille": 12528,
       "type": "atlas",
       "origines": [
-        "retouche"
+        "dérivé"
       ],
       "cadres": [
         "sprite-fioles-sous-logo"
@@ -4607,7 +4607,7 @@
       "taille": 1000,
       "type": "atlas",
       "origines": [
-        "retouche"
+        "dérivé"
       ],
       "cadres": [
         "sprite-chercheuse-origine",
@@ -4627,7 +4627,7 @@
       "taille": 73788,
       "type": "atlas",
       "origines": [
-        "retouche"
+        "dérivé"
       ],
       "cadres": [
         "sprite-chercheuse-origine",
@@ -4647,7 +4647,7 @@
       "taille": 49668,
       "type": "atlas",
       "origines": [
-        "retouche"
+        "dérivé"
       ],
       "cadres": [
         "sprite-chercheuse-origine",
@@ -4667,7 +4667,7 @@
       "taille": 1000,
       "type": "atlas",
       "origines": [
-        "retouche"
+        "dérivé"
       ],
       "cadres": [
         "sprite-chercheuse-origine",
@@ -4687,7 +4687,7 @@
       "taille": 141494,
       "type": "atlas",
       "origines": [
-        "retouche"
+        "dérivé"
       ],
       "cadres": [
         "sprite-chercheuse-origine",
@@ -4707,7 +4707,7 @@
       "taille": 99268,
       "type": "atlas",
       "origines": [
-        "retouche"
+        "dérivé"
       ],
       "cadres": [
         "sprite-chercheuse-origine",
@@ -4920,7 +4920,7 @@
       "type": "atlas",
       "origines": [
         "découpe",
-        "retouche"
+        "dérivé"
       ],
       "cadres": [
         "sprite-bloc-bleu-plateau-apercu",
@@ -4946,7 +4946,7 @@
       "type": "atlas",
       "origines": [
         "découpe",
-        "retouche"
+        "dérivé"
       ],
       "cadres": [
         "sprite-bloc-bleu-plateau-apercu",
@@ -4972,7 +4972,7 @@
       "type": "atlas",
       "origines": [
         "découpe",
-        "retouche"
+        "dérivé"
       ],
       "cadres": [
         "sprite-bloc-bleu-plateau-apercu",
@@ -4998,7 +4998,7 @@
       "type": "atlas",
       "origines": [
         "découpe",
-        "retouche"
+        "dérivé"
       ],
       "cadres": [
         "sprite-bloc-bleu-plateau-apercu",
@@ -5024,7 +5024,7 @@
       "type": "atlas",
       "origines": [
         "découpe",
-        "retouche"
+        "dérivé"
       ],
       "cadres": [
         "sprite-bloc-bleu-plateau-apercu",
@@ -5050,7 +5050,7 @@
       "type": "atlas",
       "origines": [
         "découpe",
-        "retouche"
+        "dérivé"
       ],
       "cadres": [
         "sprite-bloc-bleu-plateau-apercu",
@@ -5076,7 +5076,7 @@
       "type": "atlas",
       "origines": [
         "découpe",
-        "retouche"
+        "dérivé"
       ],
       "cadres": [
         "sprite-bloc-bleu-plateau-jeu",
@@ -5099,7 +5099,7 @@
       "type": "atlas",
       "origines": [
         "découpe",
-        "retouche"
+        "dérivé"
       ],
       "cadres": [
         "sprite-bloc-bleu-plateau-jeu",
@@ -5122,7 +5122,7 @@
       "type": "atlas",
       "origines": [
         "découpe",
-        "retouche"
+        "dérivé"
       ],
       "cadres": [
         "sprite-bloc-bleu-plateau-jeu",
@@ -5145,7 +5145,7 @@
       "type": "atlas",
       "origines": [
         "découpe",
-        "retouche"
+        "dérivé"
       ],
       "cadres": [
         "sprite-bloc-bleu-plateau-jeu",
@@ -5168,7 +5168,7 @@
       "type": "atlas",
       "origines": [
         "découpe",
-        "retouche"
+        "dérivé"
       ],
       "cadres": [
         "sprite-bloc-bleu-plateau-jeu",
@@ -5191,7 +5191,7 @@
       "type": "atlas",
       "origines": [
         "découpe",
-        "retouche"
+        "dérivé"
       ],
       "cadres": [
         "sprite-bloc-bleu-plateau-jeu",
@@ -5208,13 +5208,265 @@
       "titulaire": "David Sevin"
     },
     {
+      "chemin": "packages/assets/atlas/traits-animations-apercu@2x.json",
+      "sha256": "146fefc602aea9fb19e72ac308d824a4d43ebf68d5281ad55187d66bdc6f1603",
+      "taille": 622,
+      "type": "atlas",
+      "origines": [
+        "découpe"
+      ],
+      "cadres": [
+        "sprite-trainee-chute-apercu"
+      ],
+      "planche": {
+        "fichier": "Capsule_Panic_Assets_Gameplay_03.png",
+        "sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
+      },
+      "decoupe": "packages/assets/source/Capsule_Panic_Assets_Gameplay_03.traits-animations-apercu.decoupe.json",
+      "licence": "CC BY 4.0",
+      "titulaire": "David Sevin"
+    },
+    {
+      "chemin": "packages/assets/atlas/traits-animations-apercu@2x.png",
+      "sha256": "a3f0de1689aef6545aee968f4680b3522d9ab461e8fa96b496436b255c61b05e",
+      "taille": 3306,
+      "type": "atlas",
+      "origines": [
+        "découpe"
+      ],
+      "cadres": [
+        "sprite-trainee-chute-apercu"
+      ],
+      "planche": {
+        "fichier": "Capsule_Panic_Assets_Gameplay_03.png",
+        "sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
+      },
+      "decoupe": "packages/assets/source/Capsule_Panic_Assets_Gameplay_03.traits-animations-apercu.decoupe.json",
+      "licence": "CC BY 4.0",
+      "titulaire": "David Sevin"
+    },
+    {
+      "chemin": "packages/assets/atlas/traits-animations-apercu@2x.webp",
+      "sha256": "4023a174a9b68c184fb0fbcbebc4fd73c2544403a5f1def116004bb93fcbc754",
+      "taille": 2280,
+      "type": "atlas",
+      "origines": [
+        "découpe"
+      ],
+      "cadres": [
+        "sprite-trainee-chute-apercu"
+      ],
+      "planche": {
+        "fichier": "Capsule_Panic_Assets_Gameplay_03.png",
+        "sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
+      },
+      "decoupe": "packages/assets/source/Capsule_Panic_Assets_Gameplay_03.traits-animations-apercu.decoupe.json",
+      "licence": "CC BY 4.0",
+      "titulaire": "David Sevin"
+    },
+    {
+      "chemin": "packages/assets/atlas/traits-animations-apercu@3x.json",
+      "sha256": "c2891ebfa090c2c735ce1f5e5f51f046af0f272e9fa15fb6bb96dc95e2727d27",
+      "taille": 623,
+      "type": "atlas",
+      "origines": [
+        "découpe"
+      ],
+      "cadres": [
+        "sprite-trainee-chute-apercu"
+      ],
+      "planche": {
+        "fichier": "Capsule_Panic_Assets_Gameplay_03.png",
+        "sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
+      },
+      "decoupe": "packages/assets/source/Capsule_Panic_Assets_Gameplay_03.traits-animations-apercu.decoupe.json",
+      "licence": "CC BY 4.0",
+      "titulaire": "David Sevin"
+    },
+    {
+      "chemin": "packages/assets/atlas/traits-animations-apercu@3x.png",
+      "sha256": "e52de6b7b6748fe120071c1297fcaa5f9d87e29c5956e18b4d50b79bf2961892",
+      "taille": 6015,
+      "type": "atlas",
+      "origines": [
+        "découpe"
+      ],
+      "cadres": [
+        "sprite-trainee-chute-apercu"
+      ],
+      "planche": {
+        "fichier": "Capsule_Panic_Assets_Gameplay_03.png",
+        "sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
+      },
+      "decoupe": "packages/assets/source/Capsule_Panic_Assets_Gameplay_03.traits-animations-apercu.decoupe.json",
+      "licence": "CC BY 4.0",
+      "titulaire": "David Sevin"
+    },
+    {
+      "chemin": "packages/assets/atlas/traits-animations-apercu@3x.webp",
+      "sha256": "52d71d7534b1c5aab93e806035da3c2e42440fa0785de252674f1095912616ec",
+      "taille": 4118,
+      "type": "atlas",
+      "origines": [
+        "découpe"
+      ],
+      "cadres": [
+        "sprite-trainee-chute-apercu"
+      ],
+      "planche": {
+        "fichier": "Capsule_Panic_Assets_Gameplay_03.png",
+        "sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
+      },
+      "decoupe": "packages/assets/source/Capsule_Panic_Assets_Gameplay_03.traits-animations-apercu.decoupe.json",
+      "licence": "CC BY 4.0",
+      "titulaire": "David Sevin"
+    },
+    {
+      "chemin": "packages/assets/atlas/traits-animations-jeu@2x.json",
+      "sha256": "bf5dd13d5bc89a15e0c8029b823f8764c5acebf0e60cf51b240a3aaac22a8531",
+      "taille": 1747,
+      "type": "atlas",
+      "origines": [
+        "découpe",
+        "dérivé"
+      ],
+      "cadres": [
+        "sprite-fleche-descente-jeu",
+        "sprite-fleche-rotation-bas-jeu",
+        "sprite-trainee-longue-chute-jeu",
+        "sprite-trainee-verrouillage-jeu"
+      ],
+      "planche": {
+        "fichier": "Capsule_Panic_Assets_Gameplay_02.png",
+        "sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
+      },
+      "decoupe": "packages/assets/source/Capsule_Panic_Assets_Gameplay_02.traits-animations-jeu.decoupe.json",
+      "licence": "CC BY 4.0",
+      "titulaire": "David Sevin"
+    },
+    {
+      "chemin": "packages/assets/atlas/traits-animations-jeu@2x.png",
+      "sha256": "e6fe0b50014fd423706e9065ba23978a447258f880322281ff93c71cfff78986",
+      "taille": 11933,
+      "type": "atlas",
+      "origines": [
+        "découpe",
+        "dérivé"
+      ],
+      "cadres": [
+        "sprite-fleche-descente-jeu",
+        "sprite-fleche-rotation-bas-jeu",
+        "sprite-trainee-longue-chute-jeu",
+        "sprite-trainee-verrouillage-jeu"
+      ],
+      "planche": {
+        "fichier": "Capsule_Panic_Assets_Gameplay_02.png",
+        "sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
+      },
+      "decoupe": "packages/assets/source/Capsule_Panic_Assets_Gameplay_02.traits-animations-jeu.decoupe.json",
+      "licence": "CC BY 4.0",
+      "titulaire": "David Sevin"
+    },
+    {
+      "chemin": "packages/assets/atlas/traits-animations-jeu@2x.webp",
+      "sha256": "14f8c707ae57e79220097e6e5e0e0f5a5b8362bf2f3cfbb026fdd95ab18a6d17",
+      "taille": 8848,
+      "type": "atlas",
+      "origines": [
+        "découpe",
+        "dérivé"
+      ],
+      "cadres": [
+        "sprite-fleche-descente-jeu",
+        "sprite-fleche-rotation-bas-jeu",
+        "sprite-trainee-longue-chute-jeu",
+        "sprite-trainee-verrouillage-jeu"
+      ],
+      "planche": {
+        "fichier": "Capsule_Panic_Assets_Gameplay_02.png",
+        "sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
+      },
+      "decoupe": "packages/assets/source/Capsule_Panic_Assets_Gameplay_02.traits-animations-jeu.decoupe.json",
+      "licence": "CC BY 4.0",
+      "titulaire": "David Sevin"
+    },
+    {
+      "chemin": "packages/assets/atlas/traits-animations-jeu@3x.json",
+      "sha256": "58def40cac4ee72ba768ea22384ee64e3b6d6f5079290218717a45ba52fe86ec",
+      "taille": 1747,
+      "type": "atlas",
+      "origines": [
+        "découpe",
+        "dérivé"
+      ],
+      "cadres": [
+        "sprite-fleche-descente-jeu",
+        "sprite-fleche-rotation-bas-jeu",
+        "sprite-trainee-longue-chute-jeu",
+        "sprite-trainee-verrouillage-jeu"
+      ],
+      "planche": {
+        "fichier": "Capsule_Panic_Assets_Gameplay_02.png",
+        "sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
+      },
+      "decoupe": "packages/assets/source/Capsule_Panic_Assets_Gameplay_02.traits-animations-jeu.decoupe.json",
+      "licence": "CC BY 4.0",
+      "titulaire": "David Sevin"
+    },
+    {
+      "chemin": "packages/assets/atlas/traits-animations-jeu@3x.png",
+      "sha256": "42debe03efb54b796ef0ad1be2528a9116fbfbdd50c4f9634262f0c43dbb55ec",
+      "taille": 21815,
+      "type": "atlas",
+      "origines": [
+        "découpe",
+        "dérivé"
+      ],
+      "cadres": [
+        "sprite-fleche-descente-jeu",
+        "sprite-fleche-rotation-bas-jeu",
+        "sprite-trainee-longue-chute-jeu",
+        "sprite-trainee-verrouillage-jeu"
+      ],
+      "planche": {
+        "fichier": "Capsule_Panic_Assets_Gameplay_02.png",
+        "sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
+      },
+      "decoupe": "packages/assets/source/Capsule_Panic_Assets_Gameplay_02.traits-animations-jeu.decoupe.json",
+      "licence": "CC BY 4.0",
+      "titulaire": "David Sevin"
+    },
+    {
+      "chemin": "packages/assets/atlas/traits-animations-jeu@3x.webp",
+      "sha256": "2986f74f47fc0822df50e4845168cf6a673f6b70082f757f898c8260ac7860e7",
+      "taille": 15320,
+      "type": "atlas",
+      "origines": [
+        "découpe",
+        "dérivé"
+      ],
+      "cadres": [
+        "sprite-fleche-descente-jeu",
+        "sprite-fleche-rotation-bas-jeu",
+        "sprite-trainee-longue-chute-jeu",
+        "sprite-trainee-verrouillage-jeu"
+      ],
+      "planche": {
+        "fichier": "Capsule_Panic_Assets_Gameplay_02.png",
+        "sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
+      },
+      "decoupe": "packages/assets/source/Capsule_Panic_Assets_Gameplay_02.traits-animations-jeu.decoupe.json",
+      "licence": "CC BY 4.0",
+      "titulaire": "David Sevin"
+    },
+    {
       "chemin": "packages/assets/atlas/tutoriel-apercu@2x.json",
       "sha256": "004f062466302ab6e55c25c493dc27edfaa356ae576ccd78be693e50bdc543b7",
       "taille": 1743,
       "type": "atlas",
       "origines": [
-        "redessin",
-        "retouche"
+        "dérivé",
+        "redessin"
       ],
       "cadres": [
         "sprite-tutoriel-aligner",
@@ -5236,8 +5488,8 @@
       "taille": 68554,
       "type": "atlas",
       "origines": [
-        "redessin",
-        "retouche"
+        "dérivé",
+        "redessin"
       ],
       "cadres": [
         "sprite-tutoriel-aligner",
@@ -5259,8 +5511,8 @@
       "taille": 51344,
       "type": "atlas",
       "origines": [
-        "redessin",
-        "retouche"
+        "dérivé",
+        "redessin"
       ],
       "cadres": [
         "sprite-tutoriel-aligner",
@@ -5282,8 +5534,8 @@
       "taille": 1743,
       "type": "atlas",
       "origines": [
-        "redessin",
-        "retouche"
+        "dérivé",
+        "redessin"
       ],
       "cadres": [
         "sprite-tutoriel-aligner",
@@ -5305,8 +5557,8 @@
       "taille": 132031,
       "type": "atlas",
       "origines": [
-        "redessin",
-        "retouche"
+        "dérivé",
+        "redessin"
       ],
       "cadres": [
         "sprite-tutoriel-aligner",
@@ -5328,8 +5580,8 @@
       "taille": 101814,
       "type": "atlas",
       "origines": [
-        "redessin",
-        "retouche"
+        "dérivé",
+        "redessin"
       ],
       "cadres": [
         "sprite-tutoriel-aligner",
@@ -5426,7 +5678,7 @@
       "taille": 2903,
       "type": "sprite",
       "id": "sprite-barre-partie",
-      "origine": "retouche",
+      "origine": "dérivé",
       "planche": {
         "fichier": "Capsule_Panic_Assets_Gameplay_02.png",
         "sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
@@ -5457,7 +5709,7 @@
       "taille": 9862,
       "type": "sprite",
       "id": "sprite-bloc-bleu-plateau-apercu",
-      "origine": "retouche",
+      "origine": "dérivé",
       "planche": {
         "fichier": "Capsule_Panic_Assets_Gameplay_03.png",
         "sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
@@ -5473,7 +5725,7 @@
       "taille": 11118,
       "type": "sprite",
       "id": "sprite-bloc-bleu-plateau-jeu",
-      "origine": "retouche",
+      "origine": "dérivé",
       "planche": {
         "fichier": "Capsule_Panic_Assets_Gameplay_02.png",
         "sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
@@ -5489,7 +5741,7 @@
       "taille": 9996,
       "type": "sprite",
       "id": "sprite-bloc-jaune-plateau-apercu",
-      "origine": "retouche",
+      "origine": "dérivé",
       "planche": {
         "fichier": "Capsule_Panic_Assets_Gameplay_03.png",
         "sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
@@ -5505,7 +5757,7 @@
       "taille": 10621,
       "type": "sprite",
       "id": "sprite-bloc-jaune-plateau-jeu",
-      "origine": "retouche",
+      "origine": "dérivé",
       "planche": {
         "fichier": "Capsule_Panic_Assets_Gameplay_02.png",
         "sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
@@ -5521,7 +5773,7 @@
       "taille": 10855,
       "type": "sprite",
       "id": "sprite-bloc-rouge-plateau-apercu",
-      "origine": "retouche",
+      "origine": "dérivé",
       "planche": {
         "fichier": "Capsule_Panic_Assets_Gameplay_03.png",
         "sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
@@ -5537,7 +5789,7 @@
       "taille": 11700,
       "type": "sprite",
       "id": "sprite-bloc-rouge-plateau-jeu",
-      "origine": "retouche",
+      "origine": "dérivé",
       "planche": {
         "fichier": "Capsule_Panic_Assets_Gameplay_02.png",
         "sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
@@ -5553,7 +5805,7 @@
       "taille": 11328,
       "type": "sprite",
       "id": "sprite-cadre-niveau-compteurs-maquettes-apercu",
-      "origine": "retouche",
+      "origine": "dérivé",
       "planche": {
         "fichier": "Capsule_Panic_Assets_Gameplay_03.png",
         "sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
@@ -5569,7 +5821,7 @@
       "taille": 7897,
       "type": "sprite",
       "id": "sprite-cadre-niveau-compteurs-maquettes-jeu",
-      "origine": "retouche",
+      "origine": "dérivé",
       "planche": {
         "fichier": "Capsule_Panic_Assets_Gameplay_02.png",
         "sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
@@ -5585,7 +5837,7 @@
       "taille": 9014,
       "type": "sprite",
       "id": "sprite-cadre-score-compteurs-maquettes-apercu",
-      "origine": "retouche",
+      "origine": "dérivé",
       "planche": {
         "fichier": "Capsule_Panic_Assets_Gameplay_03.png",
         "sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
@@ -5601,7 +5853,7 @@
       "taille": 6176,
       "type": "sprite",
       "id": "sprite-cadre-score-compteurs-maquettes-jeu",
-      "origine": "retouche",
+      "origine": "dérivé",
       "planche": {
         "fichier": "Capsule_Panic_Assets_Gameplay_02.png",
         "sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
@@ -5617,7 +5869,7 @@
       "taille": 7359,
       "type": "sprite",
       "id": "sprite-cadre-statistiques-reussite",
-      "origine": "retouche",
+      "origine": "dérivé",
       "planche": {
         "fichier": "Capsule_Panic_Assets_Gameplay_02.png",
         "sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
@@ -5759,7 +6011,7 @@
       "taille": 71526,
       "type": "sprite",
       "id": "sprite-chercheuse-origine",
-      "origine": "retouche",
+      "origine": "dérivé",
       "planche": {
         "fichier": "Capsule_Panic_Assets_Planche_01.png",
         "sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254"
@@ -5771,8 +6023,8 @@
     },
     {
       "chemin": "packages/assets/sprites/sprite-chute-animations-apercu.png",
-      "sha256": "fe163af312c48fae1ddb217c741f366b3bb4fbf4e0d86b9e7f6601fdfbe7f832",
-      "taille": 12313,
+      "sha256": "a666465891443cc3ff2892f54e4f78f18c1cc127d58de98cd802cb3c309e4f13",
+      "taille": 14378,
       "type": "sprite",
       "id": "sprite-chute-animations-apercu",
       "origine": "redessin",
@@ -5780,15 +6032,15 @@
         "fichier": "Capsule_Panic_Assets_Gameplay_03.png",
         "sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
       },
-      "boite": "135x71+1302+272",
+      "boite": "78x66+1291+279",
       "source": "packages/assets/source/svg/chute-animations-apercu.svg",
       "licence": "CC BY 4.0",
       "titulaire": "David Sevin"
     },
     {
       "chemin": "packages/assets/sprites/sprite-chute-animations-jeu.png",
-      "sha256": "fe163af312c48fae1ddb217c741f366b3bb4fbf4e0d86b9e7f6601fdfbe7f832",
-      "taille": 12313,
+      "sha256": "665791614f99ebf074859532c4f28bd4a3caf58a443db572db6b840f049a6593",
+      "taille": 12753,
       "type": "sprite",
       "id": "sprite-chute-animations-jeu",
       "origine": "redessin",
@@ -5796,7 +6048,7 @@
         "fichier": "Capsule_Panic_Assets_Gameplay_02.png",
         "sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
       },
-      "boite": "86x131+1199+430",
+      "boite": "117x107+1196+450",
       "source": "packages/assets/source/svg/chute-animations-jeu.svg",
       "licence": "CC BY 4.0",
       "titulaire": "David Sevin"
@@ -5807,7 +6059,7 @@
       "taille": 5855,
       "type": "sprite",
       "id": "sprite-credits-accueil",
-      "origine": "retouche",
+      "origine": "dérivé",
       "planche": {
         "fichier": "Capsule_Panic_Assets_Gameplay_02.png",
         "sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
@@ -6256,7 +6508,7 @@
       "taille": 16766,
       "type": "sprite",
       "id": "sprite-fioles-sous-logo",
-      "origine": "retouche",
+      "origine": "dérivé",
       "planche": {
         "fichier": "Capsule_Panic_Assets_Gameplay_02.png",
         "sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
@@ -6297,6 +6549,21 @@
       "titulaire": "David Sevin"
     },
     {
+      "chemin": "packages/assets/sprites/sprite-fleche-descente-jeu.png",
+      "sha256": "98ab8cbe510549f8ccb19cd70360e39aed4677e39ad3f045060fba02f349008f",
+      "taille": 5114,
+      "type": "sprite",
+      "id": "sprite-fleche-descente-jeu",
+      "origine": "découpe",
+      "planche": {
+        "fichier": "Capsule_Panic_Assets_Gameplay_02.png",
+        "sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
+      },
+      "boite": "19x28+1587+526",
+      "licence": "CC BY 4.0",
+      "titulaire": "David Sevin"
+    },
+    {
       "chemin": "packages/assets/sprites/sprite-fleche-rotation-apercu.png",
       "sha256": "28357743b612dffb415b7560fa973b0527eebcde57a9520d19cfd1306fd1747b",
       "taille": 7309,
@@ -6308,6 +6575,22 @@
         "sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
       },
       "boite": "42x26+1328+351",
+      "licence": "CC BY 4.0",
+      "titulaire": "David Sevin"
+    },
+    {
+      "chemin": "packages/assets/sprites/sprite-fleche-rotation-bas-jeu.png",
+      "sha256": "1bb6c20234ff18427f2d8a9b52d12deedebaffbbd6b3be90fd2b847f48709523",
+      "taille": 6466,
+      "type": "sprite",
+      "id": "sprite-fleche-rotation-bas-jeu",
+      "origine": "dérivé",
+      "planche": {
+        "fichier": "Capsule_Panic_Assets_Gameplay_02.png",
+        "sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
+      },
+      "boite": "49x39+1446+507",
+      "source": "packages/assets/source/traits-animations-jeu.retouches.json",
       "licence": "CC BY 4.0",
       "titulaire": "David Sevin"
     },
@@ -6437,7 +6720,7 @@
       "taille": 6336,
       "type": "sprite",
       "id": "sprite-jouer-accueil",
-      "origine": "retouche",
+      "origine": "dérivé",
       "planche": {
         "fichier": "Capsule_Panic_Assets_Gameplay_02.png",
         "sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
@@ -6543,7 +6826,7 @@
       "taille": 5110,
       "type": "sprite",
       "id": "sprite-ligne-elimination-apercu",
-      "origine": "retouche",
+      "origine": "dérivé",
       "planche": {
         "fichier": "Capsule_Panic_Assets_Gameplay_03.png",
         "sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
@@ -6607,7 +6890,7 @@
       "taille": 5860,
       "type": "sprite",
       "id": "sprite-menu-reussite",
-      "origine": "retouche",
+      "origine": "dérivé",
       "planche": {
         "fichier": "Capsule_Panic_Assets_Gameplay_02.png",
         "sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
@@ -6714,7 +6997,7 @@
       "taille": 6129,
       "type": "sprite",
       "id": "sprite-options-accueil",
-      "origine": "retouche",
+      "origine": "dérivé",
       "planche": {
         "fichier": "Capsule_Panic_Assets_Gameplay_02.png",
         "sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
@@ -6901,7 +7184,7 @@
       "taille": 13585,
       "type": "sprite",
       "id": "sprite-panneau-suivant-partie",
-      "origine": "retouche",
+      "origine": "dérivé",
       "planche": {
         "fichier": "Capsule_Panic_Assets_Gameplay_02.png",
         "sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
@@ -7269,7 +7552,7 @@
       "taille": 5100,
       "type": "sprite",
       "id": "sprite-rejouer-reussite",
-      "origine": "retouche",
+      "origine": "dérivé",
       "planche": {
         "fichier": "Capsule_Panic_Assets_Gameplay_02.png",
         "sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
@@ -7285,7 +7568,7 @@
       "taille": 65351,
       "type": "sprite",
       "id": "sprite-responsable-origine",
-      "origine": "retouche",
+      "origine": "dérivé",
       "planche": {
         "fichier": "Capsule_Panic_Assets_Planche_01.png",
         "sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254"
@@ -7348,7 +7631,7 @@
       "taille": 14226,
       "type": "sprite",
       "id": "sprite-ruban-reussite",
-      "origine": "retouche",
+      "origine": "dérivé",
       "planche": {
         "fichier": "Capsule_Panic_Assets_Gameplay_02.png",
         "sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
@@ -7379,7 +7662,7 @@
       "taille": 12597,
       "type": "sprite",
       "id": "sprite-segment-bleu-plateau-apercu",
-      "origine": "retouche",
+      "origine": "dérivé",
       "planche": {
         "fichier": "Capsule_Panic_Assets_Gameplay_03.png",
         "sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
@@ -7395,7 +7678,7 @@
       "taille": 11327,
       "type": "sprite",
       "id": "sprite-segment-jaune-plateau-apercu",
-      "origine": "retouche",
+      "origine": "dérivé",
       "planche": {
         "fichier": "Capsule_Panic_Assets_Gameplay_03.png",
         "sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
@@ -7411,7 +7694,7 @@
       "taille": 12312,
       "type": "sprite",
       "id": "sprite-segment-rouge-plateau-apercu",
-      "origine": "retouche",
+      "origine": "dérivé",
       "planche": {
         "fichier": "Capsule_Panic_Assets_Gameplay_03.png",
         "sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
@@ -7427,7 +7710,7 @@
       "taille": 5338,
       "type": "sprite",
       "id": "sprite-suivant-reussite",
-      "origine": "retouche",
+      "origine": "dérivé",
       "planche": {
         "fichier": "Capsule_Panic_Assets_Gameplay_02.png",
         "sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
@@ -7468,6 +7751,21 @@
       "titulaire": "David Sevin"
     },
     {
+      "chemin": "packages/assets/sprites/sprite-trainee-chute-apercu.png",
+      "sha256": "1a30464ce5195e934a5e6a8dcde662308df1e6a944f47533be298f9eb56502f9",
+      "taille": 5885,
+      "type": "sprite",
+      "id": "sprite-trainee-chute-apercu",
+      "origine": "découpe",
+      "planche": {
+        "fichier": "Capsule_Panic_Assets_Gameplay_03.png",
+        "sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
+      },
+      "boite": "14x15+1343+281",
+      "licence": "CC BY 4.0",
+      "titulaire": "David Sevin"
+    },
+    {
       "chemin": "packages/assets/sprites/sprite-trainee-chute-jeu.png",
       "sha256": "5cef39bbe951705316afc1b716c38d5eedc5cef8127a8b32ea38c878f22a26cd",
       "taille": 11326,
@@ -7494,6 +7792,36 @@
         "sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
       },
       "boite": "42x38+1298+417",
+      "licence": "CC BY 4.0",
+      "titulaire": "David Sevin"
+    },
+    {
+      "chemin": "packages/assets/sprites/sprite-trainee-longue-chute-jeu.png",
+      "sha256": "4c9b13bda71a9193949f2ca89dadd22329a0d9c9726690ace3377b54e99d946b",
+      "taille": 5952,
+      "type": "sprite",
+      "id": "sprite-trainee-longue-chute-jeu",
+      "origine": "découpe",
+      "planche": {
+        "fichier": "Capsule_Panic_Assets_Gameplay_02.png",
+        "sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
+      },
+      "boite": "31x51+1275+431",
+      "licence": "CC BY 4.0",
+      "titulaire": "David Sevin"
+    },
+    {
+      "chemin": "packages/assets/sprites/sprite-trainee-verrouillage-jeu.png",
+      "sha256": "a41017f756c8a16a2b7fedf925047026f31ae3ffa21d964c33fc609872203f9e",
+      "taille": 4675,
+      "type": "sprite",
+      "id": "sprite-trainee-verrouillage-jeu",
+      "origine": "découpe",
+      "planche": {
+        "fichier": "Capsule_Panic_Assets_Gameplay_02.png",
+        "sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
+      },
+      "boite": "23x12+1351+431",
       "licence": "CC BY 4.0",
       "titulaire": "David Sevin"
     },
@@ -7549,7 +7877,7 @@
       "taille": 35208,
       "type": "sprite",
       "id": "sprite-tutoriel-aligner",
-      "origine": "retouche",
+      "origine": "dérivé",
       "planche": {
         "fichier": "Capsule_Panic_Assets_Gameplay_03.png",
         "sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
