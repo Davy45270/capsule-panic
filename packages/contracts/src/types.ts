@@ -1,5 +1,4 @@
-// Contrat de partie v1 (types publics), plus `capsuleSerial` : nombre de capsules déjà créées, pour que les
-// identifiants restent uniques après rechargement.
+// Contrat de partie v1 et types auxiliaires des paquets.
 export type Color = 'cyan' | 'amber' | 'magenta';
 export type Orientation = 0 | 1 | 2 | 3;
 export type Phase = 'READY' | 'FALLING' | 'RESOLVING' | 'PAUSED' | 'WON' | 'LOST';
@@ -11,7 +10,7 @@ export interface ActiveCapsule { id: string; colors: [Color, Color]; x: number; 
 export interface GameState {
     schemaVersion: 1; ruleset: 'CP-CLASSIC-1'; seed: string; rngState: number[]; width: 8; height: 16; board: Cell[];
     active: ActiveCapsule | null; nextQueue: [Color, Color][]; phase: Phase; score: number; level: number; speed: Speed;
-    obstaclesRemaining: number; tick: number; chainCount: number; capsuleSerial: number;
+    obstaclesRemaining: number; tick: number; chainCount: number;
 }
 export type GameCommand = { type: 'MOVE_LEFT' | 'MOVE_RIGHT' | 'ROTATE_CW' | 'ROTATE_CCW' | 'SOFT_DROP' | 'HARD_DROP' | 'TICK' | 'PAUSE' | 'RESUME' };
 export interface GameEvent {

@@ -26,7 +26,7 @@ describe('determinism', () => {
         const a = play('partie', 'commandes', 2000);
         expect(play('partie', 'commandes', 2000)).toEqual(a);
         expect(a.events.length).toBeGreaterThan(20);
-        expect(a.state.capsuleSerial).toBeGreaterThan(3);
+        expect(a.events.filter(event => event.type === 'SPAWNED').length).toBeGreaterThan(3);
         expect(play('partie', 'autres', 2000)).not.toEqual(a);
     });
 });

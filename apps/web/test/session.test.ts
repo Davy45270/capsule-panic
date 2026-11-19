@@ -72,11 +72,11 @@ describe('game session', () => {
         expect(session.stats).toEqual({ capsules: 1, bestChain: 1, crystalsAtStart: 4 });
     });
     it('notifies spawns and the end of the level', () => {
-        const spawned: number[] = [];
+        const spawned: (string | null)[] = [];
         let ended: GameState | null = null;
         const s = aboutToMatch();
         const single = { ...s, board: s.board.map((c, i) => (i === 10 * 8 + 7 ? null : c)), obstaclesRemaining: 3 };
-        const session = new GameSession(single, { ...fakeView().hooks, onSpawn: st => spawned.push(st.capsuleSerial), onEnd: st => { ended = st; } });
+        const session = new GameSession(single, { ...fakeView().hooks, onSpawn: st => spawned.push(st.active?.id ?? null), onEnd: st => { ended = st; } });
         session.command('HARD_DROP');
         expect(ended).not.toBeNull();
         expect(session.state.phase).toBe('WON');

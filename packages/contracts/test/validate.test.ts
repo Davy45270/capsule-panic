@@ -20,9 +20,8 @@ describe('validateGameState', () => {
     it('rejects an unknown colour', () => {
         expect(errorsOf(setCell(validState(), 0, { kind: 'obstacle', id: 'o9', color: 'red' } as unknown as Cell)).length).toBeGreaterThan(0);
     });
-    it('rejects a state without capsuleSerial', () => {
-        const { capsuleSerial: _drop, ...rest } = validState();
-        expect(errorsOf(rest).join(' ')).toContain('capsuleSerial');
+    it('rejects the old counter outside the explicit save migration', () => {
+        expect(errorsOf({ ...validState(), capsuleSerial: 2 }).join(' ')).toContain('capsuleSerial');
     });
     it('rejects a dangling linkedToId', () => {
         const s = setCell(withLockedPair(validState()), 15 * 8 + 4, null);
@@ -71,11 +70,5 @@ describe('puzzle schema', () => {
         const puzzle = { schemaVersion: 1, id: 'p1', ruleset: 'CP-CLASSIC-1', initialState: validState(), capsules: [['cyan', 'amber']], maxCapsules: 1, objective: 'CLEAR_ALL' };
         expect(validatePuzzleShape(puzzle)).toEqual([]);
         expect(validatePuzzleShape({ ...puzzle, objective: 'WIN' }).length).toBeGreaterThan(0);
-    });
-});
-
-describe('capsule serial', () => {
-    it('rejects a locked capsule numbered above capsuleSerial', () => {
-        expect(errorsOf({ ...withLockedPair(validState()), capsuleSerial: 2 }).join(' ')).toContain('capsuleSerial');
     });
 });

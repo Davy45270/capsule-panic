@@ -36,8 +36,7 @@ describe('falling, drops and lock', () => {
         const board = boardFrom(['C.......', 'M.......']);
         const t = step(stateWith(board, { y: 15 }, { obstaclesRemaining: 2 }), { type: 'TICK' });
         expect(types(t)).toEqual(['LOCKED', 'SPAWNED']);
-        expect(t.state.active).toEqual({ id: 'c99', colors: ['magenta', 'magenta'], x: 3, y: 1, orientation: 0 });
-        expect(t.state.capsuleSerial).toBe(100);
+        expect(t.state.active).toEqual({ id: 'c91', colors: ['magenta', 'magenta'], x: 3, y: 1, orientation: 0 });
         expect(t.state.nextQueue).toHaveLength(1);
         expect(t.state.rngState).not.toEqual([1, 2, 3, 4]);
     });

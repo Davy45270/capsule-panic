@@ -36,7 +36,7 @@ export function stateWith(board: readonly Cell[], active: Partial<ActiveCapsule>
         schemaVersion: 1, ruleset: 'CP-CLASSIC-1', seed: 'test', rngState: [1, 2, 3, 4], width: 8, height: 16, board: [...board],
         active: active === null ? null : { id: 'c90', colors: ['cyan', 'amber'], x: 3, y: 1, orientation: 0, ...active },
         nextQueue: [['magenta', 'magenta']], phase: 'FALLING', score: 0, level: 0, speed: 'low',
-        obstaclesRemaining: board.filter(c => c?.kind === 'obstacle').length, tick: 0, chainCount: 0, capsuleSerial: 99, ...extra
+        obstaclesRemaining: board.filter(c => c?.kind === 'obstacle').length, tick: 0, chainCount: 0, ...extra
     };
 }
 

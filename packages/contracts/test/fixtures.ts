@@ -8,7 +8,7 @@ export function validState(): GameState {
     return {
         schemaVersion: 1, ruleset: 'CP-CLASSIC-1', seed: 'fixture', rngState: [1, 2, 3, 4], width: 8, height: 16, board,
         active: { id: 'c1', colors: ['amber', 'cyan'], x: 3, y: 1, orientation: 0 }, nextQueue: [['magenta', 'magenta']],
-        phase: 'FALLING', score: 0, level: 0, speed: 'low', obstaclesRemaining: 2, tick: 0, chainCount: 0, capsuleSerial: 2
+        phase: 'FALLING', score: 0, level: 0, speed: 'low', obstaclesRemaining: 2, tick: 0, chainCount: 0
     };
 }
 
@@ -17,5 +17,5 @@ export function withLockedPair(state: GameState): GameState {
     const board = [...state.board];
     board[15 * 8 + 3] = { kind: 'segment', id: 'c3a', capsuleId: 'c3', part: 0, color: 'amber', linkedToId: 'c3b' };
     board[15 * 8 + 4] = { kind: 'segment', id: 'c3b', capsuleId: 'c3', part: 1, color: 'cyan', linkedToId: 'c3a' };
-    return { ...state, board, capsuleSerial: 3 };
+    return { ...state, board };
 }

@@ -11,7 +11,6 @@ describe('createGame', () => {
         expect(s.active).toMatchObject({ id: 'c1', x: 3, y: 1, orientation: 0 });
         expect(capsuleCells(s.active ?? SPAWN_CAPSULE)).toEqual([{ x: 3, y: 1 }, { x: 3, y: 0 }]);
         expect(s.nextQueue).toHaveLength(1);
-        expect(s.capsuleSerial).toBe(2);
         expect(s).toMatchObject({ score: 0, tick: 0, chainCount: 0, obstaclesRemaining: 4, level: 0, speed: 'low', seed: 'capsule' });
     });
     it('is deterministic and keeps level and speed', () => {
