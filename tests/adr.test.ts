@@ -13,6 +13,7 @@ const decisions = [
     'file',
     'phase-initiale',
     'performance',
+    'outillage',
 ];
 
 it('[E015] chaque décision de la passe référence un test discriminant nommé', () => {
