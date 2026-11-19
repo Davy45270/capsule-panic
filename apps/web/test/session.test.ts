@@ -203,3 +203,15 @@ it('[E094] publie une apparition même si la résolution libère le même identi
     await Promise.resolve();
     expect(spawns.map((state) => state.active?.id)).toEqual(['c1']);
 });
+
+it('la vue ne reçoit pas le plateau final avant les effets de cascade', async () => {
+    const view = fakeView();
+    const frames: GameState[] = [];
+    const initial = aboutToMatch();
+    const session = new GameSession(initial, { ...view.hooks, render: (state) => frames.push(state) });
+    session.command('HARD_DROP');
+    expect(frames).toEqual([initial]);
+    view.release();
+    await Promise.resolve();
+    expect(frames).toEqual([initial, session.state]);
+});
