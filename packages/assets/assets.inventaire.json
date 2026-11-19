@@ -26,8 +26,8 @@
     },
     {
       "chemin": "packages/assets/atlas/animations-apercu@2x.png",
-      "sha256": "6e1282676e87eee145c39447b48d284967c91d005b71adea0a1d4ac12fa4709c",
-      "taille": 27787,
+      "sha256": "d57ea7ac48955d91c240e107da3a470a6a2629f69aa53be715e0aa7c7374ab70",
+      "taille": 27978,
       "type": "atlas",
       "origines": [
         "redessin"
@@ -48,8 +48,8 @@
     },
     {
       "chemin": "packages/assets/atlas/animations-apercu@2x.webp",
-      "sha256": "6d6a481db60c872685896340878d884e8108a1711bb0d5bd19cf13f5d45597bb",
-      "taille": 23864,
+      "sha256": "34e5dfb18aaad00d4ce711546c632fd2eb499f0c7932072bc193890cebc2a67d",
+      "taille": 24122,
       "type": "atlas",
       "origines": [
         "redessin"
@@ -92,8 +92,8 @@
     },
     {
       "chemin": "packages/assets/atlas/animations-apercu@3x.png",
-      "sha256": "f4a0ab114f36d25f01adb10f29a3de64e1bc0723b1b3b3210cc19a3c1786b0df",
-      "taille": 44896,
+      "sha256": "acbcbc9e23dc97860a27148fc9a51e141d395b1551004265e588acad8f2d7cec",
+      "taille": 44924,
       "type": "atlas",
       "origines": [
         "redessin"
@@ -114,8 +114,8 @@
     },
     {
       "chemin": "packages/assets/atlas/animations-apercu@3x.webp",
-      "sha256": "3d4a7a2b14d2b46b63324e0d2fc80a221ae716be40a6247f1fb5d9b7b364534a",
-      "taille": 35900,
+      "sha256": "c906d121e35561751dbc76060590b62e23ea1b90846e869b6da8c0caa7bea63c",
+      "taille": 36396,
       "type": "atlas",
       "origines": [
         "redessin"
@@ -158,8 +158,8 @@
     },
     {
       "chemin": "packages/assets/atlas/animations-jeu@2x.png",
-      "sha256": "e070974ecd40f2106ea0d408498a3adb9a6992e4ca9634441563c3bd2b36ae37",
-      "taille": 26212,
+      "sha256": "7d3c05f56bdda1f19202753bd795ec0461d726452048de0d76a3e5192a705b4e",
+      "taille": 25879,
       "type": "atlas",
       "origines": [
         "redessin"
@@ -180,8 +180,8 @@
     },
     {
       "chemin": "packages/assets/atlas/animations-jeu@2x.webp",
-      "sha256": "0d33396d3269b44715e6766b531840d538c7deaf9e06cb5aeefb84e2794d5232",
-      "taille": 22610,
+      "sha256": "01b52899dd9a098e08afd74716ae4a9794712f39cb1592c0583d71444f3ae7fc",
+      "taille": 22274,
       "type": "atlas",
       "origines": [
         "redessin"
@@ -224,8 +224,8 @@
     },
     {
       "chemin": "packages/assets/atlas/animations-jeu@3x.png",
-      "sha256": "00129fd33e78672dbd2522462292b11676c7494e4ffcb706efb15174d366b078",
-      "taille": 41879,
+      "sha256": "5a34ba758031cb0741ef511dd779911e12f229132ddde6580155886b82b53afa",
+      "taille": 41352,
       "type": "atlas",
       "origines": [
         "redessin"
@@ -246,8 +246,8 @@
     },
     {
       "chemin": "packages/assets/atlas/animations-jeu@3x.webp",
-      "sha256": "93b2273522fb866ff885300b18f8121d90f0e72d157bf433da3f497afd8301db",
-      "taille": 34212,
+      "sha256": "955785403d1e8394283dfb7c7edd48404c35526914d2127dd4dc10ec28531a2a",
+      "taille": 34086,
       "type": "atlas",
       "origines": [
         "redessin"
@@ -414,8 +414,8 @@
     },
     {
       "chemin": "packages/assets/atlas/cascade-apercu@2x.png",
-      "sha256": "4d319331e18448779d73a1322a5cd0ad37dbb4c817b2a7d24332624b16ba015a",
-      "taille": 29676,
+      "sha256": "336f308105f8bf7730b3dce3b1064448646c3007cf7a2a4b3601eccde24fe7c9",
+      "taille": 29644,
       "type": "atlas",
       "origines": [
         "redessin"
@@ -434,8 +434,8 @@
     },
     {
       "chemin": "packages/assets/atlas/cascade-apercu@2x.webp",
-      "sha256": "3f1cbdbbefb747dc0f3ca0da1ca1284a10a85d9fdbde93ceae8110073b0454b1",
-      "taille": 24242,
+      "sha256": "da55cc53c311e9ab6e5a5a3b40dc66f1ed5954f726abf198d9995491291bdb9b",
+      "taille": 23918,
       "type": "atlas",
       "origines": [
         "redessin"
@@ -474,8 +474,8 @@
     },
     {
       "chemin": "packages/assets/atlas/cascade-apercu@3x.png",
-      "sha256": "2809b13e91a3cfafdc7f036db571647f1cbb285fe7b8014f8aefa1fcc249de03",
-      "taille": 45104,
+      "sha256": "1ed7deef30c9deb5a1a43b4552cff32b719f1d0714017be3519621554c347137",
+      "taille": 44752,
       "type": "atlas",
       "origines": [
         "redessin"
@@ -494,8 +494,8 @@
     },
     {
       "chemin": "packages/assets/atlas/cascade-apercu@3x.webp",
-      "sha256": "86d62313a1a58c647f57568293e1954edabf6b4e2403a517748d1183fd643c4f",
-      "taille": 37732,
+      "sha256": "e27c9c8e5b749d293e755544cc6e7512cf45016aa4ec235d35c3f3acf53971e0",
+      "taille": 37170,
       "type": "atlas",
       "origines": [
         "redessin"
@@ -3131,8 +3131,8 @@
     },
     {
       "chemin": "packages/assets/atlas/logo-apercu@2x.png",
-      "sha256": "9b8906e409a38ae8c48a77d6bab44e0aad724895558a0ce99e3eee80945bf2e2",
-      "taille": 43138,
+      "sha256": "252d57712d8871d931bb2280f65f548170e4af1580c828b0182564ccb7a11e5d",
+      "taille": 43182,
       "type": "atlas",
       "origines": [
         "redessin"
@@ -3150,8 +3150,8 @@
     },
     {
       "chemin": "packages/assets/atlas/logo-apercu@2x.webp",
-      "sha256": "05833a13bde05012a2784a7e254f7e176bbd077106daceb372023643aaddc9fa",
-      "taille": 34746,
+      "sha256": "8a5a92fc8e4a5c7b44ed945aeae6fd342d9ffe6a72dc169b6ee3b54f0890dcf1",
+      "taille": 34670,
       "type": "atlas",
       "origines": [
         "redessin"
@@ -3188,8 +3188,8 @@
     },
     {
       "chemin": "packages/assets/atlas/logo-apercu@3x.png",
-      "sha256": "773a87f4e709afcb3eb8014b153dd2bb6a71e360de49f465c098d8128c552577",
-      "taille": 82074,
+      "sha256": "c7f11a4674de64bf4de0882a10d24de5e2c009ef9fc58475619c285da5958bd2",
+      "taille": 81936,
       "type": "atlas",
       "origines": [
         "redessin"
@@ -3207,8 +3207,8 @@
     },
     {
       "chemin": "packages/assets/atlas/logo-apercu@3x.webp",
-      "sha256": "f728ae33f315791539f9afb777f14ad5bc167edb4b7c4e9cce3ec6b81d4447d9",
-      "taille": 67720,
+      "sha256": "1c573dde1f5fdb8786af6efca099fbe3b0693bad69ed926c40cf498118033e24",
+      "taille": 67424,
       "type": "atlas",
       "origines": [
         "redessin"
@@ -3245,8 +3245,8 @@
     },
     {
       "chemin": "packages/assets/atlas/logo-jeu@2x.png",
-      "sha256": "2ad2a93f0f6d9d71275b1a5a943a619aaf118a0a668a3a88456cc4b071fce14f",
-      "taille": 53195,
+      "sha256": "86ea19f9194f74a28cd92a779c226d85e493c4a7dfc7a3b50a7f62d37948eed6",
+      "taille": 52988,
       "type": "atlas",
       "origines": [
         "redessin"
@@ -3264,8 +3264,8 @@
     },
     {
       "chemin": "packages/assets/atlas/logo-jeu@2x.webp",
-      "sha256": "4893726302467d896d86ae3f5bd8def2244ef86d96c3cc6095890ee9d4c3775a",
-      "taille": 43058,
+      "sha256": "235684d5a8c7bfdaeb48b67e0f9721794c1643050ef8231813dd2a7376086d6c",
+      "taille": 42608,
       "type": "atlas",
       "origines": [
         "redessin"
@@ -3302,8 +3302,8 @@
     },
     {
       "chemin": "packages/assets/atlas/logo-jeu@3x.png",
-      "sha256": "f6bac7754af6f4f27a3151bb631954d3c6d342fe1a406a398e0c25d1ef893a7f",
-      "taille": 100798,
+      "sha256": "fa5d1a1ea7ad105ae6f27a2c50b29be259422750f7c3c5bf18f6aa70dc30716c",
+      "taille": 100351,
       "type": "atlas",
       "origines": [
         "redessin"
@@ -3321,8 +3321,8 @@
     },
     {
       "chemin": "packages/assets/atlas/logo-jeu@3x.webp",
-      "sha256": "23ff85df02ceb21aded028f345655d913c9b7289385c63a9cda9375a1b02412a",
-      "taille": 84152,
+      "sha256": "c5824503e9a5c2c5511e64a8c8dbd2c3b0329be93426877747d77dfd052b9825",
+      "taille": 83494,
       "type": "atlas",
       "origines": [
         "redessin"
@@ -3731,8 +3731,8 @@
     },
     {
       "chemin": "packages/assets/atlas/mode-jeu@2x.png",
-      "sha256": "0d2834ab859f72377154736882de0796484fb09568c93b4708e5038d9e8ae711",
-      "taille": 4375,
+      "sha256": "f3d84625f2d4ebd52c14adf2a60045bea51761cb6ed840d16cac594b7c7470f2",
+      "taille": 4387,
       "type": "atlas",
       "origines": [
         "redessin"
@@ -3750,8 +3750,8 @@
     },
     {
       "chemin": "packages/assets/atlas/mode-jeu@2x.webp",
-      "sha256": "8bdf3bda2e7d01dc4eae59a290602c6a580ad60720f3615d35439940be738294",
-      "taille": 2946,
+      "sha256": "343b593943d7a157373e73db39f98cea80c1c456b140895e4e309510f3e68418",
+      "taille": 2954,
       "type": "atlas",
       "origines": [
         "redessin"
@@ -3788,8 +3788,8 @@
     },
     {
       "chemin": "packages/assets/atlas/mode-jeu@3x.png",
-      "sha256": "175540978c047f04afd667832caaeabee80fdfcca3e4760f0f4ac16d68225f42",
-      "taille": 6458,
+      "sha256": "c518b2affd3046998cd2bbee4fac6c3281943bb44f6f194545de95f3b0b31bec",
+      "taille": 6446,
       "type": "atlas",
       "origines": [
         "redessin"
@@ -3807,8 +3807,8 @@
     },
     {
       "chemin": "packages/assets/atlas/mode-jeu@3x.webp",
-      "sha256": "86f83d993c43b5bb017f38b68cf05a024df1f227f2ffecb84b15a09ca8a1653e",
-      "taille": 4410,
+      "sha256": "5e43f478805fd56ab58cd12c6b0cc44c1cea30f0caa72efb0d32266cfbaee392",
+      "taille": 4452,
       "type": "atlas",
       "origines": [
         "redessin"
@@ -4249,8 +4249,8 @@
     },
     {
       "chemin": "packages/assets/atlas/paires-horizontale-origine@2x.png",
-      "sha256": "f41f41fde6fe9172007c3636d34b9fa75d71f04ba34bfff411c34c8be8bbd856",
-      "taille": 13892,
+      "sha256": "6e8604964b995e2a8e361f798908bd6bc50ada2dbeea59f1a0366f19c8c10d2b",
+      "taille": 14035,
       "type": "atlas",
       "origines": [
         "redessin"
@@ -4270,8 +4270,8 @@
     },
     {
       "chemin": "packages/assets/atlas/paires-horizontale-origine@2x.webp",
-      "sha256": "7b20081c73ddb1b4ffe0801ec57d8b586fd1d2547d98a0679683f66601cf663e",
-      "taille": 10540,
+      "sha256": "429b421c9f6274f77de58617be9cc9a2ec72a4de69d17a9b2269e4364a90f9f8",
+      "taille": 10766,
       "type": "atlas",
       "origines": [
         "redessin"
@@ -4312,8 +4312,8 @@
     },
     {
       "chemin": "packages/assets/atlas/paires-horizontale-origine@3x.png",
-      "sha256": "4c9bcc1cbe542dd9c8c610fb40c39aeee4256a07c2bd6bf500769b81ae7dd015",
-      "taille": 18627,
+      "sha256": "739e85807c8ceff26d1f6922677eebe653b4a18c0fa14c046d64c75e7b963549",
+      "taille": 18946,
       "type": "atlas",
       "origines": [
         "redessin"
@@ -4333,8 +4333,8 @@
     },
     {
       "chemin": "packages/assets/atlas/paires-horizontale-origine@3x.webp",
-      "sha256": "bc1217d289a0ccb9b1f70fa6fb37ffb82628fbae489bf9292444eeb75f936b50",
-      "taille": 13674,
+      "sha256": "ed3c94fce9fc39b2619c0a29a4eab3384664ae6987da20d7200a00ad9759a46e",
+      "taille": 14016,
       "type": "atlas",
       "origines": [
         "redessin"
@@ -4375,8 +4375,8 @@
     },
     {
       "chemin": "packages/assets/atlas/paires-verticale-origine@2x.png",
-      "sha256": "09afe68292bc5e51e4ba7defd7afc9c6bb7b57716e40633c15ed3960b3feed68",
-      "taille": 12718,
+      "sha256": "174d22257953e60b805867523ed6a3122a0b242a29c2eb56f3ae061a65a3b156",
+      "taille": 12873,
       "type": "atlas",
       "origines": [
         "redessin"
@@ -4396,8 +4396,8 @@
     },
     {
       "chemin": "packages/assets/atlas/paires-verticale-origine@2x.webp",
-      "sha256": "ed005eb9b280c72c8bda19d93410d7b546d8ec8f423eacb369c823d6cd6e5868",
-      "taille": 8708,
+      "sha256": "2451c025084562bb9137ebce12b8bcd2886aa45576b66bb8084bf220a5b2a3c3",
+      "taille": 8750,
       "type": "atlas",
       "origines": [
         "redessin"
@@ -4438,8 +4438,8 @@
     },
     {
       "chemin": "packages/assets/atlas/paires-verticale-origine@3x.png",
-      "sha256": "a065113031463e76da0d5f2dfa78a5130f7c55dd4e0048cb983352a2694263eb",
-      "taille": 15916,
+      "sha256": "c382e205d54d3508fffcc49bac10f9ee98f133337f06d8e1ee7f4017ade07d93",
+      "taille": 16415,
       "type": "atlas",
       "origines": [
         "redessin"
@@ -4459,8 +4459,8 @@
     },
     {
       "chemin": "packages/assets/atlas/paires-verticale-origine@3x.webp",
-      "sha256": "0a03b41809b697c3a98e5149432e884386f5d208b3308513aca12e3e93646a2c",
-      "taille": 15028,
+      "sha256": "e3cdd82d302ce3d93272d362a5333f7dc988db9ac2a977888c090d6f8164a8fe",
+      "taille": 15226,
       "type": "atlas",
       "origines": [
         "redessin"
@@ -4782,8 +4782,8 @@
     },
     {
       "chemin": "packages/assets/atlas/pieces-origine@2x.png",
-      "sha256": "ab4c9b2d5acca5fb900682870ee703327fd83163813c164e47a213a72799d942",
-      "taille": 22603,
+      "sha256": "8569e1da54ec468946d3ecea53020e4e6a0261c431a523a2fd381a6841c8d816",
+      "taille": 22619,
       "type": "atlas",
       "origines": [
         "redessin"
@@ -4814,8 +4814,8 @@
     },
     {
       "chemin": "packages/assets/atlas/pieces-origine@2x.webp",
-      "sha256": "91a420fbe10906e6e2ab3bf42c0c229efffd33fd4a364c8c5b1ac1ac1bc74026",
-      "taille": 19592,
+      "sha256": "73aae2dbe76cc04e640f1a7a1a6fe2724196f45467c7286dec2fe33ed41583ad",
+      "taille": 19542,
       "type": "atlas",
       "origines": [
         "redessin"
@@ -4878,8 +4878,8 @@
     },
     {
       "chemin": "packages/assets/atlas/pieces-origine@3x.png",
-      "sha256": "627d8eeed314342671911c56c7580f61d5ec50b8d8b39ff6dbaf04882243870e",
-      "taille": 33020,
+      "sha256": "0d7a640181d6bb1a9cd4dcf3fa821c0f6502b642af70e796806e9502b4559c5e",
+      "taille": 33034,
       "type": "atlas",
       "origines": [
         "redessin"
@@ -4910,8 +4910,8 @@
     },
     {
       "chemin": "packages/assets/atlas/pieces-origine@3x.webp",
-      "sha256": "02206b38699751ae82037d2a4fa425c7e3aab610c97c3754520893dc21ee364c",
-      "taille": 29920,
+      "sha256": "13a7dc664ec9772c92b791674ac799d320db727b7618d8eb576ce2f8c3c93db0",
+      "taille": 29684,
       "type": "atlas",
       "origines": [
         "redessin"
@@ -4968,8 +4968,8 @@
     },
     {
       "chemin": "packages/assets/atlas/plateau-apercu@2x.png",
-      "sha256": "d941ab0ae99162d7f0700946f1052a0d389e46da98050c811873a7c03b1544c3",
-      "taille": 39720,
+      "sha256": "1615b124ad9da0fd52a331a1e5cc41844105f3b748d557b36c407b7c8dfd1766",
+      "taille": 38637,
       "type": "atlas",
       "origines": [
         "découpe",
@@ -4994,8 +4994,8 @@
     },
     {
       "chemin": "packages/assets/atlas/plateau-apercu@2x.webp",
-      "sha256": "5cf90c73840338efcffb1967f3792f1798d5836816b4e9510925d128ef5c39bc",
-      "taille": 30436,
+      "sha256": "bfe0d3e30676f818adec04d7aec5b5e20d02a58c333365734e47c112af836a07",
+      "taille": 28968,
       "type": "atlas",
       "origines": [
         "découpe",
@@ -5046,8 +5046,8 @@
     },
     {
       "chemin": "packages/assets/atlas/plateau-apercu@3x.png",
-      "sha256": "38fd5025fc7d8f4bc4cf56613c765681ce6acbbffc195d02cca08d1357bd7192",
-      "taille": 72546,
+      "sha256": "fc45d03e52f3c0a2bcb736dc140981f98e6c636dfe6de4ec4f52b75cea5d99d8",
+      "taille": 70067,
       "type": "atlas",
       "origines": [
         "découpe",
@@ -5072,8 +5072,8 @@
     },
     {
       "chemin": "packages/assets/atlas/plateau-apercu@3x.webp",
-      "sha256": "9dd4ffcf1f14af11dd800d52e0e81a971928e4cdd5c59e692aea87010f190e36",
-      "taille": 54364,
+      "sha256": "700fb3b35939ceb1411ecf7f1dfbc21bbac26bc8a8d746ad1455e41ed9fff7c6",
+      "taille": 51826,
       "type": "atlas",
       "origines": [
         "découpe",
@@ -5121,8 +5121,8 @@
     },
     {
       "chemin": "packages/assets/atlas/plateau-jeu@2x.png",
-      "sha256": "baa6b3b3bdb2d8f834c7a9fe0ae0658b129002400b8fc7382c2479d776767371",
-      "taille": 22038,
+      "sha256": "68734ddb0754a647d255294614f4ccfeb3665e3dcc1524ee03d7a8c726a01914",
+      "taille": 21697,
       "type": "atlas",
       "origines": [
         "découpe",
@@ -5144,8 +5144,8 @@
     },
     {
       "chemin": "packages/assets/atlas/plateau-jeu@2x.webp",
-      "sha256": "34629eae463b93376d825666796b46a69253ac741018a1d7ccaecf406d98c5c0",
-      "taille": 16056,
+      "sha256": "4f06031c178cb9065c265fc3a25c3a7a43f6d516f4360daac61c8428d0309a23",
+      "taille": 15572,
       "type": "atlas",
       "origines": [
         "découpe",
@@ -5190,8 +5190,8 @@
     },
     {
       "chemin": "packages/assets/atlas/plateau-jeu@3x.png",
-      "sha256": "b723f4a50607b4e355d7b0742d4ef9ca5e1c8da6db31c2cbb4cda05f062af70b",
-      "taille": 41548,
+      "sha256": "7deaa7b9a4d99e078d191a0db44de243341325456db62babd601bbd80fda4a60",
+      "taille": 40868,
       "type": "atlas",
       "origines": [
         "découpe",
@@ -5213,8 +5213,8 @@
     },
     {
       "chemin": "packages/assets/atlas/plateau-jeu@3x.webp",
-      "sha256": "a649f906d6f8b292feaaacabe9df348122b6f456ac1670ae3edd220485053f88",
-      "taille": 30838,
+      "sha256": "5ce0ca04f87b87cbf6185789c47507dc96295df291003ade8851f56c9212aa0a",
+      "taille": 29576,
       "type": "atlas",
       "origines": [
         "découpe",
@@ -5511,8 +5511,8 @@
     },
     {
       "chemin": "packages/assets/atlas/tutoriel-apercu@2x.png",
-      "sha256": "9e6342f488c22b40f7c348067cf3c24e287d082f06d9c5f82d32cb9019af17de",
-      "taille": 67989,
+      "sha256": "8f1f9dec95af182a7cefe4b7bc9325e170fb11558e56c017ae40295a31728f63",
+      "taille": 67879,
       "type": "atlas",
       "origines": [
         "dérivé",
@@ -5534,8 +5534,8 @@
     },
     {
       "chemin": "packages/assets/atlas/tutoriel-apercu@2x.webp",
-      "sha256": "5b9ac896e0112ce745891424ee2ecaa65275acb4e0d63dfcbb4a445656da3053",
-      "taille": 51078,
+      "sha256": "c650fc53f46c0d04b79341d4bd0fe0ce2b670c69aa440c9423c27b6175e4c222",
+      "taille": 51002,
       "type": "atlas",
       "origines": [
         "dérivé",
@@ -5580,8 +5580,8 @@
     },
     {
       "chemin": "packages/assets/atlas/tutoriel-apercu@3x.png",
-      "sha256": "8947c291a7b2d64b1615009e3903603ac031b1e729b086395e065a3f58b2dad5",
-      "taille": 130494,
+      "sha256": "cad7803d37a670369e0f9a3b1306829936aed1fdaf07150dbea6be8be21985bd",
+      "taille": 130652,
       "type": "atlas",
       "origines": [
         "dérivé",
@@ -5603,8 +5603,8 @@
     },
     {
       "chemin": "packages/assets/atlas/tutoriel-apercu@3x.webp",
-      "sha256": "8cd862bf3d0070dd37a671df1d73aed5dde061c9f908e229624ca43c5734ed17",
-      "taille": 101402,
+      "sha256": "0e5992fb95e62673ba7388c5b6606cb8a1f41092bf88de3df9b090a5b9d3e36a",
+      "taille": 101196,
       "type": "atlas",
       "origines": [
         "dérivé",
@@ -5732,8 +5732,8 @@
     },
     {
       "chemin": "packages/assets/sprites/sprite-bloc-bleu-plateau-apercu.png",
-      "sha256": "8c4eadb3062ba46838aa1bad1cd19b28b574d1bad94ac4423de7baf2d8f05106",
-      "taille": 8822,
+      "sha256": "a6a9ba5d3e2cf1acc5b882b702d3764df598395cd57ba3e3d689485571f596ba",
+      "taille": 8129,
       "type": "sprite",
       "id": "sprite-bloc-bleu-plateau-apercu",
       "origine": "dérivé",
@@ -5748,8 +5748,8 @@
     },
     {
       "chemin": "packages/assets/sprites/sprite-bloc-bleu-plateau-jeu.png",
-      "sha256": "11822b0df57bb92d424c15eb759d5c7e1080e45c29fc3c4faf7fa985fa9f2611",
-      "taille": 9425,
+      "sha256": "b223cdf2de9ce9504dc96d98400d8a341b904532f11635483a28dd604c148390",
+      "taille": 9508,
       "type": "sprite",
       "id": "sprite-bloc-bleu-plateau-jeu",
       "origine": "dérivé",
@@ -5764,8 +5764,8 @@
     },
     {
       "chemin": "packages/assets/sprites/sprite-bloc-jaune-plateau-apercu.png",
-      "sha256": "ba5923edd1917a4317d324a3be00c310750271f33e6d78b360726e7214c0da16",
-      "taille": 9068,
+      "sha256": "99c0781c7a7ec3e50aee8eb62c5c9b6e3fad406e35b9c66d20a7b02063fb43e0",
+      "taille": 7818,
       "type": "sprite",
       "id": "sprite-bloc-jaune-plateau-apercu",
       "origine": "dérivé",
@@ -5780,8 +5780,8 @@
     },
     {
       "chemin": "packages/assets/sprites/sprite-bloc-jaune-plateau-jeu.png",
-      "sha256": "fc2961ba1b660624ef682235561d4220e37f60facaa9dfb829e8edc95cbba5eb",
-      "taille": 9645,
+      "sha256": "2c029bde2d8eadabfee6b47e91e6b39ba3be1f5ffa05a7d110c0cd01947f90ed",
+      "taille": 9150,
       "type": "sprite",
       "id": "sprite-bloc-jaune-plateau-jeu",
       "origine": "dérivé",
@@ -5924,8 +5924,8 @@
     },
     {
       "chemin": "packages/assets/sprites/sprite-cascade-apercu.png",
-      "sha256": "ab5d289a8f2490fcf8664cfff2ffc5c4ec7dd17471a7deeda16b1199ab0ef360",
-      "taille": 16516,
+      "sha256": "dcf468d4a1d003cedcfa51a0ff19fd2f2ccf34f728adb690a8af4982b4bc3c70",
+      "taille": 16467,
       "type": "sprite",
       "id": "sprite-cascade-apercu",
       "origine": "redessin",
@@ -6018,8 +6018,8 @@
     },
     {
       "chemin": "packages/assets/sprites/sprite-cellule-magenta.png",
-      "sha256": "192545759b1ef6c8cf5f37fa3d098d6db509cd9f1ba2eba3e8bdf3fdbd1ec33c",
-      "taille": 2189,
+      "sha256": "3b9551ef385c8ed3437c25ccdb1f5c95b88f14aaa9bd9bcb6c1fbf5dad062ba3",
+      "taille": 2220,
       "type": "sprite",
       "id": "sprite-cellule-magenta",
       "origine": "redessin",
@@ -6050,8 +6050,8 @@
     },
     {
       "chemin": "packages/assets/sprites/sprite-chute-animations-apercu.png",
-      "sha256": "53359a492900353f7190f6f8488b26205433e014cc260bb456847d746ad8385d",
-      "taille": 11805,
+      "sha256": "16d0856d514445c1dbcffa58c1388179f3f09e91f666731adbca72bf19e50d74",
+      "taille": 11765,
       "type": "sprite",
       "id": "sprite-chute-animations-apercu",
       "origine": "redessin",
@@ -6066,8 +6066,8 @@
     },
     {
       "chemin": "packages/assets/sprites/sprite-chute-animations-jeu.png",
-      "sha256": "bb166c7c1a33752f65bf715ccae15d13243343b7d78eb03f018403ec8f2ae83d",
-      "taille": 10392,
+      "sha256": "f9289e3bf2e44cc0c347d707844cdcb6567e7f934abd35e7de8e82ed9ac40d6c",
+      "taille": 10418,
       "type": "sprite",
       "id": "sprite-chute-animations-jeu",
       "origine": "redessin",
@@ -6178,8 +6178,8 @@
     },
     {
       "chemin": "packages/assets/sprites/sprite-cristal-magenta.png",
-      "sha256": "d2dae1157aa2fa06c60e080797238eae1b45714051ae9ea5f2ac12f088aafbba",
-      "taille": 3575,
+      "sha256": "50d8abd944ff2de8a515bbaabb869142cbf6e3cb0270d10313563e3ae0ca89e8",
+      "taille": 3572,
       "type": "sprite",
       "id": "sprite-cristal-magenta",
       "origine": "redessin",
@@ -6304,8 +6304,8 @@
     },
     {
       "chemin": "packages/assets/sprites/sprite-deplacement-animations-apercu.png",
-      "sha256": "1ea3fba3e589d5edd2ede6d8d21f041cc42a4f87e6be3de0bd84a3052674563d",
-      "taille": 10295,
+      "sha256": "6592b1190bd8ed0d9808874c6d82a3ec3e54f360600d0525feac4b3357c326eb",
+      "taille": 10280,
       "type": "sprite",
       "id": "sprite-deplacement-animations-apercu",
       "origine": "redessin",
@@ -6320,8 +6320,8 @@
     },
     {
       "chemin": "packages/assets/sprites/sprite-deplacement-animations-jeu.png",
-      "sha256": "5022142fc7b9b3b0de0eb6bd68819939d805ab01797a4e9951c9505ff421a8e0",
-      "taille": 9412,
+      "sha256": "0cf6f284c6d515690f7733594591a2f3dd6cac1fec81dacbe02fb39b3888d157",
+      "taille": 8907,
       "type": "sprite",
       "id": "sprite-deplacement-animations-jeu",
       "origine": "redessin",
@@ -6866,8 +6866,8 @@
     },
     {
       "chemin": "packages/assets/sprites/sprite-logo-apercu.png",
-      "sha256": "576494f37076240c491f2ac2d48cd221e6d4f5813a0a5a411effa835a1f94a21",
-      "taille": 79392,
+      "sha256": "e82c540fd0494d07e0205454b063c4778d5422287457d6c18ae4d4a219643147",
+      "taille": 79384,
       "type": "sprite",
       "id": "sprite-logo-apercu",
       "origine": "redessin",
@@ -6882,8 +6882,8 @@
     },
     {
       "chemin": "packages/assets/sprites/sprite-logo-jeu.png",
-      "sha256": "72f42fac08682776ca136c23d459e03b12691e58a8011fd1852ac6138b98b2fd",
-      "taille": 97189,
+      "sha256": "3ed5528a30fdec7155b5739dd4fb119f2a15802ca2726d8d69f55bd08891a7a9",
+      "taille": 96900,
       "type": "sprite",
       "id": "sprite-logo-jeu",
       "origine": "redessin",
@@ -6930,8 +6930,8 @@
     },
     {
       "chemin": "packages/assets/sprites/sprite-mode-classique-jeu.png",
-      "sha256": "feefe505d87c2335658d65f031fbb0e6bc3c5b54ef593452f68083b2f1cc6333",
-      "taille": 5021,
+      "sha256": "76c98839dad427c972a0a9583bbf8bed187fcfa49b42089fdcb78af8a2996e45",
+      "taille": 5029,
       "type": "sprite",
       "id": "sprite-mode-classique-jeu",
       "origine": "redessin",
@@ -7098,8 +7098,8 @@
     },
     {
       "chemin": "packages/assets/sprites/sprite-paire-horizontale-cyan-magenta.png",
-      "sha256": "f57d639f0eedaac99ae141300546f6efdb9bd95cf36092a19f0f0bf1049edc42",
-      "taille": 7230,
+      "sha256": "195efd05b7f0e8cdfaf4463184ae99ea3ffb9d94b03ca7f4bcc005d577a7db8e",
+      "taille": 7313,
       "type": "sprite",
       "id": "sprite-paire-horizontale-cyan-magenta",
       "origine": "redessin",
@@ -7114,8 +7114,8 @@
     },
     {
       "chemin": "packages/assets/sprites/sprite-paire-horizontale-magenta-ambre.png",
-      "sha256": "0d1d1054ce71febec63a8bc56873ccacf24490e09ef836d9fb0ec1866c1181db",
-      "taille": 7297,
+      "sha256": "693f85b8cf2646db939325e78ef37c16dac7e420fa2f29ebce4fe8ed2ae7dfa6",
+      "taille": 7187,
       "type": "sprite",
       "id": "sprite-paire-horizontale-magenta-ambre",
       "origine": "redessin",
@@ -7130,8 +7130,8 @@
     },
     {
       "chemin": "packages/assets/sprites/sprite-paire-verticale-cyan-ambre.png",
-      "sha256": "2928bb18c8cbc2bd0f71c7041aa46c75e864f19739ae3058b5c7885b742376fd",
-      "taille": 5822,
+      "sha256": "80c34b712a4b684a299ddcffacebecac295d344953ce58a74aabf9bafc4d3ee2",
+      "taille": 5683,
       "type": "sprite",
       "id": "sprite-paire-verticale-cyan-ambre",
       "origine": "redessin",
@@ -7146,8 +7146,8 @@
     },
     {
       "chemin": "packages/assets/sprites/sprite-paire-verticale-cyan-magenta.png",
-      "sha256": "1b68aedf94b882381ddccc4b7ff07b51300d81c148c1ac8cf32a813c5fcba9c0",
-      "taille": 5566,
+      "sha256": "26f5d8e278565c3a6ee9515351168200fbf816c01a2b711b7754d6d468dbce08",
+      "taille": 5639,
       "type": "sprite",
       "id": "sprite-paire-verticale-cyan-magenta",
       "origine": "redessin",
@@ -7162,8 +7162,8 @@
     },
     {
       "chemin": "packages/assets/sprites/sprite-paire-verticale-magenta-ambre.png",
-      "sha256": "26a67a933a96a8d21d61639ceca8f9bdff14337bcf536c43a50d963c2655c7f6",
-      "taille": 5508,
+      "sha256": "3056a9a47b29564e4ac48660aa43484a629dd784dcdb8f4257a614e6ee97fe50",
+      "taille": 5511,
       "type": "sprite",
       "id": "sprite-paire-verticale-magenta-ambre",
       "origine": "redessin",
@@ -7359,7 +7359,7 @@
     },
     {
       "chemin": "packages/assets/sprites/sprite-pont-bas.png",
-      "sha256": "a2c4f8939856d429d3f31ceaba2513e57cfc09baf8a1e1cbe4559141a86c94ea",
+      "sha256": "29a1b39a715fa75845540bf4e9f70c458bbc8980107247d954de961656a9b3c7",
       "taille": 306,
       "type": "sprite",
       "id": "sprite-pont-bas",
@@ -7375,7 +7375,7 @@
     },
     {
       "chemin": "packages/assets/sprites/sprite-pont-droite.png",
-      "sha256": "621fb3e11e43fdf6a688cac9e8e72d7029a20cc39024bd356e0851b014277958",
+      "sha256": "2d27e9a4190177d2c96e18374c94d584a648acceceed385a7b90319ca0e36803",
       "taille": 285,
       "type": "sprite",
       "id": "sprite-pont-droite",
@@ -7391,7 +7391,7 @@
     },
     {
       "chemin": "packages/assets/sprites/sprite-pont-gauche.png",
-      "sha256": "4be3ec850493eb65678cc5f2be41739c26196778a47806d0ae7ca50cafb1400d",
+      "sha256": "9e1071778ebda77a3f81978f3b675a3bb1814676958385ce7b9d4b9d34432edd",
       "taille": 284,
       "type": "sprite",
       "id": "sprite-pont-gauche",
@@ -7407,7 +7407,7 @@
     },
     {
       "chemin": "packages/assets/sprites/sprite-pont-haut.png",
-      "sha256": "d59478609c051b6d1c0c264b921352cd51bbb9bf45f978a2158fd54c1c9a388d",
+      "sha256": "e5c3a5e9c16e9aca5ff0613d6d424a5e802cd72c2d6b0774adc511746f6943f3",
       "taille": 314,
       "type": "sprite",
       "id": "sprite-pont-haut",
@@ -7608,8 +7608,8 @@
     },
     {
       "chemin": "packages/assets/sprites/sprite-rotation-animations-apercu.png",
-      "sha256": "a09436eb610eb525841b203dc60ce9d6d0655d4c3fd0755ce02da1d902488a01",
-      "taille": 10913,
+      "sha256": "b528b8e84afa8dbcfd51e314f6381eaa1751293ddff805d9f88b73de5030b86f",
+      "taille": 11163,
       "type": "sprite",
       "id": "sprite-rotation-animations-apercu",
       "origine": "redessin",
@@ -7624,8 +7624,8 @@
     },
     {
       "chemin": "packages/assets/sprites/sprite-rotation-animations-jeu.png",
-      "sha256": "3150087b82af299b8115bf2f4390dbc0a35b42ba0514340cb0b58f1db01cc124",
-      "taille": 10936,
+      "sha256": "909ccb954376d240f2e186b942c6479b45b0e4237042b113ac41982a547c4dfe",
+      "taille": 10775,
       "type": "sprite",
       "id": "sprite-rotation-animations-jeu",
       "origine": "redessin",
@@ -7686,8 +7686,8 @@
     },
     {
       "chemin": "packages/assets/sprites/sprite-segment-bleu-plateau-apercu.png",
-      "sha256": "9f7257e0d0284b18e448e7ad36731a7aafc08ae06d4c5b05c84188dd1e56c85f",
-      "taille": 11365,
+      "sha256": "3191edf3be93a133ee02aac6386d72ae39d361a1ebe882a84f0681d1bf412bf9",
+      "taille": 11527,
       "type": "sprite",
       "id": "sprite-segment-bleu-plateau-apercu",
       "origine": "dérivé",
@@ -7702,8 +7702,8 @@
     },
     {
       "chemin": "packages/assets/sprites/sprite-segment-jaune-plateau-apercu.png",
-      "sha256": "f7cf5bdd0c4f064786f4d0a5a8620ac411889de9480d08779dad877d5133e92a",
-      "taille": 10465,
+      "sha256": "e59dad32f38cb4cab041770a5d7aa6d500072d945505903df24f53671bfa1f14",
+      "taille": 9815,
       "type": "sprite",
       "id": "sprite-segment-jaune-plateau-apercu",
       "origine": "dérivé",
@@ -7855,8 +7855,8 @@
     },
     {
       "chemin": "packages/assets/sprites/sprite-transformation-apercu.png",
-      "sha256": "f381055bf50756630876aaba313d668c0e6f22ee951aa9fd3bb54bd545c0730b",
-      "taille": 24662,
+      "sha256": "f57952deb4f2ff3c0b89395c9d485cc6b42de1706a39410718efb63b331b93d2",
+      "taille": 24170,
       "type": "sprite",
       "id": "sprite-transformation-apercu",
       "origine": "redessin",
@@ -7949,8 +7949,8 @@
     },
     {
       "chemin": "packages/assets/sprites/sprite-tutoriel-pivoter.png",
-      "sha256": "adef1c16bdd953a830793991a3dea1683d4f57e50a1ed5b353621133a75c3af4",
-      "taille": 32941,
+      "sha256": "c97a35992c8183be93961cbb0bca6fa67026bbc31c07e2a019d88d060f88ad0b",
+      "taille": 32754,
       "type": "sprite",
       "id": "sprite-tutoriel-pivoter",
       "origine": "redessin",
@@ -7965,8 +7965,8 @@
     },
     {
       "chemin": "packages/assets/sprites/sprite-verrouillage-animations-apercu.png",
-      "sha256": "2cddffcb14800590884fb0fdfdf7f8f75f52151af86a2cf0b627569d0ccdb30a",
-      "taille": 9667,
+      "sha256": "a4060d2ccbc083fa2dd8e8943f3acac817faa4edf0bf2a3d8051e7d36f8f80e0",
+      "taille": 9620,
       "type": "sprite",
       "id": "sprite-verrouillage-animations-apercu",
       "origine": "redessin",
@@ -7981,8 +7981,8 @@
     },
     {
       "chemin": "packages/assets/sprites/sprite-verrouillage-animations-jeu.png",
-      "sha256": "6eb0e4e83eadc43ed8db13ee9de08d2b70ebb1ea18e5acdfbf519e2890a52839",
-      "taille": 9711,
+      "sha256": "1401dfed0c4b422defa6c4c3e373c47c0a1907640641120144de9a64bf85cbd3",
+      "taille": 9782,
       "type": "sprite",
       "id": "sprite-verrouillage-animations-jeu",
       "origine": "redessin",

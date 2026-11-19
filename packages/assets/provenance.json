@@ -14,7 +14,7 @@
       "element_remplace": "117x107+1196+450",
       "transformations": [
         "rendu SVG",
-        "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé",
+        "retouche rabattement sur la palette sans biais de la planche (coupe médiane des seuls pixels opaques, comme le contrôle de chaîne) et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé ; un pixel neutre dont la couleur la plus proche est colorée, ou l'inverse, reste tel quel (encrage excepté)",
         "atlas json-hash"
       ],
       "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
@@ -28,7 +28,7 @@
       "element_remplace": "98x124+1422+438",
       "transformations": [
         "rendu SVG",
-        "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé",
+        "retouche rabattement sur la palette sans biais de la planche (coupe médiane des seuls pixels opaques, comme le contrôle de chaîne) et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé ; un pixel neutre dont la couleur la plus proche est colorée, ou l'inverse, reste tel quel (encrage excepté)",
         "atlas json-hash"
       ],
       "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
@@ -42,7 +42,7 @@
       "element_remplace": "113x130+1537+432",
       "transformations": [
         "rendu SVG",
-        "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé",
+        "retouche rabattement sur la palette sans biais de la planche (coupe médiane des seuls pixels opaques, comme le contrôle de chaîne) et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé ; un pixel neutre dont la couleur la plus proche est colorée, ou l'inverse, reste tel quel (encrage excepté)",
         "atlas json-hash"
       ],
       "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
@@ -56,7 +56,7 @@
       "element_remplace": "82x130+1312+430",
       "transformations": [
         "rendu SVG",
-        "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé",
+        "retouche rabattement sur la palette sans biais de la planche (coupe médiane des seuls pixels opaques, comme le contrôle de chaîne) et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé ; un pixel neutre dont la couleur la plus proche est colorée, ou l'inverse, reste tel quel (encrage excepté)",
         "atlas json-hash"
       ],
       "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
@@ -703,7 +703,7 @@
         "crop",
         "superposition SVG",
         "resize",
-        "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé",
+        "retouche rabattement sur la palette sans biais de la planche (coupe médiane des seuls pixels opaques, comme le contrôle de chaîne) et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé ; un pixel neutre dont la couleur la plus proche est colorée, ou l'inverse, reste tel quel (encrage excepté)",
         "atlas json-hash"
       ],
       "masque": "packages/assets/source/svg/logo-jeu-lettres.svg",
@@ -718,7 +718,7 @@
       "element_remplace": "79x77+16+804",
       "transformations": [
         "rendu SVG",
-        "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé",
+        "retouche rabattement sur la palette sans biais de la planche (coupe médiane des seuls pixels opaques, comme le contrôle de chaîne) et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé ; un pixel neutre dont la couleur la plus proche est colorée, ou l'inverse, reste tel quel (encrage excepté)",
         "atlas json-hash"
       ],
       "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
@@ -793,15 +793,13 @@
       "transformation": "découpe + recoloration (jetons A2)",
       "source_retouche": "packages/assets/source/plateau-jeu.retouches.json",
       "transformations": [
-        "recoloration bleu 196–213°→#38BDF8 (source #0087EC, rampe luminance)",
-        "retouche jeton cyan A2 (toute la découpe) : rampe par correspondance de luminance sur les couleurs de la planche (même teinte, encrage, reflets) et #38BDF8, ton dominant de la planche égal à #38BDF8 ; sans ton intermédiaire de cette teinte dans la planche, ombres bornées au voisinage du jeton et encrage vers le ton le plus sombre",
-        "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur neutre ou de même teinte la plus proche jusqu'à 44, alpha inchangé"
+        "recoloration bleu 190–225°→#38BDF8 (source #0088ED, rampe projetée)",
+        "retouche jeton cyan A2 (toute la découpe) : pixels de teinte 190–225° et de saturation HLS ≥ 0,08 projetés par clarté HLS sur la rampe #080E22→#38BDF8→#FFFFFF, pivot à la clarté du ton source #0088ED (0.465) : corps = #38BDF8, encrage sombre de la planche vers #080E22 (encrage marine des blocs bleus) ; reflets blancs (saturation < 0,08) et alpha de la planche inchangés, sans tramage"
       ],
       "etapes": [
         "crop",
         "retouche raster ImageMagick",
         "resize",
-        "rabattement palette (numpy)",
         "atlas json-hash"
       ],
       "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
@@ -843,8 +841,8 @@
       "transformation": "découpe + recoloration (jetons A2)",
       "source_retouche": "packages/assets/source/plateau-jeu.retouches.json",
       "transformations": [
-        "recoloration jaune 32–53°→#FBBF24 (source #FCB100, rampe linéaire)",
-        "retouche jeton ambre A2 (toute la découpe) : luminance sur la rampe #080e22→#FBBF24→#fff8ff, ombres et reflets conservés"
+        "recoloration jaune 20–65°→#FBBF24 (source #FCB100, rampe projetée)",
+        "retouche jeton ambre A2 (toute la découpe) : pixels de teinte 20–65° et de saturation HLS ≥ 0,08 projetés par clarté HLS sur la rampe #080E22→#FBBF24→#FFFFFF, pivot à la clarté du ton source #FCB100 (0.494) : corps = #FBBF24, encrage sombre de la planche vers #080E22 (encrage marine des blocs bleus) ; reflets blancs (saturation < 0,08) et alpha de la planche inchangés, sans tramage"
       ],
       "etapes": [
         "crop",
@@ -952,7 +950,7 @@
       "element_remplace": "78x66+1291+279",
       "transformations": [
         "rendu SVG",
-        "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé",
+        "retouche rabattement sur la palette sans biais de la planche (coupe médiane des seuls pixels opaques, comme le contrôle de chaîne) et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé ; un pixel neutre dont la couleur la plus proche est colorée, ou l'inverse, reste tel quel (encrage excepté)",
         "atlas json-hash"
       ],
       "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
@@ -966,7 +964,7 @@
       "element_remplace": "135x57+1303+342",
       "transformations": [
         "rendu SVG",
-        "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé",
+        "retouche rabattement sur la palette sans biais de la planche (coupe médiane des seuls pixels opaques, comme le contrôle de chaîne) et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé ; un pixel neutre dont la couleur la plus proche est colorée, ou l'inverse, reste tel quel (encrage excepté)",
         "atlas json-hash"
       ],
       "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
@@ -980,6 +978,7 @@
       "element_remplace": "128x47+1311+403",
       "transformations": [
         "rendu SVG",
+        "retouche rabattement sur la palette sans biais de la planche (coupe médiane des seuls pixels opaques, comme le contrôle de chaîne) et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé ; un pixel neutre dont la couleur la plus proche est colorée, ou l'inverse, reste tel quel (encrage excepté)",
         "atlas json-hash"
       ],
       "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
@@ -993,7 +992,7 @@
       "element_remplace": "140x73+1302+466",
       "transformations": [
         "rendu SVG",
-        "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé",
+        "retouche rabattement sur la palette sans biais de la planche (coupe médiane des seuls pixels opaques, comme le contrôle de chaîne) et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé ; un pixel neutre dont la couleur la plus proche est colorée, ou l'inverse, reste tel quel (encrage excepté)",
         "atlas json-hash"
       ],
       "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
@@ -1007,7 +1006,7 @@
       "element_remplace": "280x60+905+500",
       "transformations": [
         "rendu SVG",
-        "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé",
+        "retouche rabattement sur la palette sans biais de la planche (coupe médiane des seuls pixels opaques, comme le contrôle de chaîne) et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé ; un pixel neutre dont la couleur la plus proche est colorée, ou l'inverse, reste tel quel (encrage excepté)",
         "atlas json-hash"
       ],
       "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
@@ -1021,7 +1020,7 @@
       "element_remplace": "120x70+915+350",
       "transformations": [
         "rendu SVG",
-        "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé",
+        "retouche rabattement sur la palette sans biais de la planche (coupe médiane des seuls pixels opaques, comme le contrôle de chaîne) et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé ; un pixel neutre dont la couleur la plus proche est colorée, ou l'inverse, reste tel quel (encrage excepté)",
         "atlas json-hash"
       ],
       "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
@@ -1665,7 +1664,7 @@
         "crop",
         "superposition SVG",
         "resize",
-        "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé",
+        "retouche rabattement sur la palette sans biais de la planche (coupe médiane des seuls pixels opaques, comme le contrôle de chaîne) et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé ; un pixel neutre dont la couleur la plus proche est colorée, ou l'inverse, reste tel quel (encrage excepté)",
         "atlas json-hash"
       ],
       "masque": "packages/assets/source/svg/logo-apercu-lettres.svg",
@@ -1985,15 +1984,13 @@
       "transformation": "découpe + recoloration (jetons A2)",
       "source_retouche": "packages/assets/source/plateau-apercu.retouches.json",
       "transformations": [
-        "recoloration bleu 198–217°→#38BDF8 (source #007EEC, rampe luminance)",
-        "retouche jeton cyan A2 (toute la découpe) : rampe par correspondance de luminance sur les couleurs de la planche (même teinte, encrage, reflets) et #38BDF8, ton dominant de la planche égal à #38BDF8 ; sans ton intermédiaire de cette teinte dans la planche, ombres bornées au voisinage du jeton et encrage vers le ton le plus sombre",
-        "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur neutre ou de même teinte la plus proche jusqu'à 44, alpha inchangé"
+        "recoloration bleu 190–225°→#38BDF8 (source #0081EE, rampe projetée)",
+        "retouche jeton cyan A2 (toute la découpe) : pixels de teinte 190–225° et de saturation HLS ≥ 0,08 projetés par clarté HLS sur la rampe #080E22→#38BDF8→#FFFFFF, pivot à la clarté du ton source #0081EE (0.467) : corps = #38BDF8, encrage sombre de la planche vers #080E22 (encrage marine des blocs bleus) ; reflets blancs (saturation < 0,08) et alpha de la planche inchangés, sans tramage"
       ],
       "etapes": [
         "crop",
         "retouche raster ImageMagick",
         "resize",
-        "rabattement palette (numpy)",
         "atlas json-hash"
       ],
       "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
@@ -2035,8 +2032,8 @@
       "transformation": "découpe + recoloration (jetons A2)",
       "source_retouche": "packages/assets/source/plateau-apercu.retouches.json",
       "transformations": [
-        "recoloration jaune 34–53°→#FBBF24 (source #FBB400, rampe linéaire)",
-        "retouche jeton ambre A2 (toute la découpe) : luminance sur la rampe #080e22→#FBBF24→#fff8ff, ombres et reflets conservés"
+        "recoloration jaune 20–65°→#FBBF24 (source #FBB600, rampe projetée)",
+        "retouche jeton ambre A2 (toute la découpe) : pixels de teinte 20–65° et de saturation HLS ≥ 0,08 projetés par clarté HLS sur la rampe #080E22→#FBBF24→#FFFFFF, pivot à la clarté du ton source #FBB600 (0.492) : corps = #FBBF24, encrage sombre de la planche vers #080E22 (encrage marine des blocs bleus) ; reflets blancs (saturation < 0,08) et alpha de la planche inchangés, sans tramage"
       ],
       "etapes": [
         "crop",
@@ -2059,15 +2056,13 @@
       "transformation": "découpe + recoloration (jetons A2)",
       "source_retouche": "packages/assets/source/plateau-apercu.retouches.json",
       "transformations": [
-        "recoloration bleu 199–218°→#38BDF8 (source #007DEB, rampe luminance)",
-        "retouche jeton cyan A2 (toute la découpe) : rampe par correspondance de luminance sur les couleurs de la planche (même teinte, encrage, reflets) et #38BDF8, ton dominant de la planche égal à #38BDF8 ; sans ton intermédiaire de cette teinte dans la planche, ombres bornées au voisinage du jeton et encrage vers le ton le plus sombre",
-        "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur neutre ou de même teinte la plus proche jusqu'à 44, alpha inchangé"
+        "recoloration bleu 190–225°→#38BDF8 (source #007EED, rampe projetée)",
+        "retouche jeton cyan A2 (toute la découpe) : pixels de teinte 190–225° et de saturation HLS ≥ 0,08 projetés par clarté HLS sur la rampe #080E22→#38BDF8→#FFFFFF, pivot à la clarté du ton source #007EED (0.465) : corps = #38BDF8, encrage sombre de la planche vers #080E22 (encrage marine des blocs bleus) ; reflets blancs (saturation < 0,08) et alpha de la planche inchangés, sans tramage"
       ],
       "etapes": [
         "crop",
         "retouche raster ImageMagick",
         "resize",
-        "rabattement palette (numpy)",
         "atlas json-hash"
       ],
       "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
@@ -2109,8 +2104,8 @@
       "transformation": "découpe + recoloration (jetons A2)",
       "source_retouche": "packages/assets/source/plateau-apercu.retouches.json",
       "transformations": [
-        "recoloration jaune 31–53°→#FBBF24 (source #FBB400, rampe linéaire)",
-        "retouche jeton ambre A2 (toute la découpe) : luminance sur la rampe #080e22→#FBBF24→#fff8ff, ombres et reflets conservés"
+        "recoloration jaune 20–65°→#FBBF24 (source #FBB601, rampe projetée)",
+        "retouche jeton ambre A2 (toute la découpe) : pixels de teinte 20–65° et de saturation HLS ≥ 0,08 projetés par clarté HLS sur la rampe #080E22→#FBBF24→#FFFFFF, pivot à la clarté du ton source #FBB601 (0.494) : corps = #FBBF24, encrage sombre de la planche vers #080E22 (encrage marine des blocs bleus) ; reflets blancs (saturation < 0,08) et alpha de la planche inchangés, sans tramage"
       ],
       "etapes": [
         "crop",
@@ -2194,7 +2189,7 @@
         "crop",
         "superposition SVG",
         "resize",
-        "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé",
+        "retouche rabattement sur la palette sans biais de la planche (coupe médiane des seuls pixels opaques, comme le contrôle de chaîne) et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé ; un pixel neutre dont la couleur la plus proche est colorée, ou l'inverse, reste tel quel (encrage excepté)",
         "atlas json-hash"
       ],
       "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
@@ -2792,7 +2787,7 @@
       "element_remplace": "181x89+333+382",
       "transformations": [
         "rendu SVG",
-        "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé",
+        "retouche rabattement sur la palette sans biais de la planche (coupe médiane des seuls pixels opaques, comme le contrôle de chaîne) et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé ; un pixel neutre dont la couleur la plus proche est colorée, ou l'inverse, reste tel quel (encrage excepté)",
         "atlas json-hash"
       ],
       "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254"
@@ -2819,7 +2814,7 @@
       "element_remplace": "181x90+747+382",
       "transformations": [
         "rendu SVG",
-        "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé",
+        "retouche rabattement sur la palette sans biais de la planche (coupe médiane des seuls pixels opaques, comme le contrôle de chaîne) et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé ; un pixel neutre dont la couleur la plus proche est colorée, ou l'inverse, reste tel quel (encrage excepté)",
         "atlas json-hash"
       ],
       "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254"
@@ -2833,7 +2828,7 @@
       "element_remplace": "77x151+995+205",
       "transformations": [
         "rendu SVG",
-        "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé",
+        "retouche rabattement sur la palette sans biais de la planche (coupe médiane des seuls pixels opaques, comme le contrôle de chaîne) et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé ; un pixel neutre dont la couleur la plus proche est colorée, ou l'inverse, reste tel quel (encrage excepté)",
         "atlas json-hash"
       ],
       "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254"
@@ -2847,6 +2842,7 @@
       "element_remplace": "77x151+1086+205",
       "transformations": [
         "rendu SVG",
+        "retouche rabattement sur la palette sans biais de la planche (coupe médiane des seuls pixels opaques, comme le contrôle de chaîne) et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé ; un pixel neutre dont la couleur la plus proche est colorée, ou l'inverse, reste tel quel (encrage excepté)",
         "atlas json-hash"
       ],
       "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254"
@@ -2860,7 +2856,7 @@
       "element_remplace": "77x151+1177+205",
       "transformations": [
         "rendu SVG",
-        "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé",
+        "retouche rabattement sur la palette sans biais de la planche (coupe médiane des seuls pixels opaques, comme le contrôle de chaîne) et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé ; un pixel neutre dont la couleur la plus proche est colorée, ou l'inverse, reste tel quel (encrage excepté)",
         "atlas json-hash"
       ],
       "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254"
@@ -3021,7 +3017,7 @@
       "element_remplace": "192x180+579+13",
       "transformations": [
         "rendu SVG",
-        "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé",
+        "retouche rabattement sur la palette sans biais de la planche (coupe médiane des seuls pixels opaques, comme le contrôle de chaîne) et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé ; un pixel neutre dont la couleur la plus proche est colorée, ou l'inverse, reste tel quel (encrage excepté)",
         "atlas json-hash"
       ],
       "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254"
@@ -3048,7 +3044,7 @@
       "element_remplace": "82x144+1097+30",
       "transformations": [
         "rendu SVG",
-        "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé",
+        "retouche rabattement sur la palette sans biais de la planche (coupe médiane des seuls pixels opaques, comme le contrôle de chaîne) et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé ; un pixel neutre dont la couleur la plus proche est colorée, ou l'inverse, reste tel quel (encrage excepté)",
         "atlas json-hash"
       ],
       "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254"
@@ -3075,6 +3071,7 @@
       "element_remplace": "181x89+333+382",
       "transformations": [
         "rendu SVG",
+        "retouche rabattement sur la palette sans biais de la planche (coupe médiane des seuls pixels opaques, comme le contrôle de chaîne) et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé ; un pixel neutre dont la couleur la plus proche est colorée, ou l'inverse, reste tel quel (encrage excepté)",
         "atlas json-hash"
       ],
       "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254"
@@ -3088,6 +3085,7 @@
       "element_remplace": "181x89+333+382",
       "transformations": [
         "rendu SVG",
+        "retouche rabattement sur la palette sans biais de la planche (coupe médiane des seuls pixels opaques, comme le contrôle de chaîne) et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé ; un pixel neutre dont la couleur la plus proche est colorée, ou l'inverse, reste tel quel (encrage excepté)",
         "atlas json-hash"
       ],
       "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254"
@@ -3101,6 +3099,7 @@
       "element_remplace": "181x89+333+382",
       "transformations": [
         "rendu SVG",
+        "retouche rabattement sur la palette sans biais de la planche (coupe médiane des seuls pixels opaques, comme le contrôle de chaîne) et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé ; un pixel neutre dont la couleur la plus proche est colorée, ou l'inverse, reste tel quel (encrage excepté)",
         "atlas json-hash"
       ],
       "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254"
@@ -3114,6 +3113,7 @@
       "element_remplace": "181x89+333+382",
       "transformations": [
         "rendu SVG",
+        "retouche rabattement sur la palette sans biais de la planche (coupe médiane des seuls pixels opaques, comme le contrôle de chaîne) et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé ; un pixel neutre dont la couleur la plus proche est colorée, ou l'inverse, reste tel quel (encrage excepté)",
         "atlas json-hash"
       ],
       "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254"

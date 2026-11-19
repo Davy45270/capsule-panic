@@ -295,9 +295,8 @@
           "boite": "82x83+1359+53",
           "element": "packages/assets/sprites/sprite-bloc-bleu-plateau-jeu.png",
           "transformations": [
-            "recoloration bleu 196–213°→#38BDF8 (source #0087EC, rampe luminance)",
-            "retouche jeton cyan A2 (toute la découpe) : rampe par correspondance de luminance sur les couleurs de la planche (même teinte, encrage, reflets) et #38BDF8, ton dominant de la planche égal à #38BDF8 ; sans ton intermédiaire de cette teinte dans la planche, ombres bornées au voisinage du jeton et encrage vers le ton le plus sombre",
-            "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur neutre ou de même teinte la plus proche jusqu'à 44, alpha inchangé"
+            "recoloration bleu 190–225°→#38BDF8 (source #0088ED, rampe projetée)",
+            "retouche jeton cyan A2 (toute la découpe) : pixels de teinte 190–225° et de saturation HLS ≥ 0,08 projetés par clarté HLS sur la rampe #080E22→#38BDF8→#FFFFFF, pivot à la clarté du ton source #0088ED (0.465) : corps = #38BDF8, encrage sombre de la planche vers #080E22 (encrage marine des blocs bleus) ; reflets blancs (saturation < 0,08) et alpha de la planche inchangés, sans tramage"
           ]
         },
         {
@@ -314,8 +313,8 @@
           "boite": "83x83+1565+54",
           "element": "packages/assets/sprites/sprite-bloc-jaune-plateau-jeu.png",
           "transformations": [
-            "recoloration jaune 32–53°→#FBBF24 (source #FCB100, rampe linéaire)",
-            "retouche jeton ambre A2 (toute la découpe) : luminance sur la rampe #080e22→#FBBF24→#fff8ff, ombres et reflets conservés"
+            "recoloration jaune 20–65°→#FBBF24 (source #FCB100, rampe projetée)",
+            "retouche jeton ambre A2 (toute la découpe) : pixels de teinte 20–65° et de saturation HLS ≥ 0,08 projetés par clarté HLS sur la rampe #080E22→#FBBF24→#FFFFFF, pivot à la clarté du ton source #FCB100 (0.494) : corps = #FBBF24, encrage sombre de la planche vers #080E22 (encrage marine des blocs bleus) ; reflets blancs (saturation < 0,08) et alpha de la planche inchangés, sans tramage"
           ]
         }
       ]
@@ -541,9 +540,8 @@
           "boite": "60x62+1252+49",
           "element": "packages/assets/sprites/sprite-bloc-bleu-plateau-apercu.png",
           "transformations": [
-            "recoloration bleu 198–217°→#38BDF8 (source #007EEC, rampe luminance)",
-            "retouche jeton cyan A2 (toute la découpe) : rampe par correspondance de luminance sur les couleurs de la planche (même teinte, encrage, reflets) et #38BDF8, ton dominant de la planche égal à #38BDF8 ; sans ton intermédiaire de cette teinte dans la planche, ombres bornées au voisinage du jeton et encrage vers le ton le plus sombre",
-            "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur neutre ou de même teinte la plus proche jusqu'à 44, alpha inchangé"
+            "recoloration bleu 190–225°→#38BDF8 (source #0081EE, rampe projetée)",
+            "retouche jeton cyan A2 (toute la découpe) : pixels de teinte 190–225° et de saturation HLS ≥ 0,08 projetés par clarté HLS sur la rampe #080E22→#38BDF8→#FFFFFF, pivot à la clarté du ton source #0081EE (0.467) : corps = #38BDF8, encrage sombre de la planche vers #080E22 (encrage marine des blocs bleus) ; reflets blancs (saturation < 0,08) et alpha de la planche inchangés, sans tramage"
           ]
         },
         {
@@ -560,8 +558,8 @@
           "boite": "61x62+1391+49",
           "element": "packages/assets/sprites/sprite-bloc-jaune-plateau-apercu.png",
           "transformations": [
-            "recoloration jaune 34–53°→#FBBF24 (source #FBB400, rampe linéaire)",
-            "retouche jeton ambre A2 (toute la découpe) : luminance sur la rampe #080e22→#FBBF24→#fff8ff, ombres et reflets conservés"
+            "recoloration jaune 20–65°→#FBBF24 (source #FBB600, rampe projetée)",
+            "retouche jeton ambre A2 (toute la découpe) : pixels de teinte 20–65° et de saturation HLS ≥ 0,08 projetés par clarté HLS sur la rampe #080E22→#FBBF24→#FFFFFF, pivot à la clarté du ton source #FBB600 (0.492) : corps = #FBBF24, encrage sombre de la planche vers #080E22 (encrage marine des blocs bleus) ; reflets blancs (saturation < 0,08) et alpha de la planche inchangés, sans tramage"
           ]
         },
         {
@@ -569,9 +567,8 @@
           "boite": "56x54+938+49",
           "element": "packages/assets/sprites/sprite-segment-bleu-plateau-apercu.png",
           "transformations": [
-            "recoloration bleu 199–218°→#38BDF8 (source #007DEB, rampe luminance)",
-            "retouche jeton cyan A2 (toute la découpe) : rampe par correspondance de luminance sur les couleurs de la planche (même teinte, encrage, reflets) et #38BDF8, ton dominant de la planche égal à #38BDF8 ; sans ton intermédiaire de cette teinte dans la planche, ombres bornées au voisinage du jeton et encrage vers le ton le plus sombre",
-            "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur neutre ou de même teinte la plus proche jusqu'à 44, alpha inchangé"
+            "recoloration bleu 190–225°→#38BDF8 (source #007EED, rampe projetée)",
+            "retouche jeton cyan A2 (toute la découpe) : pixels de teinte 190–225° et de saturation HLS ≥ 0,08 projetés par clarté HLS sur la rampe #080E22→#38BDF8→#FFFFFF, pivot à la clarté du ton source #007EED (0.465) : corps = #38BDF8, encrage sombre de la planche vers #080E22 (encrage marine des blocs bleus) ; reflets blancs (saturation < 0,08) et alpha de la planche inchangés, sans tramage"
           ]
         },
         {
@@ -588,8 +585,8 @@
           "boite": "59x54+1081+49",
           "element": "packages/assets/sprites/sprite-segment-jaune-plateau-apercu.png",
           "transformations": [
-            "recoloration jaune 31–53°→#FBBF24 (source #FBB400, rampe linéaire)",
-            "retouche jeton ambre A2 (toute la découpe) : luminance sur la rampe #080e22→#FBBF24→#fff8ff, ombres et reflets conservés"
+            "recoloration jaune 20–65°→#FBBF24 (source #FBB601, rampe projetée)",
+            "retouche jeton ambre A2 (toute la découpe) : pixels de teinte 20–65° et de saturation HLS ≥ 0,08 projetés par clarté HLS sur la rampe #080E22→#FBBF24→#FFFFFF, pivot à la clarté du ton source #FBB601 (0.494) : corps = #FBBF24, encrage sombre de la planche vers #080E22 (encrage marine des blocs bleus) ; reflets blancs (saturation < 0,08) et alpha de la planche inchangés, sans tramage"
           ]
         }
       ]
