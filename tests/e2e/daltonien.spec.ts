@@ -72,7 +72,8 @@ test('[E263] T29 colour-blind mode gives each of the three colours its own shape
 test('[E263] T29 colour-blind mode survives a reload and can be switched off', async ({ page }) => {
     await activerDaltonien(page);
     await page.reload();
-    await page.getByRole('button', { name: 'Options' }).click();
+    await expect(page).toHaveURL(/#settings$/);
+    await expect(page.getByRole('heading', { name: 'Options' })).toBeVisible();
     const caseDaltonien = page.getByRole('checkbox', { name: /daltonien/i });
     await expect(caseDaltonien).toBeChecked();
     await caseDaltonien.uncheck();

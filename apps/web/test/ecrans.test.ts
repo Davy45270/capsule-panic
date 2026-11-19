@@ -255,7 +255,7 @@ it('[E263] le mode daltonien résiste à une écriture IndexedDB interrompue et 
         act(() => root.unmount());
         root = createRoot(container);
         await mountApp();
-        await click('Options');
+        expect(container.querySelector('h2')?.textContent).toBe('Options');
     };
 
     expect(checkbox()?.checked).toBe(false);

@@ -197,7 +197,7 @@ export function App() {
                     onResume={resume}
                     onPlay={() => show('setup', '#game')}
                     onHelp={() => show('help', '#aide')}
-                    onOptions={() => setScreen({ name: 'options' })}
+                    onOptions={() => show('options', '#settings')}
                     onAbout={() => show('about', '#credits')}
                 />
             )}
