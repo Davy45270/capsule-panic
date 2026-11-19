@@ -2,21 +2,29 @@ import { describe, it, expect } from 'vitest';
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { COLORS } from '@capsule-panic/contracts';
-import { animationDuration, capsuleSvg, cellSvg, crystalSvg, SHAPE_OF, shapePoints, TOKENS } from '../src/art';
+import {
+    animationDuration,
+    capsuleSvg,
+    cellSvg,
+    crystalSvg,
+    SHAPE_OF,
+    shapePoints,
+    TOKENS,
+} from '../src/art';
 import { boardLayout } from '../src/layout';
 
-const hexes = (svg: string): string[] => [...svg.matchAll(/#[0-9a-f]{6}\b/gi)].map(m => m[0].toLowerCase());
-const allowed = new Set(Object.values(TOKENS).map(v => v.toLowerCase()));
+const hexes = (svg: string): string[] => [...svg.matchAll(/#[0-9a-f]{6}\b/gi)].map((m) => m[0].toLowerCase());
+const allowed = new Set(Object.values(TOKENS).map((v) => v.toLowerCase()));
 
 describe('original art', () => {
     it('each colour has its own crystal shape: hexagon cyan, triangle amber, diamond magenta', () => {
         expect(SHAPE_OF).toEqual({ cyan: 'hexagon', amber: 'triangle', magenta: 'diamond' });
-        expect(COLORS.map(c => shapePoints(SHAPE_OF[c], 0, 0, 1).length / 2)).toEqual([6, 3, 4]);
+        expect(COLORS.map((c) => shapePoints(SHAPE_OF[c], 0, 0, 1).length / 2)).toEqual([6, 3, 4]);
     });
     it('T29 colour-blind check: crystals and cells differ by shape, not only by colour', () => {
         const strip = (svg: string): string => svg.replace(/#[0-9a-f]{6}/gi, '#');
-        expect(new Set(COLORS.map(c => strip(crystalSvg(c)))).size).toBe(3);
-        expect(new Set(COLORS.map(c => strip(cellSvg(c)))).size).toBe(3);
+        expect(new Set(COLORS.map((c) => strip(crystalSvg(c)))).size).toBe(3);
+        expect(new Set(COLORS.map((c) => strip(cellSvg(c)))).size).toBe(3);
     });
     it('a capsule preview draws two cells joined by a bridge', () => {
         const svg = capsuleSvg(['cyan', 'magenta']);
@@ -24,10 +32,18 @@ describe('original art', () => {
         expect(svg.match(/data-part="cell"/g)).toHaveLength(2);
     });
     it('art uses only the spec tokens', () => {
-        for (const c of COLORS) for (const svg of [crystalSvg(c), cellSvg(c), crystalSvg(c, 32, true), capsuleSvg([c, c])]) {
-            for (const hex of hexes(svg)) expect(allowed).toContain(hex);
-        }
-        expect(TOKENS).toEqual({ fond: '#111827', panneau: '#1F2937', cyan: '#38BDF8', amber: '#FBBF24', magenta: '#F472B6', texte: '#F9FAFB' });
+        for (const c of COLORS)
+            for (const svg of [crystalSvg(c), cellSvg(c), crystalSvg(c, 32, true), capsuleSvg([c, c])]) {
+                for (const hex of hexes(svg)) expect(allowed).toContain(hex);
+            }
+        expect(TOKENS).toEqual({
+            fond: '#111827',
+            panneau: '#1F2937',
+            cyan: '#38BDF8',
+            amber: '#FBBF24',
+            magenta: '#F472B6',
+            texte: '#F9FAFB',
+        });
     });
     it('animations last 120 to 350 ms and are skipped under reduced motion', () => {
         for (const kind of ['lock', 'match', 'gravity', 'combo'] as const) {
@@ -51,15 +67,21 @@ describe('layout', () => {
 describe('purity of the engine', () => {
     it('no file of the engine or the contracts imports pixi.js or react', () => {
         for (const dir of ['packages/engine/src', 'packages/contracts/src']) {
-            for (const f of readdirSync(dir)) expect(readFileSync(join(dir, f), 'utf8')).not.toMatch(/from ['"](pixi\.js|react)/);
+            for (const f of readdirSync(dir))
+                expect(readFileSync(join(dir, f), 'utf8')).not.toMatch(/from ['"](pixi\.js|react)/);
         }
     });
 });
 
-it('les textures par défaut ont trois marques discernables sans couleur', () => {
-    const shapes = ['cyan', 'ambre', 'magenta'].map((shade) => {
-        const svg = readFileSync(`packages/assets/source/svg/cellule-${shade}-unie.svg`, 'utf8');
-        return [...svg.matchAll(/points="([^"]+)"/g)].at(1)?.[1]?.split(' ').length;
-    });
-    expect(shapes).toEqual([6, 3, 4]);
+// Règle de l'auteur de la spec : cellules UNIES par défaut, comme sur la planche de gameplay ; la forme
+// ne distingue les couleurs qu'en mode daltonien (PRD « options de contraste et formes additionnelles », T29).
+it('les textures par défaut sont unies et les formes sont réservées au mode daltonien', () => {
+    const polygons = (name: string) =>
+        [
+            ...readFileSync(`packages/assets/source/svg/${name}.svg`, 'utf8').matchAll(
+                /<polygon points="([^"]+)"/g,
+            ),
+        ].map((m) => m[1]?.split(' ').length);
+    for (const shade of ['cyan', 'ambre', 'magenta']) expect(polygons(`cellule-${shade}-unie`)).toEqual([8]);
+    expect(['cyan', 'ambre', 'magenta'].map((shade) => polygons(`cellule-${shade}`)[1])).toEqual([6, 3, 4]);
 });
