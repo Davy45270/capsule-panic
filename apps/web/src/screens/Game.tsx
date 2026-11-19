@@ -23,6 +23,7 @@ const BUTTONS: [CommandType, ArtworkName, string][] = [
 
 export function Game({
     initial,
+    initialStats,
     settings,
     onEnd,
     onMenu,
@@ -31,10 +32,11 @@ export function Game({
     onError,
 }: {
     initial: GameState;
+    initialStats?: LevelStats;
     settings: Settings;
     onEnd(state: GameState, stats: LevelStats): void;
-    onMenu(state: GameState): void;
-    onSave(state: GameState): void;
+    onMenu(state: GameState, stats?: LevelStats): void;
+    onSave(state: GameState, stats: LevelStats): void | Promise<void>;
     onRestart(): void;
     onError(): void;
 }) {
@@ -84,37 +86,55 @@ export function Game({
                     return;
                 }
                 view = v;
-                const session = new GameSession(initial, {
-                    render: (s, ghost) => v.render(s, ghost),
-                    play: async (events, before) => {
-                        setAnimating(true);
-                        try {
-                            await v.play(events, before, setCombo);
-                        } finally {
-                            if (!cancelled) {
-                                setAnimating(false);
-                                setCombo(null);
+                let published = initial;
+                const session = new GameSession(
+                    initial,
+                    {
+                        render: (s, ghost) => {
+                            if (!cancelled) v.render(s, ghost);
+                        },
+                        play: async (events, before) => {
+                            setAnimating(true);
+                            try {
+                                await v.play(events, before, setCombo);
+                            } finally {
+                                if (!cancelled) {
+                                    setCombo(null);
+                                }
                             }
-                        }
+                        },
+                        onChange: (s, spawned) => {
+                            if (cancelled) return;
+                            if (spawned) {
+                                loop.resetCadence();
+                                setSpawns((n) => n + 1);
+                            }
+                            // La pause de visibilité peut accompagner un rechargement en pleine chute.
+                            if (
+                                s.phase === 'PAUSED' &&
+                                published.phase === 'FALLING' &&
+                                !spawned &&
+                                !document.hidden
+                            )
+                                void callbacks.current.onSave(s, session.stats);
+                            published = s;
+                            setState(s);
+                            setAnimating(false);
+                        },
+                        onSpawn: (s) => {
+                            if (cancelled) return;
+                            setAnimating(true);
+                            return callbacks.current.onSave(s, session.stats);
+                        },
+                        onEnd: (s) => {
+                            if (!cancelled) {
+                                loop.stop();
+                                callbacks.current.onEnd(s, session.stats);
+                            }
+                        },
                     },
-                    onChange: (s) => {
-                        if (cancelled) return;
-                        setState(s);
-                        if (s.phase === 'PAUSED') callbacks.current.onSave(s);
-                    },
-                    onSpawn: (s) => {
-                        if (cancelled) return;
-                        loop.resetCadence();
-                        setSpawns((n) => n + 1);
-                        callbacks.current.onSave(s);
-                    },
-                    onEnd: (s) => {
-                        if (!cancelled) {
-                            loop.stop();
-                            callbacks.current.onEnd(s, session.stats);
-                        }
-                    },
-                });
+                    initialStats,
+                );
                 sessionRef.current = session;
                 loop.start();
                 setReady(true);
@@ -137,7 +157,7 @@ export function Game({
             view?.destroy();
             sessionRef.current = null;
         };
-    }, [initial]);
+    }, [initial, initialStats]);
 
     const send = (type: CommandType): void => {
         const session = sessionRef.current;
@@ -302,12 +322,12 @@ export function Game({
                         <ArtButton
                             name="accueil-commandes-apercu"
                             label="Accueil"
-                            onClick={() => onMenu(state)}
+                            onClick={() => onMenu(state, sessionRef.current?.stats)}
                         />
                         <ArtButton
                             name="quitter-commandes-apercu"
                             label="Quitter"
-                            onClick={() => onMenu(state)}
+                            onClick={() => onMenu(state, sessionRef.current?.stats)}
                         />
                     </nav>
                 </dialog>

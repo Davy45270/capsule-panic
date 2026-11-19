@@ -82,7 +82,7 @@ export const MAX_GRAVITY_STEPS = 128 * 16;
 /** Répète les micro-pas jusqu'à stabilité ; `onStep` reçoit les composants déplacés à chaque pas. */
 export function settle(
     board: readonly Cell[],
-    onStep?: (moved: string[]) => void,
+    onStep?: (moved: string[], board: readonly Cell[]) => void,
     maxSteps = MAX_GRAVITY_STEPS,
 ): { board: Cell[]; steps: number } {
     let current = [...board];
@@ -90,7 +90,7 @@ export function settle(
         const next = gravityStep(current);
         if (next.moved.length === 0) return { board: current, steps };
         if (steps >= maxSteps) throw new Error('gravity did not settle');
-        onStep?.(next.moved);
+        onStep?.(next.moved, next.board);
         current = next.board;
     }
 }

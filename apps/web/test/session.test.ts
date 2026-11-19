@@ -96,7 +96,9 @@ describe('game session', () => {
         const v = fakeView();
         const session = new GameSession(single, {
             ...v.hooks,
-            onSpawn: (st) => spawned.push(st.active?.id ?? null),
+            onSpawn: (st) => {
+                spawned.push(st.active?.id ?? null);
+            },
             onEnd: (st) => {
                 ended = st;
             },
@@ -128,4 +130,88 @@ it('[E152] diffère la sauvegarde à l’apparition et la pause pendant la réso
     await Promise.resolve();
     expect(saved).toEqual([session.state]);
     expect(session.state.phase).toBe('PAUSED');
+});
+
+it('[E256] attend la sauvegarde de la capsule avant de publier son score et de reprendre la chute', async () => {
+    const before = createGame({ seed: 'reprise', level: 0, speed: 'low' });
+    const checkpoint = Promise.withResolvers<undefined>();
+    const shown: GameState[] = [];
+    let saved: GameState | undefined;
+    const hooks = {
+        ...fakeView().hooks,
+        onChange: (state: GameState) => {
+            shown.push(state);
+        },
+        onSpawn: (state: GameState) => {
+            saved = state;
+            return checkpoint.promise;
+        },
+    };
+    const session = new GameSession(before, hooks);
+
+    session.command('HARD_DROP');
+    expect(saved?.active?.id).toBe('c2');
+    expect(shown.map((state) => state.active?.id)).toEqual(['c1']);
+    session.tick();
+    expect(session.state).toBe(saved);
+
+    checkpoint.resolve(undefined);
+    await checkpoint.promise;
+    expect(shown.at(-1)).toBe(saved);
+    expect(shown.at(-1)?.active).toMatchObject({ id: 'c2', x: 3, y: 1, orientation: 0 });
+    expect(shown.at(-1)?.score).toBeGreaterThan(0);
+    expect(session.command('MOVE_LEFT')).toBe(true);
+    expect(session.state.active?.x).toBe(2);
+    expect(saved?.active?.x).toBe(3);
+});
+
+it('[E094] rejoue dans l’ordre les commandes reçues pendant une sauvegarde', async () => {
+    const checkpoint = Promise.withResolvers<undefined>();
+    const session = new GameSession(createGame({ seed: 'reprise', level: 0, speed: 'low' }), {
+        ...fakeView().hooks,
+        onSpawn: () => checkpoint.promise,
+    });
+    session.command('HARD_DROP');
+    session.command('MOVE_LEFT');
+    session.command('ROTATE_CW');
+    expect(session.state.active).toMatchObject({ id: 'c2', x: 3, orientation: 0 });
+    checkpoint.resolve(undefined);
+    await checkpoint.promise;
+    expect(session.state.active).toMatchObject({ id: 'c2', x: 2, orientation: 1 });
+});
+
+it('[E094] publie une apparition même si la résolution libère le même identifiant', async () => {
+    const view = fakeView();
+    const spawns: GameState[] = [];
+    const initial = aboutToMatch();
+    const session = new GameSession(
+        {
+            ...initial,
+            active: { id: 'c1', colors: ['cyan', 'cyan'], x: 2, y: 1, orientation: 1 },
+            board: initial.board.map((cell, index) => (index === 15 * 8 + 2 ? null : cell)),
+            obstaclesRemaining: 3,
+        },
+        {
+            ...view.hooks,
+            onChange: (state: GameState, spawned?: boolean) => {
+                if (spawned) spawns.push(state);
+            },
+        },
+    );
+    session.command('HARD_DROP');
+    view.release();
+    await Promise.resolve();
+    expect(spawns.map((state) => state.active?.id)).toEqual(['c1']);
+});
+
+it('la vue ne reçoit pas le plateau final avant les effets de cascade', async () => {
+    const view = fakeView();
+    const frames: GameState[] = [];
+    const initial = aboutToMatch();
+    const session = new GameSession(initial, { ...view.hooks, render: (state) => frames.push(state) });
+    session.command('HARD_DROP');
+    expect(frames).toEqual([initial]);
+    view.release();
+    await Promise.resolve();
+    expect(frames).toEqual([initial, session.state]);
 });

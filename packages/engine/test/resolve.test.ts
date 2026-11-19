@@ -1,7 +1,7 @@
 import { propertyRuns } from './property-runs';
 import { describe, it, expect } from 'vitest';
 import fc from 'fast-check';
-import type { Cell } from '@capsule-panic/contracts';
+import type { BoardEvent, Cell } from '@capsule-panic/contracts';
 import { canPlace, findMatches, getAvailableMoves, resolve, restore, serialize, SPAWN, step } from '../src/index';
 import { boardFrom, stateWith } from './helpers';
 
@@ -29,6 +29,17 @@ describe('resolution, score, end of level', () => {
         expect(t.state.board[13 * 8]).toBeNull();
         expect(t.state.board[13 * 8 + 4]).toMatchObject({ color: 'magenta', linkedToId: null });
         expect(t.state.phase).toBe('FALLING');
+    });
+    it('les événements livrent le plateau verrouillé, la suppression et chaque chute de la cascade', () => {
+        const board = boardFrom(['c.......', 'c.......', 'aaa.....', 'CAMAM...', 'CMAMA...']);
+        const s = stateWith(board, { x: 3, y: 1, orientation: 1, colors: ['amber', 'magenta'] });
+        const t = step(s, { type: 'HARD_DROP' });
+        const events = t.events.filter(e => e.type === 'LOCKED' || e.type === 'MATCH_REMOVED' || e.type === 'GRAVITY_STEP');
+        const frames = events.map((e: BoardEvent) => e.board);
+        expect(frames[0]?.[13 * 8 + 3]).toMatchObject({ kind: 'segment', color: 'amber' });
+        expect(frames[1]?.[13 * 8 + 3]).toBeNull();
+        expect(frames[2]?.[13 * 8]).toMatchObject({ kind: 'segment', color: 'cyan' });
+        expect(frames.at(-1)).toEqual(t.state.board);
     });
     it('[E036][E088][E090][E252] T18 removing the last obstacle gives WON before the spawn test', () => {
         const s = restore(serialize(stateWith(blockedSpawn(['....Ccc.']), { x: 7, y: 1, orientation: 0, colors: ['cyan', 'amber'] })));

@@ -40,6 +40,9 @@ function invariantErrors(state: GameState): string[] {
     }
     if (obstacles !== state.obstaclesRemaining) errors.push(`obstaclesRemaining ${String(state.obstaclesRemaining)} but ${String(obstacles)} obstacles on the board`);
     const active = state.active;
+    if (!active && (state.phase === 'READY' || state.phase === 'FALLING' || state.phase === 'PAUSED')) {
+        errors.push(`/active une capsule est requise pour la phase ${state.phase}`);
+    }
     if (active) {
         const offset = ORIENTATION_OFFSETS[active.orientation];
         for (const [x, y] of [[active.x, active.y], [active.x + offset.x, active.y + offset.y]] as const) {

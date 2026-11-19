@@ -55,3 +55,11 @@ describe('purity of the engine', () => {
         }
     });
 });
+
+it('les textures par défaut ont trois marques discernables sans couleur', () => {
+    const shapes = ['cyan', 'ambre', 'magenta'].map((shade) => {
+        const svg = readFileSync(`packages/assets/source/svg/cellule-${shade}-unie.svg`, 'utf8');
+        return [...svg.matchAll(/points="([^"]+)"/g)].at(1)?.[1]?.split(' ').length;
+    });
+    expect(shapes).toEqual([6, 3, 4]);
+});

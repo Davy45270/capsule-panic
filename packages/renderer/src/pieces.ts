@@ -1,3 +1,4 @@
+import caseSombreJeu from '../../assets/sprites/sprite-case-sombre-jeu.png';
 import reacteurChambreOrigine from '../../assets/runtime/sprite-reacteur-chambre-origine.webp';
 import pontGauche from '../../assets/sprites/sprite-pont-gauche.png';
 import pontHaut from '../../assets/sprites/sprite-pont-haut.png';
@@ -23,6 +24,7 @@ import celluleMagenta from '../../assets/sprites/sprite-cellule-magenta.png';
 import celluleMagentaUnie from '../../assets/source/svg/cellule-magenta-unie.svg';
 
 export const pieceArtwork = {
+    'case-sombre-jeu': caseSombreJeu,
     'reacteur-chambre-origine': reacteurChambreOrigine,
     'pont-gauche': pontGauche,
     'pont-haut': pontHaut,
@@ -56,5 +58,5 @@ export function textureFor(kind: 'obstacle' | 'segment', color: Color, colorBlin
     const shade = colors[color];
     if (kind === 'obstacle') return { art: `cristal-${shade}` as const, form: forms[color] };
     if (colorBlind) return { art: `cellule-${shade}` as const, form: forms[color] };
-    return { art: `cellule-${shade}-unie` as const, form: 'aucune' };
+    return { art: `cellule-${shade}-unie` as const, form: forms[color] };
 }

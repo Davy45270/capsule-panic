@@ -119,3 +119,12 @@ it('[E232] le schéma accepte les bornes du niveau et refuse de les dépasser', 
     for (const level of [0, 20]) expect(errorsOf({ ...validState(), level })).toEqual([]);
     for (const level of [-1, 21, 3.5]) expect(errorsOf({ ...validState(), level }).join(' ')).toContain('/level');
 });
+
+it('[E154] refuse l’absence de capsule dans toute phase qui permet de reprendre la chute', () => {
+    for (const phase of ['READY', 'FALLING', 'PAUSED'] as const) {
+        expect(errorsOf({ ...validState(), phase })).toEqual([]);
+        expect(errorsOf({ ...validState(), phase, active: null })).toEqual([
+            '/active une capsule est requise pour la phase ' + phase,
+        ]);
+    }
+});
