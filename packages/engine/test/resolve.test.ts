@@ -1,7 +1,7 @@
 import { propertyRuns } from './property-runs';
 import { describe, it, expect } from 'vitest';
 import fc from 'fast-check';
-import type { Cell } from '@capsule-panic/contracts';
+import type { BoardEvent, Cell } from '@capsule-panic/contracts';
 import { canPlace, findMatches, getAvailableMoves, resolve, restore, serialize, SPAWN, step } from '../src/index';
 import { boardFrom, stateWith } from './helpers';
 
@@ -35,7 +35,7 @@ describe('resolution, score, end of level', () => {
         const s = stateWith(board, { x: 3, y: 1, orientation: 1, colors: ['amber', 'magenta'] });
         const t = step(s, { type: 'HARD_DROP' });
         const events = t.events.filter(e => e.type === 'LOCKED' || e.type === 'MATCH_REMOVED' || e.type === 'GRAVITY_STEP');
-        const frames = events.map(e => (e as { board?: Cell[] }).board);
+        const frames = events.map((e: BoardEvent) => e.board);
         expect(frames[0]?.[13 * 8 + 3]).toMatchObject({ kind: 'segment', color: 'amber' });
         expect(frames[1]?.[13 * 8 + 3]).toBeNull();
         expect(frames[2]?.[13 * 8]).toMatchObject({ kind: 'segment', color: 'cyan' });

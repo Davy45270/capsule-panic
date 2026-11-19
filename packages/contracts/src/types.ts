@@ -18,6 +18,10 @@ export interface GameEvent {
     type: 'MOVED' | 'ROTATED' | 'LOCKED' | 'MATCH_REMOVED' | 'GRAVITY_STEP' | 'CASCADE_END' | 'SPAWNED' | 'WON' | 'LOST' | 'PAUSED' | 'RESUMED';
     payload?: unknown;
 }
+export interface BoardEvent extends GameEvent {
+    /** Plateau après le verrouillage, une suppression ou un pas de gravité. */
+    board?: readonly Cell[];
+}
 export interface Transition { state: GameState; events: GameEvent[] }
 export interface Position { x: number; y: number }
 

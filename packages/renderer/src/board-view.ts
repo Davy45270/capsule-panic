@@ -1,7 +1,7 @@
 // Rendu PixiJS du réacteur. Aucune règle ici : on dessine un état et on anime des événements déjà résolus.
 import { Application, Assets, Container, Graphics, loadTextures, Sprite } from 'pixi.js';
 import { HEIGHT, WIDTH } from '@capsule-panic/contracts';
-import type { ActiveCapsule, Cell, Color, GameEvent, GameState, Position } from '@capsule-panic/contracts';
+import type { ActiveCapsule, Cell, Color, BoardEvent, GameState, Position } from '@capsule-panic/contracts';
 import { animationDuration, cellPoints, TOKENS } from './art';
 import { boardLayout } from './layout';
 import { pieceArtwork, textureFor } from './pieces';
@@ -14,7 +14,7 @@ export interface ViewOptions {
 }
 export interface BoardView {
     render(state: GameState, ghost: readonly Position[]): void;
-    play(events: readonly GameEvent[], before: GameState, onMatch: (match: Match) => void): Promise<void>;
+    play(events: readonly BoardEvent[], before: GameState, onMatch: (match: Match) => void): Promise<void>;
     setOptions(options: ViewOptions): void;
     destroy(): void;
     readonly canvas: HTMLCanvasElement;
@@ -128,18 +128,25 @@ export async function createBoardView(host: HTMLElement, initial: ViewOptions): 
 
     /** Éclats sur les cases supprimées ; la promesse se résout à la fin (immédiatement en mouvement réduit). */
     async function play(
-        events: readonly GameEvent[],
+        events: readonly BoardEvent[],
         before: GameState,
         onMatch: (match: Match) => void,
     ): Promise<void> {
-        const matches = events
-            .filter((event) => event.type === 'MATCH_REMOVED')
-            .map((event) => event.payload as Match);
-        for (const match of matches) {
-            const duration = animationDuration(match.chain > 1 ? 'combo' : 'match', options.reducedMotion);
-            if (!duration || disposed) break;
-            onMatch(match);
-            await fadeMatch(match, before, duration);
+        const stopped = () => disposed || options.reducedMotion;
+        let frame: GameState = { ...before, phase: 'RESOLVING', active: null };
+        for (const event of events) {
+            if (stopped()) return;
+            if (event.type === 'MATCH_REMOVED') {
+                const match = event.payload as Match;
+                onMatch(match);
+                await fadeMatch(match, frame, animationDuration(match.chain > 1 ? 'combo' : 'match', false));
+            }
+            if (stopped()) return;
+            if (event.board) {
+                frame = { ...frame, board: [...event.board] };
+                render(frame, []);
+            }
+            if (event.type === 'GRAVITY_STEP') await animate(animationDuration('gravity', false));
         }
     }
 
@@ -165,6 +172,17 @@ export async function createBoardView(host: HTMLElement, initial: ViewOptions): 
             return sprite(effects, glows[index % glows.length] ?? glows[0], x - s / 2, y - s / 2, s * 2);
         });
         const sizes = images.map((image) => ({ image, width: image.width, height: image.height }));
+        effects.alpha = 1;
+        return animate(duration, (progress) => {
+            effects.alpha = 1 - progress;
+            for (const { image, width, height } of sizes) {
+                const size = 1 + 0.18 * progress;
+                image.setSize(width * size, height * size);
+            }
+        });
+    }
+
+    function animate(duration: number, advance?: (progress: number) => void): Promise<void> {
         return new Promise((resolve) => {
             let elapsed = 0;
             const finish = (): void => {
@@ -176,14 +194,9 @@ export async function createBoardView(host: HTMLElement, initial: ViewOptions): 
             const frame = (ticker: { deltaMS: number }): void => {
                 elapsed += ticker.deltaMS;
                 const progress = Math.min(1, elapsed / duration);
-                effects.alpha = 1 - progress;
-                for (const { image, width, height } of sizes) {
-                    const size = 1 + 0.18 * progress;
-                    image.setSize(width * size, height * size);
-                }
+                advance?.(progress);
                 if (progress >= 1 || options.reducedMotion) finish();
             };
-            effects.alpha = 1;
             stopEffect = finish;
             app.ticker.add(frame);
         });

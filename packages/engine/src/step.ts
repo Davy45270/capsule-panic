@@ -27,7 +27,7 @@ export function getLandingProjection(state: Readonly<GameState>): Position[] {
 /** Verrouillage, résolution complète, puis victoire, défaite ou apparition : tout dans le même `step`. */
 function lockAndContinue(state: GameState, active: ActiveCapsule, log: EventLog): GameState {
     const board = lockCapsule(state.board, active);
-    log.emit('LOCKED', { capsuleId: active.id, cells: capsuleCells(active) });
+    log.emit('LOCKED', { capsuleId: active.id, cells: capsuleCells(active) }, board);
     return spawnNext(resolveAfterLock({ ...state, board, active: null, phase: 'RESOLVING' }, log), log);
 }
 

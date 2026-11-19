@@ -1,10 +1,10 @@
 import { getLandingProjection, obstacleCount, step } from '@capsule-panic/engine';
-import type { GameEvent, GameState, Position } from '@capsule-panic/contracts';
+import type { BoardEvent, GameState, Position } from '@capsule-panic/contracts';
 import type { CommandType } from '@capsule-panic/input';
 
 export interface SessionHooks {
     render(state: GameState, ghost: readonly Position[]): void;
-    play(events: readonly GameEvent[], before: GameState): Promise<void>;
+    play(events: readonly BoardEvent[], before: GameState): Promise<void>;
     onChange?(state: GameState, spawned: boolean): void;
     /** Une promesse retarde la publication et la reprise des commandes jusqu'à la fin de l'écriture. */
     onSpawn?(state: GameState): void | Promise<void>;
@@ -99,7 +99,6 @@ export class GameSession {
         };
         if (t.events.some((e) => e.type === 'MATCH_REMOVED')) {
             this.#animating = true;
-            this.#render();
             void this.hooks.play(t.events, before).then(finish, finish);
         } else {
             finish();
