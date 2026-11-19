@@ -87,6 +87,7 @@ export function Game({
                 }
                 view = v;
                 let published = initial;
+                let checkpoint = initial;
                 const session = new GameSession(
                     initial,
                     {
@@ -109,13 +110,7 @@ export function Game({
                                 loop.resetCadence();
                                 setSpawns((n) => n + 1);
                             }
-                            // La pause de visibilité peut accompagner un rechargement en pleine chute.
-                            if (
-                                s.phase === 'PAUSED' &&
-                                published.phase === 'FALLING' &&
-                                !spawned &&
-                                !document.hidden
-                            )
+                            if (s.phase === 'PAUSED' && published.phase === 'FALLING' && s !== checkpoint)
                                 void callbacks.current.onSave(s, session.stats);
                             published = s;
                             setState(s);
@@ -124,6 +119,7 @@ export function Game({
                         onSpawn: (s) => {
                             if (cancelled) return;
                             setAnimating(true);
+                            checkpoint = s;
                             return callbacks.current.onSave(s, session.stats);
                         },
                         onEnd: (s) => {
