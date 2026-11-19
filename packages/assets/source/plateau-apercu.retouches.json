@@ -34,11 +34,12 @@
       [
         "#FBBF24",
         null,
-        "#FBB400",
-        "jaune 34–53°"
+        "#FBB600",
+        "jaune 20–65°"
       ]
     ],
-    "transformation": "découpe + recoloration (jetons A2)"
+    "transformation": "découpe + recoloration (jetons A2)",
+    "rampe": "projection"
   },
   {
     "id": "segment-bleu-plateau-apercu",
@@ -75,10 +76,11 @@
       [
         "#FBBF24",
         null,
-        "#FBB400",
-        "jaune 31–53°"
+        "#FBB601",
+        "jaune 20–65°"
       ]
     ],
-    "transformation": "découpe + recoloration (jetons A2)"
+    "transformation": "découpe + recoloration (jetons A2)",
+    "rampe": "projection"
   }
 ]

@@ -102,12 +102,8 @@ def retoucher(planche, fiche, travail, cellules):
         elif fiche.get("rampe") == "luminance":
             teinter(original, couleur, teinte, palette_aplatie(planche, fiche["boite"]), rouge=bool(region))
         else:
-            milieu = 188 if couleur == "#FBBF24" else 138
-            magick(original, "-colorspace", "gray", "-colorspace", "sRGB",
-                   "(", "-size", f"1x{milieu}", f"gradient:#080e22-{couleur}",
-                   "-size", f"1x{256 - milieu}", f"gradient:{couleur}-#fff8ff",
-                   "-append", "-rotate", "90", "-flop", ")",
-                   "-channel", "RGB", "-clut", "+channel", f"PNG32:{teinte}")
+            # Plus de rampe implicite : la rampe linéaire sur le gris (pivot 188 ou 138) n'était pas celle déclarée.
+            raise ValueError(f"{identifiant} : rampe à déclarer (projection ou luminance)")
         if region:
             _, x, y = region.split("+")
             # Les pixels bleus du panneau autour des blocs restent intacts.
@@ -192,8 +188,8 @@ def transformations_derive(fiche):
         rampe = fiche.get("rampe")
         # Forme lue par le contrôle de chaîne : « recoloration <nom> H1–H2°→#CIBLE », puis entre parenthèses le ton
         # source (corps de la zone de planche) et le mode. Une rampe « rampe #SOMBRE→#CIBLE→#CLAIR » n'est déclarée que
-        # si la retouche suit vraiment ces trois arrêts (projection par clarté, ou rampe linéaire d'origine).
-        etapes.append(f"recoloration {teintes}→{couleur} (source {source}, {MODES.get(rampe, 'rampe linéaire')})")
+        # si la retouche suit vraiment ces trois arrêts (projection par clarté).
+        etapes.append(f"recoloration {teintes}→{couleur} (source {source}, {MODES[rampe]})")
         if rampe == "projection":
             etapes.append(f"retouche jeton {jeton} A2 ({zone}) : pixels de teinte {plage(teintes)[0]:g}–{plage(teintes)[1]:g}° "
                           f"et de saturation HLS ≥ 0,08 projetés par clarté HLS sur la rampe {ENCRE_MARINE}→{couleur}→{CLAIR}, "
@@ -205,9 +201,6 @@ def transformations_derive(fiche):
                           f"de la planche (même teinte, encrage, reflets) et {couleur}, ton dominant de la planche égal "
                           f"à {couleur} ; sans ton intermédiaire de cette teinte dans la planche, ombres bornées au "
                           "voisinage du jeton et encrage vers le ton le plus sombre")
-        else:
-            etapes.append(f"retouche jeton {jeton} A2 ({zone}) : luminance sur la rampe #080e22→{couleur}→#fff8ff, "
-                          "ombres et reflets conservés")
     if fiche.get("rabattement_palette"):
         etapes.append(RABATTEMENT_TEINTE if fiche.get("rampe") == "luminance" else RABATTEMENT)
     if not etapes:
