@@ -1,10 +1,16 @@
 // @vitest-environment happy-dom
 import { afterEach, expect, it, vi } from 'vitest';
-import { Assets, Sprite, Texture } from 'pixi.js';
+import { Assets, Graphics, Sprite, Texture } from 'pixi.js';
 import type { Container } from 'pixi.js';
-import { createGame, getLandingProjection } from '@capsule-panic/engine';
+import { createGame, getLandingProjection, step } from '@capsule-panic/engine';
+import type { BoardEvent, GameState, Position } from '@capsule-panic/contracts';
+import expectTrail from '../../assets/sprites/sprite-trainee-deplacement-apercu.png';
+import expectRotation from '../../assets/sprites/sprite-fleche-rotation-jeu.png';
+import expectLock from '../../assets/sprites/sprite-trainee-verrouillage-jeu.png';
 import { createBoardView } from '../src/board-view';
-import { pieceArtwork } from '../src/pieces';
+import { pieceArtwork, textureFor } from '../src/pieces';
+import { animationDuration, cellPoints, TOKENS } from '../src/art';
+import { boardFrom, stateWith } from '../../engine/test/helpers';
 import { boardLayout } from '../src/layout';
 import expectCase from '../../assets/sprites/sprite-case-sombre-jeu.png';
 
@@ -122,6 +128,219 @@ it('[E263] dessine les textures à motif renforcé sur les deux segments actifs'
         ]);
         expect(fixture.sprites(pieceArtwork['cellule-cyan-unie'])).toHaveLength(0);
         expect(fixture.sprites(pieceArtwork['cellule-magenta-unie'])).toHaveLength(0);
+    } finally {
+        fixture.view.destroy();
+    }
+});
+
+function advance(deltaMS: number): void {
+    for (const frame of [...display.frames]) frame({ deltaMS });
+}
+
+it.each([
+    { command: 'MOVE_LEFT', art: expectTrail, axis: 'x' },
+    { command: 'ROTATE_CW', art: expectRotation, axis: 'y' },
+] as const)(
+    '[E438] anime $command à chaque image et respecte le mouvement réduit',
+    async ({ command, art, axis }) => {
+        const fixture = await createView();
+        try {
+            const before = {
+                ...createGame({ seed: 'animation', level: 0, speed: 'low' }),
+                active: { id: 'c1', colors: ['cyan', 'magenta'], x: 3, y: 1, orientation: 0 },
+            } satisfies GameState;
+            const after = step(before, { type: command }).state;
+            const render: (state: GameState, ghost: readonly Position[], before?: GameState) => void =
+                fixture.view.render.bind(fixture.view);
+            const position = () => fixture.sprites(pieceArtwork['cellule-magenta-unie']).at(0)?.[axis] ?? NaN;
+            fixture.view.render(before, []);
+            const start = position();
+            fixture.view.render(after, []);
+            const end = position();
+            expect(start).not.toBe(end);
+            fixture.view.render(before, []);
+            render(after, [], before);
+            expect(fixture.sprites(art)).toHaveLength(1);
+            advance(60);
+            expect(position()).toBeGreaterThan(Math.min(start, end));
+            expect(position()).toBeLessThan(Math.max(start, end));
+            advance(59);
+            expect(fixture.sprites(art)).toHaveLength(1);
+            advance(1);
+            expect(position()).toBe(end);
+            expect(fixture.sprites(art)).toHaveLength(0);
+            fixture.view.setOptions({ reducedMotion: true, highContrast: false });
+            render(after, [], before);
+            expect(position()).toBe(end);
+            expect(fixture.sprites(art)).toHaveLength(0);
+            expect(display.frames.size).toBe(0);
+        } finally {
+            fixture.view.destroy();
+        }
+    },
+);
+
+it('[E531] montre une descente puis le verrouillage avant de permettre l’apparition', async () => {
+    const fixture = await createView();
+    try {
+        const before = {
+            ...createGame({ seed: 'animation', level: 0, speed: 'low' }),
+            active: { id: 'c1', colors: ['cyan', 'magenta'], x: 3, y: 1, orientation: 0 },
+        } satisfies GameState;
+        const { state: after, events } = step(before, { type: 'HARD_DROP' });
+        expect(events.some(({ type }) => type === 'MATCH_REMOVED')).toBe(false);
+        const { cell, originY } = boardLayout(390, 600);
+        const landing = Math.max(...getLandingProjection(before).map(({ y }) => y));
+        fixture.view.render(before, []);
+        let finished = false;
+        const played = fixture.view
+            .play(events, before, () => {
+                throw new Error('Alignement inattendu');
+            })
+            .then(() => {
+                finished = true;
+            });
+        advance(60);
+        const cyan = () => fixture.sprites(pieceArtwork['cellule-cyan-unie']).at(0)?.y ?? NaN;
+        expect(cyan()).toBeGreaterThan(originY + cell);
+        expect(cyan()).toBeLessThan(originY + landing * cell);
+        advance(60);
+        await Promise.resolve();
+        expect(cyan()).toBe(originY + landing * cell);
+        expect(fixture.sprites(expectLock)).toHaveLength(1);
+        advance(119);
+        expect(finished).toBe(false);
+        advance(1);
+        await played;
+        expect(fixture.sprites(expectLock)).toHaveLength(0);
+        expect(after.active?.id).not.toBe(before.active.id);
+        expect(cyan()).toBe(originY + landing * cell);
+
+        fixture.view.setOptions({ reducedMotion: true, highContrast: false });
+        fixture.view.render(before, []);
+        await fixture.view.play(events, before, () => {
+            throw new Error('Alignement inattendu');
+        });
+        expect(cyan()).toBe(originY + cell);
+        expect(display.frames.size).toBe(0);
+    } finally {
+        fixture.view.destroy();
+    }
+});
+
+it('[E400] la texture couvre toute la largeur et toute la hauteur de chaque case', async () => {
+    const fixture = await createView();
+    try {
+        fixture.view.render(createGame({ seed: 'grille', level: 0, speed: 'low' }), []);
+        const { cell } = boardLayout(390, 600);
+        const tiles = fixture.sprites(expectCase);
+        expect(tiles).toHaveLength(128);
+        for (const tile of tiles) {
+            const bounds = tile.getBounds();
+            expect(bounds.width).toBe(cell);
+            expect(bounds.height).toBe(cell);
+        }
+    } finally {
+        fixture.view.destroy();
+    }
+});
+
+it('[E103] le contraste ajoute un contour clair aux cellules du réacteur', async () => {
+    const fixture = await createView();
+    try {
+        const paint = vi.spyOn(Graphics.prototype, 'stroke');
+        const state = stateWith(boardFrom(['.......A']));
+        fixture.view.render(state, []);
+        expect(paint).not.toHaveBeenCalled();
+        fixture.view.setOptions({ highContrast: true, reducedMotion: false });
+        expect(paint).toHaveBeenCalledTimes(3);
+        expect(paint).toHaveBeenCalledWith({ width: 2, color: TOKENS.texte });
+        const outline = display.stage?.children.find((child): child is Graphics => child instanceof Graphics);
+        const { cell, originX, originY } = boardLayout(390, 600);
+        const pivot = state.active;
+        if (!pivot || !outline) throw new Error('Capsule et contours attendus');
+        expect(outline.context.instructions.map((instruction) => instruction.action)).toEqual([
+            'stroke',
+            'stroke',
+            'stroke',
+        ]);
+        expect(outline.context.instructions[1]).toMatchObject({
+            data: {
+                path: {
+                    shapePath: {
+                        shapePrimitives: [
+                            {
+                                shape: {
+                                    points: cellPoints(
+                                        originX + pivot.x * cell + 1,
+                                        originY + pivot.y * cell + 1,
+                                        cell - 2,
+                                    ),
+                                },
+                            },
+                        ],
+                    },
+                },
+            },
+        });
+    } finally {
+        fixture.view.destroy();
+    }
+});
+
+it('[E207] garde l’image verrouillée pendant le retrait et laisse chaque micro-pas visible sur le réacteur', async () => {
+    const fixture = await createView();
+    try {
+        const before = stateWith(boardFrom(['c.......', 'c.......', 'aaa.....', 'CAMAM...', 'CMAMA...']), {
+            x: 3,
+            y: 1,
+            orientation: 1,
+            colors: ['amber', 'magenta'],
+        });
+        const { events } = step(before, { type: 'HARD_DROP' });
+        const frames = (events as BoardEvent[]).filter(({ board }) => board);
+        const coordinates = ({ x, y }: { x: number; y: number }) => [x, y];
+        const { cell, originX, originY } = boardLayout(390, 600);
+        const visible = (frame: BoardEvent) => {
+            for (const kind of ['segment', 'obstacle'] as const) {
+                for (const color of ['cyan', 'amber', 'magenta'] as const) {
+                    expect(
+                        fixture.sprites(pieceArtwork[textureFor(kind, color, false).art]).map(coordinates),
+                    ).toEqual(
+                        frame.board?.flatMap((tile, index) =>
+                            tile?.kind === kind && tile.color === color
+                                ? [[originX + (index % 8) * cell, originY + Math.floor(index / 8) * cell]]
+                                : [],
+                        ),
+                    );
+                }
+            }
+        };
+        const locked = frames[0];
+        if (!locked) throw new Error('Verrouillage attendu');
+        const gravity = frames.filter(({ type }) => type === 'GRAVITY_STEP');
+        expect(gravity.length).toBeGreaterThan(1);
+        const played = fixture.view.play(events, before, () => undefined);
+        const matchTime = animationDuration('match', false);
+        advance(matchTime - 1);
+        await Promise.resolve();
+        visible(locked);
+        advance(1);
+        await Promise.resolve();
+        const gravityTime = animationDuration('gravity', false);
+        for (const frame of gravity) {
+            visible(frame);
+            advance(gravityTime - 1);
+            await Promise.resolve();
+            visible(frame);
+            advance(1);
+            await Promise.resolve();
+        }
+        advance(animationDuration('combo', false));
+        await played;
+        const final = frames.at(-1);
+        if (!final) throw new Error('Plateau final attendu');
+        visible(final);
     } finally {
         fixture.view.destroy();
     }

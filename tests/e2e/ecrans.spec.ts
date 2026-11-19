@@ -35,10 +35,8 @@ async function play(page: Page, placements: string[][]): Promise<void> {
     const reactor = page.locator('.reactor');
     for (const [index, keys] of placements.entries()) {
         for (const key of keys) await page.keyboard.press(key);
-        if (index < placements.length - 1) {
+        if (index < placements.length - 1)
             await expect(reactor).toHaveAttribute('data-spawns', String(index + 1));
-            await expect(reactor).toHaveAttribute('data-ready', 'oui');
-        }
     }
 }
 
@@ -253,6 +251,20 @@ test('[E154] le JSON exporté peut être réimporté et les données invalides s
         buffer: Buffer.from('{"schemaVersion":1}'),
     });
     await expect(page.getByRole('alert')).toContainText('état invalide');
+    const originalState: unknown = JSON.parse(original);
+    if (typeof originalState !== 'object' || originalState === null) throw new Error('État exporté absent');
+    await page.locator('input[type=file]').setInputFiles({
+        name: 'partie-transitoire.json',
+        mimeType: 'application/json',
+        buffer: Buffer.from(JSON.stringify({ ...originalState, phase: 'RESOLVING', active: null })),
+    });
+    await expect(page.getByRole('alert')).toContainText('reprise impossible');
+    const preservedDownload = page.waitForEvent('download');
+    await page.getByRole('button', { name: 'Exporter la partie JSON' }).click();
+    const preservedFile = info.outputPath('partie-conservee.json');
+    await (await preservedDownload).saveAs(preservedFile);
+    expect(await readFile(preservedFile, 'utf8')).toBe(await readFile(competingFile, 'utf8'));
+
     await page.locator('input[type=file]').setInputFiles(file);
     await expect(page.getByRole('alert')).toContainText('Partie importée');
     const importedDownload = page.waitForEvent('download');

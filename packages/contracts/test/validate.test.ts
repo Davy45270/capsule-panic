@@ -11,6 +11,15 @@ describe('validateGameState', () => {
         const r = validateGameState(validState());
         expect(r).toEqual({ ok: true, value: validState() });
     });
+    it('[E061] refuse le point fixe du générateur et accepte chaque mot non nul', () => {
+        expect(errorsOf({ ...validState(), rngState: [0, 0, 0, 0] })).toEqual([
+            '/rngState les quatre mots ne peuvent pas être nuls',
+        ]);
+        for (let index = 0; index < 4; index++) {
+            const rngState = Array.from({ length: 4 }, (_, word) => Number(word === index));
+            expect(errorsOf({ ...validState(), rngState })).toEqual([]);
+        }
+    });
     it('[E145] une paire exige des cellules adjacentes, parts distinctes, identifiant commun et lien réciproque', () => {
         const state = withLockedPair(validState());
         const index = 15 * 8 + 4;
