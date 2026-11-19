@@ -21,16 +21,12 @@ export function initialLevelStats(state: GameState): LevelStats {
     return { capsules: 0, bestChain: state.chainCount, crystalsAtStart: obstacleCount(state.level) };
 }
 
-/**
- * Une partie en cours côté application : soumet les commandes au moteur, fait jouer les animations, et ignore
- * (sans les mettre en file) les commandes reçues pendant une animation de résolution.
- */
+/** Applique les transitions du moteur et publie les effets visuels à leur propre cadence. */
 export class GameSession {
     #state: GameState;
-    #animating = false;
+    #playback: Promise<void> | undefined;
     #pauseWhenReady = false;
     #saving = false;
-    #placing = false;
     #pendingCommands: CommandType[] = [];
     #drainingCommands = false;
     readonly stats: LevelStats;
@@ -41,27 +37,27 @@ export class GameSession {
     ) {
         this.#state = state;
         this.stats = { ...stats };
-        this.#show();
+        this.#showIfReady();
+        this.hooks.onChange?.(this.#state, false);
     }
     get state(): GameState {
         return this.#state;
     }
     get animating(): boolean {
-        return this.#animating;
+        return this.#playback !== undefined || this.#saving;
     }
 
-    /** Applique une commande ; rend `false` si elle est ignorée (animation en cours) ou refusée par le moteur. */
+    /** Applique une commande ou la met en attente pendant une écriture. */
     command(type: CommandType): boolean {
-        if (this.#saving || this.#placing) {
+        if (this.#saving) {
             this.#pendingCommands.push(type);
             return true;
         }
-        if (this.#animating) return false;
         if (type === 'PAUSE' && this.#state.phase === 'PAUSED') return this.#apply('RESUME');
         return this.#apply(type);
     }
     tick(): void {
-        if (!this.#animating) this.#apply('TICK');
+        if (!this.#saving) this.#apply('TICK');
     }
     togglePause(): void {
         this.command('PAUSE');
@@ -69,7 +65,7 @@ export class GameSession {
     /** Onglet caché : la partie se met en pause et y reste jusqu'à une reprise explicite. */
     visibilityChanged(hidden: boolean): void {
         if (!hidden || this.#state.phase !== 'FALLING') return;
-        if (this.#animating) this.#pauseWhenReady = true;
+        if (this.#saving) this.#pauseWhenReady = true;
         else this.#apply('PAUSE');
     }
 
@@ -85,41 +81,39 @@ export class GameSession {
         }
         const spawned = t.events.some((event) => event.type === 'SPAWNED');
         const motion = t.events.some((e) => e.type === 'MOVED' || e.type === 'ROTATED') ? before : undefined;
+        if (locked) {
+            const matched = t.events.some((e) => e.type === 'MATCH_REMOVED');
+            const playback = matched
+                ? this.hooks.play(t.events, before)
+                : this.hooks.playPlacement?.(t.events, before);
+            this.#playback = playback;
+            if (playback) {
+                const finish = (): void => {
+                    if (this.#playback !== playback) return;
+                    this.#playback = undefined;
+                    this.#showIfReady();
+                };
+                void playback.then(finish, finish);
+            }
+        }
         const publish = (): void => {
             this.#saving = false;
-            this.#placing = false;
-            this.#animating = false;
             this.#pauseIfRequested();
-            this.#show(spawned, motion);
-            if (this.#state.phase === 'WON' || this.#state.phase === 'LOST') this.hooks.onEnd?.(this.#state);
+            this.hooks.onChange?.(this.#state, spawned);
+            this.#showIfReady(motion);
             this.#drainCommands();
         };
-        const finish = (): void => {
-            this.#pauseIfRequested();
-            const checkpoint = spawned ? this.hooks.onSpawn?.(this.#state) : undefined;
-            if (checkpoint) {
-                this.#saving = true;
-                this.#animating = true;
-                void checkpoint.then(publish, publish);
-            } else publish();
-        };
-        const matched = t.events.some((e) => e.type === 'MATCH_REMOVED');
-        const playback = matched ? this.hooks.play(t.events, before) : undefined;
-        const placement = locked && !matched ? this.hooks.playPlacement?.(t.events, before) : undefined;
-        this.#placing = placement !== undefined;
-        const animation = playback ?? placement;
-        if (animation) {
-            this.#animating = true;
-            void animation.then(finish, finish);
-        } else {
-            finish();
-        }
+        const checkpoint = spawned ? this.hooks.onSpawn?.(this.#state) : undefined;
+        if (checkpoint) {
+            this.#saving = true;
+            void checkpoint.then(publish, publish);
+        } else publish();
         return true;
     }
     #drainCommands(): void {
         if (this.#drainingCommands) return;
         this.#drainingCommands = true;
-        while (!this.#animating) {
+        while (!this.#saving) {
             const type = this.#pendingCommands.shift();
             if (!type) break;
             this.command(type);
@@ -131,8 +125,9 @@ export class GameSession {
         this.#pauseWhenReady = false;
         this.#state = step(this.#state, { type: 'PAUSE' }).state;
     }
-    #show(spawned = false, before?: GameState): void {
+    #showIfReady(before?: GameState): void {
+        if (this.animating) return;
         this.hooks.render(this.#state, getLandingProjection(this.#state), before);
-        this.hooks.onChange?.(this.#state, spawned);
+        if (this.#state.phase === 'WON' || this.#state.phase === 'LOST') this.hooks.onEnd?.(this.#state);
     }
 }

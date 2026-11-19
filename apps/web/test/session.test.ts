@@ -1,6 +1,8 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { createGame, step } from '@capsule-panic/engine';
 import type { GameEvent, GameState } from '@capsule-panic/contracts';
+import { mapKey } from '@capsule-panic/input';
+import { cascade, victoire } from '../../../tests/e2e/parcours';
 import { GameSession } from '../src/session';
 
 function fakeView() {
@@ -47,21 +49,22 @@ describe('game session', () => {
         expect(session.command('MOVE_LEFT')).toBe(false);
         expect(session.state.active?.x).toBe(0);
     });
-    it('[E106] inputs during cascade animation are dropped, not queued', async () => {
+    it('les commandes et les ticks s’appliquent pendant une cascade', async () => {
         const v = fakeView();
         const session = new GameSession(aboutToMatch(), v.hooks);
         expect(session.command('HARD_DROP')).toBe(true);
         expect(session.animating).toBe(true);
-        const during = session.state;
-        expect(session.command('MOVE_LEFT')).toBe(false);
+        const moved = step(session.state, { type: 'MOVE_LEFT' }).state;
+        expect(session.command('MOVE_LEFT')).toBe(true);
+        expect(session.state).toEqual(moved);
+        const fallen = step(moved, { type: 'TICK' }).state;
         session.tick();
-        expect(session.state).toBe(during);
+        expect(session.state).toEqual(fallen);
         v.release();
         await Promise.resolve();
         await Promise.resolve();
         expect(session.animating).toBe(false);
-        expect(session.state).toBe(during);
-        expect(session.command('MOVE_LEFT')).toBe(true);
+        expect(session.state).toEqual(fallen);
     });
     it('visibility hidden pauses the game, and only an explicit resume restarts it', () => {
         const session = new GameSession(createGame({ seed: 's', level: 0, speed: 'low' }), fakeView().hooks);
@@ -113,7 +116,7 @@ describe('game session', () => {
     });
 });
 
-it('[E152] diffère la sauvegarde à l’apparition et la pause pendant la résolution', async () => {
+it('[E152] sauvegarde l’apparition et permet la pause pendant la résolution', async () => {
     const v = fakeView();
     const saved: GameState[] = [];
     const session = new GameSession(aboutToMatch(), {
@@ -123,12 +126,13 @@ it('[E152] diffère la sauvegarde à l’apparition et la pause pendant la réso
         },
     });
     session.command('HARD_DROP');
+    const spawned = session.state;
     session.visibilityChanged(true);
-    expect(saved).toEqual([]);
-    expect(session.state.phase).toBe('FALLING');
+    expect(saved).toEqual([spawned]);
+    expect(session.state.phase).toBe('PAUSED');
     v.release();
     await Promise.resolve();
-    expect(saved).toEqual([session.state]);
+    expect(saved).toEqual([spawned]);
     expect(session.state.phase).toBe('PAUSED');
 });
 
@@ -216,7 +220,7 @@ it('la vue ne reçoit pas le plateau final avant les effets de cascade', async (
     expect(frames).toEqual([initial, session.state]);
 });
 
-it('[E531] attend la pose ordinaire avant d’enregistrer et de montrer la capsule suivante', async () => {
+it('[E531] enregistre à l’apparition et laisse la pose se terminer avant de montrer la capsule suivante', async () => {
     const before = createGame({ seed: 'reprise', level: 0, speed: 'low' });
     const pose = Promise.withResolvers<undefined>();
     const shown: GameState[] = [];
@@ -236,9 +240,48 @@ it('[E531] attend la pose ordinaire avant d’enregistrer et de montrer la capsu
     session.command('HARD_DROP');
     expect(session.state).toEqual(expected);
     expect(shown).toEqual([before]);
-    expect(saved).toEqual([]);
+    expect(saved).toEqual([expected]);
     pose.resolve(undefined);
     await pose.promise;
     expect(shown).toEqual([before, expected]);
     expect(saved).toEqual([expected]);
 });
+
+it.each([
+    [victoire, 704],
+    [cascade, 494],
+] as const)(
+    '[E094] [E528] garde le score et la position avec des images lentes ($seed)',
+    async (parcours, score) => {
+        vi.useFakeTimers();
+        try {
+            const replay = async (duration: number) => {
+                const play = () => new Promise<void>((resolve) => setTimeout(resolve, duration));
+                const session = new GameSession(createGame({ seed: parcours.seed, level: 0, speed: 'low' }), {
+                    render: () => undefined,
+                    play,
+                    playPlacement: duration ? play : undefined,
+                });
+                const positions = [];
+                for (const keys of parcours.placements) {
+                    for (const key of keys) {
+                        const command = mapKey(key === 'Space' ? ' ' : key);
+                        if (command) session.command(command);
+                        positions.push(session.state.active);
+                        await vi.advanceTimersByTimeAsync(1);
+                    }
+                }
+                const beforeTick = session.state;
+                session.tick();
+                return { positions, beforeTick, afterTick: session.state };
+            };
+            const immediate = await replay(0);
+            expect(immediate.beforeTick.score).toBe(score);
+            const slow = await replay(500);
+            expect(slow.beforeTick.score).toBe(score);
+            expect(slow).toEqual(immediate);
+        } finally {
+            vi.useRealTimers();
+        }
+    },
+);

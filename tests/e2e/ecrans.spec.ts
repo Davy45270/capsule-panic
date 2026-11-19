@@ -35,10 +35,8 @@ async function play(page: Page, placements: string[][]): Promise<void> {
     const reactor = page.locator('.reactor');
     for (const [index, keys] of placements.entries()) {
         for (const key of keys) await page.keyboard.press(key);
-        if (index < placements.length - 1) {
+        if (index < placements.length - 1)
             await expect(reactor).toHaveAttribute('data-spawns', String(index + 1));
-            await expect(reactor).toHaveAttribute('data-ready', 'oui');
-        }
     }
 }
 

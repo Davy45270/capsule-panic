@@ -149,6 +149,7 @@ export async function createBoardView(host: HTMLElement, initial: ViewOptions): 
         const to = state.active;
         const visible = last?.state.active;
         const visibleAngle = last?.angle;
+        playbackVersion++;
         stopEffect?.();
         if (from && to && !options.reducedMotion) {
             const start = visible?.id === from.id ? visible : from;
@@ -213,8 +214,9 @@ export async function createBoardView(host: HTMLElement, initial: ViewOptions): 
         before: GameState,
         onMatch: (match: Match) => void,
     ): Promise<void> {
+        const version = ++playbackVersion;
         stopEffect?.();
-        const stopped = () => disposed || options.reducedMotion;
+        const stopped = () => disposed || options.reducedMotion || version !== playbackVersion;
         const ordinary = !events.some(({ type }) => type === 'MATCH_REMOVED');
         let frame: GameState = { ...before, phase: 'RESOLVING', active: null };
         for (const event of events) {
@@ -254,10 +256,12 @@ export async function createBoardView(host: HTMLElement, initial: ViewOptions): 
                     });
                 }
             }
+            if (stopped()) return;
             if (event.type === 'GRAVITY_STEP') await animate(animationDuration('gravity', false));
         }
     }
 
+    let playbackVersion = 0;
     let disposed = false;
     let stopEffect: (() => void) | undefined;
 

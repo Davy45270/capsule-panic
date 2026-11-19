@@ -42,6 +42,7 @@ export function Game({
 }) {
     const host = useRef<HTMLDivElement>(null);
     const sessionRef = useRef<GameSession | null>(null);
+    const loopRef = useRef<ReturnType<typeof createLoop> | null>(null);
     const [state, setState] = useState(initial);
     const dialog = useRef<HTMLDialogElement>(null);
     const [animating, setAnimating] = useState(false);
@@ -90,17 +91,18 @@ export function Game({
                 let checkpoint = initial;
                 const play: SessionHooks['play'] = async (events, before) => {
                     setAnimating(true);
-                    try {
-                        await v.play(events, before, setCombo);
-                    } finally {
-                        if (!cancelled) setCombo(null);
-                    }
+                    setCombo(null);
+                    await v.play(events, before, setCombo);
                 };
                 const session = new GameSession(
                     initial,
                     {
                         render: (s, ghost, before) => {
-                            if (!cancelled) v.render(s, ghost, before);
+                            if (cancelled) return;
+                            v.render(s, ghost, before);
+                            setState(s);
+                            setCombo(null);
+                            setAnimating(false);
                         },
                         play,
                         playPlacement: (events, before) =>
@@ -113,9 +115,8 @@ export function Game({
                             }
                             if (s.phase === 'PAUSED' && published.phase === 'FALLING' && s !== checkpoint)
                                 void callbacks.current.onSave(s, session.stats);
+                            if (s.phase === 'PAUSED' || published.phase === 'PAUSED') setState(s);
                             published = s;
-                            setState(s);
-                            setAnimating(false);
                         },
                         onSpawn: (s) => {
                             if (cancelled) return;
@@ -133,6 +134,7 @@ export function Game({
                     initialStats,
                 );
                 sessionRef.current = session;
+                loopRef.current = loop;
                 loop.start();
                 setReady(true);
             })
@@ -148,6 +150,7 @@ export function Game({
         return () => {
             cancelled = true;
             loop.stop();
+            loopRef.current = null;
             flushMetrics();
             window.removeEventListener('pagehide', flushMetrics);
             document.removeEventListener('visibilitychange', onVisibility);
@@ -160,6 +163,7 @@ export function Game({
     const send = (type: CommandType): void => {
         const session = sessionRef.current;
         if (!session) return;
+        loopRef.current?.sync();
         session.command(type);
     };
 
