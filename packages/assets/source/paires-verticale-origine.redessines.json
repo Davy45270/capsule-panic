@@ -8,7 +8,8 @@
   {
     "id": "paire-verticale-cyan-ambre",
     "boite": "77x151+1086+205",
-    "raison": "Deux cellules indépendantes réunies par un pont lumineux"
+    "raison": "Deux cellules indépendantes réunies par un pont lumineux",
+    "rabattement_palette": true
   },
   {
     "id": "paire-verticale-magenta-ambre",

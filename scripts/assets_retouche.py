@@ -4,7 +4,7 @@ import subprocess
 
 import numpy as np
 
-from assets_palette import (ENCRE_MARINE, RAYON, TOLERANCE, clarte_teinte_saturation, palette_reference,
+from assets_palette import (ENCRE_MARINE, RAYON, TOLERANCE, clarte_teinte_saturation, palette_aplatie,
                             projeter_rampe, rvb, teinter, ton_source)
 from assets_spec import jetons
 
@@ -98,16 +98,13 @@ def retoucher(planche, fiche, travail, cellules):
             # La chaîne déclarée doit rester vraie : le ton source se mesure, il ne se suppose pas.
             raise ValueError(f"{identifiant} : ton source mesuré {mesure}, déclaré {declare}")
         if fiche.get("rampe") == "projection":
-            projeter_rampe(original, teinte, h1, h2, couleur, ENCRE_MARINE, CLAIR, pivot(declare))
+            projeter_rampe(original, teinte, h1, h2, couleur, fiche.get("rampe_sombre", ENCRE_MARINE), CLAIR,
+                           round(pivot(declare), 3))
         elif fiche.get("rampe") == "luminance":
-            teinter(original, couleur, teinte, palette_reference(planche, fiche["boite"]), rouge=bool(region))
+            teinter(original, couleur, teinte, palette_aplatie(planche, fiche["boite"]), rouge=bool(region))
         else:
-            milieu = 188 if couleur == "#FBBF24" else 138
-            magick(original, "-colorspace", "gray", "-colorspace", "sRGB",
-                   "(", "-size", f"1x{milieu}", f"gradient:#080e22-{couleur}",
-                   "-size", f"1x{256 - milieu}", f"gradient:{couleur}-#fff8ff",
-                   "-append", "-rotate", "90", "-flop", ")",
-                   "-channel", "RGB", "-clut", "+channel", f"PNG32:{teinte}")
+            # Plus de rampe implicite : la rampe linéaire sur le gris (pivot 188 ou 138) n'était pas celle déclarée.
+            raise ValueError(f"{identifiant} : rampe à déclarer (projection ou luminance)")
         if region:
             _, x, y = region.split("+")
             # Les pixels bleus du panneau autour des blocs restent intacts.
@@ -122,6 +119,10 @@ def retoucher(planche, fiche, travail, cellules):
 
 RABATTEMENT = (f"retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de "
                f"{TOLERANCE:g} de la palette ramenés vers la couleur la plus proche jusqu'à {RAYON:g}, alpha inchangé")
+RABATTEMENT_FAMILLE = (RABATTEMENT.replace("sur la palette de la planche", "sur la palette sans biais de la planche (coupe "
+                                           "médiane des seuls pixels opaques, comme le contrôle de chaîne)")
+                       + " ; un pixel neutre dont la couleur la plus proche est colorée, ou l'inverse, reste tel quel "
+                       "(encrage excepté)")
 RABATTEMENT_TEINTE = RABATTEMENT.replace("la couleur la plus proche", "la couleur neutre ou de même teinte la plus proche")
 
 JETONS_A2 = dict(zip(jetons(), ("cyan", "ambre", "magenta")))
@@ -188,22 +189,24 @@ def transformations_derive(fiche):
         rampe = fiche.get("rampe")
         # Forme lue par le contrôle de chaîne : « recoloration <nom> H1–H2°→#CIBLE », puis entre parenthèses le ton
         # source (corps de la zone de planche) et le mode. Une rampe « rampe #SOMBRE→#CIBLE→#CLAIR » n'est déclarée que
-        # si la retouche suit vraiment ces trois arrêts (projection par clarté, ou rampe linéaire d'origine).
-        etapes.append(f"recoloration {teintes}→{couleur} (source {source}, {MODES.get(rampe, 'rampe linéaire')})")
+        # si la retouche suit vraiment ces trois arrêts (projection par clarté).
+        etapes.append(f"recoloration {teintes}→{couleur} (source {source}, {MODES[rampe]})")
         if rampe == "projection":
+            # Arrêt sombre : l'encrage marine des blocs bleus, sauf `rampe_sombre` (bleus : marine saturé #002A8C, cyan de la
+            # spec retenu). Le pivot déclaré est celui de la construction, lu par le contrôle (« rampe … pivot P »).
+            sombre = fiche.get("rampe_sombre", ENCRE_MARINE)
+            encrage = ("encrage marine des blocs bleus" if sombre == ENCRE_MARINE
+                       else "marine saturé : contour marine, ombres du corps bleues")
             etapes.append(f"retouche jeton {jeton} A2 ({zone}) : pixels de teinte {plage(teintes)[0]:g}–{plage(teintes)[1]:g}° "
-                          f"et de saturation HLS ≥ 0,08 projetés par clarté HLS sur la rampe {ENCRE_MARINE}→{couleur}→{CLAIR}, "
-                          f"pivot à la clarté du ton source {source} ({pivot(source):.3f}) : corps = {couleur}, encrage sombre "
-                          f"de la planche vers {ENCRE_MARINE} (encrage marine des blocs bleus) ; reflets blancs (saturation "
+                          f"et de saturation HLS ≥ 0,08 projetés par clarté HLS sur la rampe {sombre}→{couleur}→{CLAIR} "
+                          f"pivot {pivot(source):.3f} (clarté du ton source {source}) : corps = {couleur}, encrage sombre "
+                          f"de la planche vers {sombre} ({encrage}) ; reflets blancs (saturation "
                           "< 0,08) et alpha de la planche inchangés, sans tramage")
         elif rampe == "luminance":
             etapes.append(f"retouche jeton {jeton} A2 ({zone}) : rampe par correspondance de luminance sur les couleurs "
                           f"de la planche (même teinte, encrage, reflets) et {couleur}, ton dominant de la planche égal "
                           f"à {couleur} ; sans ton intermédiaire de cette teinte dans la planche, ombres bornées au "
                           "voisinage du jeton et encrage vers le ton le plus sombre")
-        else:
-            etapes.append(f"retouche jeton {jeton} A2 ({zone}) : luminance sur la rampe #080e22→{couleur}→#fff8ff, "
-                          "ombres et reflets conservés")
     if fiche.get("rabattement_palette"):
         etapes.append(RABATTEMENT_TEINTE if fiche.get("rampe") == "luminance" else RABATTEMENT)
     if not etapes:

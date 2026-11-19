@@ -14,7 +14,8 @@
   {
     "id": "deplacement-animations-apercu",
     "boite": "128x47+1311+403",
-    "raison": "Mouvement de deux cellules reliées"
+    "raison": "Mouvement de deux cellules reliées",
+    "rabattement_palette": true
   },
   {
     "id": "verrouillage-animations-apercu",

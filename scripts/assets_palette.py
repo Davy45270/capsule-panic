@@ -1,8 +1,8 @@
 """Rabattement d'un sprite sur la palette de sa planche, et rampe de teinte par luminance.
 
-La palette de référence est celle du contrôle de chaîne : les 16 couleurs dominantes de l'élément
-de planche que le sprite remplace (alpha seuillé à 95 %, fond blanc, sans tramage), plus les jetons
-de la spec. Un pixel déjà à moins de TOLERANCE d'une couleur de la palette reste tel quel ; un pixel
+La palette de référence est celle du contrôle de chaîne : les 16 couleurs dominantes des seuls pixels
+opaques de l'élément de planche que le sprite remplace (alpha seuillé à 95 %, coupe médiane, sans fond
+blanc), plus les jetons de la spec. Un pixel déjà à moins de TOLERANCE d'une couleur de la palette reste tel quel ; un pixel
 plus loin est déplacé en ligne droite vers la couleur la plus proche, juste assez pour finir à RAYON
 d'elle. Aucun tramage, aucun aplat : le modelé est gardé, l'alpha (anticrénelage) n'est jamais touché.
 """
@@ -12,6 +12,7 @@ import subprocess
 import numpy as np
 from PIL import Image
 
+from assets_reference import COMMANDE, coupe_mediane, pixels_opaques
 from assets_spec import jetons
 
 JETONS = jetons()
@@ -47,7 +48,18 @@ def rvb(couleur):
 
 
 def palette_reference(planche, boite):
-    """Palette de l'élément de planche (même commande que le contrôle de chaîne), jetons de la spec compris."""
+    """Palette de l'élément de planche, calculée comme le contrôle de chaîne (style-palette.py) : coupe médiane des
+    seuls pixels opaques, sans fond blanc ; jetons de la spec compris (son option --couleurs)."""
+    texte = subprocess.run(["magick", str(planche), "-crop", boite, "+repage", *COMMANDE],
+                           capture_output=True, text=True, check=True).stdout
+    return np.array(coupe_mediane(pixels_opaques(texte)) + [rvb(c) for c in JETONS], float)
+
+
+def palette_aplatie(planche, boite):
+    """Ancienne palette (avant la palette sans biais du contrôle) : 16 couleurs de la zone aplatie sur fond blanc, plus
+    les jetons. Gardée pour les DÉRIVÉS seuls (rampe luminance de la ligne d'élimination et du tutoriel « aligner »,
+    rabattement des personnages) : recalculés sur la palette sans biais, les blocs perdaient leur modelé et les visages
+    se tachaient (contrôle visuel avant/après). Les redessins se rabattent sur palette_reference."""
     texte = subprocess.run(
         ["magick", str(planche), "-crop", boite, "+repage", "-channel", "A", "-fx", "u<0.95?0:1", "+channel",
          "-background", "white", "-alpha", "remove", "+dither", "-colors", "16", "-unique-colors",
@@ -57,10 +69,11 @@ def palette_reference(planche, boite):
     return np.array(couleurs + [rvb(c) for c in JETONS], float)
 
 
-def rabattre(sprite, palette, meme_teinte=False, rayon=RAYON, tolerance=TOLERANCE):
+def rabattre(sprite, palette, meme_teinte=False, rayon=RAYON, tolerance=TOLERANCE, famille=False):
     """Rabat en place les pixels hors tolérance vers la couleur la plus proche (déplacement minimal) ; avec
-    meme_teinte (sprites recolorés sur une rampe), vers la plus proche de même teinte ou neutre. Rend (pixels
-    déplacés, pixels visibles)."""
+    meme_teinte (sprites recolorés sur une rampe), vers la plus proche de même teinte ou neutre. Avec famille, un
+    pixel neutre dont la couleur la plus proche est colorée, ou l'inverse, reste tel quel (hors encrage) : un reflet
+    blanc ne vire pas au saumon faute de blanc dans la palette. Rend (pixels déplacés, pixels visibles)."""
     image = np.asarray(Image.open(sprite).convert("RGBA")).astype(float)
     couleurs, alpha = image[..., :3].reshape(-1, 3), image[..., 3].reshape(-1)
     ecarts = couleurs[:, None, :] - palette[None, :, :]
@@ -80,6 +93,11 @@ def rabattre(sprite, palette, meme_teinte=False, rayon=RAYON, tolerance=TOLERANC
     proche = np.where(distances.min(1) <= tolerance, distances.argmin(1), distances_permises.argmin(1))
     distance = distances[np.arange(len(couleurs)), proche]
     hors = (alpha > 0) & (distance > tolerance)
+    if famille:
+        neutre_pix = (s_pix < SATURE) | (couleurs.max(-1) < SOMBRE)
+        i = np.arange(len(couleurs))
+        meme = (neutre_pix == neutre_pal[proche]) | encre[i, proche]
+        hors &= meme
     cible = palette[proche[hors]]
     couleurs[hors] = cible + (couleurs[hors] - cible) * (rayon / distance[hors])[:, None]
     image[..., :3] = np.clip(np.rint(couleurs), 0, 255).reshape(image.shape[:2] + (3,))
