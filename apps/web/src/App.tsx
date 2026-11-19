@@ -9,17 +9,19 @@ import { Help } from './screens/Help';
 import { Home } from './screens/Home';
 import { Options } from './screens/Options';
 import { Setup } from './screens/Setup';
+import { initialLevelStats } from './session';
 import type { LevelStats } from './session';
+import type { Checkpoint } from './storage';
 import { defaultSettings, newSeed } from './settings';
 import type { Settings } from './settings';
-import { clearGame, loadGame, loadSettings, saveGame, saveScore, saveSettings } from './storage';
+import { clearGame, loadCheckpoint, loadSettings, saveGame, saveScore, saveSettings } from './storage';
 
 const COLOR_BLIND_KEY = 'capsule-panic-daltonien';
 
 type Menu = 'home' | 'setup' | 'help' | 'options' | 'about';
 type Screen =
     | { name: Menu }
-    | { name: 'game'; state: GameState; instance: number }
+    | { name: 'game'; state: GameState; instance: number; stats?: LevelStats }
     | { name: 'end'; state: GameState; stats: LevelStats };
 
 function fromAddress(): Screen {
@@ -45,7 +47,7 @@ export function App() {
     const [screen, setScreen] = useState<Screen>(fromAddress);
     const [settings, setSettings] = useState<Settings>(defaultSettings);
     const [loaded, setLoaded] = useState(false);
-    const [saved, setSaved] = useState<GameState | null>(null);
+    const [saved, setSaved] = useState<Checkpoint | null>(null);
     const [message, setMessage] = useState<string | null>(null);
     const file = useRef<HTMLInputElement>(null);
     const instance = useRef(0);
@@ -56,14 +58,15 @@ export function App() {
     };
     const home = (): void => show('home', '');
     const storageError = (): void => setMessage('Le stockage local est indisponible.');
-    const remember = (state: GameState): Promise<void> => {
-        setSaved(state);
-        return saveGame(state).then(() => undefined, storageError);
+    const remember = (state: GameState, stats?: LevelStats): Promise<void> => {
+        const snapshot = stats && { ...stats };
+        setSaved({ state, stats: snapshot });
+        return saveGame(state, undefined, snapshot).then(() => undefined, storageError);
     };
 
     useEffect(() => {
         let active = true;
-        void Promise.allSettled([loadSettings(), loadGame()]).then(([preferences, game]) => {
+        void Promise.allSettled([loadSettings(), loadCheckpoint()]).then(([preferences, game]) => {
             if (!active) return;
             const restored = {
                 ...defaultSettings(),
@@ -99,10 +102,10 @@ export function App() {
         };
     }, []);
 
-    const openGame = (state: GameState): void => {
+    const openGame = (state: GameState, stats?: LevelStats): void => {
         address('#game');
         debug(settings.debug, 'partie ouverte');
-        setScreen({ name: 'game', state, instance: ++instance.current });
+        setScreen({ name: 'game', state, instance: ++instance.current, stats });
     };
     const start = (level: number, speed: Speed, seed = newSeed(location.search)): void => {
         const state = createGame({ seed, level, speed });
@@ -130,19 +133,17 @@ export function App() {
     };
     const resume = (): void => {
         if (!saved) return;
-        if (saved.phase === 'LOST' || saved.phase === 'WON') {
+        const { state, stats } = saved;
+        if (state.phase === 'LOST' || state.phase === 'WON') {
             setScreen({
                 name: 'end',
-                state: saved,
-                stats: {
-                    capsules: 0,
-                    bestChain: saved.chainCount,
-                    crystalsAtStart: saved.obstaclesRemaining,
-                },
+                state,
+                stats: stats ?? initialLevelStats(state),
             });
         } else {
             openGame(
-                saved.phase === 'FALLING' || saved.phase === 'READY' ? { ...saved, phase: 'PAUSED' } : saved,
+                state.phase === 'FALLING' || state.phase === 'READY' ? { ...state, phase: 'PAUSED' } : state,
+                stats,
             );
         }
     };
@@ -150,7 +151,7 @@ export function App() {
         try {
             const state = restore(await source.text());
             await saveGame(state);
-            setSaved(state);
+            setSaved({ state });
             setMessage('Partie importée. Elle est disponible depuis le menu.');
         } catch (error: unknown) {
             setMessage(error instanceof Error ? error.message : 'Impossible de lire la partie.');
@@ -158,7 +159,7 @@ export function App() {
     };
     const exportGame = (): void => {
         if (!saved) return;
-        const url = URL.createObjectURL(new Blob([serialize(saved)], { type: 'application/json' }));
+        const url = URL.createObjectURL(new Blob([serialize(saved.state)], { type: 'application/json' }));
         const download = document.createElement('a');
         download.href = url;
         download.download = 'capsule-panic.json';
@@ -239,10 +240,11 @@ export function App() {
                 <Game
                     key={screen.instance}
                     initial={screen.state}
+                    initialStats={screen.stats}
                     settings={settings}
                     onEnd={end}
-                    onMenu={(state) => {
-                        void remember(state);
+                    onMenu={(state, stats) => {
+                        void remember(state, stats);
                         home();
                     }}
                     onSave={remember}

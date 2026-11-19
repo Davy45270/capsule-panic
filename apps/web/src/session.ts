@@ -16,6 +16,10 @@ export interface LevelStats {
     crystalsAtStart: number;
 }
 
+export function initialLevelStats(state: GameState): LevelStats {
+    return { capsules: 0, bestChain: state.chainCount, crystalsAtStart: obstacleCount(state.level) };
+}
+
 /**
  * Une partie en cours côté application : soumet les commandes au moteur, fait jouer les animations, et ignore
  * (sans les mettre en file) les commandes reçues pendant une animation de résolution.
@@ -31,13 +35,10 @@ export class GameSession {
     constructor(
         state: GameState,
         private readonly hooks: SessionHooks,
+        stats = initialLevelStats(state),
     ) {
         this.#state = state;
-        this.stats = {
-            capsules: 0,
-            bestChain: state.chainCount,
-            crystalsAtStart: obstacleCount(state.level),
-        };
+        this.stats = { ...stats };
         this.#show();
     }
     get state(): GameState {
