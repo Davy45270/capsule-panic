@@ -165,3 +165,42 @@ it('[E256] attend la sauvegarde de la capsule avant de publier son score et de l
     expect(session.state.active?.x).toBe(2);
     expect(saved?.active?.x).toBe(3);
 });
+
+it('[E094] rejoue dans l’ordre les commandes reçues pendant une sauvegarde', async () => {
+    const checkpoint = Promise.withResolvers<undefined>();
+    const session = new GameSession(createGame({ seed: 'reprise', level: 0, speed: 'low' }), {
+        ...fakeView().hooks,
+        onSpawn: () => checkpoint.promise,
+    });
+    session.command('HARD_DROP');
+    session.command('MOVE_LEFT');
+    session.command('ROTATE_CW');
+    expect(session.state.active).toMatchObject({ id: 'c2', x: 3, orientation: 0 });
+    checkpoint.resolve(undefined);
+    await checkpoint.promise;
+    expect(session.state.active).toMatchObject({ id: 'c2', x: 2, orientation: 1 });
+});
+
+it('[E094] publie une apparition même si la résolution libère le même identifiant', async () => {
+    const view = fakeView();
+    const spawns: GameState[] = [];
+    const initial = aboutToMatch();
+    const session = new GameSession(
+        {
+            ...initial,
+            active: { id: 'c1', colors: ['cyan', 'cyan'], x: 2, y: 1, orientation: 1 },
+            board: initial.board.map((cell, index) => (index === 15 * 8 + 2 ? null : cell)),
+            obstaclesRemaining: 3,
+        },
+        {
+            ...view.hooks,
+            onChange: (state: GameState, spawned?: boolean) => {
+                if (spawned) spawns.push(state);
+            },
+        },
+    );
+    session.command('HARD_DROP');
+    view.release();
+    await Promise.resolve();
+    expect(spawns.map((state) => state.active?.id)).toEqual(['c1']);
+});
