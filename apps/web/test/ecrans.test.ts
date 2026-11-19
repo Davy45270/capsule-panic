@@ -11,6 +11,7 @@ import { App } from '../src/App';
 import { debug, recordCrash, recordFrames } from '../src/diagnostics';
 import { Game } from '../src/screens/Game';
 import { End } from '../src/screens/End';
+import { cascade } from '../../../tests/e2e/parcours';
 import { defaultSettings } from '../src/settings';
 import { clearGame, loadGame, loadSettings, saveGame, saveSettings } from '../src/storage';
 
@@ -288,4 +289,41 @@ it('quitter pendant la sauvegarde ne redessine pas le réacteur démonté', asyn
     checkpoint.resolve(undefined);
     await checkpoint.promise;
     expect(renderer.render).not.toHaveBeenCalled();
+});
+
+it('la fin de partie conserve le meilleur combo et les poses d’avant le rechargement', async () => {
+    vi.spyOn(history, 'pushState').mockImplementation(noop);
+    const press = (keys: string[]) =>
+        update(() => {
+            for (const key of keys)
+                window.dispatchEvent(new KeyboardEvent('keydown', { key: key === 'Space' ? ' ' : key }));
+        });
+    const resume = async () => {
+        await mountApp();
+        await click('Reprendre la partie');
+        await click('Reprendre');
+    };
+    await saveGame(createGame({ seed: cascade.seed, level: 0, speed: 'low' }));
+    await resume();
+    for (const keys of [...cascade.placements, ['Space']]) {
+        await press(keys);
+        await act(async () => {
+            await loadGame();
+        });
+    }
+    expect(await loadGame()).toMatchObject({ score: 520, chainCount: 0 });
+
+    act(() => root.unmount());
+    root = createRoot(container);
+    history.replaceState(null, '', '/');
+    await resume();
+    for (let index = 0; index < 6; index++) {
+        await press(['Space']);
+        await act(async () => {
+            await loadGame();
+        });
+    }
+    expect(container.querySelector('h2')?.textContent).toContain('Défaite !');
+    expect(container.textContent).toContain('Combo max ×2');
+    expect(container.textContent).toContain('Capsules jouées 28');
 });
