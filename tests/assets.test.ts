@@ -1,5 +1,5 @@
 // @vitest-environment node
-import { execFileSync, spawnSync } from 'node:child_process';
+import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { copyFileSync, existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -9,6 +9,25 @@ import { inflateSync } from 'node:zlib';
 import { expect, it } from 'vitest';
 import { dimensions } from '../scripts/assets.js';
 import inventaire from '../packages/assets/source/inventaire.json';
+
+// Fichiers du dépôt : `git ls-files` dans un clone, sinon (archive du commit, sans .git, comme dans les contrôles
+// de qualité) l'arbre entier hors dépendances et sorties de construction. Le contrôle reste le même.
+const IGNORES = new Set(['node_modules', '.git', 'dist', 'coverage', 'test-results', 'playwright-report']);
+function fichiersDuDepot(sous = '.'): string[] {
+    const git = spawnSync('git', ['ls-files', '-z', '--', sous], { encoding: 'utf8' });
+    if (git.status === 0) return git.stdout.split('\0').filter(Boolean);
+    const vus: string[] = [];
+    const parcourir = (dir: string): void => {
+        for (const entree of readdirSync(dir, { withFileTypes: true })) {
+            if (IGNORES.has(entree.name)) continue;
+            const chemin = dir === '.' ? entree.name : join(dir, entree.name);
+            if (entree.isDirectory()) parcourir(chemin);
+            else vus.push(chemin);
+        }
+    };
+    parcourir(sous);
+    return vus;
+}
 
 const dossier = 'packages/assets';
 const atlas = join(dossier, 'atlas');
@@ -176,7 +195,7 @@ it('[E309] la planche livrée est transparente et les planches privées sont abs
     };
     const pixelsLivres = readdirSync(dossier, { recursive: true, encoding: 'utf8' })
         .map(nom => join(dossier, nom));
-    const suivis = execFileSync('git', ['ls-files', '-z'], { encoding: 'utf8' }).split('\0');
+    const suivis = fichiersDuDepot();
     const originaux = new Map(provenance.assets.map(fiche => [fiche.planche, fiche.planche_sha256]));
     for (const nom of new Set(pixelsLivres.concat(suivis).filter(f => f.endsWith('.png') && existsSync(f)))) {
         const hash = createHash('sha256').update(readFileSync(nom)).digest('hex');
@@ -194,8 +213,7 @@ const CHEMIN_WINDOWS = /(?:^|[\s"'(=,:[])[A-Za-z]:\\/u;
 const TEXTE = /\.(?:json|md|svg|txt|css|js|ts)$/u;
 
 it('aucun fichier du paquet d’assets ne contient de chemin absolu', () => {
-    const suivis = execFileSync('git', ['ls-files', '-z', '--', dossier], { encoding: 'utf8' })
-        .split('\0').filter(Boolean);
+    const suivis = fichiersDuDepot(dossier);
     const presents = readdirSync(dossier, { recursive: true, encoding: 'utf8' }).map(nom => join(dossier, nom));
     const noms = [...new Set(suivis.concat(presents))].filter(nom => existsSync(nom) && !statSync(nom).isDirectory());
     expect(noms.length).toBeGreaterThan(0);
