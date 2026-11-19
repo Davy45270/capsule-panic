@@ -71,7 +71,10 @@ interface Workflow {
     steps: { name: string; commands: string[] }[];
 }
 it('[E167][E170][E172] Woodpecker enchaîne les contrôles jusqu’à l’artefact', () => {
-    const { steps } = parse(read('.woodpecker/checks.yml')) as Workflow;
+    // checks.yml puis e2e.yml, qui en dépend (tests/ci-ordre.test.ts vérifie cette dépendance).
+    const steps = ['checks', 'e2e'].flatMap(
+        (nom) => (parse(read(`.woodpecker/${nom}.yml`)) as Workflow).steps,
+    );
     const stages = [
         'npm ci',
         'npm run lint',
@@ -172,7 +175,7 @@ it('[E171] le build de CI compare les empreintes de deux générations de dist',
 
 it('[E020][E169] le contrôle de licences accepte le verrou courant et refuse une licence interdite', () => {
     const script = 'scripts/check-licenses.js';
-    expect(read('.woodpecker/checks.yml')).toContain('npm run check:licenses');
+    expect(read('.woodpecker/e2e.yml')).toContain('npm run check:licenses');
     expect(spawnSync(process.execPath, [script], { encoding: 'utf8' }).status).toBe(0);
 
     const root = mkdtempSync(join(tmpdir(), 'licences-'));

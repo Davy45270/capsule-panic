@@ -1,0 +1,83 @@
+# Repris de six-de-chaque (.woodpecker/e2e.yml), lui-même repris de ce dépôt avant sa fusion dans checks.yml.
+# Suite de la chaîne exigée par la spec, après .woodpecker/checks.yml (installation → lint → tsc → unit/property
+# → build) : Playwright → SCA/SAST (SBOM CycloneDX, audit, SAST, licences, secrets) → artefacts.
+# Les espaces de travail des workflows sont distincts : l'étape e2e réinstalle et reconstruit.
+# Playwright joue toutes les specs de tests/e2e sur les 7 projets de playwright.config.ts
+# (chromium-bureau, chromium-mobile, chromium-mobile-360, firefox-bureau, firefox-mobile, webkit-bureau, webkit-mobile).
+depends_on: [checks]
+
+labels:
+    host: tank01
+
+when:
+    - event: push
+      branch: main
+    - event: [pull_request, manual]
+
+steps:
+    - name: e2e
+      image: &playwright mcr.microsoft.com/playwright:v1.65.0-noble
+      environment:
+          PW_IMAGE: *playwright
+      commands:
+          - |
+              # DejaVu fonts: the image has none (sans-serif = WenQuanYi), the GitHub runners have them.
+              # npm package checked against its registry integrity, no apt.
+              npm pack --silent --pack-destination /tmp dejavu-fonts-ttf@2.37.3 >/dev/null
+              node -e '
+                const f = require("fs").readFileSync("/tmp/dejavu-fonts-ttf-2.37.3.tgz");
+                const got = "sha512-" + require("crypto").createHash("sha512").update(f).digest("base64");
+                const want = "sha512-f1hd7jJbeQa1VWcw+K2KrTXS50zTMaHpVC4XIKJpNcDeYR5ajMtj/iLlQDYNvLOKamUB3ARVVCf79lNwNVztSQ==";
+                if (got !== want) { console.error("dejavu-fonts-ttf : intégrité inattendue " + got); process.exit(1); }
+                console.log("dejavu-fonts-ttf 2.37.3 : intégrité vérifiée");'
+              mkdir -p /usr/local/share/fonts/dejavu
+              tar xzf /tmp/dejavu-fonts-ttf-2.37.3.tgz -C /usr/local/share/fonts/dejavu --strip-components=1 package/LICENSE
+              tar xzf /tmp/dejavu-fonts-ttf-2.37.3.tgz -C /usr/local/share/fonts/dejavu --strip-components=2 --wildcards 'package/ttf/*.ttf'
+              fc-cache -f >/dev/null
+              for f in sans-serif "DejaVu Sans"; do
+                got=$(fc-match -f '%{family[0]}' "$$f")
+                echo "fc-match $$f -> $$got"
+                [ "$$got" = "DejaVu Sans" ] || { echo "police inattendue pour $$f : $$got"; exit 1; }
+              done
+              npm ci
+              # The browsers come with the image: its Playwright version must be the one of package-lock.
+              WANT=$(echo "$$PW_IMAGE" | sed -n 's/.*:v\([0-9.]*\)-.*/\1/p')
+              GOT=$(node -p "require('@playwright/test/package.json').version")
+              echo "Playwright : image $$WANT, dépôt $$GOT"
+              [ -n "$$WANT" ] && [ "$$WANT" = "$$GOT" ] || { echo "versions divergentes : changer l'image de .woodpecker/e2e.yml"; exit 1; }
+              npm run build
+          - npm run test:e2e
+    - name: sbom
+      image: &node harbor.pingfr.duckdns.org/dockerhub/library/node:26
+      commands:
+          - npm sbom --sbom-format cyclonedx > sbom.json
+          - |
+              node -e '
+                const bom = JSON.parse(require("fs").readFileSync("sbom.json", "utf8"));
+                const composants = bom.components ?? [];
+                const pw = composants.find((c) => c.name === "@playwright/test" || (c.group === "@playwright" && c.name === "test"));
+                if (bom.bomFormat !== "CycloneDX" || composants.length === 0 || !pw) {
+                  console.error("sbom.json : CycloneDX attendu, avec ses composants");
+                  process.exit(1);
+                }
+                console.log("SBOM CycloneDX " + bom.specVersion + " : " + composants.length + " composants");'
+    - name: audit
+      image: *node
+      commands:
+          - npm audit --audit-level=high
+          - npm run check:sast
+          - npm run check:licenses
+    - name: secrets
+      image: harbor.pingfr.duckdns.org/dockerhub/zricethezav/gitleaks:v8.30.1
+      commands:
+          - gitleaks detect --source . --no-banner --redact
+    - name: artefact
+      image: *node
+      commands:
+          # dist/ est reconstruit avec Node 26, comme dans checks.yml, et non avec le Node de l'image Playwright.
+          - npm run build
+          - echo "empreinte dist $(cd dist && find . -type f -print0 | LC_ALL=C sort -z | xargs -0 sha256sum | sha256sum | cut -c1-64)"
+          - mkdir -p artefacts
+          - tar -czf "artefacts/capsule-panic.$(git rev-parse HEAD).tar.gz" --sort=name --mtime=@0 --owner=0 --group=0 --numeric-owner -C dist .
+          - cp sbom.json "artefacts/capsule-panic.$(git rev-parse HEAD).sbom.cdx.json"
+          - sha256sum artefacts/*
