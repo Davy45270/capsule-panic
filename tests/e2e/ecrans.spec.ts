@@ -3,9 +3,21 @@ import type { Page, TestInfo } from '@playwright/test';
 import { cascade, defaite, victoire } from './parcours';
 import { startGame } from './helpers';
 
-async function capture(page: Page, info: TestInfo, name: string): Promise<void> {
+async function capture(page: Page, info: TestInfo, name: string, errors: string[]): Promise<void> {
+    const before = errors.length;
     const path = info.outputPath(`${name}.png`);
     await page.screenshot({ path, animations: 'disabled', fullPage: true });
+    if (info.project.use.browserName === 'webkit') {
+        // Le moteur de capture ajoute puis retire <style>body {}</style> pour synchroniser les animations.
+        // La CSP le bloque. Retirer au plus un message exact émis pendant la capture elle-même.
+        const injectedStyle = errors.findIndex(
+            (error, index) =>
+                index >= before &&
+                error ===
+                    "Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy.",
+        );
+        if (injectedStyle !== -1) errors.splice(injectedStyle, 1);
+    }
     await info.attach(name, { path, contentType: 'image/png' });
 }
 
@@ -41,7 +53,7 @@ test('[E094] [E313] [E385] [E386] [E387] [E388] [E526] [E529] la partie gagnée 
     await expect(page.getByText('Combo max ×1')).toBeVisible();
     await expect(page.locator('[data-art="ruban-reussite"]')).toBeVisible();
     await expect(page.locator('.end-characters .character')).toHaveCount(2);
-    await capture(page, info, 'niveau-reussi');
+    await capture(page, info, 'niveau-reussi', errors);
     await page.getByRole('button', { name: 'Niveau suivant' }).click();
     await expect(page.getByTestId('level')).toHaveText('1');
     expect(errors).toEqual([]);
@@ -56,7 +68,7 @@ test('[E047] [E313] [E416] la pile ferme la chambre et Rejouer repart du même n
     await expect(page.getByRole('heading', { name: 'Défaite !' })).toBeVisible();
     await expect(page.getByRole('button', { name: 'Menu' })).toBeVisible();
     await expect(page.locator('[data-art="defaite-bannieres-jeu"]')).toBeVisible();
-    await capture(page, info, 'defaite');
+    await capture(page, info, 'defaite', errors);
     await page.getByRole('button', { name: 'Rejouer' }).click();
     await expect(page.locator('.reactor[data-ready="oui"]')).toBeVisible();
     await expect(page.getByTestId('score')).toHaveText('000000');
@@ -96,16 +108,16 @@ test('[E037] [E041] [E099] [E100] [E110] [E125] [E313] [E371] [E374] [E375] [E37
     await page.goto('./?graine=preuve-0');
     await expect(page.getByRole('heading', { name: 'Capsule Panic' })).toBeVisible();
     await checkLayout(page);
-    await capture(page, info, 'accueil');
+    await capture(page, info, 'accueil', errors);
     await activate(page, 'Aide');
     await expect(page.locator('.tutorial img')).toHaveCount(4);
     await checkLayout(page);
-    await capture(page, info, 'aide');
+    await capture(page, info, 'aide', errors);
     await activate(page, 'Menu');
     await activate(page, 'Options');
     await expect(page.getByRole('checkbox', { name: /daltonien/i })).toBeVisible();
     await checkLayout(page);
-    await capture(page, info, 'options');
+    await capture(page, info, 'options', errors);
     await activate(page, 'Menu');
     await activate(page, 'Crédits');
     await expect(page.getByText(/CC BY/)).toBeVisible();
@@ -118,11 +130,11 @@ test('[E037] [E041] [E099] [E100] [E110] [E125] [E313] [E371] [E374] [E375] [E37
     await expect(reactor).toHaveAttribute('data-ghost', '2');
     await expect(page.getByRole('img', { name: /Capsule suivante/ })).toBeVisible();
     await checkLayout(page);
-    await capture(page, info, 'partie');
+    await capture(page, info, 'partie', errors);
     await page.keyboard.press('p');
     await expect(page.getByRole('dialog', { name: 'Pause' })).toBeVisible();
     await checkLayout(page);
-    await capture(page, info, 'pause');
+    await capture(page, info, 'pause', errors);
     await page.keyboard.press('p');
     await expect(page.getByRole('dialog')).toHaveCount(0);
     await page.goto('./#settings');
@@ -207,7 +219,7 @@ test('[E101] [E102] [E294] [E528] deux réactions successives affichent les poin
     const combo = page.locator('.combo');
     await expect(combo).toContainText('COMBO ×2');
     await expect(combo).toHaveAttribute('data-match', /^\d+( \d+){3,}$/);
-    await capture(page, info, 'partie-combo');
+    await capture(page, info, 'partie-combo', errors);
     await expect(page.locator('.reactor')).toHaveAttribute('data-ready', 'oui');
     expect(errors).toEqual([]);
 });
