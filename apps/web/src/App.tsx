@@ -151,6 +151,8 @@ export function App() {
     const importGame = async (source: File): Promise<void> => {
         try {
             const state = restore(await source.text());
+            if (state.phase !== 'READY' && state.phase !== 'FALLING' && state.phase !== 'PAUSED')
+                throw new Error(`Import refusé : reprise impossible en phase ${state.phase}.`);
             await saveGame(state);
             setSaved({ state });
             setMessage('Partie importée. Elle est disponible depuis le menu.');
