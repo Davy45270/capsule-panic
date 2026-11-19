@@ -6,13 +6,12 @@
       [
         "#38BDF8",
         null,
-        "#007EEC",
-        "bleu 198–217°"
+        "#0081EE",
+        "bleu 190–225°"
       ]
     ],
     "transformation": "découpe + recoloration (jetons A2)",
-    "rabattement_palette": true,
-    "rampe": "luminance"
+    "rampe": "projection"
   },
   {
     "id": "bloc-rouge-plateau-apercu",
@@ -48,13 +47,12 @@
       [
         "#38BDF8",
         null,
-        "#007DEB",
-        "bleu 199–218°"
+        "#007EED",
+        "bleu 190–225°"
       ]
     ],
     "transformation": "découpe + recoloration (jetons A2)",
-    "rabattement_palette": true,
-    "rampe": "luminance"
+    "rampe": "projection"
   },
   {
     "id": "segment-rouge-plateau-apercu",

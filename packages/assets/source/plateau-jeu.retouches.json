@@ -6,13 +6,12 @@
       [
         "#38BDF8",
         null,
-        "#0087EC",
-        "bleu 196–213°"
+        "#0088ED",
+        "bleu 190–225°"
       ]
     ],
     "transformation": "découpe + recoloration (jetons A2)",
-    "rabattement_palette": true,
-    "rampe": "luminance"
+    "rampe": "projection"
   },
   {
     "id": "bloc-rouge-plateau-jeu",
