@@ -141,7 +141,8 @@
       "source_retouche": "packages/assets/source/composants-maquettes.retouches.json",
       "transformations": [
         "retouche libellé peint effacé : bande 20x25+95+3 étirée sur 223x25+2+3",
-        "retouche libellé peint effacé : bande 12x12+213+32 étirée sur 225x12+0+32"
+        "retouche libellé peint effacé : bande 12x12+213+32 étirée sur 225x12+0+32",
+        "retouche libellé peint effacé : bande 3x44+226+0 étirée sur 40x44+229+0"
       ],
       "etapes": [
         "crop",

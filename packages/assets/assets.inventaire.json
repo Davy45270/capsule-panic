@@ -1088,8 +1088,8 @@
     },
     {
       "chemin": "packages/assets/atlas/composants-maquettes@2x.png",
-      "sha256": "c81cded433937ddd5b0d946e1603b94b6e5ad1088d1553deb5e05e11b92b81f3",
-      "taille": 34488,
+      "sha256": "54023cea50580141deed6f204971d9d1d6ac6cefc95e337ab43410985adccd27",
+      "taille": 34100,
       "type": "atlas",
       "origines": [
         "dérivé"
@@ -1116,8 +1116,8 @@
     },
     {
       "chemin": "packages/assets/atlas/composants-maquettes@2x.webp",
-      "sha256": "f47d08eef8b48b7b3854e9d436a3e542ca882d9f3ffbef005727e90024aa96e9",
-      "taille": 27598,
+      "sha256": "13d08c7366519c205b4156ee61b12b02f12d38466f3700e7e583d153a9d68e34",
+      "taille": 27292,
       "type": "atlas",
       "origines": [
         "dérivé"
@@ -1172,8 +1172,8 @@
     },
     {
       "chemin": "packages/assets/atlas/composants-maquettes@3x.png",
-      "sha256": "f1778bec4729a402b243b923bc0bd5fcf264133207b766f15a3afb88cc493b39",
-      "taille": 66829,
+      "sha256": "be04c2daf87e7ab70c57db09a2f2bfd59917be956eb5f07b0869a0545a196311",
+      "taille": 65944,
       "type": "atlas",
       "origines": [
         "dérivé"
@@ -1200,8 +1200,8 @@
     },
     {
       "chemin": "packages/assets/atlas/composants-maquettes@3x.webp",
-      "sha256": "cc15fdc743b80b2cfd03b5146a278bacf30179ace42237dc959a0f791a3d7502",
-      "taille": 53286,
+      "sha256": "1ae9dd75ee326a27ea46af71af1dddd93a7513062139fb7b526eeda1f2f2613a",
+      "taille": 52608,
       "type": "atlas",
       "origines": [
         "dérivé"
@@ -5701,8 +5701,8 @@
     },
     {
       "chemin": "packages/assets/sprites/sprite-barre-partie.png",
-      "sha256": "f8b9844d8a1748876eaa010053906e7b2114395999b8c4065427161870fae0ec",
-      "taille": 2459,
+      "sha256": "140513976d167fab8acdf5aced0944bd4742b9df4729adae29564345268d9790",
+      "taille": 1514,
       "type": "sprite",
       "id": "sprite-barre-partie",
       "origine": "dérivé",
