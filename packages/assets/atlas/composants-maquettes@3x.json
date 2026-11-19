@@ -1,0 +1,225 @@
+{
+  "frames": {
+    "sprite-barre-partie": {
+      "frame": {
+        "x": 2,
+        "y": 2,
+        "w": 126,
+        "h": 126
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 126,
+        "h": 126
+      },
+      "sourceSize": {
+        "w": 126,
+        "h": 126
+      },
+      "duration": 100
+    },
+    "sprite-panneau-suivant-partie": {
+      "frame": {
+        "x": 130,
+        "y": 2,
+        "w": 126,
+        "h": 126
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 126,
+        "h": 126
+      },
+      "sourceSize": {
+        "w": 126,
+        "h": 126
+      },
+      "duration": 100
+    },
+    "sprite-cadre-statistiques-reussite": {
+      "frame": {
+        "x": 258,
+        "y": 2,
+        "w": 126,
+        "h": 126
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 126,
+        "h": 126
+      },
+      "sourceSize": {
+        "w": 126,
+        "h": 126
+      },
+      "duration": 100
+    },
+    "sprite-jouer-accueil": {
+      "frame": {
+        "x": 386,
+        "y": 2,
+        "w": 126,
+        "h": 126
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 126,
+        "h": 126
+      },
+      "sourceSize": {
+        "w": 126,
+        "h": 126
+      },
+      "duration": 100
+    },
+    "sprite-options-accueil": {
+      "frame": {
+        "x": 514,
+        "y": 2,
+        "w": 126,
+        "h": 126
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 126,
+        "h": 126
+      },
+      "sourceSize": {
+        "w": 126,
+        "h": 126
+      },
+      "duration": 100
+    },
+    "sprite-credits-accueil": {
+      "frame": {
+        "x": 642,
+        "y": 2,
+        "w": 126,
+        "h": 126
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 126,
+        "h": 126
+      },
+      "sourceSize": {
+        "w": 126,
+        "h": 126
+      },
+      "duration": 100
+    },
+    "sprite-ruban-reussite": {
+      "frame": {
+        "x": 770,
+        "y": 2,
+        "w": 126,
+        "h": 126
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 126,
+        "h": 126
+      },
+      "sourceSize": {
+        "w": 126,
+        "h": 126
+      },
+      "duration": 100
+    },
+    "sprite-suivant-reussite": {
+      "frame": {
+        "x": 898,
+        "y": 2,
+        "w": 126,
+        "h": 126
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 126,
+        "h": 126
+      },
+      "sourceSize": {
+        "w": 126,
+        "h": 126
+      },
+      "duration": 100
+    },
+    "sprite-rejouer-reussite": {
+      "frame": {
+        "x": 2,
+        "y": 130,
+        "w": 126,
+        "h": 126
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 126,
+        "h": 126
+      },
+      "sourceSize": {
+        "w": 126,
+        "h": 126
+      },
+      "duration": 100
+    },
+    "sprite-menu-reussite": {
+      "frame": {
+        "x": 130,
+        "y": 130,
+        "w": 126,
+        "h": 126
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 126,
+        "h": 126
+      },
+      "sourceSize": {
+        "w": 126,
+        "h": 126
+      },
+      "duration": 100
+    }
+  },
+  "meta": {
+    "app": "http://www.aseprite.org/",
+    "version": "1.3.18.6-dev",
+    "image": "composants-maquettes@3x.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 1026,
+      "h": 258
+    },
+    "scale": "3"
+  }
+}

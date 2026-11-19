@@ -1,0 +1,17 @@
+{
+  "planche": "Capsule_Panic_Assets_Gameplay_02.png",
+  "marge": 4,
+  "taille": 224,
+  "elements": [
+    {
+      "id": "paillasse-fond-jeu",
+      "boite": [
+        304,
+        113,
+        1169,
+        616
+      ],
+      "ancre": "centre"
+    }
+  ]
+}

@@ -1,19 +1,37 @@
-import { capsuleSvg, crystalSvg } from '@capsule-panic/renderer';
-import { Svg } from '../Svg';
+import { Art, ArtButton, Character } from '../Artwork';
 
-export function Home({ onPlay, onHelp, onOptions, onAbout, canResume, onResume }: { onPlay(): void; onHelp(): void; onOptions(): void; onAbout(): void; canResume: boolean; onResume(): void }) {
+export function Home({
+    onPlay,
+    onHelp,
+    onOptions,
+    onAbout,
+    canResume,
+    onResume,
+}: {
+    onPlay(): void;
+    onHelp(): void;
+    onOptions(): void;
+    onAbout(): void;
+    canResume: boolean;
+    onResume(): void;
+}) {
     return (
-        <section className="screen home">
-            <h1>Capsule Panic</h1>
-            <div className="logo-art" aria-hidden="true">
-                <Svg svg={crystalSvg('cyan', 56)} /><Svg svg={capsuleSvg(['amber', 'magenta'], 40)} /><Svg svg={crystalSvg('magenta', 56)} />
-            </div>
-            <nav className="menu">
-                {canResume && <button className="primary" onClick={onResume}>Reprendre la partie</button>}
-                <button className={canResume ? '' : 'primary'} onClick={onPlay}>Jouer</button>
-                <button onClick={onHelp}>Aide</button>
-                <button onClick={onOptions}>Options</button>
-                <button onClick={onAbout}>À propos</button>
+        <section className="screen home board-screen">
+            <h1>
+                <Art name="logo-jeu" alt="Capsule Panic" />
+            </h1>
+            <Art className="home-props" name="fioles-sous-logo" />
+            <Character className="home-character" name="chercheuse-origine" />
+            <nav className="menu home-menu" aria-label="Accueil">
+                {canResume && (
+                    <button className="primary" onClick={onResume}>
+                        Reprendre la partie
+                    </button>
+                )}
+                <ArtButton name="jouer-accueil" label="Jouer" onClick={onPlay} />
+                <ArtButton name="options-accueil" label="Options" onClick={onOptions} />
+                <ArtButton name="credits-accueil" label="Crédits" onClick={onAbout} />
+                <ArtButton name="aide-commandes-apercu" label="Aide" onClick={onHelp} />
             </nav>
         </section>
     );

@@ -1,0 +1,24 @@
+[
+  {
+    "id": "cadre-score-compteurs-maquettes-apercu",
+    "boite": "100x64+1196+616",
+    "raccords": [
+      [
+        "5x24+10+29",
+        "74x24+15+29"
+      ]
+    ],
+    "transformation": "découpe + nettoyage raster"
+  },
+  {
+    "id": "cadre-niveau-compteurs-maquettes-apercu",
+    "boite": "79x64+1297+616",
+    "raccords": [
+      [
+        "5x24+10+29",
+        "47x24+18+29"
+      ]
+    ],
+    "transformation": "découpe + nettoyage raster"
+  }
+]

@@ -9,3 +9,5 @@ blob-report/
 *.log
 .DS_Store
 coverage/
+/packages/contracts/src/schema-validators.mjs
+__pycache__/

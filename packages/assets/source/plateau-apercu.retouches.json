@@ -1,0 +1,86 @@
+[
+  {
+    "id": "bloc-bleu-plateau-apercu",
+    "boite": "60x62+1252+49",
+    "recolorations": [
+      [
+        "#38BDF8",
+        null,
+        "#007EEC",
+        "bleu 198–217°"
+      ]
+    ],
+    "transformation": "découpe + recoloration (jetons A2)",
+    "rabattement_palette": true,
+    "rampe": "luminance"
+  },
+  {
+    "id": "bloc-rouge-plateau-apercu",
+    "boite": "61x62+1321+49",
+    "recolorations": [
+      [
+        "#F472B6",
+        null,
+        "#F42326",
+        "rouge 340–20°"
+      ]
+    ],
+    "transformation": "découpe + recoloration (jetons A2)",
+    "rampe": "projection"
+  },
+  {
+    "id": "bloc-jaune-plateau-apercu",
+    "boite": "61x62+1391+49",
+    "recolorations": [
+      [
+        "#FBBF24",
+        null,
+        "#FBB400",
+        "jaune 34–53°"
+      ]
+    ],
+    "transformation": "découpe + recoloration (jetons A2)"
+  },
+  {
+    "id": "segment-bleu-plateau-apercu",
+    "boite": "56x54+938+49",
+    "recolorations": [
+      [
+        "#38BDF8",
+        null,
+        "#007DEB",
+        "bleu 199–218°"
+      ]
+    ],
+    "transformation": "découpe + recoloration (jetons A2)",
+    "rabattement_palette": true,
+    "rampe": "luminance"
+  },
+  {
+    "id": "segment-rouge-plateau-apercu",
+    "boite": "57x54+1009+49",
+    "recolorations": [
+      [
+        "#F472B6",
+        null,
+        "#F01F23",
+        "rouge 340–20°"
+      ]
+    ],
+    "transformation": "découpe + recoloration (jetons A2)",
+    "rampe": "projection"
+  },
+  {
+    "id": "segment-jaune-plateau-apercu",
+    "boite": "59x54+1081+49",
+    "recolorations": [
+      [
+        "#FBBF24",
+        null,
+        "#FBB400",
+        "jaune 31–53°"
+      ]
+    ],
+    "transformation": "découpe + recoloration (jetons A2)"
+  }
+]

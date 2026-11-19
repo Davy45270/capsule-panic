@@ -22,11 +22,11 @@ export function play(seed: string, commandSeed: string, count: number): { state:
 }
 
 describe('determinism', () => {
-    it('T20 same seed and same commands give the same state and the same events', () => {
+    it('[E254] T20 same seed and same commands give the same state and the same events', () => {
         const a = play('partie', 'commandes', 2000);
         expect(play('partie', 'commandes', 2000)).toEqual(a);
         expect(a.events.length).toBeGreaterThan(20);
-        expect(a.state.capsuleSerial).toBeGreaterThan(3);
+        expect(a.events.filter(event => event.type === 'SPAWNED').length).toBeGreaterThan(3);
         expect(play('partie', 'autres', 2000)).not.toEqual(a);
     });
 });

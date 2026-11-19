@@ -1,0 +1,17 @@
+{
+  "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+  "marge": 4,
+  "taille": 64,
+  "elements": [
+    {
+      "id": "case-sombre-apercu",
+      "boite": [
+        60,
+        62,
+        1182,
+        49
+      ],
+      "ancre": "centre"
+    }
+  ]
+}

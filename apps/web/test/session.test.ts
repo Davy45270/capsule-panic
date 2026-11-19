@@ -11,8 +11,15 @@ function fakeView() {
         release: () => release(),
         hooks: {
             render: () => undefined,
-            play: (events: readonly GameEvent[]) => { played.push([...events]); return events.some(e => e.type === 'MATCH_REMOVED') ? new Promise<void>(r => { release = r; }) : Promise.resolve(); }
-        }
+            play: (events: readonly GameEvent[]) => {
+                played.push([...events]);
+                return events.some((e) => e.type === 'MATCH_REMOVED')
+                    ? new Promise<void>((r) => {
+                          release = r;
+                      })
+                    : Promise.resolve();
+            },
+        },
     };
 }
 /** Un état où une descente brusque aligne quatre cellules cyan sur la ligne du bas. */
@@ -23,7 +30,12 @@ function aboutToMatch(): GameState {
     board[15 * 8 + 1] = { kind: 'obstacle', id: 'o2', color: 'cyan' };
     board[15 * 8 + 2] = { kind: 'obstacle', id: 'o3', color: 'cyan' };
     board[10 * 8 + 7] = { kind: 'obstacle', id: 'o4', color: 'magenta' };
-    return { ...s, board, obstaclesRemaining: 4, active: { id: 'c1', colors: ['cyan', 'amber'], x: 3, y: 1, orientation: 0 } };
+    return {
+        ...s,
+        board,
+        obstaclesRemaining: 4,
+        active: { id: 'c1', colors: ['cyan', 'amber'], x: 3, y: 1, orientation: 0 },
+    };
 }
 
 describe('game session', () => {
@@ -35,7 +47,7 @@ describe('game session', () => {
         expect(session.command('MOVE_LEFT')).toBe(false);
         expect(session.state.active?.x).toBe(0);
     });
-    it('inputs during cascade animation are dropped, not queued', async () => {
+    it('[E106] inputs during cascade animation are dropped, not queued', async () => {
         const v = fakeView();
         const session = new GameSession(aboutToMatch(), v.hooks);
         expect(session.command('HARD_DROP')).toBe(true);
@@ -45,7 +57,8 @@ describe('game session', () => {
         session.tick();
         expect(session.state).toBe(during);
         v.release();
-        await Promise.resolve(); await Promise.resolve();
+        await Promise.resolve();
+        await Promise.resolve();
         expect(session.animating).toBe(false);
         expect(session.state).toBe(during);
         expect(session.command('MOVE_LEFT')).toBe(true);
@@ -71,15 +84,134 @@ describe('game session', () => {
         session.command('HARD_DROP');
         expect(session.stats).toEqual({ capsules: 1, bestChain: 1, crystalsAtStart: 4 });
     });
-    it('notifies spawns and the end of the level', () => {
-        const spawned: number[] = [];
+    it('[E152] attend la fin de l’animation avant de signaler la réussite', async () => {
+        const spawned: (string | null)[] = [];
         let ended: GameState | null = null;
         const s = aboutToMatch();
-        const single = { ...s, board: s.board.map((c, i) => (i === 10 * 8 + 7 ? null : c)), obstaclesRemaining: 3 };
-        const session = new GameSession(single, { ...fakeView().hooks, onSpawn: st => spawned.push(st.capsuleSerial), onEnd: st => { ended = st; } });
+        const single = {
+            ...s,
+            board: s.board.map((c, i) => (i === 10 * 8 + 7 ? null : c)),
+            obstaclesRemaining: 3,
+        };
+        const v = fakeView();
+        const session = new GameSession(single, {
+            ...v.hooks,
+            onSpawn: (st) => {
+                spawned.push(st.active?.id ?? null);
+            },
+            onEnd: (st) => {
+                ended = st;
+            },
+        });
         session.command('HARD_DROP');
+        expect(ended).toBeNull();
+        v.release();
+        await Promise.resolve();
         expect(ended).not.toBeNull();
         expect(session.state.phase).toBe('WON');
         expect(spawned).toEqual([]);
     });
+});
+
+it('[E152] diffère la sauvegarde à l’apparition et la pause pendant la résolution', async () => {
+    const v = fakeView();
+    const saved: GameState[] = [];
+    const session = new GameSession(aboutToMatch(), {
+        ...v.hooks,
+        onSpawn: (state) => {
+            saved.push(state);
+        },
+    });
+    session.command('HARD_DROP');
+    session.visibilityChanged(true);
+    expect(saved).toEqual([]);
+    expect(session.state.phase).toBe('FALLING');
+    v.release();
+    await Promise.resolve();
+    expect(saved).toEqual([session.state]);
+    expect(session.state.phase).toBe('PAUSED');
+});
+
+it('[E256] attend la sauvegarde de la capsule avant de publier son score et de reprendre la chute', async () => {
+    const before = createGame({ seed: 'reprise', level: 0, speed: 'low' });
+    const checkpoint = Promise.withResolvers<undefined>();
+    const shown: GameState[] = [];
+    let saved: GameState | undefined;
+    const hooks = {
+        ...fakeView().hooks,
+        onChange: (state: GameState) => {
+            shown.push(state);
+        },
+        onSpawn: (state: GameState) => {
+            saved = state;
+            return checkpoint.promise;
+        },
+    };
+    const session = new GameSession(before, hooks);
+
+    session.command('HARD_DROP');
+    expect(saved?.active?.id).toBe('c2');
+    expect(shown.map((state) => state.active?.id)).toEqual(['c1']);
+    session.tick();
+    expect(session.state).toBe(saved);
+
+    checkpoint.resolve(undefined);
+    await checkpoint.promise;
+    expect(shown.at(-1)).toBe(saved);
+    expect(shown.at(-1)?.active).toMatchObject({ id: 'c2', x: 3, y: 1, orientation: 0 });
+    expect(shown.at(-1)?.score).toBeGreaterThan(0);
+    expect(session.command('MOVE_LEFT')).toBe(true);
+    expect(session.state.active?.x).toBe(2);
+    expect(saved?.active?.x).toBe(3);
+});
+
+it('[E094] rejoue dans l’ordre les commandes reçues pendant une sauvegarde', async () => {
+    const checkpoint = Promise.withResolvers<undefined>();
+    const session = new GameSession(createGame({ seed: 'reprise', level: 0, speed: 'low' }), {
+        ...fakeView().hooks,
+        onSpawn: () => checkpoint.promise,
+    });
+    session.command('HARD_DROP');
+    session.command('MOVE_LEFT');
+    session.command('ROTATE_CW');
+    expect(session.state.active).toMatchObject({ id: 'c2', x: 3, orientation: 0 });
+    checkpoint.resolve(undefined);
+    await checkpoint.promise;
+    expect(session.state.active).toMatchObject({ id: 'c2', x: 2, orientation: 1 });
+});
+
+it('[E094] publie une apparition même si la résolution libère le même identifiant', async () => {
+    const view = fakeView();
+    const spawns: GameState[] = [];
+    const initial = aboutToMatch();
+    const session = new GameSession(
+        {
+            ...initial,
+            active: { id: 'c1', colors: ['cyan', 'cyan'], x: 2, y: 1, orientation: 1 },
+            board: initial.board.map((cell, index) => (index === 15 * 8 + 2 ? null : cell)),
+            obstaclesRemaining: 3,
+        },
+        {
+            ...view.hooks,
+            onChange: (state: GameState, spawned?: boolean) => {
+                if (spawned) spawns.push(state);
+            },
+        },
+    );
+    session.command('HARD_DROP');
+    view.release();
+    await Promise.resolve();
+    expect(spawns.map((state) => state.active?.id)).toEqual(['c1']);
+});
+
+it('la vue ne reçoit pas le plateau final avant les effets de cascade', async () => {
+    const view = fakeView();
+    const frames: GameState[] = [];
+    const initial = aboutToMatch();
+    const session = new GameSession(initial, { ...view.hooks, render: (state) => frames.push(state) });
+    session.command('HARD_DROP');
+    expect(frames).toEqual([initial]);
+    view.release();
+    await Promise.resolve();
+    expect(frames).toEqual([initial, session.state]);
 });

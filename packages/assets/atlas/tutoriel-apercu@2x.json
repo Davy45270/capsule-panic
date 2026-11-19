@@ -1,0 +1,99 @@
+{
+  "frames": {
+    "sprite-tutoriel-aligner": {
+      "frame": {
+        "x": 2,
+        "y": 2,
+        "w": 112,
+        "h": 112
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 112,
+        "h": 112
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 112
+      },
+      "duration": 100
+    },
+    "sprite-tutoriel-deplacer": {
+      "frame": {
+        "x": 116,
+        "y": 2,
+        "w": 112,
+        "h": 112
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 112,
+        "h": 112
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 112
+      },
+      "duration": 100
+    },
+    "sprite-tutoriel-pivoter": {
+      "frame": {
+        "x": 230,
+        "y": 2,
+        "w": 112,
+        "h": 112
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 112,
+        "h": 112
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 112
+      },
+      "duration": 100
+    },
+    "sprite-tutoriel-eliminer": {
+      "frame": {
+        "x": 344,
+        "y": 2,
+        "w": 112,
+        "h": 112
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 112,
+        "h": 112
+      },
+      "sourceSize": {
+        "w": 112,
+        "h": 112
+      },
+      "duration": 100
+    }
+  },
+  "meta": {
+    "app": "http://www.aseprite.org/",
+    "version": "1.3.18.6-dev",
+    "image": "tutoriel-apercu@2x.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 1024,
+      "h": 116
+    },
+    "scale": "2"
+  }
+}

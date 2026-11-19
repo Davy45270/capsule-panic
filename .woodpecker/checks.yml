@@ -1,49 +1,54 @@
-# Repris d'echecs-kid (.woodpecker/checks.yml), plus l'audit des dependances, des licences et des secrets.
+# Repris d'echecs-kid (.woodpecker/checks.yml). Ce workflow va de l'installation au build ; la suite de la
+# chaîne (Playwright, SCA/SAST avec SBOM CycloneDX, artefacts) est dans .woodpecker/e2e.yml, qui en dépend.
 # Node : l'image officielle node:26 via le proxy Harbor. L'etape build affiche l'empreinte de dist/ :
 # le script de publication reconstruit le meme commit et refuse de publier un arbre different.
 labels:
-  host: tank01
+    host: tank01
 
 when:
-  - event: push
-    branch: main
-  - event: [pull_request, manual]
+    - event: push
+      branch: main
+    - event: [pull_request, manual]
 
 steps:
-  - name: npm ci
-    image: &node harbor.pingfr.duckdns.org/dockerhub/library/node:26
-    pull: true
-    commands:
-      - node --version
-      - npm ci
-  - name: lint
-    image: *node
-    commands:
-      - npm run lint
-  - name: typecheck
-    image: *node
-    commands:
-      - npm run typecheck
-  - name: test
-    image: *node
-    commands:
-      - npm test
-  - name: build
-    image: *node
-    commands:
-      - npm run build
-      - sha256sum dist/index.html
-      - echo "empreinte dist $(cd dist && find . -type f -print0 | LC_ALL=C sort -z | xargs -0 sha256sum | sha256sum | cut -c1-64)"
-  - name: check:precache
-    image: *node
-    commands:
-      - npm run check:precache
-  - name: audit
-    image: *node
-    commands:
-      - npm audit --audit-level=high
-      - npm run check:licenses
-  - name: secrets
-    image: harbor.pingfr.duckdns.org/dockerhub/zricethezav/gitleaks:v8.30.1
-    commands:
-      - gitleaks detect --source . --no-banner --redact
+    - name: npm ci
+      image: &node harbor.pingfr.duckdns.org/dockerhub/library/node:26
+      pull: true
+      commands:
+          - node --version
+          - npm ci
+    - name: lint
+      image: *node
+      commands:
+          - npm run lint
+    - name: typecheck
+      image: *node
+      commands:
+          - npm run typecheck
+    - name: assets
+      image: *node
+      commands:
+          - npm run assets -- check
+    - name: test
+      image: *node
+      commands:
+          - npm test
+    - name: build
+      image: *node
+      commands:
+          - npm run build
+          - |
+              empreinte_dist() {
+                (cd dist && find . -type f -print0 | LC_ALL=C sort -z | xargs -0 sha256sum | sha256sum | cut -c1-64)
+              }
+              avant=$(empreinte_dist)
+              npm run build
+              apres=$(empreinte_dist)
+              test "$$avant" = "$$apres"
+              sha256sum dist/index.html
+              echo "empreinte dist $$apres"
+    - name: check:precache
+      image: *node
+      commands:
+          - npm run check:static
+          - npm run check:precache

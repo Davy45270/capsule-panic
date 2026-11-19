@@ -12,7 +12,7 @@ export class RestoreError extends Error {
 }
 
 const KEYS = ['schemaVersion', 'ruleset', 'seed', 'rngState', 'width', 'height', 'board', 'active', 'nextQueue', 'phase', 'score',
-    'level', 'speed', 'obstaclesRemaining', 'tick', 'chainCount', 'capsuleSerial'] as const satisfies readonly (keyof GameState)[];
+    'level', 'speed', 'obstaclesRemaining', 'tick', 'chainCount'] as const satisfies readonly (keyof GameState)[];
 
 /** JSON stable : clés dans l'ordre du schéma, quel que soit l'ordre de l'objet reçu. */
 export function serialize(state: GameState): string {
@@ -27,6 +27,11 @@ export function restore(json: string): GameState {
     }
     if (typeof data === 'object' && data !== null && 'schemaVersion' in data && data.schemaVersion !== 1) {
         throw new RestoreError(`Sauvegarde illisible : version ${String(data.schemaVersion)} inconnue (attendu 1)`);
+    }
+    // La version publiée ajoutait ce compteur au contrat v1.
+    if (typeof data === 'object' && data !== null && 'capsuleSerial' in data) {
+        const { capsuleSerial: _legacySerial, ...migrated } = data;
+        data = migrated;
     }
     const result = validateGameState(data);
     if (!result.ok) throw new RestoreError('Sauvegarde illisible : état invalide', result.errors);

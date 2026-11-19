@@ -1,12 +1,13 @@
+import { propertyRuns } from './property-runs';
 import { describe, it, expect } from 'vitest';
 import fc from 'fast-check';
 import { nextUint32, randomInt, seedToState, shuffle } from '../src/rng';
 import type { RngState } from '../src/rng';
 
-const runs = Number(process.env.FC_RUNS ?? 1000);
+const runs = propertyRuns(process.env);
 
 describe('PRNG', () => {
-    it('xoshiro128** reference vector', () => {
+    it('[E026][E188] xoshiro128** reference vector', () => {
         let s: RngState = [1, 2, 3, 4];
         const out: number[] = [];
         for (let i = 0; i < 4; i++) { const [v, next] = nextUint32(s); out.push(v); s = next; }

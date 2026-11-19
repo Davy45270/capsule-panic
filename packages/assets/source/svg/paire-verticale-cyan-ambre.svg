@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 192">
+<g transform="translate(0 0)">
+<defs><linearGradient id="volume-cyan" x2="0" y2="1"><stop stop-color="#38BDF8"/><stop offset="1" stop-color="#1467C8"/></linearGradient></defs>
+<polygon points="19,6 77,6 90,19 90,77 77,90 19,90 6,77 6,19" fill="url(#volume-cyan)" stroke="#001E40" stroke-width="5" stroke-linejoin="round"/>
+<path d="M22 13H74L83 23V34H13V23Z" fill="#6BCEF3"/>
+<polygon points="48,28 66,38 66,58 48,68 30,58 30,38" fill="#1467C8" stroke="#001E40" stroke-width="3" stroke-linejoin="round"/>
+<path d="M25 17c8-2 13-1 13 2s-11 4-15 4-4-3 2-6z" fill="#FDFDFD"/>
+</g>
+<g transform="translate(0 96)">
+<defs><linearGradient id="volume-ambre" x2="0" y2="1"><stop stop-color="#FBBF24"/><stop offset="1" stop-color="#DB7900"/></linearGradient></defs>
+<polygon points="19,6 77,6 90,19 90,77 77,90 19,90 6,77 6,19" fill="url(#volume-ambre)" stroke="#5A3101" stroke-width="5" stroke-linejoin="round"/>
+<path d="M22 13H74L83 23V34H13V23Z" fill="#FFDE54"/>
+<polygon points="48,28 70,64 26,64" fill="#DB7900" stroke="#5A3101" stroke-width="3" stroke-linejoin="round"/>
+<path d="M25 17c8-2 13-1 13 2s-11 4-15 4-4-3 2-6z" fill="#FDFDFD"/>
+</g>
+<path d="M36 80h24v32H36Z" fill="#001E40"/>
+<path d="M42 82h12v28H42Z" fill="#6BCEF3"/>
+<path d="M46 87h4v18h-4Z" fill="#FDFDFD"/>
+</svg>

@@ -349,7 +349,8 @@
             "paths": [
               "react",
               "react-dom",
-              "pixi.js"
+              "pixi.js",
+              "@capsule-panic/renderer"
             ]
           }
         ]

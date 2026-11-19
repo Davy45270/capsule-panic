@@ -27,8 +27,8 @@ export function getLandingProjection(state: Readonly<GameState>): Position[] {
 /** Verrouillage, résolution complète, puis victoire, défaite ou apparition : tout dans le même `step`. */
 function lockAndContinue(state: GameState, active: ActiveCapsule, log: EventLog): GameState {
     const board = lockCapsule(state.board, active);
-    log.emit('LOCKED', { capsuleId: active.id, cells: capsuleCells(active) });
-    return spawnNext(resolveAfterLock({ ...state, board, active: null }, log), log);
+    log.emit('LOCKED', { capsuleId: active.id, cells: capsuleCells(active) }, board);
+    return spawnNext(resolveAfterLock({ ...state, board, active: null, phase: 'RESOLVING' }, log), log);
 }
 
 /** Transition pure : rend un nouvel état et ses événements ; une commande refusée rend l'état tel quel, sans événement. */

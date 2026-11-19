@@ -8,7 +8,7 @@ export const MAX_CYCLES = 128;
 export const POINTS_PER_OBSTACLE = 100;
 export const POINTS_PER_SEGMENT = 10;
 
-type Emit = (type: 'MATCH_REMOVED' | 'GRAVITY_STEP' | 'CASCADE_END', payload: unknown) => void;
+type Emit = (type: 'MATCH_REMOVED' | 'GRAVITY_STEP' | 'CASCADE_END', payload: unknown, board?: readonly Cell[]) => void;
 
 /**
  * Boucle de résolution : tant qu'il y a des alignements (cherchés seulement sur un plateau stable), chaîne + 1,
@@ -23,8 +23,8 @@ export function resolve(board: readonly Cell[], emit: Emit = () => undefined, ma
         const points = chain * (POINTS_PER_OBSTACLE * removed.obstacles + POINTS_PER_SEGMENT * removed.segments);
         scoreDelta += points;
         obstaclesRemoved += removed.obstacles;
-        emit('MATCH_REMOVED', { chain, cells: [...matches].sort((a, b) => a - b), obstacles: removed.obstacles, segments: removed.segments, points });
-        current = settle(removed.board, moved => emit('GRAVITY_STEP', { chain, moved })).board;
+        emit('MATCH_REMOVED', { chain, cells: [...matches].sort((a, b) => a - b), obstacles: removed.obstacles, segments: removed.segments, points }, removed.board);
+        current = settle(removed.board, (moved, frame) => emit('GRAVITY_STEP', { chain, moved }, frame)).board;
     }
     if (chain > 0) emit('CASCADE_END', { chain, points: scoreDelta });
     return { board: current, scoreDelta, chain, obstaclesRemoved };
@@ -32,6 +32,6 @@ export function resolve(board: readonly Cell[], emit: Emit = () => undefined, ma
 
 /** Résolution après verrouillage, appliquée à l'état : plateau, score, obstacles restants, longueur de chaîne. */
 export function resolveAfterLock(state: GameState, log: EventLog): GameState {
-    const r = resolve(state.board, (type, payload) => log.emit(type, payload));
+    const r = resolve(state.board, (type, payload, board) => log.emit(type, payload, board));
     return { ...state, board: r.board, score: state.score + r.scoreDelta, obstaclesRemaining: state.obstaclesRemaining - r.obstaclesRemoved, chainCount: r.chain };
 }

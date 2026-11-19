@@ -1,0 +1,57 @@
+{
+  "frames": {
+    "sprite-cristaux-compteur-jeu": {
+      "frame": {
+        "x": 2,
+        "y": 2,
+        "w": 96,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 96,
+        "h": 96
+      },
+      "duration": 100
+    },
+    "sprite-cristaux-hud-jeu": {
+      "frame": {
+        "x": 100,
+        "y": 2,
+        "w": 96,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 96,
+        "h": 96
+      },
+      "duration": 100
+    }
+  },
+  "meta": {
+    "app": "http://www.aseprite.org/",
+    "version": "1.3.18.6-dev",
+    "image": "compteur-jeu@2x.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 1024,
+      "h": 100
+    },
+    "scale": "2"
+  }
+}

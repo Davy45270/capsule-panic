@@ -1,0 +1,117 @@
+[
+  {
+    "id": "barre-partie",
+    "boite": "270x44+297+305",
+    "raccords": [
+      [
+        "20x25+95+3",
+        "223x25+2+3"
+      ],
+      [
+        "12x12+213+32",
+        "225x12+0+32"
+      ]
+    ],
+    "transformation": "découpe + nettoyage raster"
+  },
+  {
+    "id": "panneau-suivant-partie",
+    "boite": "70x100+501+419",
+    "raccords": [
+      [
+        "53x6+8+81",
+        "54x40+8+38"
+      ]
+    ],
+    "transformation": "découpe + nettoyage raster"
+  },
+  {
+    "id": "cadre-statistiques-reussite",
+    "boite": "218x106+910+451",
+    "raccords": [
+      [
+        "3x80+48+14",
+        "153x80+51+14"
+      ]
+    ],
+    "transformation": "découpe + nettoyage raster"
+  },
+  {
+    "id": "jouer-accueil",
+    "boite": "159x44+105+521",
+    "transformation": "découpe + nettoyage raster",
+    "raccords": [
+      [
+        "7x29+137+7",
+        "78x29+58+7"
+      ]
+    ],
+    "silhouette": "polygon 4,11 15,3 143,3 155,10 159,21 159,31 150,42 12,44 0,33 0,21"
+  },
+  {
+    "id": "options-accueil",
+    "boite": "161x39+103+645",
+    "transformation": "découpe + nettoyage raster",
+    "raccords": [
+      [
+        "9x25+140+7",
+        "79x25+62+7"
+      ]
+    ]
+  },
+  {
+    "id": "credits-accueil",
+    "boite": "159x38+104+682",
+    "transformation": "découpe + nettoyage raster",
+    "raccords": [
+      [
+        "9x25+140+6",
+        "79x25+63+6"
+      ]
+    ]
+  },
+  {
+    "id": "ruban-reussite",
+    "boite": "244x126+898+327",
+    "transformation": "découpe + nettoyage raster",
+    "raccords": [
+      [
+        "5x39+215+66",
+        "195x39+27+66"
+      ]
+    ]
+  },
+  {
+    "id": "suivant-reussite",
+    "boite": "191x45+925+569",
+    "transformation": "découpe + nettoyage raster",
+    "raccords": [
+      [
+        "6x25+150+10",
+        "137x25+15+10"
+      ]
+    ]
+  },
+  {
+    "id": "rejouer-reussite",
+    "boite": "185x40+929+617",
+    "transformation": "découpe + nettoyage raster",
+    "raccords": [
+      [
+        "9x25+153+8",
+        "86x25+72+8"
+      ]
+    ]
+  },
+  {
+    "id": "menu-reussite",
+    "boite": "185x42+929+662",
+    "transformation": "découpe + nettoyage raster",
+    "raccords": [
+      [
+        "10x25+145+8",
+        "64x25+83+8"
+      ]
+    ]
+  }
+]

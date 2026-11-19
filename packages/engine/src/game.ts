@@ -23,6 +23,6 @@ export function createGame(config: GameConfig): GameState {
         schemaVersion: 1, ruleset: RULESET, seed, rngState, width: 8, height: 16, board,
         active: { id: 'c1', colors: activeColors, ...SPAWN }, nextQueue: [nextColors],
         phase: 'FALLING', score: 0, level, speed, obstaclesRemaining: board.filter(c => c?.kind === 'obstacle').length,
-        tick: 0, chainCount: 0, capsuleSerial: 2
+        tick: 0, chainCount: 0
     };
 }

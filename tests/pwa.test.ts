@@ -22,11 +22,13 @@ it('ships three PNG icons with the declared sizes', () => {
         expect(bytes.readUInt32BE(20)).toBe(size);
     }
 });
-it('uses a relative, complete precache with no runtime network caching', () => {
+// Le précache est versionné et complet ; le seul cache à l'exécution est celui que la spec impose
+// (manifeste en network-first, assets hashés en cache-first), vérifié en détail par tests/build/static.test.ts.
+it('uses a relative, versioned, complete precache', () => {
     const config = readFileSync('apps/web/vite.config.ts', 'utf8');
     expect(config).toContain("base: './'");
     expect(config).toContain("strategies: 'generateSW'");
-    expect(config).toContain("cacheId: 'capsule-panic'");
-    expect(config).toContain("globPatterns: ['**/*.{html,js,css,png,svg,webmanifest}']");
-    expect(config).not.toContain('runtimeCaching');
+    expect(config).toContain("cacheId: 'capsule-panic-v1'");
+    expect(config).toContain("globPatterns: ['**/*.{html,js,css,png,webp,svg}']");
+    expect(config.match(/handler: '(\w+)'/g)).toEqual(["handler: 'NetworkFirst'", "handler: 'CacheFirst'"]);
 });

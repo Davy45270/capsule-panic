@@ -1,6 +1,7 @@
 // Persistance locale (IndexedDB) : la partie en cours, les meilleurs scores, les réglages. Rien ne quitte l'appareil.
-import { restore, serialize } from '@capsule-panic/engine';
+import { restore, RestoreError, serialize } from '@capsule-panic/engine';
 import type { GameState, Speed } from '@capsule-panic/contracts';
+import type { LevelStats } from './session';
 import type { Settings } from './settings';
 
 const DB = 'capsule-panic';
@@ -24,23 +25,74 @@ async function run<T>(store: string, mode: IDBTransactionMode, action: (s: IDBOb
     const db = await open();
     try {
         return await new Promise<T>((resolve, reject) => {
-            const request = action(db.transaction(store, mode).objectStore(store));
-            request.onsuccess = () => resolve(request.result);
-            request.onerror = () => reject(request.error ?? new Error('IndexedDB : échec'));
+            const tx = db.transaction(store, mode);
+            const request = action(tx.objectStore(store));
+            tx.oncomplete = () => resolve(request.result);
+            tx.onabort = () => reject(tx.error ?? new Error('IndexedDB : échec'));
         });
     } finally { db.close(); }
 }
 
+interface SavedGame { json: string; sha256: string; stats?: LevelStats }
+export interface Checkpoint { state: GameState; stats?: LevelStats }
+
+function readStats(value: unknown): LevelStats | undefined {
+    if (typeof value !== 'object' || value === null) return undefined;
+    if (!('capsules' in value && 'bestChain' in value && 'crystalsAtStart' in value)) return undefined;
+    const { capsules, bestChain, crystalsAtStart } = value;
+    const count = (n: unknown): n is number => typeof n === 'number' && Number.isSafeInteger(n) && n >= 0;
+    return count(capsules) && count(bestChain) && count(crystalsAtStart)
+        ? { capsules, bestChain, crystalsAtStart }
+        : undefined;
+}
+
+async function checksum(json: string): Promise<string> {
+    const bytes = await globalThis.crypto.subtle.digest('sha-256', new TextEncoder().encode(json));
+    return Array.from(new Uint8Array(bytes), byte => byte.toString(16).padStart(2, '0')).join('');
+}
+
+// Le calcul asynchrone du SHA 256 ne doit pas réordonner sauvegardes, suppressions et lectures.
+const pendingGames = new Map<string, Promise<void>>();
+function inGameOrder<T>(gameId: string, operation: () => Promise<T>): Promise<T> {
+    const pending = pendingGames.get(gameId) ?? Promise.resolve();
+    const result = pending.then(operation);
+    const tail = result.then(() => undefined, () => undefined);
+    pendingGames.set(gameId, tail);
+    void tail.then(() => { if (pendingGames.get(gameId) === tail) pendingGames.delete(gameId); });
+    return result;
+}
+
 /** Sauvegarde la partie (à l'apparition d'une capsule et à la pause). */
-export const saveGame = (state: GameState): Promise<IDBValidKey> => writeRawGame(serialize(state));
+export function saveGame(state: GameState, gameId = CURRENT, stats?: LevelStats): Promise<IDBValidKey> {
+    const json = serialize(state);
+    const snapshot = stats && { ...stats };
+    return inGameOrder(gameId, async () => {
+        const saved: SavedGame = { json, sha256: await checksum(json), stats: snapshot };
+        return run('games', 'readwrite', s => s.put(saved, gameId));
+    });
+}
 /** Écrit une sauvegarde brute (pour les tests de sauvegarde abîmée). */
-export const writeRawGame = (json: string): Promise<IDBValidKey> => run('games', 'readwrite', s => s.put(json, CURRENT));
-export const clearGame = (): Promise<undefined> => run('games', 'readwrite', s => s.delete(CURRENT));
+export const writeRawGame = (json: string): Promise<IDBValidKey> =>
+    inGameOrder(CURRENT, () => run('games', 'readwrite', s => s.put(json, CURRENT)));
+export const clearGame = (gameId = CURRENT): Promise<undefined> =>
+    inGameOrder(gameId, () => run('games', 'readwrite', s => s.delete(gameId)));
 
 /** Partie sauvegardée, `null` s'il n'y en a pas ; lève `RestoreError` si elle est illisible. */
-export async function loadGame(): Promise<GameState | null> {
-    const json = await run<unknown>('games', 'readonly', s => s.get(CURRENT));
-    return typeof json === 'string' ? restore(json) : null;
+export async function loadGame(gameId = CURRENT): Promise<GameState | null> {
+    return (await loadCheckpoint(gameId))?.state ?? null;
+}
+
+export function loadCheckpoint(gameId = CURRENT): Promise<Checkpoint | null> {
+    return inGameOrder(gameId, async () => {
+        const saved = await run<unknown>('games', 'readonly', s => s.get(gameId));
+        if (saved === undefined) return null;
+        if (typeof saved === 'string') return { state: restore(saved) };
+        if (typeof saved !== 'object' || saved === null || !('json' in saved) || typeof saved.json !== 'string' ||
+            !('sha256' in saved) || typeof saved.sha256 !== 'string' || await checksum(saved.json) !== saved.sha256) {
+            throw new RestoreError('Sauvegarde illisible : somme SHA 256 invalide');
+        }
+        return { state: restore(saved.json), stats: 'stats' in saved ? readStats(saved.stats) : undefined };
+    });
 }
 
 interface ScoreRow { level: number; speed: Speed; score: number }

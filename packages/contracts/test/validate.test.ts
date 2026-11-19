@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { validateGameState, validatePuzzleShape } from '../src/index';
+import { RULESET, validateGameState, validatePuzzleShape } from '../src/index';
 import type { Cell, GameState } from '../src/types';
 import { validState, withLockedPair } from './fixtures';
 
@@ -11,20 +11,46 @@ describe('validateGameState', () => {
         const r = validateGameState(validState());
         expect(r).toEqual({ ok: true, value: validState() });
     });
-    it('accepts an intact locked pair', () => {
-        expect(errorsOf(withLockedPair(validState()))).toEqual([]);
+    it('[E145] une paire exige des cellules adjacentes, parts distinctes, identifiant commun et lien réciproque', () => {
+        const state = withLockedPair(validState());
+        const index = 15 * 8 + 4;
+        const partner = state.board[index];
+        if (partner?.kind !== 'segment') throw new Error('segment partenaire attendu');
+        expect(errorsOf(state)).toEqual([]);
+        for (const [changed, error] of [
+            [{ ...partner, linkedToId: null }, 'reciprocal'],
+            [{ ...partner, capsuleId: 'autre' }, 'another capsule'],
+            [{ ...partner, part: 0 }, 'share part'],
+        ] as const) {
+            expect(errorsOf(setCell(state, index, changed)).join(' ')).toContain(error);
+        }
+        expect(errorsOf(setCell(setCell(state, index, null), index + 1, partner)).join(' ')).toContain('not adjacent');
     });
-    it('rejects a board of 127 cells', () => {
-        expect(errorsOf({ ...validState(), board: validState().board.slice(1) }).join(' ')).toContain('/board');
+    it('[E230] refuse les deux longueurs voisines de 128 cases', () => {
+        const state = validState();
+        expect(errorsOf(state)).toEqual([]);
+        for (const board of [state.board.slice(1), [...state.board, null]]) {
+            expect(errorsOf({ ...state, board }).join(' ')).toContain('/board');
+        }
     });
-    it('rejects an unknown colour', () => {
-        expect(errorsOf(setCell(validState(), 0, { kind: 'obstacle', id: 'o9', color: 'red' } as unknown as Cell)).length).toBeGreaterThan(0);
+    it('[E142][E187] le schéma distingue case vide, obstacle et segment dans le plateau', () => {
+        const state = withLockedPair(validState());
+        expect(errorsOf(state)).toEqual([]);
+        for (const invalid of [
+            { kind: 'obstacle', id: 'a', color: 'red' },
+            { kind: 'obstacle', color: 'cyan' },
+            { kind: 'obstacle', id: 'a', color: 'cyan', part: 0 },
+            { kind: 'segment', id: 'a', color: 'cyan', capsuleId: 'b', part: 2, linkedToId: null },
+            { kind: 'segment', id: 'a', color: 'cyan', capsuleId: 'b', part: 0 },
+            'empty',
+        ]) {
+            expect(errorsOf(setCell(state, 0, invalid as Cell)).join(' ')).toContain('/board/0');
+        }
     });
-    it('rejects a state without capsuleSerial', () => {
-        const { capsuleSerial: _drop, ...rest } = validState();
-        expect(errorsOf(rest).join(' ')).toContain('capsuleSerial');
+    it('rejects the old counter outside the explicit save migration', () => {
+        expect(errorsOf({ ...validState(), capsuleSerial: 2 }).join(' ')).toContain('capsuleSerial');
     });
-    it('rejects a dangling linkedToId', () => {
+    it('[E202] rejects a dangling linkedToId', () => {
         const s = setCell(withLockedPair(validState()), 15 * 8 + 4, null);
         expect(errorsOf({ ...s }).join(' ')).toContain('c3a');
     });
@@ -57,8 +83,15 @@ describe('validateGameState', () => {
         const s = setCell(validState(), 14 * 8, { kind: 'obstacle', id: 'o1', color: 'amber' });
         expect(errorsOf({ ...s, obstaclesRemaining: 3 }).join(' ')).toContain('o1');
     });
-    it('rejects a queue of two capsules', () => {
-        expect(errorsOf({ ...validState(), nextQueue: [['cyan', 'cyan'], ['amber', 'amber']] }).join(' ')).toContain('/nextQueue');
+    it('l’invariant de partie refuse les files vide et double, le schéma de puzzle les accepte', () => {
+        const state = validState();
+        expect(errorsOf(state)).toEqual([]);
+        for (const nextQueue of [[], [['cyan', 'cyan'], ['amber', 'amber']]]) {
+            const initialState = { ...state, nextQueue };
+            expect(errorsOf(initialState).join(' ')).toContain('/nextQueue');
+            const puzzle = { schemaVersion: 1, id: 'file', ruleset: RULESET, initialState, capsules: [], maxCapsules: 1, objective: 'CLEAR_ALL' };
+            expect(validatePuzzleShape(puzzle)).toEqual([]);
+        }
     });
     it('rejects anything that is not an object', () => {
         expect(errorsOf(null).length).toBeGreaterThan(0);
@@ -67,15 +100,31 @@ describe('validateGameState', () => {
 });
 
 describe('puzzle schema', () => {
-    it('compiles against the game schema and accepts a puzzle built on a valid state', () => {
-        const puzzle = { schemaVersion: 1, id: 'p1', ruleset: 'CP-CLASSIC-1', initialState: validState(), capsules: [['cyan', 'amber']], maxCapsules: 1, objective: 'CLEAR_ALL' };
+    it('[E132] compiles against the game schema and accepts a puzzle built on a valid state', () => {
+        const puzzle = { schemaVersion: 1, id: 'p1', ruleset: RULESET, initialState: validState(), capsules: [['cyan', 'amber']], maxCapsules: 1, objective: 'CLEAR_ALL' };
         expect(validatePuzzleShape(puzzle)).toEqual([]);
         expect(validatePuzzleShape({ ...puzzle, objective: 'WIN' }).length).toBeGreaterThan(0);
+        expect(validatePuzzleShape({ ...puzzle, initialState: { ...puzzle.initialState, width: 9 } }).join(' ')).toContain('/initialState/width');
     });
 });
 
-describe('capsule serial', () => {
-    it('rejects a locked capsule numbered above capsuleSerial', () => {
-        expect(errorsOf({ ...withLockedPair(validState()), capsuleSerial: 2 }).join(' ')).toContain('capsuleSerial');
-    });
+it('[E231] rngState exige exactement quatre entiers non signés sur 32 bits', () => {
+    expect(errorsOf({ ...validState(), rngState: [0, 1, 2, 4294967295] })).toEqual([]);
+    for (const rngState of [[1, 2, 3], [1, 2, 3, 4, 5], [-1, 2, 3, 4], [0.5, 2, 3, 4], [4294967296, 2, 3, 4]]) {
+        expect(errorsOf({ ...validState(), rngState }).join(' ')).toContain('/rngState');
+    }
+});
+
+it('[E232] le schéma accepte les bornes du niveau et refuse de les dépasser', () => {
+    for (const level of [0, 20]) expect(errorsOf({ ...validState(), level })).toEqual([]);
+    for (const level of [-1, 21, 3.5]) expect(errorsOf({ ...validState(), level }).join(' ')).toContain('/level');
+});
+
+it('[E154] refuse l’absence de capsule dans toute phase qui permet de reprendre la chute', () => {
+    for (const phase of ['READY', 'FALLING', 'PAUSED'] as const) {
+        expect(errorsOf({ ...validState(), phase })).toEqual([]);
+        expect(errorsOf({ ...validState(), phase, active: null })).toEqual([
+            '/active une capsule est requise pour la phase ' + phase,
+        ]);
+    }
 });

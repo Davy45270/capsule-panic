@@ -14,14 +14,18 @@ function manualClock() {
 }
 
 describe('fixed-step loop', () => {
-    it('emits one TICK every 45 / 30 / 15 frames at low / medium / high', () => {
+    it('[E029][E045][E157][E158][E159] emits one TICK every 45 / 30 / 15 frames at low / medium / high', () => {
         expect(FRAMES_PER_TICK).toEqual({ low: 45, medium: 30, high: 15 });
-        for (const [speed, expected] of [['low', 1], ['medium', 2], ['high', 4]] as const) {
-            const clock = manualClock();
-            let ticks = 0;
-            createLoop({ speed, onTick: () => { ticks++; }, ...clock }).start();
-            clock.advance(60);
-            expect(ticks).toBe(expected);
+        for (const [speed, frames] of [['low', 45], ['medium', 30], ['high', 15]] as const) {
+            for (const refreshHz of [30, 60, 120]) {
+                const clock = manualClock();
+                let ticks = 0;
+                createLoop({ speed, onTick: () => { ticks++; }, ...clock }).start();
+                clock.advance(Math.ceil(frames * refreshHz / 60) - 1, 1000 / refreshHz);
+                expect(ticks).toBe(0);
+                clock.advance(1, 1000 / refreshHz);
+                expect(ticks).toBe(1);
+            }
         }
     });
     it('stop() stops the ticks', () => {

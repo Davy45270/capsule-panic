@@ -1,0 +1,74 @@
+[
+  {
+    "id": "cristal-cyan",
+    "boite": "191x178+379+14",
+    "raison": "Obstacle à silhouette géométrique"
+  },
+  {
+    "id": "cristal-brise-cyan",
+    "boite": "166x140+399+213",
+    "raison": "Fragments après élimination"
+  },
+  {
+    "id": "cellule-cyan",
+    "boite": "83x144+1001+30",
+    "raison": "Segment carré biseauté et gravé"
+  },
+  {
+    "id": "cristal-ambre",
+    "boite": "199x183+782+10",
+    "raison": "Obstacle à silhouette géométrique"
+  },
+  {
+    "id": "cristal-brise-ambre",
+    "boite": "168x128+788+225",
+    "raison": "Fragments après élimination"
+  },
+  {
+    "id": "cellule-ambre",
+    "boite": "82x144+1191+30",
+    "raison": "Segment carré biseauté et gravé"
+  },
+  {
+    "id": "cristal-magenta",
+    "boite": "192x180+579+13",
+    "raison": "Obstacle à silhouette géométrique",
+    "rabattement_palette": true
+  },
+  {
+    "id": "cristal-brise-magenta",
+    "boite": "168x138+591+208",
+    "raison": "Fragments après élimination"
+  },
+  {
+    "id": "cellule-magenta",
+    "boite": "82x144+1097+30",
+    "raison": "Segment carré biseauté et gravé",
+    "rabattement_palette": true
+  },
+  {
+    "id": "cellule-fantome",
+    "boite": "83x144+1001+30",
+    "raison": "Contour de la projection de chute"
+  },
+  {
+    "id": "pont-haut",
+    "boite": "181x89+333+382",
+    "raison": "Liaison lumineuse entre deux cellules"
+  },
+  {
+    "id": "pont-droite",
+    "boite": "181x89+333+382",
+    "raison": "Liaison lumineuse entre deux cellules"
+  },
+  {
+    "id": "pont-bas",
+    "boite": "181x89+333+382",
+    "raison": "Liaison lumineuse entre deux cellules"
+  },
+  {
+    "id": "pont-gauche",
+    "boite": "181x89+333+382",
+    "raison": "Liaison lumineuse entre deux cellules"
+  }
+]

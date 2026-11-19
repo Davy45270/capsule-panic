@@ -1,0 +1,36 @@
+{
+  "frames": {
+    "sprite-reacteur-chambre-origine": {
+      "frame": {
+        "x": 2,
+        "y": 2,
+        "w": 414,
+        "h": 414
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 414,
+        "h": 414
+      },
+      "sourceSize": {
+        "w": 414,
+        "h": 414
+      },
+      "duration": 100
+    }
+  },
+  "meta": {
+    "app": "http://www.aseprite.org/",
+    "version": "1.3.18.6-dev",
+    "image": "chambre-origine@2x.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 1024,
+      "h": 418
+    },
+    "scale": "2"
+  }
+}

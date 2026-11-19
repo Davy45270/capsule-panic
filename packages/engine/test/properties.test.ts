@@ -1,16 +1,17 @@
+import { propertyRuns } from './property-runs';
 import { describe, it, expect } from 'vitest';
 import fc from 'fast-check';
 import { validateGameState } from '@capsule-panic/contracts';
 import type { GameCommand, GameState } from '@capsule-panic/contracts';
-import { createGame, restore, serialize, step } from '../src/index';
+import { capsuleCells, createGame, restore, serialize, step } from '../src/index';
 import { deepFreeze } from './helpers';
 
-const runs = Number(process.env.FC_RUNS ?? 1000);
+const runs = propertyRuns(process.env);
 const command = fc.constantFrom<GameCommand['type']>('MOVE_LEFT', 'MOVE_RIGHT', 'ROTATE_CW', 'ROTATE_CCW', 'SOFT_DROP', 'HARD_DROP', 'TICK', 'PAUSE', 'RESUME');
 const filled = (s: GameState): number => s.board.filter(Boolean).length;
 
 describe('engine properties over random games', () => {
-    it('every step keeps the invariants, never mutates its input, and is roundtrip-stable', () => {
+    it('[E093][E144][E265][E266][E267][E270][E271] every step keeps the invariants, never mutates its input, and is roundtrip-stable', () => {
         fc.assert(fc.property(fc.string({ minLength: 1 }), fc.integer({ min: 0, max: 20 }), fc.array(command, { maxLength: 120 }), (seed, level, commands) => {
             let s = createGame({ seed, level, speed: 'low' });
             for (const type of commands) {
@@ -31,10 +32,22 @@ describe('engine properties over random games', () => {
                 const removed = t.events.filter(e => e.type === 'MATCH_REMOVED')
                     .reduce((n, e) => n + (e.payload as { obstacles: number; segments: number }).obstacles + (e.payload as { segments: number }).segments, 0);
                 expect(filled(next)).toBe(filled(s) + locked - removed);
+                const ids = next.board.flatMap(cell => cell ? [cell.id] : []);
+                const known = new Set(s.board.flatMap(cell => cell ? [cell.id] : []));
+                if (locked && s.active) {
+                    known.add(`${s.active.id}a`);
+                    known.add(`${s.active.id}b`);
+                }
+                expect(ids.every(id => known.has(id))).toBe(true);
+                expect(new Set(ids).size).toBe(ids.length);
+                if (next.active) {
+                    for (const id of [`${next.active.id}a`, `${next.active.id}b`]) expect(ids).not.toContain(id);
+                    for (const { x, y } of capsuleCells(next.active)) expect(next.board[y * 8 + x]).toBeNull();
+                }
                 // Les événements sont numérotés sans trou.
                 expect(t.events.map(e => e.seq)).toEqual(t.events.map((_, i) => i));
                 s = next;
             }
-        }), { numRuns: Math.max(1, Math.floor(runs / 10)) });
+        }), { numRuns: runs });
     });
 });

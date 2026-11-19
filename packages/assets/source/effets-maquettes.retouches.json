@@ -1,0 +1,17 @@
+[
+  {
+    "id": "ligne-elimination-apercu",
+    "boite": "117x32+922+442",
+    "recolorations": [
+      [
+        "#F472B6",
+        "113x29+1+1",
+        "#F1262B",
+        "rouge 345–5°"
+      ]
+    ],
+    "transformation": "découpe + recoloration (jetons A2)",
+    "rabattement_palette": true,
+    "rampe": "luminance"
+  }
+]
