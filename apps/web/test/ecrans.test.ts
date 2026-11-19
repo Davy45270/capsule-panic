@@ -327,3 +327,14 @@ it('la fin de partie conserve le meilleur combo et les poses d’avant le rechar
     expect(container.textContent).toContain('Combo max ×2');
     expect(container.textContent).toContain('Capsules jouées 28');
 });
+
+it('[E125] Retour depuis les options ouvertes par l’accueil revient à l’accueil', async () => {
+    await mountApp();
+    await click('Options');
+    expect(container.querySelector('h2')?.textContent).toBe('Options');
+    expect(location.hash).toBe('#settings');
+    await update(() => history.back());
+    await vi.waitFor(() =>
+        expect(container.querySelector('h1 img')?.getAttribute('alt')).toBe('Capsule Panic'),
+    );
+});
