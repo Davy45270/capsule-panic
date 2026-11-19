@@ -4,21 +4,28 @@ import { readFileSync } from 'node:fs';
 import { act, createElement } from 'react';
 import { createRoot } from 'react-dom/client';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
+import type { GameEvent, GameState, Position } from '@capsule-panic/contracts';
 import { createGame } from '@capsule-panic/engine';
-import { animationDuration, textureFor } from '@capsule-panic/renderer';
+import { animationDuration, pieceArtwork, textureFor } from '@capsule-panic/renderer';
+import type { BoardView, Match, ViewOptions } from '@capsule-panic/renderer';
 import inventaire from '../../../packages/assets/source/inventaire.json';
 import { App } from '../src/App';
 import { debug, recordCrash, recordFrames } from '../src/diagnostics';
 import { Game } from '../src/screens/Game';
 import { End } from '../src/screens/End';
-import { cascade } from '../../../tests/e2e/parcours';
+import { cascade, victoire } from '../../../tests/e2e/parcours';
 import { defaultSettings } from '../src/settings';
-import { clearGame, loadGame, loadSettings, saveGame, saveSettings } from '../src/storage';
+import { clearGame, loadGame, loadSettings, saveGame, saveSettings, topScores } from '../src/storage';
 
-const renderer = vi.hoisted(() => ({ play: vi.fn(), render: vi.fn() }));
+const renderer = vi.hoisted(() => ({
+    create: vi.fn<(host: HTMLElement, options: ViewOptions) => void>(),
+    play: vi.fn<BoardView['play']>(),
+    render: vi.fn<(state: GameState, ghost: readonly Position[]) => void>(),
+}));
 vi.mock('@capsule-panic/renderer', async (original) => ({
     ...(await original<typeof import('@capsule-panic/renderer')>()),
-    createBoardView: (host: HTMLElement) => {
+    createBoardView: (host: HTMLElement, options: ViewOptions) => {
+        renderer.create(host, options);
         const canvas = document.createElement('canvas');
         host.append(canvas);
         return Promise.resolve({
@@ -42,6 +49,7 @@ beforeEach(async () => {
     await clearGame();
     await saveSettings(defaultSettings());
     localStorage.clear();
+    renderer.create.mockClear();
     renderer.play.mockReset();
     renderer.render.mockClear();
 });
@@ -292,37 +300,16 @@ it('quitter pendant la sauvegarde ne redessine pas le réacteur démonté', asyn
 });
 
 it('la fin de partie conserve le meilleur combo et les poses d’avant le rechargement', async () => {
-    vi.spyOn(history, 'pushState').mockImplementation(noop);
-    const press = (keys: string[]) =>
-        update(() => {
-            for (const key of keys)
-                window.dispatchEvent(new KeyboardEvent('keydown', { key: key === 'Space' ? ' ' : key }));
-        });
-    const resume = async () => {
-        await mountApp();
-        await click('Reprendre la partie');
-        await click('Reprendre');
-    };
     await saveGame(createGame({ seed: cascade.seed, level: 0, speed: 'low' }));
-    await resume();
-    for (const keys of [...cascade.placements, ['Space']]) {
-        await press(keys);
-        await act(async () => {
-            await loadGame();
-        });
-    }
+    await resumeSaved();
+    await playPlacements([...cascade.placements, ['Space']]);
     expect(await loadGame()).toMatchObject({ score: 520, chainCount: 0 });
 
     act(() => root.unmount());
     root = createRoot(container);
     history.replaceState(null, '', '/');
-    await resume();
-    for (let index = 0; index < 6; index++) {
-        await press(['Space']);
-        await act(async () => {
-            await loadGame();
-        });
-    }
+    await resumeSaved();
+    await playPlacements(Array.from({ length: 6 }, () => ['Space']));
     expect(container.querySelector('h2')?.textContent).toContain('Défaite !');
     expect(container.textContent).toContain('Combo max ×2');
     expect(container.textContent).toContain('Capsules jouées 28');
@@ -337,4 +324,158 @@ it('[E125] Retour depuis les options ouvertes par l’accueil revient à l’acc
     await vi.waitFor(() =>
         expect(container.querySelector('h1 img')?.getAttribute('alt')).toBe('Capsule Panic'),
     );
+});
+
+const pressKeys = (keys: readonly string[]) =>
+    update(() => {
+        for (const key of keys)
+            window.dispatchEvent(new KeyboardEvent('keydown', { key: key === 'Space' ? ' ' : key }));
+    });
+const playPlacements = async (placements: readonly string[][]) => {
+    for (const keys of placements) {
+        await pressKeys(keys);
+        await act(async () => {
+            await loadGame();
+        });
+    }
+};
+const resumeSaved = async () => {
+    // L'environnement DOM de test émet hashchange pour pushState, contrairement au navigateur.
+    vi.spyOn(history, 'pushState').mockImplementation(noop);
+    await mountApp();
+    await click('Reprendre la partie');
+    await click('Reprendre');
+};
+const mountGame = async (initial: GameState, settings = defaultSettings()) =>
+    update(() =>
+        root.render(
+            createElement(Game, {
+                initial,
+                settings,
+                onSave: noop,
+                onMenu: noop,
+                onEnd: noop,
+                onRestart: noop,
+                onError: noop,
+            }),
+        ),
+    );
+
+it('[E099] affiche dans l’ordre les deux textures distinctes de la prochaine capsule', async () => {
+    const initial = {
+        ...createGame({ seed: 'file', level: 0, speed: 'low' }),
+        nextQueue: [['magenta', 'amber']] as GameState['nextQueue'],
+    };
+    await mountGame(initial);
+    expect([...container.querySelectorAll('.preview img')].map((image) => image.getAttribute('src'))).toEqual(
+        [pieceArtwork['cellule-magenta-unie'], pieceArtwork['cellule-ambre-unie']],
+    );
+});
+
+it('[E528] affiche le multiplicateur et les 80 points du second maillon', async () => {
+    const animation = Promise.withResolvers<undefined>();
+    renderer.play.mockImplementation(
+        (events: readonly GameEvent[], _before: GameState, onMatch: (match: Match) => void) => {
+            for (const event of events) {
+                if (event.type !== 'MATCH_REMOVED') continue;
+                const match = event.payload as Match;
+                onMatch(match);
+                if (match.chain === 2) return animation.promise;
+            }
+            return Promise.resolve();
+        },
+    );
+    await saveGame(createGame({ seed: cascade.seed, level: 0, speed: 'low' }));
+    await resumeSaved();
+    await playPlacements(cascade.placements);
+    expect(container.querySelector('.combo')?.textContent).toMatch(/^COMBO ×2\+80$/);
+    await act(async () => {
+        animation.resolve(undefined);
+        await animation.promise;
+    });
+    await act(async () => {
+        await loadGame();
+    });
+    expect(container.querySelector('[data-testid=score]')?.textContent).toBe('000494');
+});
+
+it('[E048] [E094] affiche et conserve le score de la partie gagnée au clavier', async () => {
+    await saveGame(createGame({ seed: victoire.seed, level: 0, speed: 'low' }));
+    await resumeSaved();
+    await playPlacements(victoire.placements);
+    expect(container.querySelector('h2')?.textContent).toContain('Niveau réussi !');
+    expect(container.querySelector('[data-testid=final-score]')?.textContent).toBe('704');
+    await vi.waitFor(async () => expect(await topScores(0, 'low')).toContain(704));
+    await click('Niveau suivant');
+    expect(container.querySelector('[data-testid=level]')?.textContent).toBe('1');
+});
+
+it('[E152] le rechargement restaure le tick et la position sauvegardés à la pause', async () => {
+    let frame: FrameRequestCallback | undefined;
+    vi.stubGlobal('requestAnimationFrame', (next: FrameRequestCallback) => {
+        frame = next;
+        return 1;
+    });
+    try {
+        const initial = createGame({ seed: 'pause', level: 0, speed: 'low' });
+        await saveGame(initial);
+        await resumeSaved();
+        const time = performance.now();
+        await update(() => {
+            for (const elapsed of [250, 500, 750, 760]) frame?.(time + elapsed);
+        });
+        await pressKeys(['ArrowLeft', 'p']);
+        const saved = await loadGame();
+        expect(saved).toMatchObject({ tick: 1, phase: 'PAUSED', active: { x: 2, y: 2 } });
+
+        act(() => root.unmount());
+        root = createRoot(container);
+        history.replaceState(null, '', '/');
+        await mountApp();
+        await click('Reprendre la partie');
+        expect(container.querySelector('dialog[open]')).not.toBeNull();
+        expect(renderer.render.mock.lastCall?.[0]).toEqual(saved);
+    } finally {
+        vi.unstubAllGlobals();
+    }
+});
+
+it('[E110] un geste tactile sur le réacteur déplace et pivote la capsule', async () => {
+    const initial = createGame({ seed: 'gestes', level: 0, speed: 'low' });
+    await mountGame(initial);
+    const reactor = container.querySelector<HTMLElement>('.reactor');
+    if (!reactor) throw new Error('Réacteur absent');
+    vi.spyOn(reactor, 'setPointerCapture').mockImplementation(noop);
+    vi.spyOn(reactor, 'clientWidth', 'get').mockReturnValue(390);
+    vi.spyOn(reactor, 'clientHeight', 'get').mockReturnValue(600);
+    const gesture = (from: number, to: number) =>
+        update(() => {
+            const pointer = {
+                bubbles: true,
+                isPrimary: true,
+                pointerType: 'touch',
+                pointerId: 1,
+                clientY: 100,
+            };
+            reactor.dispatchEvent(new PointerEvent('pointerdown', { ...pointer, clientX: from }));
+            reactor.dispatchEvent(new PointerEvent('pointerup', { ...pointer, clientX: to }));
+        });
+    await gesture(100, 168);
+    expect(renderer.render.mock.lastCall?.[0]).toMatchObject({ active: { x: 5, orientation: 0 } });
+    await gesture(100, 100);
+    expect(renderer.render.mock.lastCall?.[0]).toMatchObject({ active: { x: 5, orientation: 1 } });
+});
+
+it.each([
+    { user: true, system: false },
+    { user: false, system: true },
+])('[E104] transmet la réduction du mouvement au réacteur ($user, $system)', async ({ user, system }) => {
+    const media = window.matchMedia('(prefers-reduced-motion: reduce)');
+    vi.spyOn(media, 'matches', 'get').mockReturnValue(system);
+    vi.spyOn(window, 'matchMedia').mockReturnValue(media);
+    await mountGame(createGame({ seed: 'mouvement', level: 0, speed: 'low' }), {
+        ...defaultSettings(),
+        reducedMotion: user,
+    });
+    expect(renderer.create.mock.lastCall?.[1]).toMatchObject({ reducedMotion: true });
 });
