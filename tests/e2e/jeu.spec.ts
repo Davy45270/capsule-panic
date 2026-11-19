@@ -34,7 +34,7 @@ test('stacking in one column ends on the defeat screen', async ({ page }) => {
 });
 
 test('touch buttons are at least 48 px and play the game', async ({ page }, info) => {
-    test.skip(info.project.name !== 'mobile', 'viewport mobile seulement');
+    test.skip(!info.project.use.hasTouch, 'projets mobiles tactiles seulement');
     await startGame(page);
     for (const name of ['Gauche', 'Pivoter', 'Descendre', 'Poser', 'Droite']) {
         const box = await page.getByRole('button', { name, exact: true }).boundingBox();
