@@ -20,3 +20,4 @@ ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a  Capsule_Panic_
 SHA
 )
 CAPSULE_PLANCHES="$(realpath "$planches")" python3 -B scripts/assets-build.py "$outils" "$aseprite"
+python3 -B scripts/assets-runtime.py

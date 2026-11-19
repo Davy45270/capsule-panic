@@ -1,18 +1,41 @@
-import { capsuleSvg, crystalSvg } from '@capsule-panic/renderer';
-import { Svg } from '../Svg';
+import { Art } from '../Artwork';
+import type { ArtworkName } from '../Artwork';
+
+const cards: [ArtworkName, string][] = [
+    ['tutoriel-deplacer', 'Déplace les cellules avec les flèches gauche et droite.'],
+    ['tutoriel-pivoter', 'Pivote avec X ou la flèche haut, et dans l’autre sens avec Z.'],
+    ['tutoriel-aligner', 'Aligne quatre éléments de même couleur en ligne ou en colonne.'],
+    ['tutoriel-eliminer', 'Élimine tous les cristaux pour réussir le niveau.'],
+];
 
 export function Help({ onBack }: { onBack(): void }) {
     return (
-        <section className="screen help">
+        <section className="screen help board-screen">
             <h2>Comment jouer</h2>
-            <ol className="steps">
-                <li><Svg svg={capsuleSvg(['cyan', 'amber'], 28)} /><span>Déplace la capsule : ← → ou les boutons.</span></li>
-                <li><Svg svg={capsuleSvg(['amber', 'magenta'], 28)} /><span>Pivote-la : X ou ↑ (Z dans l’autre sens), ou touche le réacteur.</span></li>
-                <li><Svg svg={capsuleSvg(['cyan', 'cyan'], 28)} /><span>Aligne 4 cases de même couleur et de même forme, en ligne ou en colonne.</span></li>
-                <li><Svg svg={crystalSvg('magenta', 28)} /><span>Dissous tous les cristaux instables pour réussir le niveau.</span></li>
+            <ol className="tutorial">
+                {cards.map(([name, text]) => (
+                    <li key={name}>
+                        <Art name={name} alt={text} />
+                    </li>
+                ))}
             </ol>
-            <p>↓ descend d’une case, Espace pose la capsule d’un coup, P ou Échap met en pause.</p>
-            <nav className="menu"><button className="primary" onClick={onBack}>Menu</button></nav>
+            <h3>Clavier</h3>
+            <div className="key-art">
+                <Art name="touches-horizontales-gestes-jeu" />
+                <Art name="touches-action-gestes-jeu" />
+            </div>
+            <Art name="legende-clavier-gestes-jeu" />
+            <p>↓ descend d’une case. Espace pose la capsule d’un coup. P ou Échap met en pause.</p>
+            <h3>Gestes tactiles</h3>
+            <Art
+                name="gestes-gestes-jeu"
+                alt="Glisse pour déplacer, touche pour pivoter, balaie vers le bas pour poser."
+            />
+            <nav className="menu">
+                <button className="primary" onClick={onBack}>
+                    Menu
+                </button>
+            </nav>
         </section>
     );
 }

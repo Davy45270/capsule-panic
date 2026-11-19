@@ -9,26 +9,53 @@ const MAX_CATCH_UP_MS = 250;
 export interface LoopOptions {
     speed: Speed;
     onTick: () => void;
+    onFrame?: (elapsed: number) => void;
     now?: () => number;
     schedule?: (cb: (time: number) => void) => number;
     cancel?: (handle: number) => void;
 }
 
 /** Boucle à pas fixe, découplée du rafraîchissement de l'écran. */
-export function createLoop({ speed, onTick, now = () => performance.now(), schedule = cb => requestAnimationFrame(cb), cancel = h => cancelAnimationFrame(h) }: LoopOptions): { start(): void; stop(): void } {
+export function createLoop({
+    speed,
+    onTick,
+    onFrame,
+    now = () => performance.now(),
+    schedule = (cb) => requestAnimationFrame(cb),
+    cancel = (h) => cancelAnimationFrame(h),
+}: LoopOptions): { start(): void; stop(): void; resetCadence(): void } {
     let handle: number | null = null;
-    let last = 0, carry = 0, frames = 0;
+    let last = 0,
+        carry = 0,
+        frames = 0;
     const frame = (time: number): void => {
-        carry += Math.min(time - last, MAX_CATCH_UP_MS);
+        const elapsed = time - last;
+        onFrame?.(elapsed);
+        carry += Math.min(elapsed, MAX_CATCH_UP_MS);
         last = time;
         while (carry >= FRAME_MS - 1e-6) {
             carry -= FRAME_MS;
-            if (++frames >= FRAMES_PER_TICK[speed]) { frames = 0; onTick(); }
+            if (++frames >= FRAMES_PER_TICK[speed]) {
+                frames = 0;
+                onTick();
+            }
         }
         if (handle !== null) handle = schedule(frame);
     };
     return {
-        start() { if (handle !== null) return; last = now(); carry = 0; handle = schedule(frame); },
-        stop() { if (handle !== null) cancel(handle); handle = null; }
+        resetCadence() {
+            frames = 0;
+            carry = 0;
+        },
+        start() {
+            if (handle !== null) return;
+            last = now();
+            carry = 0;
+            handle = schedule(frame);
+        },
+        stop() {
+            if (handle !== null) cancel(handle);
+            handle = null;
+        },
     };
 }

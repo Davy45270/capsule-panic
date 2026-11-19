@@ -10,16 +10,28 @@ export function dimensions(image, extension) {
     if (extension === '.png' && image.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]))) {
         return [image.readUInt32BE(16), image.readUInt32BE(20)];
     }
-    if (extension === '.webp' && image.toString('ascii', 0, 4) === 'RIFF' &&
-        image.toString('ascii', 8, 15) === 'WEBPVP8' && image[15] === 76 && image[20] === 47) {
-        const size = image.readUInt32LE(21);
-        return [(size & 0x3fff) + 1, ((size >>> 14) & 0x3fff) + 1];
+    if (
+        extension === '.webp' &&
+        image.toString('ascii', 0, 4) === 'RIFF' &&
+        image.toString('ascii', 8, 12) === 'WEBP'
+    ) {
+        const chunk = image.toString('ascii', 12, 16);
+        if (chunk === 'VP8L' && image[20] === 47 && image.length >= 25) {
+            const size = image.readUInt32LE(21);
+            return [(size & 0x3fff) + 1, ((size >>> 14) & 0x3fff) + 1];
+        }
+        if (chunk === 'VP8X' && image.length >= 30) {
+            return [image.readUIntLE(24, 3) + 1, image.readUIntLE(27, 3) + 1];
+        }
+        if (chunk === 'VP8 ' && image.length >= 30 && image.readUIntBE(23, 3) === 0x9d012a) {
+            return [image.readUInt16LE(26) & 0x3fff, image.readUInt16LE(28) & 0x3fff];
+        }
     }
     if (extension === '.svg') {
         const vue = /viewBox="[-.\d]+\s+[-.\d]+\s+([.\d]+)\s+([.\d]+)"/u.exec(image.toString('utf8'));
         if (vue) return [Number(vue[1]), Number(vue[2])];
     }
-    throw new Error('Image attendue au format PNG, WebP sans perte ou SVG avec viewBox');
+    throw new Error('Image attendue au format PNG, WebP ou SVG avec viewBox');
 }
 
 function verifier(images, budget) {
@@ -40,8 +52,8 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
     if (process.argv[2] !== 'check') throw new Error('Usage attendu : npm run assets -- check');
     const dossier = `${root}packages/assets`;
     const images = readdirSync(dossier, { recursive: true, encoding: 'utf8' })
-        .filter(nom => ['.png', '.webp', '.svg'].includes(extname(nom)))
-        .map(nom => [nom, readFileSync(`${dossier}/${nom}`)]);
+        .filter((nom) => ['.png', '.webp', '.svg'].includes(extname(nom)))
+        .map((nom) => [nom, readFileSync(`${dossier}/${nom}`)]);
     const budget = JSON.parse(readFileSync(`${root}assets-budget.json`, 'utf8'));
     const { total, erreurs } = verifier(images, budget);
     process.stdout.write(`${images.length} images, ${total} octets (${budget.maxTotal} autorisés)\n`);

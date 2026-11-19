@@ -42,3 +42,12 @@ it('[E164] le document construit charge ses scripts locaux sous une CSP stricte'
         expect(body?.trim()).toBe('');
     }
 });
+
+it('[E183] [E184] le manifeste public utilise le réseau et a un secours versionné', () => {
+    const worker = readFileSync(asset('sw.js'), 'utf8');
+    expect(worker).toContain('capsule-panic-v1');
+    expect(worker).toMatch(/url:"manifest\.webmanifest\?hors-ligne",revision:"[a-f0-9]+"/);
+    expect(worker).not.toContain('url:"manifest.webmanifest"');
+    expect(worker).toMatch(/NetworkFirst\(\{cacheName:"capsule-panic-manifeste-v1"/);
+    expect(worker).toMatch(/CacheFirst\(\{cacheName:"capsule-panic-assets-v1"/);
+});

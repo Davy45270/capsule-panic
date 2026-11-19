@@ -39,7 +39,7 @@ specs explicites, après `npm run build`. La CI joue tout.
 
 ## Commandes
 
-`npm run dev` · `build` (typecheck + vite) · `lint` (oxlint, zéro avertissement) · `typecheck` · `test` (CI) ·
+`npm run dev` · `build` (typecheck + vite) · `lint` (oxlint, ESLint et Prettier, zéro avertissement) · `typecheck` · `test` (CI) ·
 `test:e2e` · `check:precache` (après un build) · `check:licenses`.
 
 ## Commits
@@ -50,4 +50,4 @@ Jamais `git add -A` : ajouter par chemins.
 ## CI
 
 Woodpecker : `.woodpecker/checks.yml` (npm ci, lint, typecheck, test, build avec l'empreinte `empreinte dist`,
-check:precache, audit, licences, secrets) puis `.woodpecker/e2e.yml`.
+check:precache, audit, licences, secrets et e2e).

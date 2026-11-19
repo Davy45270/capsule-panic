@@ -2,16 +2,27 @@ import 'fake-indexeddb/auto';
 import { createHash } from 'node:crypto';
 import { beforeEach, describe, it, expect } from 'vitest';
 import { createGame, restore, RestoreError, serialize, step } from '@capsule-panic/engine';
-import { clearGame, loadGame, loadSettings, saveGame, saveScore, saveSettings, topScores, writeRawGame } from '../src/storage';
+import {
+    clearGame,
+    loadGame,
+    loadSettings,
+    saveGame,
+    saveScore,
+    saveSettings,
+    topScores,
+    writeRawGame,
+} from '../src/storage';
 
-beforeEach(async () => { await clearGame(); });
+beforeEach(async () => {
+    await clearGame();
+});
 
 describe('IndexedDB storage', () => {
     it('[E049][E111][E256] T22 reprend exactement à la frontière entre deux capsules', async () => {
         let s = createGame({ seed: 'sauvegarde', level: 4, speed: 'medium' });
         for (const type of ['MOVE_LEFT', 'ROTATE_CW'] as const) s = step(s, { type }).state;
         const boundary = step(s, { type: 'HARD_DROP' });
-        expect(boundary.events.map(event => event.type)).toContain('SPAWNED');
+        expect(boundary.events.map((event) => event.type)).toContain('SPAWNED');
         await saveGame(boundary.state);
         const resumed = await loadGame();
         if (!resumed) throw new Error('sauvegarde attendue');
@@ -34,12 +45,31 @@ describe('IndexedDB storage', () => {
     });
     it('settings roundtrip', async () => {
         expect(await loadSettings()).toBeNull();
-        await saveSettings({ highContrast: true, gestures: false, reducedMotion: true });
-        expect(await loadSettings()).toEqual({ highContrast: true, gestures: false, reducedMotion: true });
+        await saveSettings({
+            highContrast: true,
+            gestures: false,
+            reducedMotion: true,
+            colorBlind: true,
+            debug: false,
+            level: 3,
+            speed: 'low',
+        });
+        expect(await loadSettings()).toEqual({
+            highContrast: true,
+            gestures: false,
+            reducedMotion: true,
+            colorBlind: true,
+            debug: false,
+            level: 3,
+            speed: 'low',
+        });
     });
 });
 
-async function storedGame(gameId: string, update?: (raw: { json: string; sha256: string }) => unknown): Promise<unknown> {
+async function storedGame(
+    gameId: string,
+    update?: (raw: { json: string; sha256: string }) => unknown,
+): Promise<unknown> {
     const db = await new Promise<IDBDatabase>((resolve, reject) => {
         const request = indexedDB.open('capsule-panic', 1);
         request.onsuccess = () => resolve(request.result);
@@ -56,14 +86,19 @@ async function storedGame(gameId: string, update?: (raw: { json: string; sha256:
             tx.oncomplete = () => resolve(request.result as unknown);
             tx.onabort = () => reject(tx.error ?? new Error('IndexedDB : échec'));
         });
-    } finally { db.close(); }
+    } finally {
+        db.close();
+    }
 }
 
 it('[E149][E150][E151] stocke par gameId le JSON versionné et son SHA 256', async () => {
     const state = createGame({ seed: 'empreinte-énergie', level: 3, speed: 'high' });
     await saveGame(state, 'partie-empreinte');
     const json = serialize(state);
-    expect(await storedGame('partie-empreinte')).toEqual({ json, sha256: createHash('sha256').update(json, 'utf8').digest('hex') });
+    expect(await storedGame('partie-empreinte')).toEqual({
+        json,
+        sha256: createHash('sha256').update(json, 'utf8').digest('hex'),
+    });
     expect(json).toContain('"schemaVersion":1');
     expect(await loadGame('partie-empreinte')).toEqual(state);
     expect(await loadGame()).toBeNull();
@@ -75,7 +110,7 @@ it('[E151] refuse une sauvegarde modifiée même si son JSON respecte le contrat
     const altered = { ...state, score: state.score + 10 };
     const json = serialize(altered);
     expect(restore(json)).toEqual(altered);
-    await storedGame('partie-altérée', raw => ({ ...raw, json }));
+    await storedGame('partie-altérée', (raw) => ({ ...raw, json }));
     await expect(loadGame('partie-altérée')).rejects.toThrow(/SHA 256/);
 });
 
