@@ -2,7 +2,11 @@
 import { afterEach, expect, it, vi } from 'vitest';
 import { Assets, Sprite, Texture } from 'pixi.js';
 import type { Container } from 'pixi.js';
-import { createGame, getLandingProjection } from '@capsule-panic/engine';
+import { createGame, getLandingProjection, step } from '@capsule-panic/engine';
+import type { GameState, Position } from '@capsule-panic/contracts';
+import expectTrail from '../../assets/sprites/sprite-trainee-deplacement-apercu.png';
+import expectRotation from '../../assets/sprites/sprite-fleche-rotation-jeu.png';
+import expectLock from '../../assets/sprites/sprite-trainee-verrouillage-jeu.png';
 import { createBoardView } from '../src/board-view';
 import { pieceArtwork } from '../src/pieces';
 import { boardLayout } from '../src/layout';
@@ -122,6 +126,100 @@ it('[E263] dessine les textures à motif renforcé sur les deux segments actifs'
         ]);
         expect(fixture.sprites(pieceArtwork['cellule-cyan-unie'])).toHaveLength(0);
         expect(fixture.sprites(pieceArtwork['cellule-magenta-unie'])).toHaveLength(0);
+    } finally {
+        fixture.view.destroy();
+    }
+});
+
+function advance(deltaMS: number): void {
+    for (const frame of [...display.frames]) frame({ deltaMS });
+}
+
+it.each([
+    { command: 'MOVE_LEFT', art: expectTrail, axis: 'x' },
+    { command: 'ROTATE_CW', art: expectRotation, axis: 'y' },
+] as const)(
+    '[E438] anime $command à chaque image et respecte le mouvement réduit',
+    async ({ command, art, axis }) => {
+        const fixture = await createView();
+        try {
+            const before = {
+                ...createGame({ seed: 'animation', level: 0, speed: 'low' }),
+                active: { id: 'c1', colors: ['cyan', 'magenta'], x: 3, y: 1, orientation: 0 },
+            } satisfies GameState;
+            const after = step(before, { type: command }).state;
+            const render: (state: GameState, ghost: readonly Position[], before?: GameState) => void =
+                fixture.view.render.bind(fixture.view);
+            const position = () => fixture.sprites(pieceArtwork['cellule-magenta-unie']).at(0)?.[axis] ?? NaN;
+            fixture.view.render(before, []);
+            const start = position();
+            fixture.view.render(after, []);
+            const end = position();
+            expect(start).not.toBe(end);
+            render(after, [], before);
+            expect(fixture.sprites(art)).toHaveLength(1);
+            advance(60);
+            expect(position()).toBeGreaterThan(Math.min(start, end));
+            expect(position()).toBeLessThan(Math.max(start, end));
+            advance(59);
+            expect(fixture.sprites(art)).toHaveLength(1);
+            advance(1);
+            expect(position()).toBe(end);
+            expect(fixture.sprites(art)).toHaveLength(0);
+            fixture.view.setOptions({ reducedMotion: true, highContrast: false });
+            render(after, [], before);
+            expect(position()).toBe(end);
+            expect(fixture.sprites(art)).toHaveLength(0);
+            expect(display.frames.size).toBe(0);
+        } finally {
+            fixture.view.destroy();
+        }
+    },
+);
+
+it('[E531] montre une descente puis le verrouillage avant de permettre l’apparition', async () => {
+    const fixture = await createView();
+    try {
+        const before = {
+            ...createGame({ seed: 'animation', level: 0, speed: 'low' }),
+            active: { id: 'c1', colors: ['cyan', 'magenta'], x: 3, y: 1, orientation: 0 },
+        } satisfies GameState;
+        const { state: after, events } = step(before, { type: 'HARD_DROP' });
+        expect(events.some(({ type }) => type === 'MATCH_REMOVED')).toBe(false);
+        const { cell, originY } = boardLayout(390, 600);
+        const landing = Math.max(...getLandingProjection(before).map(({ y }) => y));
+        fixture.view.render(before, []);
+        let finished = false;
+        const played = fixture.view
+            .play(events, before, () => {
+                throw new Error('Alignement inattendu');
+            })
+            .then(() => {
+                finished = true;
+            });
+        advance(60);
+        const cyan = () => fixture.sprites(pieceArtwork['cellule-cyan-unie']).at(0)?.y ?? NaN;
+        expect(cyan()).toBeGreaterThan(originY + cell);
+        expect(cyan()).toBeLessThan(originY + landing * cell);
+        advance(60);
+        await Promise.resolve();
+        expect(cyan()).toBe(originY + landing * cell);
+        expect(fixture.sprites(expectLock)).toHaveLength(1);
+        advance(119);
+        expect(finished).toBe(false);
+        advance(1);
+        await played;
+        expect(fixture.sprites(expectLock)).toHaveLength(0);
+        expect(after.active?.id).not.toBe(before.active.id);
+        expect(cyan()).toBe(originY + landing * cell);
+
+        fixture.view.setOptions({ reducedMotion: true, highContrast: false });
+        fixture.view.render(before, []);
+        await fixture.view.play(events, before, () => {
+            throw new Error('Alignement inattendu');
+        });
+        expect(cyan()).toBe(originY + cell);
+        expect(display.frames.size).toBe(0);
     } finally {
         fixture.view.destroy();
     }

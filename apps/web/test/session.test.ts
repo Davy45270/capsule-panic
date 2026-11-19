@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { createGame } from '@capsule-panic/engine';
+import { createGame, step } from '@capsule-panic/engine';
 import type { GameEvent, GameState } from '@capsule-panic/contracts';
 import { GameSession } from '../src/session';
 
@@ -214,4 +214,31 @@ it('la vue ne reçoit pas le plateau final avant les effets de cascade', async (
     view.release();
     await Promise.resolve();
     expect(frames).toEqual([initial, session.state]);
+});
+
+it('[E531] attend la pose ordinaire avant d’enregistrer et de montrer la capsule suivante', async () => {
+    const before = createGame({ seed: 'reprise', level: 0, speed: 'low' });
+    const pose = Promise.withResolvers<undefined>();
+    const shown: GameState[] = [];
+    const saved: GameState[] = [];
+    const hooks = {
+        ...fakeView().hooks,
+        playPlacement: () => pose.promise,
+        render: (state: GameState) => {
+            shown.push(state);
+        },
+        onSpawn: (state: GameState) => {
+            saved.push(state);
+        },
+    };
+    const session = new GameSession(before, hooks);
+    const expected = step(before, { type: 'HARD_DROP' }).state;
+    session.command('HARD_DROP');
+    expect(session.state).toEqual(expected);
+    expect(shown).toEqual([before]);
+    expect(saved).toEqual([]);
+    pose.resolve(undefined);
+    await pose.promise;
+    expect(shown).toEqual([before, expected]);
+    expect(saved).toEqual([expected]);
 });
