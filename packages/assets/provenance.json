@@ -793,8 +793,8 @@
       "transformation": "découpe + recoloration (jetons A2)",
       "source_retouche": "packages/assets/source/plateau-jeu.retouches.json",
       "transformations": [
-        "recoloration bleu 196–213°→#38BDF8",
-        "retouche jeton cyan A2 (toute la découpe) : rampe par correspondance de luminance sur les couleurs de la planche (même teinte, encrage, reflets) et #38BDF8, ton dominant de la planche → #38BDF8 ; sans ton intermédiaire de cette teinte dans la planche, ombres bornées au voisinage du jeton et encrage vers le ton le plus sombre",
+        "recoloration bleu 196–213°→#38BDF8 (source #0087EC, rampe luminance)",
+        "retouche jeton cyan A2 (toute la découpe) : rampe par correspondance de luminance sur les couleurs de la planche (même teinte, encrage, reflets) et #38BDF8, ton dominant de la planche égal à #38BDF8 ; sans ton intermédiaire de cette teinte dans la planche, ombres bornées au voisinage du jeton et encrage vers le ton le plus sombre",
         "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur neutre ou de même teinte la plus proche jusqu'à 44, alpha inchangé"
       ],
       "etapes": [
@@ -819,15 +819,13 @@
       "transformation": "découpe + recoloration (jetons A2)",
       "source_retouche": "packages/assets/source/plateau-jeu.retouches.json",
       "transformations": [
-        "recoloration rouge 358–2°→#F472B6",
-        "retouche jeton magenta A2 (toute la découpe) : rampe par correspondance de luminance sur les couleurs de la planche (même teinte, encrage, reflets) et #F472B6, ton dominant de la planche → #F472B6 ; sans ton intermédiaire de cette teinte dans la planche, ombres bornées au voisinage du jeton et encrage vers le ton le plus sombre",
-        "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur neutre ou de même teinte la plus proche jusqu'à 44, alpha inchangé"
+        "recoloration rouge 340–20°→#F472B6 (source #ED2829, rampe projetée)",
+        "retouche jeton magenta A2 (toute la découpe) : pixels de teinte 340–20° et de saturation HLS ≥ 0,08 projetés par clarté HLS sur la rampe #080E22→#F472B6→#FFFFFF, pivot à la clarté du ton source #ED2829 (0.543) : corps = #F472B6, encrage sombre de la planche vers #080E22 (encrage marine des blocs bleus) ; reflets blancs (saturation < 0,08) et alpha de la planche inchangés, sans tramage"
       ],
       "etapes": [
         "crop",
         "retouche raster ImageMagick",
         "resize",
-        "rabattement palette (numpy)",
         "atlas json-hash"
       ],
       "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
@@ -845,7 +843,7 @@
       "transformation": "découpe + recoloration (jetons A2)",
       "source_retouche": "packages/assets/source/plateau-jeu.retouches.json",
       "transformations": [
-        "recoloration jaune 32–53°→#FBBF24",
+        "recoloration jaune 32–53°→#FBBF24 (source #FCB100, rampe linéaire)",
         "retouche jeton ambre A2 (toute la découpe) : luminance sur la rampe #080e22→#FBBF24→#fff8ff, ombres et reflets conservés"
       ],
       "etapes": [
@@ -1555,8 +1553,8 @@
       "transformation": "découpe + recoloration (jetons A2)",
       "source_retouche": "packages/assets/source/effets-maquettes.retouches.json",
       "transformations": [
-        "recoloration rouge 345–5°→#F472B6",
-        "retouche jeton magenta A2 (zone 113x29+1+1, pixels R > B seulement) : rampe par correspondance de luminance sur les couleurs de la planche (même teinte, encrage, reflets) et #F472B6, ton dominant de la planche → #F472B6 ; sans ton intermédiaire de cette teinte dans la planche, ombres bornées au voisinage du jeton et encrage vers le ton le plus sombre",
+        "recoloration rouge 345–5°→#F472B6 (source #F1262B, rampe luminance)",
+        "retouche jeton magenta A2 (zone 113x29+1+1, pixels R > B seulement) : rampe par correspondance de luminance sur les couleurs de la planche (même teinte, encrage, reflets) et #F472B6, ton dominant de la planche égal à #F472B6 ; sans ton intermédiaire de cette teinte dans la planche, ombres bornées au voisinage du jeton et encrage vers le ton le plus sombre",
         "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur neutre ou de même teinte la plus proche jusqu'à 44, alpha inchangé"
       ],
       "etapes": [
@@ -1987,8 +1985,8 @@
       "transformation": "découpe + recoloration (jetons A2)",
       "source_retouche": "packages/assets/source/plateau-apercu.retouches.json",
       "transformations": [
-        "recoloration bleu 198–217°→#38BDF8",
-        "retouche jeton cyan A2 (toute la découpe) : rampe par correspondance de luminance sur les couleurs de la planche (même teinte, encrage, reflets) et #38BDF8, ton dominant de la planche → #38BDF8 ; sans ton intermédiaire de cette teinte dans la planche, ombres bornées au voisinage du jeton et encrage vers le ton le plus sombre",
+        "recoloration bleu 198–217°→#38BDF8 (source #007EEC, rampe luminance)",
+        "retouche jeton cyan A2 (toute la découpe) : rampe par correspondance de luminance sur les couleurs de la planche (même teinte, encrage, reflets) et #38BDF8, ton dominant de la planche égal à #38BDF8 ; sans ton intermédiaire de cette teinte dans la planche, ombres bornées au voisinage du jeton et encrage vers le ton le plus sombre",
         "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur neutre ou de même teinte la plus proche jusqu'à 44, alpha inchangé"
       ],
       "etapes": [
@@ -2013,15 +2011,13 @@
       "transformation": "découpe + recoloration (jetons A2)",
       "source_retouche": "packages/assets/source/plateau-apercu.retouches.json",
       "transformations": [
-        "recoloration rouge 355–2°→#F472B6",
-        "retouche jeton magenta A2 (toute la découpe) : rampe par correspondance de luminance sur les couleurs de la planche (même teinte, encrage, reflets) et #F472B6, ton dominant de la planche → #F472B6 ; sans ton intermédiaire de cette teinte dans la planche, ombres bornées au voisinage du jeton et encrage vers le ton le plus sombre",
-        "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur neutre ou de même teinte la plus proche jusqu'à 44, alpha inchangé"
+        "recoloration rouge 340–20°→#F472B6 (source #F42326, rampe projetée)",
+        "retouche jeton magenta A2 (toute la découpe) : pixels de teinte 340–20° et de saturation HLS ≥ 0,08 projetés par clarté HLS sur la rampe #080E22→#F472B6→#FFFFFF, pivot à la clarté du ton source #F42326 (0.547) : corps = #F472B6, encrage sombre de la planche vers #080E22 (encrage marine des blocs bleus) ; reflets blancs (saturation < 0,08) et alpha de la planche inchangés, sans tramage"
       ],
       "etapes": [
         "crop",
         "retouche raster ImageMagick",
         "resize",
-        "rabattement palette (numpy)",
         "atlas json-hash"
       ],
       "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
@@ -2039,7 +2035,7 @@
       "transformation": "découpe + recoloration (jetons A2)",
       "source_retouche": "packages/assets/source/plateau-apercu.retouches.json",
       "transformations": [
-        "recoloration jaune 34–53°→#FBBF24",
+        "recoloration jaune 34–53°→#FBBF24 (source #FBB400, rampe linéaire)",
         "retouche jeton ambre A2 (toute la découpe) : luminance sur la rampe #080e22→#FBBF24→#fff8ff, ombres et reflets conservés"
       ],
       "etapes": [
@@ -2063,8 +2059,8 @@
       "transformation": "découpe + recoloration (jetons A2)",
       "source_retouche": "packages/assets/source/plateau-apercu.retouches.json",
       "transformations": [
-        "recoloration bleu 199–218°→#38BDF8",
-        "retouche jeton cyan A2 (toute la découpe) : rampe par correspondance de luminance sur les couleurs de la planche (même teinte, encrage, reflets) et #38BDF8, ton dominant de la planche → #38BDF8 ; sans ton intermédiaire de cette teinte dans la planche, ombres bornées au voisinage du jeton et encrage vers le ton le plus sombre",
+        "recoloration bleu 199–218°→#38BDF8 (source #007DEB, rampe luminance)",
+        "retouche jeton cyan A2 (toute la découpe) : rampe par correspondance de luminance sur les couleurs de la planche (même teinte, encrage, reflets) et #38BDF8, ton dominant de la planche égal à #38BDF8 ; sans ton intermédiaire de cette teinte dans la planche, ombres bornées au voisinage du jeton et encrage vers le ton le plus sombre",
         "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur neutre ou de même teinte la plus proche jusqu'à 44, alpha inchangé"
       ],
       "etapes": [
@@ -2089,15 +2085,13 @@
       "transformation": "découpe + recoloration (jetons A2)",
       "source_retouche": "packages/assets/source/plateau-apercu.retouches.json",
       "transformations": [
-        "recoloration rouge 355–2°→#F472B6",
-        "retouche jeton magenta A2 (toute la découpe) : rampe par correspondance de luminance sur les couleurs de la planche (même teinte, encrage, reflets) et #F472B6, ton dominant de la planche → #F472B6 ; sans ton intermédiaire de cette teinte dans la planche, ombres bornées au voisinage du jeton et encrage vers le ton le plus sombre",
-        "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur neutre ou de même teinte la plus proche jusqu'à 44, alpha inchangé"
+        "recoloration rouge 340–20°→#F472B6 (source #F01F23, rampe projetée)",
+        "retouche jeton magenta A2 (toute la découpe) : pixels de teinte 340–20° et de saturation HLS ≥ 0,08 projetés par clarté HLS sur la rampe #080E22→#F472B6→#FFFFFF, pivot à la clarté du ton source #F01F23 (0.531) : corps = #F472B6, encrage sombre de la planche vers #080E22 (encrage marine des blocs bleus) ; reflets blancs (saturation < 0,08) et alpha de la planche inchangés, sans tramage"
       ],
       "etapes": [
         "crop",
         "retouche raster ImageMagick",
         "resize",
-        "rabattement palette (numpy)",
         "atlas json-hash"
       ],
       "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
@@ -2115,7 +2109,7 @@
       "transformation": "découpe + recoloration (jetons A2)",
       "source_retouche": "packages/assets/source/plateau-apercu.retouches.json",
       "transformations": [
-        "recoloration jaune 31–53°→#FBBF24",
+        "recoloration jaune 31–53°→#FBBF24 (source #FBB400, rampe linéaire)",
         "retouche jeton ambre A2 (toute la découpe) : luminance sur la rampe #080e22→#FBBF24→#fff8ff, ombres et reflets conservés"
       ],
       "etapes": [
@@ -2161,8 +2155,8 @@
       "transformation": "découpe + recoloration (jetons A2)",
       "source_retouche": "packages/assets/source/tutoriel-apercu.retouches.json",
       "transformations": [
-        "recoloration rouge 352–3°→#F472B6",
-        "retouche jeton magenta A2 (zone 140x36+10+66, pixels R > B seulement) : rampe par correspondance de luminance sur les couleurs de la planche (même teinte, encrage, reflets) et #F472B6, ton dominant de la planche → #F472B6 ; sans ton intermédiaire de cette teinte dans la planche, ombres bornées au voisinage du jeton et encrage vers le ton le plus sombre",
+        "recoloration rouge 352–3°→#F472B6 (source #F4242A, rampe luminance)",
+        "retouche jeton magenta A2 (zone 140x36+10+66, pixels R > B seulement) : rampe par correspondance de luminance sur les couleurs de la planche (même teinte, encrage, reflets) et #F472B6, ton dominant de la planche égal à #F472B6 ; sans ton intermédiaire de cette teinte dans la planche, ombres bornées au voisinage du jeton et encrage vers le ton le plus sombre",
         "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur neutre ou de même teinte la plus proche jusqu'à 44, alpha inchangé"
       ],
       "etapes": [
@@ -2886,8 +2880,8 @@
       "transformations": [
         "retouche masque de silhouette (13 sommets) : hors silhouette rendu transparent",
         "retouche gélule bicolore effacée (11 sommets)",
-        "recoloration blanc→#16203C",
-        "retouche blouse blanche recolorée (7 polygones) : niveaux de gris colorisés à 80 %, plis et encrage conservés, alpha de la planche",
+        "recoloration blanc lavande 190–330°→#16203C (source #CEC6DF, colorisation 80 % de toute la blouse, 95 % de ses pixels colorés dans cette plage)",
+        "retouche blouse blanche recolorée (7 polygones) : niveaux de gris g colorisés à 80 % (80 % de #16203C + 20 % de g, linéaire de #121A30 pour g = 0 à #454D63 pour g = 255) ; plis et encrage conservés, alpha de la planche",
         "retouche badge à fiole masqué (rectangle arrondi #3f4864 cerné #252d45, rabat #49536d)",
         "retouche gélule remplacée par cellule (cellule-cyan.svg, 61 px en +303+171)",
         "retouche main recomposée au premier plan depuis la planche (10 sommets)",
@@ -2921,8 +2915,8 @@
       "source_retouche": "packages/assets/source/personnages-origine.retouches.json",
       "transformations": [
         "retouche composante connexe seule (alpha > 50 % contenant 150,250, dilatée Disk:3) : voisins de la planche retirés",
-        "recoloration blanc→#16203C",
-        "retouche blouse blanche recolorée (5 polygones) : niveaux de gris colorisés à 80 %, plis et encrage conservés, alpha de la planche",
+        "recoloration blanc lavande 204–330°→#16203C (source #DDD4E6, colorisation 80 % de toute la blouse, 95 % de ses pixels colorés dans cette plage)",
+        "retouche blouse blanche recolorée (5 polygones) : niveaux de gris g colorisés à 80 % (80 % de #16203C + 20 % de g, linéaire de #121A30 pour g = 0 à #454D63 pour g = 255) ; plis et encrage conservés, alpha de la planche",
         "retouche badge à fiole masqué (rectangle arrondi #3f4864 cerné #252d45, rabat #49536d)",
         "retouche masque du gant rétabli (clarté > 0.35, 6 graines, dilaté Disk:2) : pixels de la planche recomposés sur la veste",
         "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé"
