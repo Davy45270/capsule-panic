@@ -263,3 +263,29 @@ it('[E263] le mode daltonien résiste à une écriture IndexedDB interrompue et 
     await updatePreference();
     expect(checkbox()?.checked).toBe(false);
 });
+
+it.fails('quitter pendant la sauvegarde ne redessine pas le réacteur démonté', async () => {
+    const initial = createGame({ seed: 'reprise', level: 0, speed: 'low' });
+    const checkpoint = Promise.withResolvers<undefined>();
+    const onSave = vi.fn(() => checkpoint.promise);
+    await update(() =>
+        root.render(
+            createElement(Game, {
+                initial,
+                settings: defaultSettings(),
+                onSave,
+                onMenu: noop,
+                onEnd: noop,
+                onRestart: noop,
+                onError: noop,
+            }),
+        ),
+    );
+    await update(() => window.dispatchEvent(new KeyboardEvent('keydown', { key: ' ' })));
+    expect(onSave).toHaveBeenCalledTimes(1);
+    act(() => root.unmount());
+    renderer.render.mockClear();
+    checkpoint.resolve(undefined);
+    await checkpoint.promise;
+    expect(renderer.render).not.toHaveBeenCalled();
+});
