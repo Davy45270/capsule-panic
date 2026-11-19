@@ -19,7 +19,9 @@
     "effacer": "polygon 309,158 332,142 361,142 375,156 375,209 362,214 346,208 337,216 327,235 306,233 299,218",
     "rabattement_palette": true,
     "veste_teinte": "#16203C",
-    "veste_force": 80
+    "veste_force": 80,
+    "veste_source": "#CEC6DF",
+    "veste_teintes": "blanc lavande 190–330°"
   },
   {
     "id": "responsable-origine",
@@ -66,6 +68,8 @@
     ],
     "rabattement_palette": true,
     "veste_teinte": "#16203C",
-    "veste_force": 80
+    "veste_force": 80,
+    "veste_source": "#DDD4E6",
+    "veste_teintes": "blanc lavande 204–330°"
   }
 ]

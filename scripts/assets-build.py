@@ -17,6 +17,7 @@ from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 from assets_palette import palette_reference, rabattre
+from assets_spec import mesure_palette
 from assets_retouche import RABATTEMENT, retoucher, transformations_derive
 
 ASSETS = Path("packages/assets")
@@ -55,15 +56,6 @@ def atlas(aseprite, sprites, image, mapping=None):
     run(aseprite, "-b", *sprites, "--sheet-pack", "--sheet-width", "1024",
         "--shape-padding", "2", "--border-padding", "2", "--sheet", image, *args, stdout=subprocess.DEVNULL)
     run("oxipng", "-q", "-o", "4", "--strip", "safe", image)
-
-
-def mesure_palette(reference, sprite, outils, journal):
-    resultat = subprocess.run(["python3", outils / "style-palette.py", reference, sprite],
-                              stdout=subprocess.PIPE, text=True)
-    journal.write(resultat.stdout)
-    print(f"Code palette : {resultat.returncode}", file=journal)
-    if resultat.returncode not in (0, 1):
-        resultat.check_returncode()
 
 
 def construire_groupe(table, planches, outils, aseprite, travail):
@@ -281,7 +273,9 @@ def main():
 
 
 def optimiser_sprites(dossier):
-    sprites = sorted(sprite for sprite in dossier.glob("*.png") if sprite.stat().st_size > 40 * 1024)
+    # TOUS les sprites, petits compris : `--strip safe` retire les blocs tIME et tEXt (dates d'écriture
+    # d'ImageMagick), sans quoi deux constructions successives ne rendent pas les mêmes octets.
+    sprites = sorted(dossier.glob("*.png"))
     if sprites:
         run("oxipng", "-q", "-o", "2", "--strip", "safe", *sprites)
 

@@ -12,7 +12,9 @@ import subprocess
 import numpy as np
 from PIL import Image
 
-JETONS = ("#38BDF8", "#FBBF24", "#F472B6")
+from assets_spec import jetons
+
+JETONS = jetons()
 TOLERANCE = 48.0
 RAYON = 44.0
 
@@ -143,3 +145,55 @@ def teinter(source, couleur, sortie, palette, rouge=False):
     resultat[..., :3] = np.clip(np.rint(teinte), 0, 255)
     Image.fromarray(resultat.astype(np.uint8), "RGBA").save(sortie)
     return arrets
+
+
+ENCRE_MARINE = "#080E22"   # encrage marine des blocs bleus : arrêt sombre des rampes projetées
+GRIS = 0.08                # saturation HLS sous laquelle un pixel n'a pas de teinte (reflet blanc, gris) : jamais recoloré
+
+
+def hexa(rgb):
+    return "#" + "".join(f"{int(round(v)):02X}" for v in rgb)
+
+
+def clarte_teinte_saturation(rgb):
+    """Clarté HLS (0–1), teinte (degrés) et saturation HLS de couleurs RVB 0–255."""
+    x = rgb / 255.0
+    maxi, mini = x.max(-1), x.min(-1)
+    clarte = (maxi + mini) / 2
+    delta = maxi - mini
+    saturation = np.where(delta == 0, 0, delta / np.maximum(np.where(clarte <= 0.5, maxi + mini, 2 - maxi - mini), 1e-9))
+    teinte, _ = teinte_saturation(rgb)
+    return clarte, teinte, saturation
+
+
+def dans_plage(teinte, h1, h2):
+    return (teinte >= h1) & (teinte <= h2) if h1 <= h2 else (teinte >= h1) | (teinte <= h2)
+
+
+def ton_source(source, h1, h2):
+    """Ton du corps de la zone de planche : couleur médiane (par canal) des pixels opaques de la plage de teintes, de
+    clarté HLS comprise entre 0,4 et 0,6. C'est la couleur source déclarée de la recoloration."""
+    image = np.asarray(Image.open(source).convert("RGBA")).astype(float)
+    rgb = image[..., :3][image[..., 3] > 242]
+    clarte, teinte, saturation = clarte_teinte_saturation(rgb)
+    corps = dans_plage(teinte, h1, h2) & (saturation >= GRIS) & (clarte >= 0.4) & (clarte <= 0.6)
+    return hexa(np.median(rgb[corps], 0))
+
+
+def projeter_rampe(source, sortie, h1, h2, cible, sombre=ENCRE_MARINE, clair="#FFFFFF", pivot=0.5):
+    """Rampe source projetée sur la teinte cible, par correspondance de clarté : chaque pixel dont la teinte est dans
+    [h1, h2]° (h1 > h2 traverse 0°) et la saturation HLS d'au moins GRIS prend la couleur de la rampe sombre→cible→clair
+    à sa clarté HLS (0 → sombre, pivot → cible, 1 → clair ; le pivot est la clarté du ton source, qui
+    prend donc exactement la cible). Les autres pixels (reflets blancs, gris) restent ; l'alpha
+    (anticrénelage) n'est jamais touché. Ni tramage, ni aplat : le modelé de la planche est celui de la clarté.
+    C'est la projection que le contrôle de chaîne applique à la palette de la zone (style-palette.py --recoloration)."""
+    image = np.asarray(Image.open(source).convert("RGBA")).astype(float)
+    rgb = image[..., :3]
+    clarte, teinte, saturation = clarte_teinte_saturation(rgb)
+    choisi = dans_plage(teinte, h1, h2) & (saturation >= GRIS)
+    s, c, l = (np.array(rvb(v), float) for v in (sombre, cible, clair))
+    t = np.where(clarte < pivot, clarte / pivot, (clarte - pivot) / (1 - pivot))[..., None]
+    rampe_px = np.where(clarte[..., None] < pivot, s + (c - s) * t, c + (l - c) * t)
+    resultat = image.copy()
+    resultat[..., :3] = np.where(choisi[..., None], np.clip(np.rint(rampe_px), 0, 255), rgb)
+    Image.fromarray(resultat.astype(np.uint8), "RGBA").save(sortie)

@@ -6,6 +6,7 @@
       [
         "#38BDF8",
         null,
+        "#0087EC",
         "bleu 196–213°"
       ]
     ],
@@ -20,12 +21,12 @@
       [
         "#F472B6",
         null,
-        "rouge 358–2°"
+        "#ED2829",
+        "rouge 340–20°"
       ]
     ],
     "transformation": "découpe + recoloration (jetons A2)",
-    "rabattement_palette": true,
-    "rampe": "luminance"
+    "rampe": "projection"
   },
   {
     "id": "bloc-jaune-plateau-jeu",
@@ -34,6 +35,7 @@
       [
         "#FBBF24",
         null,
+        "#FCB100",
         "jaune 32–53°"
       ]
     ],

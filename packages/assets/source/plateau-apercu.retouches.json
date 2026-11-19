@@ -6,6 +6,7 @@
       [
         "#38BDF8",
         null,
+        "#007EEC",
         "bleu 198–217°"
       ]
     ],
@@ -20,12 +21,12 @@
       [
         "#F472B6",
         null,
-        "rouge 355–2°"
+        "#F42326",
+        "rouge 340–20°"
       ]
     ],
     "transformation": "découpe + recoloration (jetons A2)",
-    "rabattement_palette": true,
-    "rampe": "luminance"
+    "rampe": "projection"
   },
   {
     "id": "bloc-jaune-plateau-apercu",
@@ -34,6 +35,7 @@
       [
         "#FBBF24",
         null,
+        "#FBB400",
         "jaune 34–53°"
       ]
     ],
@@ -46,6 +48,7 @@
       [
         "#38BDF8",
         null,
+        "#007DEB",
         "bleu 199–218°"
       ]
     ],
@@ -60,12 +63,12 @@
       [
         "#F472B6",
         null,
-        "rouge 355–2°"
+        "#F01F23",
+        "rouge 340–20°"
       ]
     ],
     "transformation": "découpe + recoloration (jetons A2)",
-    "rabattement_palette": true,
-    "rampe": "luminance"
+    "rampe": "projection"
   },
   {
     "id": "segment-jaune-plateau-apercu",
@@ -74,6 +77,7 @@
       [
         "#FBBF24",
         null,
+        "#FBB400",
         "jaune 31–53°"
       ]
     ],
