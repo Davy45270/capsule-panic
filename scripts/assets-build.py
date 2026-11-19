@@ -1,4 +1,11 @@
-"""Construit les visuels livrés depuis les tables du dépôt."""
+"""Construit les visuels livrés depuis les tables du dépôt.
+
+Usage : CAPSULE_PLANCHES=<dossier des planches> python3 scripts/assets-build.py <outils> <aseprite>
+Le dossier local des planches (privées, hors dépôt) vient de la variable CAPSULE_PLANCHES ;
+défaut : ~/Projets/jeux/assets/planches/capsule-panic. chaine.json ne garde que le nom de
+fichier de la planche et son sha256, jamais ce chemin.
+"""
+import hashlib
 import io
 import json
 import os
@@ -12,6 +19,11 @@ from pathlib import Path
 from assets_retouche import retoucher
 
 ASSETS = Path("packages/assets")
+PLANCHES_DEFAUT = Path.home() / "Projets/jeux/assets/planches/capsule-panic"
+
+
+def dossier_planches():
+    return Path(os.environ.get("CAPSULE_PLANCHES") or PLANCHES_DEFAUT)
 
 
 def run(*args, **kwargs):
@@ -185,7 +197,9 @@ def construire_groupe(table, planches, outils, aseprite, travail):
         fiches.append(lire(preuve))
         if echelle == 2:
             sprites_planche.extend(sprites)
-            chaine.append({"planche": str(planche), "decoupe": str(table),
+            chaine.append({"planche": planche.name,
+                           "planche_sha256": hashlib.sha256(planche.read_bytes()).hexdigest(),
+                           "decoupe": str(table),
                            "atlas": str(ASSETS / "atlas" / image.name),
                            "atlas_json": str(ASSETS / "atlas" / mapping.name),
                            "redessines": references,
@@ -242,7 +256,8 @@ def assembler(aseprite, travail, resultats):
 
 
 def main():
-    planches, outils, aseprite = map(Path, sys.argv[1:])
+    planches = dossier_planches()
+    outils, aseprite = map(Path, sys.argv[1:])
     with tempfile.TemporaryDirectory(prefix="capsule-assets-") as temporaire:
         travail = Path(temporaire)
         for dossier in ("sprites", "atlas"):

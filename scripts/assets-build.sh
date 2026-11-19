@@ -4,9 +4,13 @@ cd "$(dirname "$0")/.."
 export LC_ALL=C
 export MAGICK_THREAD_LIMIT=2
 export RAYON_NUM_THREADS=2
-planches=${PLANCHES_DIR:?Indiquer le dossier privé des planches avec PLANCHES_DIR}
+# Dossier local des planches de David (privées, jamais versionnées) : variable CAPSULE_PLANCHES.
+# Défaut : $HOME/Projets/jeux/assets/planches/capsule-panic. Les données du dépôt ne nomment
+# une planche que par son nom de fichier et son sha256.
+export CAPSULE_PLANCHES="${CAPSULE_PLANCHES:-$HOME/Projets/jeux/assets/planches/capsule-panic}"
+planches=$CAPSULE_PLANCHES
 outils=${ASSETS_TOOLS_DIR:-$HOME/Projets/homelab-diag/arcade-lab}
-aseprite=/home/david/Projets/outils/aseprite/build/bin/aseprite
+aseprite=${ASEPRITE:-$HOME/Projets/outils/aseprite/build/bin/aseprite}
 (
   cd "$planches"
   sha256sum --check <<'SHA'
@@ -15,4 +19,4 @@ a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544  Capsule_Panic_
 ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a  Capsule_Panic_Assets_Gameplay_03.png
 SHA
 )
-python3 -B scripts/assets-build.py "$(realpath "$planches")" "$outils" "$aseprite"
+CAPSULE_PLANCHES="$(realpath "$planches")" python3 -B scripts/assets-build.py "$outils" "$aseprite"

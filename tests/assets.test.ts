@@ -1,7 +1,7 @@
 // @vitest-environment node
 import { execFileSync, spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { copyFileSync, existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { copyFileSync, existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import process from 'node:process';
@@ -183,6 +183,50 @@ it('[E309] la planche livrée est transparente et les planches privées sont abs
             expect(hash).not.toBe(empreinte);
         }
     }
+});
+
+// Chemin absolu en tête de valeur : /home/…, /Users/…, /tmp/…, ou C:\…. Les binaires ne sont fouillés que
+// pour /home/, Users et tmp : la forme Windows, trop courte, s'y trouverait par hasard dans les données compressées.
+const CHEMIN_UNIX = /(?:^|[\s"'(=,:[])\/(?:home|Users|root|tmp|mnt|media|srv|opt|var|run)\//u;
+const CHEMIN_WINDOWS = /(?:^|[\s"'(=,:[])[A-Za-z]:\\/u;
+const TEXTE = /\.(?:json|md|svg|txt|css|js|ts)$/u;
+
+it('aucun fichier du paquet d’assets ne contient de chemin absolu', () => {
+    const suivis = execFileSync('git', ['ls-files', '-z', '--', dossier], { encoding: 'utf8' })
+        .split('\0').filter(Boolean);
+    const presents = readdirSync(dossier, { recursive: true, encoding: 'utf8' }).map(nom => join(dossier, nom));
+    const noms = [...new Set(suivis.concat(presents))].filter(nom => existsSync(nom) && !statSync(nom).isDirectory());
+    expect(noms.length).toBeGreaterThan(0);
+    const fautifs = noms.filter(nom => {
+        const contenu = readFileSync(nom).toString('latin1');
+        if (contenu.includes('/home/') || CHEMIN_UNIX.test(contenu)) return true;
+        return TEXTE.test(nom) && CHEMIN_WINDOWS.test(contenu);
+    });
+    expect(fautifs).toEqual([]);
+});
+
+it('chaine.json désigne chaque planche par son nom de fichier et le sha256 de la provenance', () => {
+    const { tables } = JSON.parse(lire('chaine.json').toString()) as {
+        tables: { planche: string; planche_sha256: string }[];
+    };
+    const { assets } = JSON.parse(lire('provenance.json').toString()) as {
+        assets: { planche: string; planche_sha256: string }[];
+    };
+    const empreintes = new Map(assets.map(fiche => [fiche.planche, fiche.planche_sha256]));
+    expect(tables.length).toBeGreaterThan(0);
+    for (const { planche, planche_sha256: empreinte } of tables) {
+        expect(planche).toMatch(/^[\w.-]+\.png$/u);
+        expect(empreinte, planche).toMatch(/^[a-f0-9]{64}$/u);
+        expect(empreinte, planche).toBe(empreintes.get(planche));
+    }
+});
+
+it('chaque fichier de packages/assets/sprites a une entrée dans provenance.json', () => {
+    const { assets } = JSON.parse(lire('provenance.json').toString()) as { assets: { id: string }[] };
+    const ids = new Set(assets.map(fiche => fiche.id));
+    const sprites = readdirSync(join(dossier, 'sprites'));
+    expect(sprites.length).toBeGreaterThan(0);
+    expect(sprites.filter(nom => !ids.has(nom.replace(/\.png$/u, '')))).toEqual([]);
 });
 
 it('la commande échoue sur les budgets par image, par côté et au total', () => {

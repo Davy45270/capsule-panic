@@ -1,7 +1,8 @@
 {
   "tables": [
     {
-      "planche": "/home/david/Projets/jeux/assets/planches/capsule-panic/Capsule_Panic_Assets_Gameplay_02.png",
+      "planche": "Capsule_Panic_Assets_Gameplay_02.png",
+      "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544",
       "decoupe": "packages/assets/source/Capsule_Panic_Assets_Gameplay_02.animations-jeu.decoupe.json",
       "atlas": "packages/assets/atlas/animations-jeu@2x.png",
       "atlas_json": "packages/assets/atlas/animations-jeu@2x.json",
@@ -29,14 +30,16 @@
       ]
     },
     {
-      "planche": "/home/david/Projets/jeux/assets/planches/capsule-panic/Capsule_Panic_Assets_Gameplay_02.png",
+      "planche": "Capsule_Panic_Assets_Gameplay_02.png",
+      "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544",
       "decoupe": "packages/assets/source/Capsule_Panic_Assets_Gameplay_02.bannieres-jeu.decoupe.json",
       "atlas": "packages/assets/atlas/bannieres-jeu@2x.png",
       "atlas_json": "packages/assets/atlas/bannieres-jeu@2x.json",
       "redessines": []
     },
     {
-      "planche": "/home/david/Projets/jeux/assets/planches/capsule-panic/Capsule_Panic_Assets_Gameplay_02.png",
+      "planche": "Capsule_Panic_Assets_Gameplay_02.png",
+      "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544",
       "decoupe": "packages/assets/source/Capsule_Panic_Assets_Gameplay_02.composants-maquettes.decoupe.json",
       "atlas": "packages/assets/atlas/composants-maquettes@2x.png",
       "atlas_json": "packages/assets/atlas/composants-maquettes@2x.json",
@@ -95,7 +98,8 @@
       ]
     },
     {
-      "planche": "/home/david/Projets/jeux/assets/planches/capsule-panic/Capsule_Panic_Assets_Gameplay_02.png",
+      "planche": "Capsule_Panic_Assets_Gameplay_02.png",
+      "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544",
       "decoupe": "packages/assets/source/Capsule_Panic_Assets_Gameplay_02.compteur-jeu.decoupe.json",
       "atlas": "packages/assets/atlas/compteur-jeu@2x.png",
       "atlas_json": "packages/assets/atlas/compteur-jeu@2x.json",
@@ -113,7 +117,8 @@
       ]
     },
     {
-      "planche": "/home/david/Projets/jeux/assets/planches/capsule-panic/Capsule_Panic_Assets_Gameplay_02.png",
+      "planche": "Capsule_Panic_Assets_Gameplay_02.png",
+      "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544",
       "decoupe": "packages/assets/source/Capsule_Panic_Assets_Gameplay_02.compteurs-maquettes-jeu.decoupe.json",
       "atlas": "packages/assets/atlas/compteurs-maquettes-jeu@2x.png",
       "atlas_json": "packages/assets/atlas/compteurs-maquettes-jeu@2x.json",
@@ -132,14 +137,16 @@
       ]
     },
     {
-      "planche": "/home/david/Projets/jeux/assets/planches/capsule-panic/Capsule_Panic_Assets_Gameplay_02.png",
+      "planche": "Capsule_Panic_Assets_Gameplay_02.png",
+      "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544",
       "decoupe": "packages/assets/source/Capsule_Panic_Assets_Gameplay_02.effets-jeu.decoupe.json",
       "atlas": "packages/assets/atlas/effets-jeu@2x.png",
       "atlas_json": "packages/assets/atlas/effets-jeu@2x.json",
       "redessines": []
     },
     {
-      "planche": "/home/david/Projets/jeux/assets/planches/capsule-panic/Capsule_Panic_Assets_Gameplay_02.png",
+      "planche": "Capsule_Panic_Assets_Gameplay_02.png",
+      "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544",
       "decoupe": "packages/assets/source/Capsule_Panic_Assets_Gameplay_02.elimination-jeu.decoupe.json",
       "atlas": "packages/assets/atlas/elimination-jeu@2x.png",
       "atlas_json": "packages/assets/atlas/elimination-jeu@2x.json",
@@ -152,7 +159,8 @@
       ]
     },
     {
-      "planche": "/home/david/Projets/jeux/assets/planches/capsule-panic/Capsule_Panic_Assets_Gameplay_02.png",
+      "planche": "Capsule_Panic_Assets_Gameplay_02.png",
+      "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544",
       "decoupe": "packages/assets/source/Capsule_Panic_Assets_Gameplay_02.fioles-logo.decoupe.json",
       "atlas": "packages/assets/atlas/fioles-logo@2x.png",
       "atlas_json": "packages/assets/atlas/fioles-logo@2x.json",
@@ -166,21 +174,24 @@
       ]
     },
     {
-      "planche": "/home/david/Projets/jeux/assets/planches/capsule-panic/Capsule_Panic_Assets_Gameplay_02.png",
+      "planche": "Capsule_Panic_Assets_Gameplay_02.png",
+      "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544",
       "decoupe": "packages/assets/source/Capsule_Panic_Assets_Gameplay_02.fond-jeu.decoupe.json",
       "atlas": "packages/assets/atlas/fond-jeu@2x.png",
       "atlas_json": "packages/assets/atlas/fond-jeu@2x.json",
       "redessines": []
     },
     {
-      "planche": "/home/david/Projets/jeux/assets/planches/capsule-panic/Capsule_Panic_Assets_Gameplay_02.png",
+      "planche": "Capsule_Panic_Assets_Gameplay_02.png",
+      "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544",
       "decoupe": "packages/assets/source/Capsule_Panic_Assets_Gameplay_02.gestes-jeu.decoupe.json",
       "atlas": "packages/assets/atlas/gestes-jeu@2x.png",
       "atlas_json": "packages/assets/atlas/gestes-jeu@2x.json",
       "redessines": []
     },
     {
-      "planche": "/home/david/Projets/jeux/assets/planches/capsule-panic/Capsule_Panic_Assets_Gameplay_02.png",
+      "planche": "Capsule_Panic_Assets_Gameplay_02.png",
+      "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544",
       "decoupe": "packages/assets/source/Capsule_Panic_Assets_Gameplay_02.logo-jeu.decoupe.json",
       "atlas": "packages/assets/atlas/logo-jeu@2x.png",
       "atlas_json": "packages/assets/atlas/logo-jeu@2x.json",
@@ -193,7 +204,8 @@
       ]
     },
     {
-      "planche": "/home/david/Projets/jeux/assets/planches/capsule-panic/Capsule_Panic_Assets_Gameplay_02.png",
+      "planche": "Capsule_Panic_Assets_Gameplay_02.png",
+      "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544",
       "decoupe": "packages/assets/source/Capsule_Panic_Assets_Gameplay_02.mode-jeu.decoupe.json",
       "atlas": "packages/assets/atlas/mode-jeu@2x.png",
       "atlas_json": "packages/assets/atlas/mode-jeu@2x.json",
@@ -206,7 +218,8 @@
       ]
     },
     {
-      "planche": "/home/david/Projets/jeux/assets/planches/capsule-panic/Capsule_Panic_Assets_Gameplay_02.png",
+      "planche": "Capsule_Panic_Assets_Gameplay_02.png",
+      "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544",
       "decoupe": "packages/assets/source/Capsule_Panic_Assets_Gameplay_02.objets-jeu.decoupe.json",
       "atlas": "packages/assets/atlas/objets-jeu@2x.png",
       "atlas_json": "packages/assets/atlas/objets-jeu@2x.json",
@@ -219,7 +232,8 @@
       ]
     },
     {
-      "planche": "/home/david/Projets/jeux/assets/planches/capsule-panic/Capsule_Panic_Assets_Gameplay_02.png",
+      "planche": "Capsule_Panic_Assets_Gameplay_02.png",
+      "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544",
       "decoupe": "packages/assets/source/Capsule_Panic_Assets_Gameplay_02.plateau-jeu.decoupe.json",
       "atlas": "packages/assets/atlas/plateau-jeu@2x.png",
       "atlas_json": "packages/assets/atlas/plateau-jeu@2x.json",
@@ -243,7 +257,8 @@
       ]
     },
     {
-      "planche": "/home/david/Projets/jeux/assets/planches/capsule-panic/Capsule_Panic_Assets_Gameplay_03.png",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a",
       "decoupe": "packages/assets/source/Capsule_Panic_Assets_Gameplay_03.animations-apercu.decoupe.json",
       "atlas": "packages/assets/atlas/animations-apercu@2x.png",
       "atlas_json": "packages/assets/atlas/animations-apercu@2x.json",
@@ -271,7 +286,8 @@
       ]
     },
     {
-      "planche": "/home/david/Projets/jeux/assets/planches/capsule-panic/Capsule_Panic_Assets_Gameplay_03.png",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a",
       "decoupe": "packages/assets/source/Capsule_Panic_Assets_Gameplay_03.cascade-apercu.decoupe.json",
       "atlas": "packages/assets/atlas/cascade-apercu@2x.png",
       "atlas_json": "packages/assets/atlas/cascade-apercu@2x.json",
@@ -289,7 +305,8 @@
       ]
     },
     {
-      "planche": "/home/david/Projets/jeux/assets/planches/capsule-panic/Capsule_Panic_Assets_Gameplay_03.png",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a",
       "decoupe": "packages/assets/source/Capsule_Panic_Assets_Gameplay_03.chambre-apercu.decoupe.json",
       "atlas": "packages/assets/atlas/chambre-apercu@2x.png",
       "atlas_json": "packages/assets/atlas/chambre-apercu@2x.json",
@@ -302,14 +319,16 @@
       ]
     },
     {
-      "planche": "/home/david/Projets/jeux/assets/planches/capsule-panic/Capsule_Panic_Assets_Gameplay_03.png",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a",
       "decoupe": "packages/assets/source/Capsule_Panic_Assets_Gameplay_03.commandes-apercu.decoupe.json",
       "atlas": "packages/assets/atlas/commandes-apercu@2x.png",
       "atlas_json": "packages/assets/atlas/commandes-apercu@2x.json",
       "redessines": []
     },
     {
-      "planche": "/home/david/Projets/jeux/assets/planches/capsule-panic/Capsule_Panic_Assets_Gameplay_03.png",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a",
       "decoupe": "packages/assets/source/Capsule_Panic_Assets_Gameplay_03.compteur-apercu.decoupe.json",
       "atlas": "packages/assets/atlas/compteur-apercu@2x.png",
       "atlas_json": "packages/assets/atlas/compteur-apercu@2x.json",
@@ -322,7 +341,8 @@
       ]
     },
     {
-      "planche": "/home/david/Projets/jeux/assets/planches/capsule-panic/Capsule_Panic_Assets_Gameplay_03.png",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a",
       "decoupe": "packages/assets/source/Capsule_Panic_Assets_Gameplay_03.compteurs-maquettes-apercu.decoupe.json",
       "atlas": "packages/assets/atlas/compteurs-maquettes-apercu@2x.png",
       "atlas_json": "packages/assets/atlas/compteurs-maquettes-apercu@2x.json",
@@ -341,7 +361,8 @@
       ]
     },
     {
-      "planche": "/home/david/Projets/jeux/assets/planches/capsule-panic/Capsule_Panic_Assets_Gameplay_03.png",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a",
       "decoupe": "packages/assets/source/Capsule_Panic_Assets_Gameplay_03.effets-maquettes.decoupe.json",
       "atlas": "packages/assets/atlas/effets-maquettes@2x.png",
       "atlas_json": "packages/assets/atlas/effets-maquettes@2x.json",
@@ -355,21 +376,24 @@
       ]
     },
     {
-      "planche": "/home/david/Projets/jeux/assets/planches/capsule-panic/Capsule_Panic_Assets_Gameplay_03.png",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a",
       "decoupe": "packages/assets/source/Capsule_Panic_Assets_Gameplay_03.fleche-plateau-apercu.decoupe.json",
       "atlas": "packages/assets/atlas/fleche-plateau-apercu@2x.png",
       "atlas_json": "packages/assets/atlas/fleche-plateau-apercu@2x.json",
       "redessines": []
     },
     {
-      "planche": "/home/david/Projets/jeux/assets/planches/capsule-panic/Capsule_Panic_Assets_Gameplay_03.png",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a",
       "decoupe": "packages/assets/source/Capsule_Panic_Assets_Gameplay_03.fonds-apercu.decoupe.json",
       "atlas": "packages/assets/atlas/fonds-apercu@2x.png",
       "atlas_json": "packages/assets/atlas/fonds-apercu@2x.json",
       "redessines": []
     },
     {
-      "planche": "/home/david/Projets/jeux/assets/planches/capsule-panic/Capsule_Panic_Assets_Gameplay_03.png",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a",
       "decoupe": "packages/assets/source/Capsule_Panic_Assets_Gameplay_03.logo-apercu.decoupe.json",
       "atlas": "packages/assets/atlas/logo-apercu@2x.png",
       "atlas_json": "packages/assets/atlas/logo-apercu@2x.json",
@@ -382,21 +406,24 @@
       ]
     },
     {
-      "planche": "/home/david/Projets/jeux/assets/planches/capsule-panic/Capsule_Panic_Assets_Gameplay_03.png",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a",
       "decoupe": "packages/assets/source/Capsule_Panic_Assets_Gameplay_03.messages-apercu.decoupe.json",
       "atlas": "packages/assets/atlas/messages-apercu@2x.png",
       "atlas_json": "packages/assets/atlas/messages-apercu@2x.json",
       "redessines": []
     },
     {
-      "planche": "/home/david/Projets/jeux/assets/planches/capsule-panic/Capsule_Panic_Assets_Gameplay_03.png",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a",
       "decoupe": "packages/assets/source/Capsule_Panic_Assets_Gameplay_03.objets-apercu.decoupe.json",
       "atlas": "packages/assets/atlas/objets-apercu@2x.png",
       "atlas_json": "packages/assets/atlas/objets-apercu@2x.json",
       "redessines": []
     },
     {
-      "planche": "/home/david/Projets/jeux/assets/planches/capsule-panic/Capsule_Panic_Assets_Gameplay_03.png",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a",
       "decoupe": "packages/assets/source/Capsule_Panic_Assets_Gameplay_03.panneaux-apercu.decoupe.json",
       "atlas": "packages/assets/atlas/panneaux-apercu@2x.png",
       "atlas_json": "packages/assets/atlas/panneaux-apercu@2x.json",
@@ -409,7 +436,8 @@
       ]
     },
     {
-      "planche": "/home/david/Projets/jeux/assets/planches/capsule-panic/Capsule_Panic_Assets_Gameplay_03.png",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a",
       "decoupe": "packages/assets/source/Capsule_Panic_Assets_Gameplay_03.plateau-apercu.decoupe.json",
       "atlas": "packages/assets/atlas/plateau-apercu@2x.png",
       "atlas_json": "packages/assets/atlas/plateau-apercu@2x.json",
@@ -448,7 +476,8 @@
       ]
     },
     {
-      "planche": "/home/david/Projets/jeux/assets/planches/capsule-panic/Capsule_Panic_Assets_Gameplay_03.png",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a",
       "decoupe": "packages/assets/source/Capsule_Panic_Assets_Gameplay_03.tutoriel-apercu.decoupe.json",
       "atlas": "packages/assets/atlas/tutoriel-apercu@2x.png",
       "atlas_json": "packages/assets/atlas/tutoriel-apercu@2x.json",
@@ -478,7 +507,8 @@
       ]
     },
     {
-      "planche": "/home/david/Projets/jeux/assets/planches/capsule-panic/Capsule_Panic_Assets_Planche_01.png",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254",
       "decoupe": "packages/assets/source/Capsule_Panic_Assets_Planche_01.chambre-origine.decoupe.json",
       "atlas": "packages/assets/atlas/chambre-origine@2x.png",
       "atlas_json": "packages/assets/atlas/chambre-origine@2x.json",
@@ -491,14 +521,16 @@
       ]
     },
     {
-      "planche": "/home/david/Projets/jeux/assets/planches/capsule-panic/Capsule_Panic_Assets_Planche_01.png",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254",
       "decoupe": "packages/assets/source/Capsule_Panic_Assets_Planche_01.commandes-origine.decoupe.json",
       "atlas": "packages/assets/atlas/commandes-origine@2x.png",
       "atlas_json": "packages/assets/atlas/commandes-origine@2x.json",
       "redessines": []
     },
     {
-      "planche": "/home/david/Projets/jeux/assets/planches/capsule-panic/Capsule_Panic_Assets_Planche_01.png",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254",
       "decoupe": "packages/assets/source/Capsule_Panic_Assets_Planche_01.compteur-origine.decoupe.json",
       "atlas": "packages/assets/atlas/compteur-origine@2x.png",
       "atlas_json": "packages/assets/atlas/compteur-origine@2x.json",
@@ -511,21 +543,24 @@
       ]
     },
     {
-      "planche": "/home/david/Projets/jeux/assets/planches/capsule-panic/Capsule_Panic_Assets_Planche_01.png",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254",
       "decoupe": "packages/assets/source/Capsule_Panic_Assets_Planche_01.effets-origine.decoupe.json",
       "atlas": "packages/assets/atlas/effets-origine@2x.png",
       "atlas_json": "packages/assets/atlas/effets-origine@2x.json",
       "redessines": []
     },
     {
-      "planche": "/home/david/Projets/jeux/assets/planches/capsule-panic/Capsule_Panic_Assets_Planche_01.png",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254",
       "decoupe": "packages/assets/source/Capsule_Panic_Assets_Planche_01.hud-origine.decoupe.json",
       "atlas": "packages/assets/atlas/hud-origine@2x.png",
       "atlas_json": "packages/assets/atlas/hud-origine@2x.json",
       "redessines": []
     },
     {
-      "planche": "/home/david/Projets/jeux/assets/planches/capsule-panic/Capsule_Panic_Assets_Planche_01.png",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254",
       "decoupe": "packages/assets/source/Capsule_Panic_Assets_Planche_01.medaillon-origine.decoupe.json",
       "atlas": "packages/assets/atlas/medaillon-origine@2x.png",
       "atlas_json": "packages/assets/atlas/medaillon-origine@2x.json",
@@ -538,21 +573,24 @@
       ]
     },
     {
-      "planche": "/home/david/Projets/jeux/assets/planches/capsule-panic/Capsule_Panic_Assets_Planche_01.png",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254",
       "decoupe": "packages/assets/source/Capsule_Panic_Assets_Planche_01.menus-origine.decoupe.json",
       "atlas": "packages/assets/atlas/menus-origine@2x.png",
       "atlas_json": "packages/assets/atlas/menus-origine@2x.json",
       "redessines": []
     },
     {
-      "planche": "/home/david/Projets/jeux/assets/planches/capsule-panic/Capsule_Panic_Assets_Planche_01.png",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254",
       "decoupe": "packages/assets/source/Capsule_Panic_Assets_Planche_01.objets-origine.decoupe.json",
       "atlas": "packages/assets/atlas/objets-origine@2x.png",
       "atlas_json": "packages/assets/atlas/objets-origine@2x.json",
       "redessines": []
     },
     {
-      "planche": "/home/david/Projets/jeux/assets/planches/capsule-panic/Capsule_Panic_Assets_Planche_01.png",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254",
       "decoupe": "packages/assets/source/Capsule_Panic_Assets_Planche_01.paires-horizontale-origine.decoupe.json",
       "atlas": "packages/assets/atlas/paires-horizontale-origine@2x.png",
       "atlas_json": "packages/assets/atlas/paires-horizontale-origine@2x.json",
@@ -575,7 +613,8 @@
       ]
     },
     {
-      "planche": "/home/david/Projets/jeux/assets/planches/capsule-panic/Capsule_Panic_Assets_Planche_01.png",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254",
       "decoupe": "packages/assets/source/Capsule_Panic_Assets_Planche_01.paires-verticale-origine.decoupe.json",
       "atlas": "packages/assets/atlas/paires-verticale-origine@2x.png",
       "atlas_json": "packages/assets/atlas/paires-verticale-origine@2x.json",
@@ -598,7 +637,8 @@
       ]
     },
     {
-      "planche": "/home/david/Projets/jeux/assets/planches/capsule-panic/Capsule_Panic_Assets_Planche_01.png",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254",
       "decoupe": "packages/assets/source/Capsule_Panic_Assets_Planche_01.personnages-origine.decoupe.json",
       "atlas": "packages/assets/atlas/personnages-origine@2x.png",
       "atlas_json": "packages/assets/atlas/personnages-origine@2x.json",
@@ -617,7 +657,8 @@
       ]
     },
     {
-      "planche": "/home/david/Projets/jeux/assets/planches/capsule-panic/Capsule_Panic_Assets_Planche_01.png",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254",
       "decoupe": "packages/assets/source/Capsule_Panic_Assets_Planche_01.pieces-origine.decoupe.json",
       "atlas": "packages/assets/atlas/pieces-origine@2x.png",
       "atlas_json": "packages/assets/atlas/pieces-origine@2x.json",

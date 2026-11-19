@@ -26,7 +26,9 @@ interface Fiche {
     svg?: string;
 }
 interface Table {
+    /** Nom de fichier de la planche (privée, hors dépôt), jamais un chemin. */
     planche: string;
+    planche_sha256: string;
     decoupe: string;
     atlas: string;
 }
@@ -99,7 +101,6 @@ export function genererInventaire(racine: string): Inventaire {
     const { tables } = lireJson(racine, 'chaine.json') as { tables: Table[] };
     const fiches = new Map(assets.map((fiche) => [fiche.id, fiche]));
     const sousLicence = new Set(licences.assets);
-    const shaPlanche = new Map(assets.map((fiche) => [fiche.planche, fiche.planche_sha256]));
     const licence = (ids: string[]) =>
         ids.length > 0 && ids.every((id) => sousLicence.has(id))
             ? { licence: licences.licence, titulaire: licences.titulaire }
@@ -144,13 +145,12 @@ export function genererInventaire(racine: string): Inventaire {
         const origines = [
             ...new Set(cadres.flatMap((id) => (fiches.has(id) ? [origine(fiches.get(id) as Fiche)] : []))),
         ].sort();
-        const planche = table ? basename(table.planche) : null;
         return {
             ...fichier,
             type: 'atlas',
             origines,
             cadres,
-            planche: planche ? { fichier: planche, sha256: shaPlanche.get(planche) ?? '' } : null,
+            planche: table ? { fichier: table.planche, sha256: table.planche_sha256 } : null,
             ...(table ? { decoupe: table.decoupe } : {}),
             ...licence(cadres),
             ...(table && cadres.every((id) => fiches.has(id))

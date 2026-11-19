@@ -6664,19 +6664,6 @@
       "titulaire": "David Sevin"
     },
     {
-      "chemin": "packages/assets/sprites/sprite-notation-panneaux-apercu.png",
-      "sha256": "9c4a7d9c6fa9011d06525f661ad7e3f4589c794f88d25ab59ba271052e5dfecc",
-      "taille": 20097,
-      "type": "sprite",
-      "id": "sprite-notation-panneaux-apercu",
-      "origine": null,
-      "planche": null,
-      "boite": null,
-      "licence": null,
-      "titulaire": null,
-      "anomalie": "absent de provenance.json"
-    },
-    {
       "chemin": "packages/assets/sprites/sprite-notation-simple-apercu.png",
       "sha256": "d819ec0b335197d7c71560f4aa2c75a25f3a6fb40d834854bc5510b4d7dcac83",
       "taille": 39102,
