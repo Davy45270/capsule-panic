@@ -86,7 +86,9 @@ export function Game({
                 view = v;
                 let published = initial;
                 const session = new GameSession(initial, {
-                    render: (s, ghost) => v.render(s, ghost),
+                    render: (s, ghost) => {
+                        if (!cancelled) v.render(s, ghost);
+                    },
                     play: async (events, before) => {
                         setAnimating(true);
                         try {

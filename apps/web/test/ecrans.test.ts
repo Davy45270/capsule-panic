@@ -264,7 +264,7 @@ it('[E263] le mode daltonien résiste à une écriture IndexedDB interrompue et 
     expect(checkbox()?.checked).toBe(false);
 });
 
-it.fails('quitter pendant la sauvegarde ne redessine pas le réacteur démonté', async () => {
+it('quitter pendant la sauvegarde ne redessine pas le réacteur démonté', async () => {
     const initial = createGame({ seed: 'reprise', level: 0, speed: 'low' });
     const checkpoint = Promise.withResolvers<undefined>();
     const onSave = vi.fn(() => checkpoint.promise);
