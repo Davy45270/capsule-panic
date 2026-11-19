@@ -4968,8 +4968,8 @@
     },
     {
       "chemin": "packages/assets/atlas/plateau-apercu@2x.png",
-      "sha256": "1615b124ad9da0fd52a331a1e5cc41844105f3b748d557b36c407b7c8dfd1766",
-      "taille": 38637,
+      "sha256": "9d0bfaaf5780f0dcd4692a0af7e58bcaefae8ca5b6ec9709c4d570975ff4dddc",
+      "taille": 38403,
       "type": "atlas",
       "origines": [
         "découpe",
@@ -4994,8 +4994,8 @@
     },
     {
       "chemin": "packages/assets/atlas/plateau-apercu@2x.webp",
-      "sha256": "bfe0d3e30676f818adec04d7aec5b5e20d02a58c333365734e47c112af836a07",
-      "taille": 28968,
+      "sha256": "aa5559b0374b72e52cc6aed8a55c47aadef5d84c0d4e1268bde26fcb120651b9",
+      "taille": 28832,
       "type": "atlas",
       "origines": [
         "découpe",
@@ -5046,8 +5046,8 @@
     },
     {
       "chemin": "packages/assets/atlas/plateau-apercu@3x.png",
-      "sha256": "fc45d03e52f3c0a2bcb736dc140981f98e6c636dfe6de4ec4f52b75cea5d99d8",
-      "taille": 70067,
+      "sha256": "6bec7b4144e656b509ad8c86ba522831335863cb28e99e09770088e9fc4d79cb",
+      "taille": 69383,
       "type": "atlas",
       "origines": [
         "découpe",
@@ -5072,8 +5072,8 @@
     },
     {
       "chemin": "packages/assets/atlas/plateau-apercu@3x.webp",
-      "sha256": "700fb3b35939ceb1411ecf7f1dfbc21bbac26bc8a8d746ad1455e41ed9fff7c6",
-      "taille": 51826,
+      "sha256": "7eca90539c3e5fd25e02c051888d98aaba3bfce59af847e66e67d71dd0e679ee",
+      "taille": 52146,
       "type": "atlas",
       "origines": [
         "découpe",
@@ -5121,8 +5121,8 @@
     },
     {
       "chemin": "packages/assets/atlas/plateau-jeu@2x.png",
-      "sha256": "68734ddb0754a647d255294614f4ccfeb3665e3dcc1524ee03d7a8c726a01914",
-      "taille": 21697,
+      "sha256": "441d7190155caa3628bdbc8adc1d0496b2b5ce2e0e03e2222ea86201cb60c88e",
+      "taille": 21693,
       "type": "atlas",
       "origines": [
         "découpe",
@@ -5144,8 +5144,8 @@
     },
     {
       "chemin": "packages/assets/atlas/plateau-jeu@2x.webp",
-      "sha256": "4f06031c178cb9065c265fc3a25c3a7a43f6d516f4360daac61c8428d0309a23",
-      "taille": 15572,
+      "sha256": "82f695c0293d05b15b5be4d1bb40fbf340dd704c7b24f67373dc26b16ca81d42",
+      "taille": 15746,
       "type": "atlas",
       "origines": [
         "découpe",
@@ -5190,8 +5190,8 @@
     },
     {
       "chemin": "packages/assets/atlas/plateau-jeu@3x.png",
-      "sha256": "7deaa7b9a4d99e078d191a0db44de243341325456db62babd601bbd80fda4a60",
-      "taille": 40868,
+      "sha256": "c62fab6bfe22403a347aa6e02347c60e304dff3a0182a848209d8968535b0484",
+      "taille": 40758,
       "type": "atlas",
       "origines": [
         "découpe",
@@ -5213,8 +5213,8 @@
     },
     {
       "chemin": "packages/assets/atlas/plateau-jeu@3x.webp",
-      "sha256": "5ce0ca04f87b87cbf6185789c47507dc96295df291003ade8851f56c9212aa0a",
-      "taille": 29576,
+      "sha256": "1c67b2798b84e12c5876aa8ded06b2116f301678151c327ebdb3fa381b2c6bd3",
+      "taille": 29828,
       "type": "atlas",
       "origines": [
         "découpe",
@@ -5732,8 +5732,8 @@
     },
     {
       "chemin": "packages/assets/sprites/sprite-bloc-bleu-plateau-apercu.png",
-      "sha256": "a6a9ba5d3e2cf1acc5b882b702d3764df598395cd57ba3e3d689485571f596ba",
-      "taille": 8129,
+      "sha256": "2cf8a5ef47733258da040ea60cb1431773271f1ddd3b0bc7f4793e2f36202e04",
+      "taille": 7818,
       "type": "sprite",
       "id": "sprite-bloc-bleu-plateau-apercu",
       "origine": "dérivé",
@@ -5748,8 +5748,8 @@
     },
     {
       "chemin": "packages/assets/sprites/sprite-bloc-bleu-plateau-jeu.png",
-      "sha256": "b223cdf2de9ce9504dc96d98400d8a341b904532f11635483a28dd604c148390",
-      "taille": 9508,
+      "sha256": "ee52b095d62c4e7c0453b37df9ec6bb934c991ec6d2f9d68f47c4e02602419e0",
+      "taille": 9093,
       "type": "sprite",
       "id": "sprite-bloc-bleu-plateau-jeu",
       "origine": "dérivé",
@@ -5764,8 +5764,8 @@
     },
     {
       "chemin": "packages/assets/sprites/sprite-bloc-jaune-plateau-apercu.png",
-      "sha256": "99c0781c7a7ec3e50aee8eb62c5c9b6e3fad406e35b9c66d20a7b02063fb43e0",
-      "taille": 7818,
+      "sha256": "29870deba2cbf408274b3fef428d46fc17965a47f786b80affdff0361c410a78",
+      "taille": 7940,
       "type": "sprite",
       "id": "sprite-bloc-jaune-plateau-apercu",
       "origine": "dérivé",
@@ -5780,8 +5780,8 @@
     },
     {
       "chemin": "packages/assets/sprites/sprite-bloc-jaune-plateau-jeu.png",
-      "sha256": "2c029bde2d8eadabfee6b47e91e6b39ba3be1f5ffa05a7d110c0cd01947f90ed",
-      "taille": 9150,
+      "sha256": "a3225213cdcc0a7eb46420988a1786d57ee0c4b73ff7da4669a5b7ee0194d906",
+      "taille": 9365,
       "type": "sprite",
       "id": "sprite-bloc-jaune-plateau-jeu",
       "origine": "dérivé",
@@ -5796,8 +5796,8 @@
     },
     {
       "chemin": "packages/assets/sprites/sprite-bloc-rouge-plateau-apercu.png",
-      "sha256": "5766a634afcd35b13cfd22f9beb0eb1d816728b06a80e5e40482f04f48b86bca",
-      "taille": 9400,
+      "sha256": "ffc7632354aefc157d4ddfbb029b69ed39cd75149c07cf12ce14a8d7d016fe4e",
+      "taille": 9397,
       "type": "sprite",
       "id": "sprite-bloc-rouge-plateau-apercu",
       "origine": "dérivé",
@@ -5812,8 +5812,8 @@
     },
     {
       "chemin": "packages/assets/sprites/sprite-bloc-rouge-plateau-jeu.png",
-      "sha256": "26b9bfd49edfb4a6853a500a3cf38fcea393d03093cc60343e7e8ed6a8c92c9a",
-      "taille": 10110,
+      "sha256": "9800ef817d390607482045f53506789c82e419791d0be331db373663e7dde324",
+      "taille": 10065,
       "type": "sprite",
       "id": "sprite-bloc-rouge-plateau-jeu",
       "origine": "dérivé",
@@ -7686,8 +7686,8 @@
     },
     {
       "chemin": "packages/assets/sprites/sprite-segment-bleu-plateau-apercu.png",
-      "sha256": "3191edf3be93a133ee02aac6386d72ae39d361a1ebe882a84f0681d1bf412bf9",
-      "taille": 11527,
+      "sha256": "4ac9ea9287a26e3a9d2f4a59d18164c4aefb4083c515befb3ccc37e045a17a0d",
+      "taille": 11244,
       "type": "sprite",
       "id": "sprite-segment-bleu-plateau-apercu",
       "origine": "dérivé",
@@ -7702,8 +7702,8 @@
     },
     {
       "chemin": "packages/assets/sprites/sprite-segment-jaune-plateau-apercu.png",
-      "sha256": "e59dad32f38cb4cab041770a5d7aa6d500072d945505903df24f53671bfa1f14",
-      "taille": 9815,
+      "sha256": "f1d4cfe8853eb9ef8ac3640cd66bf6daefe474e0b99dd8d2a3b479fd149baa1e",
+      "taille": 9887,
       "type": "sprite",
       "id": "sprite-segment-jaune-plateau-apercu",
       "origine": "dérivé",
@@ -7718,8 +7718,8 @@
     },
     {
       "chemin": "packages/assets/sprites/sprite-segment-rouge-plateau-apercu.png",
-      "sha256": "0b368bdf0d12789f8cb859618db8869e2b4bfcd7613f71b00e4d2652a8370cb0",
-      "taille": 11187,
+      "sha256": "da9bf8e6864aae9ee4e65fd953429f43c3e3ea1887375316c4194ced85f0ae94",
+      "taille": 11224,
       "type": "sprite",
       "id": "sprite-segment-rouge-plateau-apercu",
       "origine": "dérivé",

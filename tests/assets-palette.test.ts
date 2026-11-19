@@ -106,7 +106,15 @@ it('les blocs et segments du plateau sont recolorés par la seule rampe projeté
         expect(m, `${id} : ${recolorations[0]}`).not.toBeNull();
         const [, nom, cible] = m ?? [];
         expect(cible, id).toBe(cibles[nom as keyof typeof cibles]);
-        expect(transformations.filter((x) => x.includes(`rampe #080E22→${cible}→#FFFFFF`)), id).toHaveLength(1);
+        // Bleus : arrêt sombre marine saturé (cyan de la spec retenu) ; rouges et jaunes : encrage marine des blocs bleus.
+        // Le pivot est déclaré, et c'est celui de la construction (« rampe #S→#C→#L pivot P »).
+        const sombre = nom === 'bleu' ? '#002A8C' : '#080E22';
+        const motif = new RegExp(`rampe ${sombre}→${cible}→#FFFFFF pivot (0\\.\\d{3}) \\(clarté du ton source (#[0-9A-F]{6})\\)`, 'u');
+        const rampes = transformations.map((x) => motif.exec(x)).filter((x) => x !== null);
+        expect(rampes, id).toHaveLength(1);
+        const [, pivot, source] = rampes[0] ?? [];
+        const canaux = [1, 3, 5].map((k) => Number.parseInt((source ?? '').slice(k, k + 2), 16));
+        expect(pivot, id).toBe(((Math.max(...canaux) + Math.min(...canaux)) / 510).toFixed(3));
         expect(transformations.filter((x) => /rabattement|luminance|#fff8ff/u.test(x)), id).toEqual([]);
     }
 });

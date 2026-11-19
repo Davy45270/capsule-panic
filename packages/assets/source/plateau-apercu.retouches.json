@@ -11,7 +11,8 @@
       ]
     ],
     "transformation": "découpe + recoloration (jetons A2)",
-    "rampe": "projection"
+    "rampe": "projection",
+    "rampe_sombre": "#002A8C"
   },
   {
     "id": "bloc-rouge-plateau-apercu",
@@ -53,7 +54,8 @@
       ]
     ],
     "transformation": "découpe + recoloration (jetons A2)",
-    "rampe": "projection"
+    "rampe": "projection",
+    "rampe_sombre": "#002A8C"
   },
   {
     "id": "segment-rouge-plateau-apercu",

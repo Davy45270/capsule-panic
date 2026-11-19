@@ -794,7 +794,7 @@
       "source_retouche": "packages/assets/source/plateau-jeu.retouches.json",
       "transformations": [
         "recoloration bleu 190–225°→#38BDF8 (source #0088ED, rampe projetée)",
-        "retouche jeton cyan A2 (toute la découpe) : pixels de teinte 190–225° et de saturation HLS ≥ 0,08 projetés par clarté HLS sur la rampe #080E22→#38BDF8→#FFFFFF, pivot à la clarté du ton source #0088ED (0.465) : corps = #38BDF8, encrage sombre de la planche vers #080E22 (encrage marine des blocs bleus) ; reflets blancs (saturation < 0,08) et alpha de la planche inchangés, sans tramage"
+        "retouche jeton cyan A2 (toute la découpe) : pixels de teinte 190–225° et de saturation HLS ≥ 0,08 projetés par clarté HLS sur la rampe #002A8C→#38BDF8→#FFFFFF pivot 0.465 (clarté du ton source #0088ED) : corps = #38BDF8, encrage sombre de la planche vers #002A8C (marine saturé : contour marine, ombres du corps bleues) ; reflets blancs (saturation < 0,08) et alpha de la planche inchangés, sans tramage"
       ],
       "etapes": [
         "crop",
@@ -818,7 +818,7 @@
       "source_retouche": "packages/assets/source/plateau-jeu.retouches.json",
       "transformations": [
         "recoloration rouge 340–20°→#F472B6 (source #ED2829, rampe projetée)",
-        "retouche jeton magenta A2 (toute la découpe) : pixels de teinte 340–20° et de saturation HLS ≥ 0,08 projetés par clarté HLS sur la rampe #080E22→#F472B6→#FFFFFF, pivot à la clarté du ton source #ED2829 (0.543) : corps = #F472B6, encrage sombre de la planche vers #080E22 (encrage marine des blocs bleus) ; reflets blancs (saturation < 0,08) et alpha de la planche inchangés, sans tramage"
+        "retouche jeton magenta A2 (toute la découpe) : pixels de teinte 340–20° et de saturation HLS ≥ 0,08 projetés par clarté HLS sur la rampe #080E22→#F472B6→#FFFFFF pivot 0.543 (clarté du ton source #ED2829) : corps = #F472B6, encrage sombre de la planche vers #080E22 (encrage marine des blocs bleus) ; reflets blancs (saturation < 0,08) et alpha de la planche inchangés, sans tramage"
       ],
       "etapes": [
         "crop",
@@ -842,7 +842,7 @@
       "source_retouche": "packages/assets/source/plateau-jeu.retouches.json",
       "transformations": [
         "recoloration jaune 20–65°→#FBBF24 (source #FCB100, rampe projetée)",
-        "retouche jeton ambre A2 (toute la découpe) : pixels de teinte 20–65° et de saturation HLS ≥ 0,08 projetés par clarté HLS sur la rampe #080E22→#FBBF24→#FFFFFF, pivot à la clarté du ton source #FCB100 (0.494) : corps = #FBBF24, encrage sombre de la planche vers #080E22 (encrage marine des blocs bleus) ; reflets blancs (saturation < 0,08) et alpha de la planche inchangés, sans tramage"
+        "retouche jeton ambre A2 (toute la découpe) : pixels de teinte 20–65° et de saturation HLS ≥ 0,08 projetés par clarté HLS sur la rampe #080E22→#FBBF24→#FFFFFF pivot 0.494 (clarté du ton source #FCB100) : corps = #FBBF24, encrage sombre de la planche vers #080E22 (encrage marine des blocs bleus) ; reflets blancs (saturation < 0,08) et alpha de la planche inchangés, sans tramage"
       ],
       "etapes": [
         "crop",
@@ -1985,7 +1985,7 @@
       "source_retouche": "packages/assets/source/plateau-apercu.retouches.json",
       "transformations": [
         "recoloration bleu 190–225°→#38BDF8 (source #0081EE, rampe projetée)",
-        "retouche jeton cyan A2 (toute la découpe) : pixels de teinte 190–225° et de saturation HLS ≥ 0,08 projetés par clarté HLS sur la rampe #080E22→#38BDF8→#FFFFFF, pivot à la clarté du ton source #0081EE (0.467) : corps = #38BDF8, encrage sombre de la planche vers #080E22 (encrage marine des blocs bleus) ; reflets blancs (saturation < 0,08) et alpha de la planche inchangés, sans tramage"
+        "retouche jeton cyan A2 (toute la découpe) : pixels de teinte 190–225° et de saturation HLS ≥ 0,08 projetés par clarté HLS sur la rampe #002A8C→#38BDF8→#FFFFFF pivot 0.467 (clarté du ton source #0081EE) : corps = #38BDF8, encrage sombre de la planche vers #002A8C (marine saturé : contour marine, ombres du corps bleues) ; reflets blancs (saturation < 0,08) et alpha de la planche inchangés, sans tramage"
       ],
       "etapes": [
         "crop",
@@ -2009,7 +2009,7 @@
       "source_retouche": "packages/assets/source/plateau-apercu.retouches.json",
       "transformations": [
         "recoloration rouge 340–20°→#F472B6 (source #F42326, rampe projetée)",
-        "retouche jeton magenta A2 (toute la découpe) : pixels de teinte 340–20° et de saturation HLS ≥ 0,08 projetés par clarté HLS sur la rampe #080E22→#F472B6→#FFFFFF, pivot à la clarté du ton source #F42326 (0.547) : corps = #F472B6, encrage sombre de la planche vers #080E22 (encrage marine des blocs bleus) ; reflets blancs (saturation < 0,08) et alpha de la planche inchangés, sans tramage"
+        "retouche jeton magenta A2 (toute la découpe) : pixels de teinte 340–20° et de saturation HLS ≥ 0,08 projetés par clarté HLS sur la rampe #080E22→#F472B6→#FFFFFF pivot 0.547 (clarté du ton source #F42326) : corps = #F472B6, encrage sombre de la planche vers #080E22 (encrage marine des blocs bleus) ; reflets blancs (saturation < 0,08) et alpha de la planche inchangés, sans tramage"
       ],
       "etapes": [
         "crop",
@@ -2033,7 +2033,7 @@
       "source_retouche": "packages/assets/source/plateau-apercu.retouches.json",
       "transformations": [
         "recoloration jaune 20–65°→#FBBF24 (source #FBB600, rampe projetée)",
-        "retouche jeton ambre A2 (toute la découpe) : pixels de teinte 20–65° et de saturation HLS ≥ 0,08 projetés par clarté HLS sur la rampe #080E22→#FBBF24→#FFFFFF, pivot à la clarté du ton source #FBB600 (0.492) : corps = #FBBF24, encrage sombre de la planche vers #080E22 (encrage marine des blocs bleus) ; reflets blancs (saturation < 0,08) et alpha de la planche inchangés, sans tramage"
+        "retouche jeton ambre A2 (toute la découpe) : pixels de teinte 20–65° et de saturation HLS ≥ 0,08 projetés par clarté HLS sur la rampe #080E22→#FBBF24→#FFFFFF pivot 0.492 (clarté du ton source #FBB600) : corps = #FBBF24, encrage sombre de la planche vers #080E22 (encrage marine des blocs bleus) ; reflets blancs (saturation < 0,08) et alpha de la planche inchangés, sans tramage"
       ],
       "etapes": [
         "crop",
@@ -2057,7 +2057,7 @@
       "source_retouche": "packages/assets/source/plateau-apercu.retouches.json",
       "transformations": [
         "recoloration bleu 190–225°→#38BDF8 (source #007EED, rampe projetée)",
-        "retouche jeton cyan A2 (toute la découpe) : pixels de teinte 190–225° et de saturation HLS ≥ 0,08 projetés par clarté HLS sur la rampe #080E22→#38BDF8→#FFFFFF, pivot à la clarté du ton source #007EED (0.465) : corps = #38BDF8, encrage sombre de la planche vers #080E22 (encrage marine des blocs bleus) ; reflets blancs (saturation < 0,08) et alpha de la planche inchangés, sans tramage"
+        "retouche jeton cyan A2 (toute la découpe) : pixels de teinte 190–225° et de saturation HLS ≥ 0,08 projetés par clarté HLS sur la rampe #002A8C→#38BDF8→#FFFFFF pivot 0.465 (clarté du ton source #007EED) : corps = #38BDF8, encrage sombre de la planche vers #002A8C (marine saturé : contour marine, ombres du corps bleues) ; reflets blancs (saturation < 0,08) et alpha de la planche inchangés, sans tramage"
       ],
       "etapes": [
         "crop",
@@ -2081,7 +2081,7 @@
       "source_retouche": "packages/assets/source/plateau-apercu.retouches.json",
       "transformations": [
         "recoloration rouge 340–20°→#F472B6 (source #F01F23, rampe projetée)",
-        "retouche jeton magenta A2 (toute la découpe) : pixels de teinte 340–20° et de saturation HLS ≥ 0,08 projetés par clarté HLS sur la rampe #080E22→#F472B6→#FFFFFF, pivot à la clarté du ton source #F01F23 (0.531) : corps = #F472B6, encrage sombre de la planche vers #080E22 (encrage marine des blocs bleus) ; reflets blancs (saturation < 0,08) et alpha de la planche inchangés, sans tramage"
+        "retouche jeton magenta A2 (toute la découpe) : pixels de teinte 340–20° et de saturation HLS ≥ 0,08 projetés par clarté HLS sur la rampe #080E22→#F472B6→#FFFFFF pivot 0.531 (clarté du ton source #F01F23) : corps = #F472B6, encrage sombre de la planche vers #080E22 (encrage marine des blocs bleus) ; reflets blancs (saturation < 0,08) et alpha de la planche inchangés, sans tramage"
       ],
       "etapes": [
         "crop",
@@ -2105,7 +2105,7 @@
       "source_retouche": "packages/assets/source/plateau-apercu.retouches.json",
       "transformations": [
         "recoloration jaune 20–65°→#FBBF24 (source #FBB601, rampe projetée)",
-        "retouche jeton ambre A2 (toute la découpe) : pixels de teinte 20–65° et de saturation HLS ≥ 0,08 projetés par clarté HLS sur la rampe #080E22→#FBBF24→#FFFFFF, pivot à la clarté du ton source #FBB601 (0.494) : corps = #FBBF24, encrage sombre de la planche vers #080E22 (encrage marine des blocs bleus) ; reflets blancs (saturation < 0,08) et alpha de la planche inchangés, sans tramage"
+        "retouche jeton ambre A2 (toute la découpe) : pixels de teinte 20–65° et de saturation HLS ≥ 0,08 projetés par clarté HLS sur la rampe #080E22→#FBBF24→#FFFFFF pivot 0.494 (clarté du ton source #FBB601) : corps = #FBBF24, encrage sombre de la planche vers #080E22 (encrage marine des blocs bleus) ; reflets blancs (saturation < 0,08) et alpha de la planche inchangés, sans tramage"
       ],
       "etapes": [
         "crop",

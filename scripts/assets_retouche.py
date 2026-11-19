@@ -98,7 +98,8 @@ def retoucher(planche, fiche, travail, cellules):
             # La chaîne déclarée doit rester vraie : le ton source se mesure, il ne se suppose pas.
             raise ValueError(f"{identifiant} : ton source mesuré {mesure}, déclaré {declare}")
         if fiche.get("rampe") == "projection":
-            projeter_rampe(original, teinte, h1, h2, couleur, ENCRE_MARINE, CLAIR, pivot(declare))
+            projeter_rampe(original, teinte, h1, h2, couleur, fiche.get("rampe_sombre", ENCRE_MARINE), CLAIR,
+                           round(pivot(declare), 3))
         elif fiche.get("rampe") == "luminance":
             teinter(original, couleur, teinte, palette_aplatie(planche, fiche["boite"]), rouge=bool(region))
         else:
@@ -191,10 +192,15 @@ def transformations_derive(fiche):
         # si la retouche suit vraiment ces trois arrêts (projection par clarté).
         etapes.append(f"recoloration {teintes}→{couleur} (source {source}, {MODES[rampe]})")
         if rampe == "projection":
+            # Arrêt sombre : l'encrage marine des blocs bleus, sauf `rampe_sombre` (bleus : marine saturé #002A8C, cyan de la
+            # spec retenu). Le pivot déclaré est celui de la construction, lu par le contrôle (« rampe … pivot P »).
+            sombre = fiche.get("rampe_sombre", ENCRE_MARINE)
+            encrage = ("encrage marine des blocs bleus" if sombre == ENCRE_MARINE
+                       else "marine saturé : contour marine, ombres du corps bleues")
             etapes.append(f"retouche jeton {jeton} A2 ({zone}) : pixels de teinte {plage(teintes)[0]:g}–{plage(teintes)[1]:g}° "
-                          f"et de saturation HLS ≥ 0,08 projetés par clarté HLS sur la rampe {ENCRE_MARINE}→{couleur}→{CLAIR}, "
-                          f"pivot à la clarté du ton source {source} ({pivot(source):.3f}) : corps = {couleur}, encrage sombre "
-                          f"de la planche vers {ENCRE_MARINE} (encrage marine des blocs bleus) ; reflets blancs (saturation "
+                          f"et de saturation HLS ≥ 0,08 projetés par clarté HLS sur la rampe {sombre}→{couleur}→{CLAIR} "
+                          f"pivot {pivot(source):.3f} (clarté du ton source {source}) : corps = {couleur}, encrage sombre "
+                          f"de la planche vers {sombre} ({encrage}) ; reflets blancs (saturation "
                           "< 0,08) et alpha de la planche inchangés, sans tramage")
         elif rampe == "luminance":
             etapes.append(f"retouche jeton {jeton} A2 ({zone}) : rampe par correspondance de luminance sur les couleurs "
