@@ -56,9 +56,9 @@ export function App() {
     };
     const home = (): void => show('home', '');
     const storageError = (): void => setMessage('Le stockage local est indisponible.');
-    const remember = (state: GameState): void => {
+    const remember = (state: GameState): Promise<void> => {
         setSaved(state);
-        void saveGame(state).catch(storageError);
+        return saveGame(state).then(() => undefined, storageError);
     };
 
     useEffect(() => {
@@ -106,7 +106,7 @@ export function App() {
     };
     const start = (level: number, speed: Speed, seed = newSeed(location.search)): void => {
         const state = createGame({ seed, level, speed });
-        remember(state);
+        void remember(state);
         openGame(state);
     };
     const changeSettings = (s: Settings): void => {
@@ -242,7 +242,7 @@ export function App() {
                     settings={settings}
                     onEnd={end}
                     onMenu={(state) => {
-                        remember(state);
+                        void remember(state);
                         home();
                     }}
                     onSave={remember}

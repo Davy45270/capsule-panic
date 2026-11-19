@@ -6,7 +6,8 @@ export interface SessionHooks {
     render(state: GameState, ghost: readonly Position[]): void;
     play(events: readonly GameEvent[], before: GameState): Promise<void>;
     onChange?(state: GameState): void;
-    onSpawn?(state: GameState): void;
+    /** Une promesse retarde la publication et la reprise des commandes jusqu'à la fin de l'écriture. */
+    onSpawn?(state: GameState): void | Promise<void>;
     onEnd?(state: GameState): void;
 }
 export interface LevelStats {
@@ -22,7 +23,7 @@ export interface LevelStats {
 export class GameSession {
     #state: GameState;
     #animating = false;
-    #pauseAfterAnimation = false;
+    #pauseWhenReady = false;
     readonly stats: LevelStats;
     constructor(
         state: GameState,
@@ -58,7 +59,7 @@ export class GameSession {
     /** Onglet caché : la partie se met en pause et y reste jusqu'à une reprise explicite. */
     visibilityChanged(hidden: boolean): void {
         if (!hidden || this.#state.phase !== 'FALLING') return;
-        if (this.#animating) this.#pauseAfterAnimation = true;
+        if (this.#animating) this.#pauseWhenReady = true;
         else this.#apply('PAUSE');
     }
 
@@ -71,30 +72,41 @@ export class GameSession {
             this.stats.capsules++;
             this.stats.bestChain = Math.max(this.stats.bestChain, t.state.chainCount);
         }
-        const done = (): void => {
-            if (t.events.some((e) => e.type === 'SPAWNED')) this.hooks.onSpawn?.(this.#state);
+        const publish = (): void => {
+            this.#animating = false;
+            this.#pauseIfRequested();
+            this.#show();
             if (this.#state.phase === 'WON' || this.#state.phase === 'LOST') this.hooks.onEnd?.(this.#state);
+        };
+        const finish = (): void => {
+            this.#pauseIfRequested();
+            const checkpoint = t.events.some((e) => e.type === 'SPAWNED')
+                ? this.hooks.onSpawn?.(this.#state)
+                : undefined;
+            if (checkpoint) {
+                this.#animating = true;
+                void checkpoint.then(publish, publish);
+            } else publish();
         };
         if (t.events.some((e) => e.type === 'MATCH_REMOVED')) {
             this.#animating = true;
-            this.#show();
-            const finish = (): void => {
-                this.#animating = false;
-                if (this.#pauseAfterAnimation) {
-                    this.#pauseAfterAnimation = false;
-                    this.#apply('PAUSE');
-                } else this.#show();
-                done();
-            };
+            this.#render();
             void this.hooks.play(t.events, before).then(finish, finish);
         } else {
-            this.#show();
-            done();
+            finish();
         }
         return true;
     }
-    #show(): void {
+    #pauseIfRequested(): void {
+        if (!this.#pauseWhenReady) return;
+        this.#pauseWhenReady = false;
+        this.#state = step(this.#state, { type: 'PAUSE' }).state;
+    }
+    #render(): void {
         this.hooks.render(this.#state, getLandingProjection(this.#state));
+    }
+    #show(): void {
+        this.#render();
         this.hooks.onChange?.(this.#state);
     }
 }

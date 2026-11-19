@@ -34,7 +34,7 @@ export function Game({
     settings: Settings;
     onEnd(state: GameState, stats: LevelStats): void;
     onMenu(state: GameState): void;
-    onSave(state: GameState): void;
+    onSave(state: GameState): void | Promise<void>;
     onRestart(): void;
     onError(): void;
 }) {
@@ -84,6 +84,7 @@ export function Game({
                     return;
                 }
                 view = v;
+                let published = initial;
                 const session = new GameSession(initial, {
                     render: (s, ghost) => v.render(s, ghost),
                     play: async (events, before) => {
@@ -92,21 +93,33 @@ export function Game({
                             await v.play(events, before, setCombo);
                         } finally {
                             if (!cancelled) {
-                                setAnimating(false);
                                 setCombo(null);
                             }
                         }
                     },
                     onChange: (s) => {
                         if (cancelled) return;
+                        const spawned = s.active && s.active.id !== published.active?.id;
+                        if (spawned) {
+                            loop.resetCadence();
+                            setSpawns((n) => n + 1);
+                        }
+                        // La pause de visibilité peut accompagner un rechargement en pleine chute.
+                        if (
+                            s.phase === 'PAUSED' &&
+                            published.phase === 'FALLING' &&
+                            !spawned &&
+                            !document.hidden
+                        )
+                            void callbacks.current.onSave(s);
+                        published = s;
                         setState(s);
-                        if (s.phase === 'PAUSED') callbacks.current.onSave(s);
+                        setAnimating(false);
                     },
                     onSpawn: (s) => {
                         if (cancelled) return;
-                        loop.resetCadence();
-                        setSpawns((n) => n + 1);
-                        callbacks.current.onSave(s);
+                        setAnimating(true);
+                        return callbacks.current.onSave(s);
                     },
                     onEnd: (s) => {
                         if (!cancelled) {
