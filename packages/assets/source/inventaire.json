@@ -351,10 +351,11 @@
     "satellite-effets-origine"
   ],
   "E526": [
-    "chercheurs-jeu"
+    "chercheuse-origine",
+    "responsable-origine"
   ],
   "E527": [
-    "chercheuse-accueil"
+    "chercheuse-origine"
   ],
   "E530": [
     "cellule-cyan",
@@ -375,7 +376,8 @@
     "paire-verticale-magenta-ambre"
   ],
   "E534": [
-    "chercheurs-reussite"
+    "chercheuse-origine",
+    "responsable-origine"
   ],
   "E536": [
     "carte-classique-apercu"

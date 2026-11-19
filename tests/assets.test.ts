@@ -141,7 +141,7 @@ it('[E331] [E332] [E526] [E527] [E534] les personnages proviennent de découpes 
     };
     const ids = [...new Set(mappings.flatMap(({ frames }) => Object.keys(frames)))]
         .filter(id => /^sprite-(chercheu|responsable-)/u.test(id));
-    expect(ids).toHaveLength(5);
+    expect(ids).toHaveLength(2);
     for (const id of ids) {
         const fiche = assets.find(item => item.id === id);
         expect(fiche?.transformation).toBe('découpe + retouche (signes médicaux retirés)');

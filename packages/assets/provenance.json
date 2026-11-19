@@ -711,57 +711,6 @@
       "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
     },
     {
-      "id": "sprite-chercheurs-jeu",
-      "origine": "planche",
-      "planche": "Capsule_Panic_Assets_Gameplay_02.png",
-      "boite": [
-        269,
-        285,
-        320,
-        10
-      ],
-      "transformation": "découpe + retouche (signes médicaux retirés)",
-      "source_retouche": "packages/assets/source/personnages-jeu.retouches.json",
-      "transformations": [
-        "crop",
-        "retouche raster ImageMagick",
-        "resize",
-        "atlas json-hash"
-      ],
-      "signes_retires": [
-        "blouses blanches",
-        "gant blanc",
-        "badges à fiole",
-        "gélule bicolore"
-      ],
-      "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
-    },
-    {
-      "id": "sprite-chercheuse-accueil",
-      "origine": "planche",
-      "planche": "Capsule_Panic_Assets_Gameplay_02.png",
-      "boite": [
-        150,
-        295,
-        15,
-        425
-      ],
-      "transformation": "découpe + retouche (signes médicaux retirés)",
-      "source_retouche": "packages/assets/source/personnages-jeu.retouches.json",
-      "transformations": [
-        "crop",
-        "retouche raster ImageMagick",
-        "resize",
-        "atlas json-hash"
-      ],
-      "signes_retires": [
-        "blouse blanche",
-        "badge à fiole",
-        "gélule bicolore"
-      ],
-      "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
-    },
-    {
       "id": "sprite-case-sombre-jeu",
       "origine": "planche",
       "planche": "Capsule_Panic_Assets_Gameplay_02.png",
@@ -1833,31 +1782,6 @@
       "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
     },
     {
-      "id": "sprite-chercheurs-reussite",
-      "origine": "planche",
-      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
-      "boite": [
-        185,
-        105,
-        680,
-        451
-      ],
-      "transformation": "découpe + retouche (signes médicaux retirés)",
-      "source_retouche": "packages/assets/source/personnages-apercu.retouches.json",
-      "transformations": [
-        "crop",
-        "retouche raster ImageMagick",
-        "resize",
-        "atlas json-hash"
-      ],
-      "signes_retires": [
-        "blouses blanches",
-        "gant blanc",
-        "badges à fiole"
-      ],
-      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
-    },
-    {
       "id": "sprite-case-sombre-apercu",
       "origine": "planche",
       "planche": "Capsule_Panic_Assets_Gameplay_03.png",
@@ -2756,7 +2680,6 @@
       ],
       "signes_retires": [
         "blouse blanche",
-        "gants blancs",
         "badge à fiole"
       ],
       "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254"

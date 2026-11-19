@@ -220,25 +220,6 @@
     },
     {
       "planche": "/home/david/Projets/jeux/assets/planches/capsule-panic/Capsule_Panic_Assets_Gameplay_02.png",
-      "decoupe": "packages/assets/source/Capsule_Panic_Assets_Gameplay_02.personnages-jeu.decoupe.json",
-      "atlas": "packages/assets/atlas/personnages-jeu@2x.png",
-      "atlas_json": "packages/assets/atlas/personnages-jeu@2x.json",
-      "redessines": [],
-      "retouches": [
-        {
-          "id": "sprite-chercheurs-jeu",
-          "boite": "269x285+320+10",
-          "element": "packages/assets/sprites/sprite-chercheurs-jeu.png"
-        },
-        {
-          "id": "sprite-chercheuse-accueil",
-          "boite": "150x295+15+425",
-          "element": "packages/assets/sprites/sprite-chercheuse-accueil.png"
-        }
-      ]
-    },
-    {
-      "planche": "/home/david/Projets/jeux/assets/planches/capsule-panic/Capsule_Panic_Assets_Gameplay_02.png",
       "decoupe": "packages/assets/source/Capsule_Panic_Assets_Gameplay_02.plateau-jeu.decoupe.json",
       "atlas": "packages/assets/atlas/plateau-jeu@2x.png",
       "atlas_json": "packages/assets/atlas/plateau-jeu@2x.json",
@@ -424,20 +405,6 @@
           "id": "sprite-carte-classique-apercu",
           "boite": "93x120+17+608",
           "element": "packages/assets/sprites/sprite-carte-classique-apercu.png"
-        }
-      ]
-    },
-    {
-      "planche": "/home/david/Projets/jeux/assets/planches/capsule-panic/Capsule_Panic_Assets_Gameplay_03.png",
-      "decoupe": "packages/assets/source/Capsule_Panic_Assets_Gameplay_03.personnages-apercu.decoupe.json",
-      "atlas": "packages/assets/atlas/personnages-apercu@2x.png",
-      "atlas_json": "packages/assets/atlas/personnages-apercu@2x.json",
-      "redessines": [],
-      "retouches": [
-        {
-          "id": "sprite-chercheurs-reussite",
-          "boite": "185x105+680+451",
-          "element": "packages/assets/sprites/sprite-chercheurs-reussite.png"
         }
       ]
     },
