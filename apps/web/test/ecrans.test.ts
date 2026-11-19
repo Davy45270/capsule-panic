@@ -238,6 +238,18 @@ it.each(['READY', 'FALLING', 'PAUSED'] as const)(
     },
 );
 
+it('[E061] l’import refuse le générateur nul et conserve la sauvegarde courante', async () => {
+    const saved = createGame({ seed: 'locale', level: 1, speed: 'low' });
+    await saveGame(saved);
+    history.replaceState(null, '', '/#settings');
+    await mountApp();
+    await importJson(serialize({ ...saved, rngState: [0, 0, 0, 0] }));
+    await vi.waitFor(() =>
+        expect(container.querySelector('[role=alert]')?.textContent).toContain('/rngState'),
+    );
+    expect(await loadGame()).toEqual(saved);
+});
+
 it('[E178] [E179] le journal est opt-in et les métriques sont locales et agrégées', () => {
     const log = vi.spyOn(console, 'debug').mockImplementation(noop);
     debug(false, 'partie ouverte');
