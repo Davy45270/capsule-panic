@@ -20,11 +20,17 @@ test('[E264] T30 the installed PWA reloads and plays offline', async ({ page, co
     // Première visite en ligne : installation du service worker et précache.
     await page.goto('./');
     await expect(page.locator('link[rel="manifest"]')).toHaveCount(1);
-    const etat = await page.evaluate(async () => {
-        const registration = await navigator.serviceWorker.ready;
-        return registration.active?.state ?? 'absent';
-    });
-    expect(etat).toBe('activated');
+    // L'enregistrement peut avoir un worker actif dont l'événement activate est encore en cours.
+    await expect
+        .poll(
+            () =>
+                page.evaluate(async () => {
+                    const registration = await navigator.serviceWorker.getRegistration();
+                    return registration?.active?.state ?? 'absent';
+                }),
+            { timeout: 15_000 },
+        )
+        .toBe('activated');
     await expect.poll(() => page.evaluate(() => Boolean(navigator.serviceWorker.controller))).toBe(true);
 
     // Réseau coupé : le document et toutes ses sous-ressources viennent du cache.
