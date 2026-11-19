@@ -123,7 +123,8 @@ it('[E099] [E100] [E103] [E304] [E530] le miroir du réacteur reflète la textur
     expect(mirror).toContain('cyan,hexagone');
     expect(mirror).toContain('amber,triangle');
     expect(mirror).toContain('magenta,losange');
-    expect(textureFor('segment', 'cyan', false)).toEqual({ art: 'cellule-cyan-unie', form: 'hexagone' });
+    // Cellules unies par défaut (règle de l'auteur de la spec) ; la forme vient du mode daltonien.
+    expect(textureFor('segment', 'cyan', false)).toEqual({ art: 'cellule-cyan-unie', form: 'aucune' });
     expect(textureFor('segment', 'cyan', true)).toEqual({ art: 'cellule-cyan', form: 'hexagone' });
 });
 
