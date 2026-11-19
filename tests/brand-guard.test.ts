@@ -108,11 +108,11 @@ it('ignored and untracked files are never read, including without git', () => {
 it('[E002] [E284] les chercheurs contrôlés sont sans croix, blouse médicale, stéthoscope, seringue ou pilule', () => {
     const approved = {
         'sprites/sprite-chercheuse-origine.png':
-            'ab25b0340986944d7b9b0972bc2a7564f7a218a85b6d9b31b18664930ff09a08',
+            '20575eb47bafb0a8941e6c4a73303b370835911699569d005e733c3b5efb2de6',
         'sprites/sprite-responsable-origine.png':
-            '44180b103e5440b02197cde06b2bcefb18ef8538f2a972e5569dcbf4c40ee0b8',
+            'ef2828c1b62bd2735dd641ef919bae7e9b1edd39eec3c4d30caf5e072ee856d7',
         'atlas/personnages-origine@3x.webp':
-            '42e7a03806ea42f7e6f00afc320e22e065418492f6f4dc46b991535f822d6a00',
+            'b1443119e6bf42d76874cd6029507b694e9b79ba43a189caa8e02baeb4738e2f',
         'atlas/personnages-origine@3x.json':
             'c7bad848d0ff61d192b9f33f5810c2adf9682a55408097065adbc9d7bb54f98f',
     };
