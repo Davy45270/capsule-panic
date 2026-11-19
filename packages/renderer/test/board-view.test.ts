@@ -156,6 +156,7 @@ it.each([
             fixture.view.render(after, []);
             const end = position();
             expect(start).not.toBe(end);
+            fixture.view.render(before, []);
             render(after, [], before);
             expect(fixture.sprites(art)).toHaveLength(1);
             advance(60);

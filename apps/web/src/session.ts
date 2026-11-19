@@ -3,8 +3,9 @@ import type { BoardEvent, GameState, Position } from '@capsule-panic/contracts';
 import type { CommandType } from '@capsule-panic/input';
 
 export interface SessionHooks {
-    render(state: GameState, ghost: readonly Position[]): void;
+    render(state: GameState, ghost: readonly Position[], before?: GameState): void;
     play(events: readonly BoardEvent[], before: GameState): Promise<void>;
+    playPlacement?(events: readonly BoardEvent[], before: GameState): Promise<void> | undefined;
     onChange?(state: GameState, spawned: boolean): void;
     /** Une promesse retarde la publication et la reprise des commandes jusqu'à la fin de l'écriture. */
     onSpawn?(state: GameState): void | Promise<void>;
@@ -29,6 +30,7 @@ export class GameSession {
     #animating = false;
     #pauseWhenReady = false;
     #saving = false;
+    #placing = false;
     #pendingCommands: CommandType[] = [];
     #drainingCommands = false;
     readonly stats: LevelStats;
@@ -50,7 +52,7 @@ export class GameSession {
 
     /** Applique une commande ; rend `false` si elle est ignorée (animation en cours) ou refusée par le moteur. */
     command(type: CommandType): boolean {
-        if (this.#saving) {
+        if (this.#saving || this.#placing) {
             this.#pendingCommands.push(type);
             return true;
         }
@@ -76,16 +78,19 @@ export class GameSession {
         const t = step(before, { type });
         if (t.events.length === 0) return false;
         this.#state = t.state;
-        if (t.events.some((e) => e.type === 'LOCKED')) {
+        const locked = t.events.some((e) => e.type === 'LOCKED');
+        if (locked) {
             this.stats.capsules++;
             this.stats.bestChain = Math.max(this.stats.bestChain, t.state.chainCount);
         }
         const spawned = t.events.some((event) => event.type === 'SPAWNED');
+        const motion = t.events.some((e) => e.type === 'MOVED' || e.type === 'ROTATED') ? before : undefined;
         const publish = (): void => {
             this.#saving = false;
+            this.#placing = false;
             this.#animating = false;
             this.#pauseIfRequested();
-            this.#show(spawned);
+            this.#show(spawned, motion);
             if (this.#state.phase === 'WON' || this.#state.phase === 'LOST') this.hooks.onEnd?.(this.#state);
             this.#drainCommands();
         };
@@ -98,9 +103,14 @@ export class GameSession {
                 void checkpoint.then(publish, publish);
             } else publish();
         };
-        if (t.events.some((e) => e.type === 'MATCH_REMOVED')) {
+        const matched = t.events.some((e) => e.type === 'MATCH_REMOVED');
+        const playback = matched ? this.hooks.play(t.events, before) : undefined;
+        const placement = locked && !matched ? this.hooks.playPlacement?.(t.events, before) : undefined;
+        this.#placing = placement !== undefined;
+        const animation = playback ?? placement;
+        if (animation) {
             this.#animating = true;
-            void this.hooks.play(t.events, before).then(finish, finish);
+            void animation.then(finish, finish);
         } else {
             finish();
         }
@@ -121,11 +131,8 @@ export class GameSession {
         this.#pauseWhenReady = false;
         this.#state = step(this.#state, { type: 'PAUSE' }).state;
     }
-    #render(): void {
-        this.hooks.render(this.#state, getLandingProjection(this.#state));
-    }
-    #show(spawned = false): void {
-        this.#render();
+    #show(spawned = false, before?: GameState): void {
+        this.hooks.render(this.#state, getLandingProjection(this.#state), before);
         this.hooks.onChange?.(this.#state, spawned);
     }
 }

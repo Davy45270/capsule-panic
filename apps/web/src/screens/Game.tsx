@@ -7,7 +7,7 @@ import type { BoardView, Match } from '@capsule-panic/renderer';
 import { createLoop } from '../loop';
 import { recordFrames } from '../diagnostics';
 import { GameSession } from '../session';
-import type { LevelStats } from '../session';
+import type { LevelStats, SessionHooks } from '../session';
 import type { Settings } from '../settings';
 import { Art, ArtButton } from '../Artwork';
 import type { ArtworkName } from '../Artwork';
@@ -75,7 +75,7 @@ export function Game({
         const motion = matchMedia('(prefers-reduced-motion: reduce)');
         const viewOptions = () => ({
             ...callbacks.current.settings,
-            reducedMotion: callbacks.current.settings.reducedMotion || motion.matches,
+            reducedMotion: callbacks.current.settings.reducedMotion || motion.matches || document.hidden,
         });
         const onMotion = () => view?.setOptions(viewOptions());
         motion.addEventListener('change', onMotion);
@@ -88,22 +88,23 @@ export function Game({
                 view = v;
                 let published = initial;
                 let checkpoint = initial;
+                const play: SessionHooks['play'] = async (events, before) => {
+                    setAnimating(true);
+                    try {
+                        await v.play(events, before, setCombo);
+                    } finally {
+                        if (!cancelled) setCombo(null);
+                    }
+                };
                 const session = new GameSession(
                     initial,
                     {
-                        render: (s, ghost) => {
-                            if (!cancelled) v.render(s, ghost);
+                        render: (s, ghost, before) => {
+                            if (!cancelled) v.render(s, ghost, before);
                         },
-                        play: async (events, before) => {
-                            setAnimating(true);
-                            try {
-                                await v.play(events, before, setCombo);
-                            } finally {
-                                if (!cancelled) {
-                                    setCombo(null);
-                                }
-                            }
-                        },
+                        play,
+                        playPlacement: (events, before) =>
+                            viewOptions().reducedMotion ? undefined : play(events, before),
                         onChange: (s, spawned) => {
                             if (cancelled) return;
                             if (spawned) {
@@ -140,6 +141,7 @@ export function Game({
             });
         const onVisibility = (): void => {
             sessionRef.current?.visibilityChanged(document.hidden);
+            onMotion();
         };
         document.addEventListener('visibilitychange', onVisibility);
         window.addEventListener('pagehide', flushMetrics);

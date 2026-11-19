@@ -13,7 +13,7 @@ export interface ViewOptions {
     colorBlind?: boolean;
 }
 export interface BoardView {
-    render(state: GameState, ghost: readonly Position[]): void;
+    render(state: GameState, ghost: readonly Position[], before?: GameState): void;
     play(events: readonly BoardEvent[], before: GameState, onMatch: (match: Match) => void): Promise<void>;
     setOptions(options: ViewOptions): void;
     destroy(): void;
@@ -26,7 +26,7 @@ export interface Match {
     points: number;
 }
 
-const ORIENT: Record<number, Position> = {
+const ORIENT: Record<ActiveCapsule['orientation'], Position> = {
     0: { x: 0, y: -1 },
     1: { x: 1, y: 0 },
     2: { x: 0, y: 1 },
@@ -53,7 +53,7 @@ export async function createBoardView(host: HTMLElement, initial: ViewOptions): 
     const pieces = new Container();
     const effects = new Container();
     app.stage.addChild(chamber, tiles, board, pieces, effects);
-    let last: { state: GameState; ghost: readonly Position[] } | null = null;
+    let last: { state: GameState; ghost: readonly Position[]; angle?: number } | null = null;
     const geometry = (): ReturnType<typeof boardLayout> => boardLayout(app.screen.width, app.screen.height);
     function sprite(layer: Container, art: Artwork, x: number, y: number, w: number, h = w): Sprite {
         const image = Sprite.from(pieceArtwork[art]);
@@ -87,8 +87,8 @@ export async function createBoardView(host: HTMLElement, initial: ViewOptions): 
         );
     };
 
-    function render(state: GameState, ghost: readonly Position[]): void {
-        last = { state, ghost };
+    function drawFrame(state: GameState, ghost: readonly Position[], angle?: number): void {
+        last = { state, ghost, angle };
         const { cell: s, originX: ox, originY: oy } = geometry();
         clearSprites(pieces);
         const border = Math.min(10, s * 0.4);
@@ -116,16 +116,95 @@ export async function createBoardView(host: HTMLElement, initial: ViewOptions): 
         for (const p of ghost) sprite(pieces, 'cellule-fantome', ox + p.x * s, oy + p.y * s, s);
         const active: ActiveCapsule | null = state.active;
         if (active) {
-            const o = ORIENT[active.orientation] ?? { x: 0, y: -1 };
-            const cells = [
-                { x: active.x, y: active.y },
-                { x: active.x + o.x, y: active.y + o.y },
-            ];
-            cells.forEach((p, k) =>
-                draw('segment', active.colors[k] ?? 'cyan', ox + p.x * s, oy + p.y * s, s),
-            );
-            drawBridge(cells[0] ?? { x: 0, y: 0 }, cells[1] ?? { x: 0, y: 0 }, ox, oy, s);
+            const offset =
+                angle === undefined
+                    ? ORIENT[active.orientation]
+                    : { x: Math.sin(angle), y: -Math.cos(angle) };
+            const x = ox + active.x * s;
+            const y = oy + active.y * s;
+            draw('segment', active.colors[0], x, y, s);
+            draw('segment', active.colors[1], x + offset.x * s, y + offset.y * s, s);
+            if (angle === undefined) {
+                drawBridge(active, { x: active.x + offset.x, y: active.y + offset.y }, ox, oy, s);
+            } else {
+                const rotation = angle - Math.PI / 2;
+                const bridge = sprite(pieces, 'pont-droite', x + s / 2, y + s / 2, s);
+                const end = sprite(
+                    pieces,
+                    'pont-gauche',
+                    x + (offset.x + 0.5) * s,
+                    y + (offset.y + 0.5) * s,
+                    s,
+                );
+                for (const half of [bridge, end]) {
+                    half.anchor.set(0.5);
+                    half.rotation = rotation;
+                }
+            }
         }
+    }
+
+    function render(state: GameState, ghost: readonly Position[], before?: GameState): void {
+        const from = before?.active;
+        const to = state.active;
+        const visible = last?.state.active;
+        const visibleAngle = last?.angle;
+        stopEffect?.();
+        if (from && to && !options.reducedMotion) {
+            const start = visible?.id === from.id ? visible : from;
+            void tweenCapsule(
+                state,
+                ghost,
+                start,
+                to,
+                visible?.id === from.id ? visibleAngle : undefined,
+                () => drawFrame(state, ghost),
+            );
+        } else drawFrame(state, ghost);
+    }
+
+    function tweenCapsule(
+        state: GameState,
+        ghost: readonly Position[],
+        from: ActiveCapsule,
+        to: ActiveCapsule,
+        visibleAngle?: number,
+        finish?: () => void,
+    ): Promise<void> {
+        const quarter = Math.PI / 2;
+        const start = visibleAngle ?? from.orientation * quarter;
+        const end = to.orientation * quarter;
+        const turn = Math.atan2(Math.sin(end - start), Math.cos(end - start));
+        const rotating = Math.abs(turn) > 0.0001;
+        const art = rotating
+            ? 'fleche-rotation-jeu'
+            : from.y !== to.y
+              ? 'trainee-chute-jeu'
+              : 'trainee-deplacement-apercu';
+        const { cell: s, originX: ox, originY: oy } = geometry();
+        const trail = sprite(effects, art, ox + (from.x - 0.25) * s, oy + (from.y - 0.5) * s, 1.5 * s);
+        trail.alpha = 0.65;
+        if (art === 'trainee-deplacement-apercu' && to.x < from.x) {
+            trail.x += trail.width;
+            trail.scale.x *= -1;
+        }
+        const frame = (progress: number): void => {
+            drawFrame(
+                {
+                    ...state,
+                    active: {
+                        ...to,
+                        x: from.x + (to.x - from.x) * progress,
+                        y: from.y + (to.y - from.y) * progress,
+                    },
+                },
+                ghost,
+                rotating ? start + turn * progress : undefined,
+            );
+            trail.alpha = 0.65 * (1 - progress);
+        };
+        frame(0);
+        return animate(animationDuration('gravity', false), frame, finish);
     }
 
     /** Éclats sur les cases supprimées ; la promesse se résout à la fin (immédiatement en mouvement réduit). */
@@ -134,7 +213,9 @@ export async function createBoardView(host: HTMLElement, initial: ViewOptions): 
         before: GameState,
         onMatch: (match: Match) => void,
     ): Promise<void> {
+        stopEffect?.();
         const stopped = () => disposed || options.reducedMotion;
+        const ordinary = !events.some(({ type }) => type === 'MATCH_REMOVED');
         let frame: GameState = { ...before, phase: 'RESOLVING', active: null };
         for (const event of events) {
             if (stopped()) return;
@@ -145,8 +226,33 @@ export async function createBoardView(host: HTMLElement, initial: ViewOptions): 
             }
             if (stopped()) return;
             if (event.board) {
+                const active = before.active;
+                const landing =
+                    ordinary && event.type === 'LOCKED' && active
+                        ? event.board.findIndex(
+                              (cell) =>
+                                  cell?.kind === 'segment' && cell.capsuleId === active.id && cell.part === 0,
+                          )
+                        : -1;
+                if (active && landing >= 0 && Math.floor(landing / WIDTH) !== active.y) {
+                    await tweenCapsule(before, [], active, { ...active, y: Math.floor(landing / WIDTH) });
+                    if (stopped()) return;
+                }
                 frame = { ...frame, board: [...event.board] };
-                render(frame, []);
+                drawFrame(frame, []);
+                if (landing >= 0) {
+                    const { cell: s, originX: ox, originY: oy } = geometry();
+                    const flash = sprite(
+                        effects,
+                        'trainee-verrouillage-jeu',
+                        ox + (landing % WIDTH) * s,
+                        oy + Math.floor(landing / WIDTH) * s,
+                        s,
+                    );
+                    await animate(animationDuration('lock', false), (progress) => {
+                        flash.alpha = 1 - progress;
+                    });
+                }
             }
             if (event.type === 'GRAVITY_STEP') await animate(animationDuration('gravity', false));
         }
@@ -174,7 +280,6 @@ export async function createBoardView(host: HTMLElement, initial: ViewOptions): 
             return sprite(effects, glows[index % glows.length] ?? glows[0], x - s / 2, y - s / 2, s * 2);
         });
         const sizes = images.map((image) => ({ image, width: image.width, height: image.height }));
-        effects.alpha = 1;
         return animate(duration, (progress) => {
             effects.alpha = 1 - progress;
             for (const { image, width, height } of sizes) {
@@ -184,13 +289,19 @@ export async function createBoardView(host: HTMLElement, initial: ViewOptions): 
         });
     }
 
-    function animate(duration: number, advance?: (progress: number) => void): Promise<void> {
+    function animate(
+        duration: number,
+        advance?: (progress: number) => void,
+        onFinish?: () => void,
+    ): Promise<void> {
+        effects.alpha = 1;
         return new Promise((resolve) => {
             let elapsed = 0;
             const finish = (): void => {
                 app.ticker.remove(frame);
                 clearSprites(effects);
                 stopEffect = undefined;
+                if (!disposed) onFinish?.();
                 resolve();
             };
             const frame = (ticker: { deltaMS: number }): void => {
@@ -205,7 +316,7 @@ export async function createBoardView(host: HTMLElement, initial: ViewOptions): 
     }
 
     const onResize = (): void => {
-        if (last) render(last.state, last.ghost);
+        if (last) drawFrame(last.state, last.ghost, last.angle);
     };
     app.renderer.on('resize', onResize);
     return {
@@ -213,6 +324,7 @@ export async function createBoardView(host: HTMLElement, initial: ViewOptions): 
         play,
         setOptions(next) {
             options = next;
+            if (next.reducedMotion) stopEffect?.();
             onResize();
         },
         destroy() {
