@@ -99,9 +99,8 @@ export function Game({
                             }
                         }
                     },
-                    onChange: (s) => {
+                    onChange: (s, spawned) => {
                         if (cancelled) return;
-                        const spawned = s.active && s.active.id !== published.active?.id;
                         if (spawned) {
                             loop.resetCadence();
                             setSpawns((n) => n + 1);

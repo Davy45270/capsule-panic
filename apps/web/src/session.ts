@@ -5,7 +5,7 @@ import type { CommandType } from '@capsule-panic/input';
 export interface SessionHooks {
     render(state: GameState, ghost: readonly Position[]): void;
     play(events: readonly GameEvent[], before: GameState): Promise<void>;
-    onChange?(state: GameState): void;
+    onChange?(state: GameState, spawned: boolean): void;
     /** Une promesse retarde la publication et la reprise des commandes jusqu'à la fin de l'écriture. */
     onSpawn?(state: GameState): void | Promise<void>;
     onEnd?(state: GameState): void;
@@ -24,6 +24,9 @@ export class GameSession {
     #state: GameState;
     #animating = false;
     #pauseWhenReady = false;
+    #saving = false;
+    #pendingCommands: CommandType[] = [];
+    #drainingCommands = false;
     readonly stats: LevelStats;
     constructor(
         state: GameState,
@@ -46,6 +49,10 @@ export class GameSession {
 
     /** Applique une commande ; rend `false` si elle est ignorée (animation en cours) ou refusée par le moteur. */
     command(type: CommandType): boolean {
+        if (this.#saving) {
+            this.#pendingCommands.push(type);
+            return true;
+        }
         if (this.#animating) return false;
         if (type === 'PAUSE' && this.#state.phase === 'PAUSED') return this.#apply('RESUME');
         return this.#apply(type);
@@ -72,18 +79,20 @@ export class GameSession {
             this.stats.capsules++;
             this.stats.bestChain = Math.max(this.stats.bestChain, t.state.chainCount);
         }
+        const spawned = t.events.some((event) => event.type === 'SPAWNED');
         const publish = (): void => {
+            this.#saving = false;
             this.#animating = false;
             this.#pauseIfRequested();
-            this.#show();
+            this.#show(spawned);
             if (this.#state.phase === 'WON' || this.#state.phase === 'LOST') this.hooks.onEnd?.(this.#state);
+            this.#drainCommands();
         };
         const finish = (): void => {
             this.#pauseIfRequested();
-            const checkpoint = t.events.some((e) => e.type === 'SPAWNED')
-                ? this.hooks.onSpawn?.(this.#state)
-                : undefined;
+            const checkpoint = spawned ? this.hooks.onSpawn?.(this.#state) : undefined;
             if (checkpoint) {
+                this.#saving = true;
                 this.#animating = true;
                 void checkpoint.then(publish, publish);
             } else publish();
@@ -97,6 +106,16 @@ export class GameSession {
         }
         return true;
     }
+    #drainCommands(): void {
+        if (this.#drainingCommands) return;
+        this.#drainingCommands = true;
+        while (!this.#animating) {
+            const type = this.#pendingCommands.shift();
+            if (!type) break;
+            this.command(type);
+        }
+        this.#drainingCommands = false;
+    }
     #pauseIfRequested(): void {
         if (!this.#pauseWhenReady) return;
         this.#pauseWhenReady = false;
@@ -105,8 +124,8 @@ export class GameSession {
     #render(): void {
         this.hooks.render(this.#state, getLandingProjection(this.#state));
     }
-    #show(): void {
+    #show(spawned = false): void {
         this.#render();
-        this.hooks.onChange?.(this.#state);
+        this.hooks.onChange?.(this.#state, spawned);
     }
 }
