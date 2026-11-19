@@ -39,8 +39,9 @@ function fromAddress(): Screen {
     }
 }
 
-function address(hash: string): void {
-    if (location.hash !== hash) history.pushState(null, '', `${location.pathname}${location.search}${hash}`);
+function address(target: string): void {
+    if (location.hash !== target)
+        history.pushState(null, '', `${location.pathname}${location.search}${target}`);
 }
 
 export function App() {
