@@ -4,20 +4,20 @@
       "frame": {
         "x": 2,
         "y": 2,
-        "w": 192,
-        "h": 192
+        "w": 120,
+        "h": 120
       },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 192,
-        "h": 192
+        "w": 120,
+        "h": 120
       },
       "sourceSize": {
-        "w": 192,
-        "h": 192
+        "w": 120,
+        "h": 120
       },
       "duration": 100
     }
@@ -29,7 +29,7 @@
     "format": "RGBA8888",
     "size": {
       "w": 1024,
-      "h": 196
+      "h": 124
     },
     "scale": "3"
   }

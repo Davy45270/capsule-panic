@@ -4,41 +4,41 @@
       "frame": {
         "x": 2,
         "y": 2,
-        "w": 378,
-        "h": 378
+        "w": 204,
+        "h": 204
       },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 378,
-        "h": 378
+        "w": 204,
+        "h": 204
       },
       "sourceSize": {
-        "w": 378,
-        "h": 378
+        "w": 204,
+        "h": 204
       },
       "duration": 100
     },
     "sprite-responsable-origine": {
       "frame": {
-        "x": 382,
+        "x": 208,
         "y": 2,
-        "w": 378,
-        "h": 378
+        "w": 204,
+        "h": 204
       },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 378,
-        "h": 378
+        "w": 204,
+        "h": 204
       },
       "sourceSize": {
-        "w": 378,
-        "h": 378
+        "w": 204,
+        "h": 204
       },
       "duration": 100
     }
@@ -50,7 +50,7 @@
     "format": "RGBA8888",
     "size": {
       "w": 1024,
-      "h": 382
+      "h": 208
     },
     "scale": "3"
   }

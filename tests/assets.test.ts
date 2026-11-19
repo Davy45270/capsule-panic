@@ -119,7 +119,7 @@ it('[E009] [E018] [E310] provenance, sources et licence couvrent chaque cadre', 
     for (const fiche of assets) {
         const sprite = lire(join('sprites', `${fiche.id}.png`));
         expect(dimensions(sprite, '.png')[0]).toBeGreaterThan(0);
-        expect(alphaCoin(sprite)).toBe(0);
+        expect(alphaCoin(sprite), fiche.id).toBe(0);
         expect(fiche.planche).toMatch(/\.png$/u);
         expect(fiche.planche_sha256).toMatch(/^[a-f0-9]{64}$/u);
         expect(fiche.transformations).toContain('atlas json-hash');
@@ -135,6 +135,38 @@ it('[E009] [E018] [E310] provenance, sources et licence couvrent chaque cadre', 
     }
 });
 
+it('[E331] [E332] [E526] [E527] [E534] les personnages proviennent de découpes retouchées', () => {
+    const { assets } = JSON.parse(lire('provenance.json').toString()) as {
+        assets: { id: string; transformation?: string; signes_retires?: string[] }[];
+    };
+    const ids = [...new Set(mappings.flatMap(({ frames }) => Object.keys(frames)))]
+        .filter(id => /^sprite-(chercheu|responsable-)/u.test(id));
+    expect(ids).toHaveLength(5);
+    for (const id of ids) {
+        const fiche = assets.find(item => item.id === id);
+        expect(fiche?.transformation).toBe('découpe + retouche (signes médicaux retirés)');
+        expect(fiche?.signes_retires?.length).toBeGreaterThan(0);
+        expect(fiche?.signes_retires?.every(signe => signe.trim().length > 0)).toBe(true);
+    }
+});
+
+it('[E370] [E377] [E381] [E383] [E429] [E430] [E431] [E432] les maquettes entières restent des références', () => {
+    const { references_mise_en_page: references, tables } = JSON.parse(lire('chaine.json').toString()) as {
+        references_mise_en_page: { planche: string; boite: number[]; ecran: string }[];
+        tables: { decoupe: string }[];
+    };
+    expect(references).toHaveLength(8);
+    expect(new Set(references.map(reference => reference.ecran)).size).toBe(8);
+    for (const { decoupe } of tables) {
+        const { planche, elements } = JSON.parse(readFileSync(decoupe, 'utf8')) as {
+            planche: string; elements: { boite: number[] }[];
+        };
+        const boites = references.filter(reference => reference.planche === planche)
+            .map(reference => reference.boite);
+        for (const { boite } of elements) expect(boites).not.toContainEqual(boite);
+    }
+});
+
 it('[E309] la planche livrée est transparente et les planches privées sont absentes du paquet', () => {
     expect(alphaCoin(lire('planche-transparente.png'))).toBe(0);
     const provenance = JSON.parse(lire('provenance.json').toString()) as {
@@ -144,7 +176,7 @@ it('[E309] la planche livrée est transparente et les planches privées sont abs
         .map(nom => join(dossier, nom));
     const suivis = execFileSync('git', ['ls-files', '-z'], { encoding: 'utf8' }).split('\0');
     const originaux = new Map(provenance.assets.map(fiche => [fiche.planche, fiche.planche_sha256]));
-    for (const nom of new Set(pixelsLivres.concat(suivis).filter(f => f.endsWith('.png')))) {
+    for (const nom of new Set(pixelsLivres.concat(suivis).filter(f => f.endsWith('.png') && existsSync(f)))) {
         const hash = createHash('sha256').update(readFileSync(nom)).digest('hex');
         for (const [planche, empreinte] of originaux) {
             expect(nom.endsWith(planche)).toBe(false);

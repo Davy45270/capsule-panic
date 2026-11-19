@@ -62,6 +62,48 @@
         "h": 96
       },
       "duration": 100
+    },
+    "sprite-trainee-chute-jeu": {
+      "frame": {
+        "x": 296,
+        "y": 2,
+        "w": 96,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 96,
+        "h": 96
+      },
+      "duration": 100
+    },
+    "sprite-fleche-rotation-jeu": {
+      "frame": {
+        "x": 394,
+        "y": 2,
+        "w": 96,
+        "h": 96
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 96
+      },
+      "sourceSize": {
+        "w": 96,
+        "h": 96
+      },
+      "duration": 100
     }
   },
   "meta": {

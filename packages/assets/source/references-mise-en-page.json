@@ -1,0 +1,82 @@
+[
+  {
+    "planche": "Capsule_Panic_Assets_Gameplay_02.png",
+    "boite": [
+      274,
+      431,
+      6,
+      299
+    ],
+    "ecran": "Accueil"
+  },
+  {
+    "planche": "Capsule_Panic_Assets_Gameplay_02.png",
+    "boite": [
+      285,
+      430,
+      290,
+      300
+    ],
+    "ecran": "Partie"
+  },
+  {
+    "planche": "Capsule_Panic_Assets_Gameplay_02.png",
+    "boite": [
+      285,
+      430,
+      587,
+      300
+    ],
+    "ecran": "Partie avec réaction en chaîne"
+  },
+  {
+    "planche": "Capsule_Panic_Assets_Gameplay_02.png",
+    "boite": [
+      272,
+      429,
+      883,
+      301
+    ],
+    "ecran": "Niveau réussi"
+  },
+  {
+    "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+    "boite": [
+      209,
+      308,
+      19,
+      249
+    ],
+    "ecran": "Partie avec aperçu de chute"
+  },
+  {
+    "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+    "boite": [
+      211,
+      308,
+      238,
+      246
+    ],
+    "ecran": "Partie avec première réaction en chaîne"
+  },
+  {
+    "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+    "boite": [
+      208,
+      309,
+      458,
+      247
+    ],
+    "ecran": "Partie avec réaction en chaîne prolongée"
+  },
+  {
+    "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+    "boite": [
+      208,
+      311,
+      675,
+      246
+    ],
+    "ecran": "Niveau réussi sur le plateau"
+  }
+]

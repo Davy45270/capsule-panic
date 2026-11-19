@@ -12,36 +12,6 @@
         53
       ],
       "ancre": "centre"
-    },
-    {
-      "id": "bloc-bleu-plateau-jeu",
-      "boite": [
-        82,
-        83,
-        1359,
-        53
-      ],
-      "ancre": "centre"
-    },
-    {
-      "id": "bloc-rouge-plateau-jeu",
-      "boite": [
-        82,
-        83,
-        1462,
-        53
-      ],
-      "ancre": "centre"
-    },
-    {
-      "id": "bloc-jaune-plateau-jeu",
-      "boite": [
-        83,
-        83,
-        1565,
-        54
-      ],
-      "ancre": "centre"
     }
   ]
 }

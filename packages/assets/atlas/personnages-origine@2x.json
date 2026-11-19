@@ -4,41 +4,41 @@
       "frame": {
         "x": 2,
         "y": 2,
-        "w": 252,
-        "h": 252
+        "w": 136,
+        "h": 136
       },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 252,
-        "h": 252
+        "w": 136,
+        "h": 136
       },
       "sourceSize": {
-        "w": 252,
-        "h": 252
+        "w": 136,
+        "h": 136
       },
       "duration": 100
     },
     "sprite-responsable-origine": {
       "frame": {
-        "x": 256,
+        "x": 140,
         "y": 2,
-        "w": 252,
-        "h": 252
+        "w": 136,
+        "h": 136
       },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 252,
-        "h": 252
+        "w": 136,
+        "h": 136
       },
       "sourceSize": {
-        "w": 252,
-        "h": 252
+        "w": 136,
+        "h": 136
       },
       "duration": 100
     }
@@ -50,7 +50,7 @@
     "format": "RGBA8888",
     "size": {
       "w": 1024,
-      "h": 256
+      "h": 140
     },
     "scale": "2"
   }

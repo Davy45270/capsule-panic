@@ -1,0 +1,9 @@
+[
+  {
+    "id": "fioles-sous-logo",
+    "boite": "138x91+136+180",
+    "raccords": [],
+    "transformation": "découpe + nettoyage raster",
+    "silhouette": "polygon 16,2 47,0 71,0 73,10 81,2 110,0 123,9 117,25 117,36 136,63 137,81 129,91 9,91 0,81 0,68 22,36 25,23 17,14"
+  }
+]

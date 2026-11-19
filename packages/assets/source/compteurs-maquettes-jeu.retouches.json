@@ -1,0 +1,24 @@
+[
+  {
+    "id": "cadre-score-compteurs-maquettes-jeu",
+    "boite": "148x60+959+793",
+    "raccords": [
+      [
+        "5x24+10+28",
+        "89x24+32+28"
+      ]
+    ],
+    "transformation": "découpe + nettoyage raster"
+  },
+  {
+    "id": "cadre-niveau-compteurs-maquettes-jeu",
+    "boite": "118x60+1120+793",
+    "raccords": [
+      [
+        "5x23+10+28",
+        "45x23+36+28"
+      ]
+    ],
+    "transformation": "découpe + nettoyage raster"
+  }
+]

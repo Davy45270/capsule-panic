@@ -249,7 +249,9 @@
     "chute-animations-apercu",
     "rotation-animations-apercu",
     "deplacement-animations-apercu",
-    "verrouillage-animations-apercu"
+    "verrouillage-animations-apercu",
+    "trainee-deplacement-apercu",
+    "fleche-verrouillage-apercu"
   ],
   "E444": [
     "jouer-commandes-apercu"
@@ -363,7 +365,9 @@
     "chute-animations-jeu",
     "rotation-animations-jeu",
     "deplacement-animations-jeu",
-    "verrouillage-animations-jeu"
+    "verrouillage-animations-jeu",
+    "trainee-chute-jeu",
+    "fleche-rotation-jeu"
   ],
   "E533": [
     "paire-verticale-cyan-magenta",
@@ -375,5 +379,74 @@
   ],
   "E536": [
     "carte-classique-apercu"
+  ],
+  "E367": [
+    "fioles-sous-logo"
+  ],
+  "E371": [
+    "jouer-accueil"
+  ],
+  "E374": [
+    "options-accueil"
+  ],
+  "E375": [
+    "credits-accueil"
+  ],
+  "E378": [
+    "barre-partie"
+  ],
+  "E379": [
+    "panneau-suivant-partie"
+  ],
+  "E529": [
+    "ruban-reussite"
+  ],
+  "E385": [
+    "cadre-statistiques-reussite"
+  ],
+  "E386": [
+    "suivant-reussite"
+  ],
+  "E387": [
+    "rejouer-reussite"
+  ],
+  "E388": [
+    "menu-reussite"
+  ],
+  "E411": [
+    "cadre-score-compteurs-maquettes-jeu"
+  ],
+  "E412": [
+    "cadre-niveau-compteurs-maquettes-jeu"
+  ],
+  "E462": [
+    "cadre-score-compteurs-maquettes-apercu"
+  ],
+  "E463": [
+    "cadre-niveau-compteurs-maquettes-apercu"
+  ],
+  "E535": [
+    "explosion-apercu",
+    "nuage-apercu",
+    "etincelles-apercu",
+    "anneau-apercu"
+  ],
+  "E435": [
+    "particules-dorees-apercu",
+    "particules-rouges-apercu"
+  ],
+  "E436": [
+    "ligne-elimination-apercu",
+    "explosion-apercu",
+    "particules-rouges-apercu"
+  ],
+  "E439": [
+    "impact-apercu"
+  ],
+  "E440": [
+    "fleche-rotation-apercu"
+  ],
+  "E429": [
+    "fleche-chute-fantome-apercu"
   ]
 }

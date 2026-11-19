@@ -1,0 +1,35 @@
+[
+  {
+    "id": "bloc-bleu-plateau-jeu",
+    "boite": "82x83+1359+53",
+    "recolorations": [
+      [
+        "#38BDF8",
+        null
+      ]
+    ],
+    "transformation": "découpe + recoloration (jetons A2)"
+  },
+  {
+    "id": "bloc-rouge-plateau-jeu",
+    "boite": "82x83+1462+53",
+    "recolorations": [
+      [
+        "#F472B6",
+        null
+      ]
+    ],
+    "transformation": "découpe + recoloration (jetons A2)"
+  },
+  {
+    "id": "bloc-jaune-plateau-jeu",
+    "boite": "83x83+1565+54",
+    "recolorations": [
+      [
+        "#FBBF24",
+        null
+      ]
+    ],
+    "transformation": "découpe + recoloration (jetons A2)"
+  }
+]

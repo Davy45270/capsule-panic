@@ -2,16 +2,5 @@
   "planche": "Capsule_Panic_Assets_Gameplay_03.png",
   "marge": 4,
   "taille": 112,
-  "elements": [
-    {
-      "id": "tutoriel-aligner",
-      "boite": [
-        160,
-        122,
-        843,
-        798
-      ],
-      "ancre": "centre"
-    }
-  ]
+  "elements": []
 }

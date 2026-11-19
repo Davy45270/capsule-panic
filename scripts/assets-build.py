@@ -9,6 +9,8 @@ import tempfile
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
+from assets_retouche import retoucher
+
 ASSETS = Path("packages/assets")
 
 
@@ -42,6 +44,15 @@ def atlas(aseprite, sprites, image, mapping=None):
     run("oxipng", "-q", "-o", "4", "--strip", "safe", image)
 
 
+def mesure_palette(reference, sprite, outils, journal):
+    resultat = subprocess.run(["python3", outils / "style-palette.py", reference, sprite],
+                              stdout=subprocess.PIPE, text=True)
+    journal.write(resultat.stdout)
+    print(f"Code palette : {resultat.returncode}", file=journal)
+    if resultat.returncode not in (0, 1):
+        resultat.check_returncode()
+
+
 def construire_groupe(table, planches, outils, aseprite, travail):
     journal = io.StringIO()
     chaine, sprites_planche = [], []
@@ -52,6 +63,14 @@ def construire_groupe(table, planches, outils, aseprite, travail):
     fiches = []
     liste = ASSETS / "source" / f"{groupe}.redessines.json"
     redessines = lire(liste) if liste.exists() else []
+    liste = liste.with_name(f"{groupe}.retouches.json")
+    retouches = lire(liste) if liste.exists() else []
+    preparations = travail / f"retouches-{groupe}"
+    preparations.mkdir()
+    if any("cellule" in fiche for fiche in retouches):
+        run("rsvg-convert", "-w", "96", "-h", "96", ASSETS / "source/svg/cellule-cyan.svg",
+            "-o", preparations / "sprite-cellule-cyan.png")
+    rasters = [(fiche, *retoucher(planche, fiche, preparations, preparations)) for fiche in retouches]
     for echelle in (2, 3):
         dimension = data["taille"] * echelle // 2
         taille = f"{dimension}x{dimension}"
@@ -67,6 +86,36 @@ def construire_groupe(table, planches, outils, aseprite, travail):
                 shutil.copyfile(sprite, travail / "sprites" / sprite.name)
         references = []
         provenance_redessins = []
+        for fiche, reference, raster in rasters:
+            identifiant = fiche["id"]
+            sprite = dossier / f"sprite-{identifiant}.png"
+            run("magick", raster, "-channel", "A", "-fx", "u<0.04?0:u", "+channel",
+                "-trim", "+repage", "-resize", taille, "-background", "none", "-gravity",
+                "center", "-extent", taille, f"PNG32:{sprite}")
+            sprites.append(sprite)
+            dimensions, x, y = fiche["boite"].split("+")
+            largeur, hauteur = dimensions.split("x")
+            personnage = "signes_retires" in fiche
+            provenance = {
+                "id": f"sprite-{identifiant}", "origine": "planche", "planche": data["planche"],
+                "boite": list(map(int, (largeur, hauteur, x, y))),
+                "transformation": "découpe + retouche (signes médicaux retirés)" if personnage
+                else fiche["transformation"],
+                "source_retouche": str(liste),
+                "transformations": ["crop", "retouche raster ImageMagick", "resize", "atlas json-hash"],
+            }
+            if personnage:
+                provenance["signes_retires"] = fiche["signes_retires"]
+            provenance_redessins.append(provenance)
+            if echelle == 3:
+                shutil.copyfile(sprite, travail / "sprites" / sprite.name)
+                print(f"Palette {identifiant}", file=journal)
+                mesure_palette(reference, sprite, outils, journal)
+                if controles and personnage:
+                    run("magick", "montage", "-font", "DejaVu-Sans", "-pointsize", "16",
+                        "-label", "Avant", reference, "-label", "Après", raster,
+                        "-tile", "2x1", "-geometry", "480x480+12+12", "-background", "#303040",
+                        "-fill", "white", Path(controles) / f"avant-apres-{identifiant}.png")
         for redessin in redessines:
             identifiant = redessin["id"]
             svg = ASSETS / "source" / "svg" / f"{identifiant}.svg"
@@ -103,12 +152,7 @@ def construire_groupe(table, planches, outils, aseprite, travail):
                 reference = dossier / f"reference-{identifiant}.png"
                 run("magick", planche, "-crop", redessin["boite"], "+repage", reference)
                 print(f"Palette {identifiant}", file=journal)
-                resultat = subprocess.run(["python3", outils / "style-palette.py", reference, sprite],
-                                          stdout=subprocess.PIPE, text=True)
-                journal.write(resultat.stdout)
-                print(f"Code palette : {resultat.returncode}", file=journal)
-                if resultat.returncode not in (0, 1):
-                    resultat.check_returncode()
+                mesure_palette(reference, sprite, outils, journal)
             else:
                 references.append({"id": f"sprite-{identifiant}", "boite": redessin["boite"],
                                    "element": str(ASSETS / "sprites" / sprite.name)})
@@ -144,13 +188,17 @@ def construire_groupe(table, planches, outils, aseprite, travail):
             chaine.append({"planche": str(planche), "decoupe": str(table),
                            "atlas": str(ASSETS / "atlas" / image.name),
                            "atlas_json": str(ASSETS / "atlas" / mapping.name),
-                           "redessines": references})
+                           "redessines": references,
+                           **({"retouches": [{"id": f"sprite-{fiche['id']}", "boite": fiche["boite"],
+                                              "element": str(ASSETS / "sprites" / f"sprite-{fiche['id']}.png")}
+                                             for fiche in retouches]} if retouches else {})})
             if controles:
                 miniatures = travail / f"controle-{groupe}"
                 miniatures.mkdir()
                 for sprite in sprites:
                     run("magick", sprite, "-resize", "96x96", miniatures / sprite.name)
-                extras = []
+                extras = [valeur for fiche, reference, _ in rasters for valeur in (
+                    reference, miniatures / f"sprite-{fiche['id']}.png", fiche["id"])]
                 for redessin in redessines:
                     identifiant = redessin["id"]
                     reference = dossier / f"reference-{identifiant}.png"
@@ -181,8 +229,15 @@ def assembler(aseprite, travail, resultats):
         "titulaire": "David Sevin", "licence": "CC BY 4.0",
         "assets": sorted(item["id"] for item in entrees),
     })
-    ecrire(travail / "chaine.json", chaine)
-    atlas(aseprite, sprites_planche,
+    ecrire(travail / "chaine.json", {
+        "tables": chaine,
+        "references_mise_en_page": lire(ASSETS / "source/references-mise-en-page.json"),
+    })
+    apercus = travail / "apercus"
+    apercus.mkdir()
+    for sprite in sprites_planche:
+        run("magick", sprite, "-resize", "56x56>", apercus / sprite.name)
+    atlas(aseprite, [apercus / sprite.name for sprite in sprites_planche],
           travail / "planche-transparente.png")
 
 
@@ -196,7 +251,14 @@ def main():
         installer(travail)
 
 
+def optimiser_sprites(dossier):
+    sprites = sorted(sprite for sprite in dossier.glob("*.png") if sprite.stat().st_size > 40 * 1024)
+    if sprites:
+        run("oxipng", "-q", "-o", "2", "--strip", "safe", *sprites)
+
+
 def installer(travail):
+    optimiser_sprites(travail / "sprites")
     for fichier in ("chaine.json", "provenance.json", "licences.json", "planche-transparente.png"):
         shutil.copyfile(travail / fichier, ASSETS / fichier)
     for dossier in ("sprites", "atlas"):

@@ -32,6 +32,26 @@
         353
       ],
       "ancre": "centre"
+    },
+    {
+      "id": "trainee-chute-jeu",
+      "boite": [
+        39,
+        25,
+        1199,
+        428
+      ],
+      "ancre": "centre"
+    },
+    {
+      "id": "fleche-rotation-jeu",
+      "boite": [
+        68,
+        29,
+        1410,
+        426
+      ],
+      "ancre": "centre"
     }
   ]
 }

@@ -15,4 +15,4 @@ a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544  Capsule_Panic_
 ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a  Capsule_Panic_Assets_Gameplay_03.png
 SHA
 )
-python3 scripts/assets-build.py "$(realpath "$planches")" "$outils" "$aseprite"
+python3 -B scripts/assets-build.py "$(realpath "$planches")" "$outils" "$aseprite"

@@ -4,41 +4,41 @@
       "frame": {
         "x": 2,
         "y": 2,
-        "w": 312,
-        "h": 312
+        "w": 168,
+        "h": 168
       },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 312,
-        "h": 312
+        "w": 168,
+        "h": 168
       },
       "sourceSize": {
-        "w": 312,
-        "h": 312
+        "w": 168,
+        "h": 168
       },
       "duration": 100
     },
     "sprite-chercheuse-accueil": {
       "frame": {
-        "x": 316,
+        "x": 172,
         "y": 2,
-        "w": 312,
-        "h": 312
+        "w": 168,
+        "h": 168
       },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 312,
-        "h": 312
+        "w": 168,
+        "h": 168
       },
       "sourceSize": {
-        "w": 312,
-        "h": 312
+        "w": 168,
+        "h": 168
       },
       "duration": 100
     }
@@ -50,7 +50,7 @@
     "format": "RGBA8888",
     "size": {
       "w": 1024,
-      "h": 316
+      "h": 172
     },
     "scale": "3"
   }
