@@ -1,3 +1,4 @@
+import { readFile } from 'node:fs/promises';
 import { expect, test } from '@playwright/test';
 import type { Page, TestInfo } from '@playwright/test';
 import { cascade, defaite, victoire } from './parcours';
@@ -41,7 +42,35 @@ async function play(page: Page, placements: string[][]): Promise<void> {
     }
 }
 
-test('[E094] [E313] [E385] [E386] [E387] [E388] [E526] [E529] la partie gagnée au clavier ouvre le niveau réussi', async ({
+async function localScores(page: Page): Promise<number[]> {
+    return page.evaluate(
+        () =>
+            new Promise<number[]>((resolve, reject) => {
+                const open = indexedDB.open('capsule-panic');
+                open.onerror = () => reject(new Error('Ouverture des scores impossible'));
+                open.onsuccess = () => {
+                    const db = open.result;
+                    const transaction = db.transaction('scores', 'readonly');
+                    const read = transaction.objectStore('scores').getAll();
+                    transaction.oncomplete = () => {
+                        db.close();
+                        const rows = read.result as { level: number; speed: string; score: number }[];
+                        resolve(
+                            rows
+                                .filter((row) => row.level === 0 && row.speed === 'low')
+                                .map((row) => row.score),
+                        );
+                    };
+                    transaction.onabort = () => {
+                        db.close();
+                        reject(new Error('Lecture des scores impossible'));
+                    };
+                };
+            }),
+    );
+}
+
+test('[E048] [E094] [E313] [E385] [E386] [E387] [E388] [E526] [E529] la partie gagnée au clavier ouvre le niveau réussi', async ({
     page,
 }, info) => {
     const errors = errorsOn(page);
@@ -49,7 +78,8 @@ test('[E094] [E313] [E385] [E386] [E387] [E388] [E526] [E529] la partie gagnée 
     await play(page, victoire.placements);
     await expect(page.getByRole('heading', { name: 'Niveau réussi !' })).toBeVisible();
     await expect(page.getByText('Tous les cristaux éliminés')).toBeVisible();
-    await expect(page.getByTestId('final-score')).toContainText(/\d/);
+    await expect(page.getByTestId('final-score')).toHaveText('704');
+    await expect.poll(() => localScores(page)).toContain(704);
     await expect(page.getByText('Combo max ×1')).toBeVisible();
     await expect(page.locator('[data-art="ruban-reussite"]')).toBeVisible();
     await expect(page.locator('.end-characters .character')).toHaveCount(2);
@@ -144,6 +174,14 @@ test('[E037] [E041] [E099] [E100] [E110] [E125] [E313] [E371] [E374] [E375] [E37
     expect(errors).toEqual([]);
 });
 
+test('[E125] le retour du navigateur depuis les options affiche l’accueil', async ({ page }) => {
+    await page.goto('./');
+    await page.getByRole('button', { name: 'Options', exact: true }).click();
+    await expect(page).toHaveURL(/#settings$/);
+    await page.goBack();
+    await expect(page.getByRole('heading', { name: 'Capsule Panic' })).toBeVisible();
+});
+
 test('[E037] les écrans restent dans la largeur à 320 px', async ({ page }) => {
     await page.setViewportSize({ width: 320, height: 740 });
     await page.goto('./');
@@ -186,14 +224,29 @@ test('[E154] le JSON exporté peut être réimporté et les données invalides s
     await startGame(page, { seed: 'import' });
     await page.keyboard.press('Space');
     await expect(page.locator('.reactor')).toHaveAttribute('data-spawns', '1');
-    const capsule = await page.locator('.reactor').getAttribute('data-capsule');
     await page.keyboard.press('p');
+    await expect(page.getByRole('dialog', { name: 'Pause' })).toBeVisible();
+    const capsule = await page.locator('.reactor').getAttribute('data-capsule');
     await page.getByRole('button', { name: 'Accueil', exact: true }).click();
     await page.getByRole('button', { name: 'Options', exact: true }).click();
     const downloaded = page.waitForEvent('download');
     await page.getByRole('button', { name: 'Exporter la partie JSON' }).click();
     const file = info.outputPath('partie.json');
     await (await downloaded).saveAs(file);
+    const original = await readFile(file, 'utf8');
+
+    await startGame(page, { seed: 'partie-a-remplacer', level: 2 });
+    await page.keyboard.press('Space');
+    await expect(page.locator('.reactor')).toHaveAttribute('data-spawns', '1');
+    await page.keyboard.press('p');
+    await page.getByRole('button', { name: 'Accueil', exact: true }).click();
+    await page.getByRole('button', { name: 'Options', exact: true }).click();
+    const competingDownload = page.waitForEvent('download');
+    await page.getByRole('button', { name: 'Exporter la partie JSON' }).click();
+    const competingFile = info.outputPath('autre-partie.json');
+    await (await competingDownload).saveAs(competingFile);
+    expect(await readFile(competingFile, 'utf8')).not.toBe(original);
+
     await page.locator('input[type=file]').setInputFiles({
         name: 'partie-invalide.json',
         mimeType: 'application/json',
@@ -202,6 +255,11 @@ test('[E154] le JSON exporté peut être réimporté et les données invalides s
     await expect(page.getByRole('alert')).toContainText('état invalide');
     await page.locator('input[type=file]').setInputFiles(file);
     await expect(page.getByRole('alert')).toContainText('Partie importée');
+    const importedDownload = page.waitForEvent('download');
+    await page.getByRole('button', { name: 'Exporter la partie JSON' }).click();
+    const importedFile = info.outputPath('partie-reimportee.json');
+    await (await importedDownload).saveAs(importedFile);
+    expect(await readFile(importedFile, 'utf8')).toBe(original);
     await page.getByRole('button', { name: 'OK', exact: true }).click();
     await page.getByRole('button', { name: 'Menu', exact: true }).click();
     await page.getByRole('button', { name: 'Reprendre la partie' }).click();
@@ -214,12 +272,68 @@ test('[E101] [E102] [E294] [E528] deux réactions successives affichent les poin
     page,
 }, info) => {
     const errors = errorsOn(page);
+    await page.emulateMedia({ reducedMotion: 'no-preference' });
     await startGame(page, cascade);
     await play(page, cascade.placements);
     const combo = page.locator('.combo');
-    await expect(combo).toContainText('COMBO ×2');
-    await expect(combo).toHaveAttribute('data-match', /^\d+( \d+){3,}$/);
+    await expect(combo).toHaveText(/COMBO ×2\s*\+80/);
+    await expect(combo).toHaveAttribute('data-match', '92 100 108 116');
+    await expect(combo).toHaveCSS('font-weight', '950');
+    await expect(combo).toHaveCSS('text-shadow', /rgb\(246, 80, 28\).*14px/);
     await capture(page, info, 'partie-combo', errors);
     await expect(page.locator('.reactor')).toHaveAttribute('data-ready', 'oui');
+    await expect(page.getByTestId('score')).toHaveText('000494');
     expect(errors).toEqual([]);
+});
+
+for (const { system, user } of [
+    { system: 'reduce', user: false },
+    { system: 'no-preference', user: true },
+] as const) {
+    test(`[E104] [E305] le jeu saute les effets avec la préférence ${user ? 'du jeu' : 'du système'} seule`, async ({
+        page,
+    }) => {
+        await page.emulateMedia({ reducedMotion: system });
+        await page.goto(`./?graine=${victoire.seed}`);
+        await page.getByRole('button', { name: 'Options', exact: true }).click();
+        await page.getByRole('checkbox', { name: 'Animations réduites' }).setChecked(user);
+        await page.getByRole('button', { name: 'Menu', exact: true }).click();
+        await page.getByRole('button', { name: 'Jouer', exact: true }).click();
+        await page.getByLabel('Lente').check();
+        await page.getByRole('button', { name: 'Commencer' }).click();
+        const reactor = page.locator('.reactor');
+        await expect(reactor).toHaveAttribute('data-ready', 'oui');
+        const showedCombo = await page.evaluateHandle(() => {
+            const seen = { value: false };
+            new MutationObserver((entries) => {
+                for (const entry of entries) {
+                    for (const node of entry.addedNodes) {
+                        if (
+                            node instanceof Element &&
+                            (node.matches('.combo') || node.querySelector('.combo'))
+                        )
+                            seen.value = true;
+                    }
+                }
+            }).observe(document.body, { childList: true, subtree: true });
+            return seen;
+        });
+        await play(page, victoire.placements.slice(0, 4));
+        await expect(page.getByTestId('score')).toHaveText('000180');
+        await expect(reactor).toHaveAttribute('data-spawns', '4');
+        expect(await showedCombo.evaluate((seen) => seen.value)).toBe(false);
+        await showedCombo.dispose();
+    });
+}
+
+test.describe('gestes directs sur le réacteur', () => {
+    test.use({ hasTouch: true });
+
+    test('[E110] toucher la chambre pivote la capsule active', async ({ page }) => {
+        await startGame(page, victoire);
+        const reactor = page.locator('.reactor');
+        await expect(reactor).toHaveAttribute('data-capsule', /^c1 3,\d+,0$/);
+        await reactor.tap();
+        await expect(reactor).toHaveAttribute('data-capsule', /^c1 3,\d+,1$/);
+    });
 });

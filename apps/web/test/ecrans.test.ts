@@ -5,7 +5,7 @@ import { act, createElement } from 'react';
 import { createRoot } from 'react-dom/client';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import type { GameEvent, GameState, Position } from '@capsule-panic/contracts';
-import { createGame } from '@capsule-panic/engine';
+import { createGame, serialize, step } from '@capsule-panic/engine';
 import { animationDuration, pieceArtwork, textureFor } from '@capsule-panic/renderer';
 import type { BoardView, Match, ViewOptions } from '@capsule-panic/renderer';
 import inventaire from '../../../packages/assets/source/inventaire.json';
@@ -181,6 +181,20 @@ it('[E154] les sauvegardes JSON importées sont validées et la précédente sur
         expect(container.querySelector('[role=alert]')?.textContent).toContain('JSON invalide'),
     );
     expect(await loadGame()).toEqual(saved);
+
+    await send(JSON.stringify({ ...saved, active: null }));
+    await vi.waitFor(() => expect(container.querySelector('[role=alert]')?.textContent).toContain('/active'));
+    expect(await loadGame()).toEqual(saved);
+
+    const other = createGame({ seed: 'remplacement', level: 3, speed: 'high' });
+    const fallen = step(step(other, { type: 'TICK' }).state, { type: 'SOFT_DROP' }).state;
+    const replacement = step(fallen, { type: 'PAUSE' }).state;
+    expect(replacement).not.toEqual(saved);
+    await send(serialize(replacement));
+    await vi.waitFor(() =>
+        expect(container.querySelector('[role=alert]')?.textContent).toContain('Partie importée'),
+    );
+    expect(await loadGame()).toEqual(replacement);
 });
 
 it('[E178] [E179] le journal est opt-in et les métriques sont locales et agrégées', () => {
