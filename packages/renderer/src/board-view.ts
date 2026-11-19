@@ -48,10 +48,11 @@ export async function createBoardView(host: HTMLElement, initial: ViewOptions): 
     });
     host.appendChild(app.canvas);
     const chamber = Sprite.from(pieceArtwork['reacteur-chambre-origine']);
+    const tiles = new Container();
     const board = new Graphics();
     const pieces = new Container();
     const effects = new Container();
-    app.stage.addChild(chamber, board, pieces, effects);
+    app.stage.addChild(chamber, tiles, board, pieces, effects);
     let last: { state: GameState; ghost: readonly Position[] } | null = null;
     const geometry = (): ReturnType<typeof boardLayout> => boardLayout(app.screen.width, app.screen.height);
     function sprite(layer: Container, art: Artwork, x: number, y: number, w: number, h = w): Sprite {
@@ -60,6 +61,9 @@ export async function createBoardView(host: HTMLElement, initial: ViewOptions): 
         image.setSize(w, h);
         layer.addChild(image);
         return image;
+    }
+    for (let y = 0; y < HEIGHT; y++) {
+        for (let x = 0; x < WIDTH; x++) sprite(tiles, 'case-sombre-jeu', x, y, 1);
     }
     const clearSprites = (layer: Container): void => {
         for (const child of layer.removeChildren()) child.destroy();
@@ -90,11 +94,9 @@ export async function createBoardView(host: HTMLElement, initial: ViewOptions): 
         const border = Math.min(10, s * 0.4);
         chamber.position.set(ox - border, oy - border);
         chamber.setSize(s * WIDTH + 2 * border, s * HEIGHT + 2 * border);
-        const g = board.clear();
-        g.rect(ox, oy, s * WIDTH, s * HEIGHT).fill({ color: TOKENS.fond, alpha: 0.85 });
-        for (let x = 1; x < WIDTH; x++) g.moveTo(ox + x * s, oy).lineTo(ox + x * s, oy + s * HEIGHT);
-        for (let y = 1; y < HEIGHT; y++) g.moveTo(ox, oy + y * s).lineTo(ox + s * WIDTH, oy + y * s);
-        g.stroke({ width: 1, color: TOKENS.texte, alpha: 0.06 });
+        tiles.position.set(ox, oy);
+        tiles.scale.set(s);
+        board.clear();
         const byId = new Map<string, Position>();
         state.board.forEach((c, i) => {
             if (c?.kind === 'segment') byId.set(c.id, { x: i % WIDTH, y: Math.floor(i / WIDTH) });

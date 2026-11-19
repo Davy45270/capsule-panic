@@ -1,3 +1,4 @@
+import caseSombreJeu from '../../assets/sprites/sprite-case-sombre-jeu.png';
 import reacteurChambreOrigine from '../../assets/runtime/sprite-reacteur-chambre-origine.webp';
 import pontGauche from '../../assets/sprites/sprite-pont-gauche.png';
 import pontHaut from '../../assets/sprites/sprite-pont-haut.png';
@@ -23,6 +24,7 @@ import celluleMagenta from '../../assets/sprites/sprite-cellule-magenta.png';
 import celluleMagentaUnie from '../../assets/source/svg/cellule-magenta-unie.svg';
 
 export const pieceArtwork = {
+    'case-sombre-jeu': caseSombreJeu,
     'reacteur-chambre-origine': reacteurChambreOrigine,
     'pont-gauche': pontGauche,
     'pont-haut': pontHaut,
