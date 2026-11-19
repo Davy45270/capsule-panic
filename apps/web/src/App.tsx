@@ -14,6 +14,8 @@ import { defaultSettings, newSeed } from './settings';
 import type { Settings } from './settings';
 import { clearGame, loadGame, loadSettings, saveGame, saveScore, saveSettings } from './storage';
 
+const COLOR_BLIND_KEY = 'capsule-panic-daltonien';
+
 type Menu = 'home' | 'setup' | 'help' | 'options' | 'about';
 type Screen =
     | { name: Menu }
@@ -63,9 +65,18 @@ export function App() {
         let active = true;
         void Promise.allSettled([loadSettings(), loadGame()]).then(([preferences, game]) => {
             if (!active) return;
-            if (preferences.status === 'fulfilled') {
-                if (preferences.value) setSettings({ ...defaultSettings(), ...preferences.value });
-            } else storageError();
+            const restored = {
+                ...defaultSettings(),
+                ...(preferences.status === 'fulfilled' ? preferences.value : null),
+            };
+            if (preferences.status === 'rejected') storageError();
+            try {
+                const colorBlind = localStorage.getItem(COLOR_BLIND_KEY);
+                if (colorBlind === 'oui' || colorBlind === 'non') restored.colorBlind = colorBlind === 'oui';
+            } catch {
+                storageError();
+            }
+            setSettings(restored);
             if (game.status === 'fulfilled') {
                 setSaved(game.value);
             } else {
@@ -99,6 +110,14 @@ export function App() {
         openGame(state);
     };
     const changeSettings = (s: Settings): void => {
+        if (s.colorBlind !== settings.colorBlind) {
+            try {
+                // Le document peut être rechargé avant la fin de l'écriture IndexedDB.
+                localStorage.setItem(COLOR_BLIND_KEY, s.colorBlind ? 'oui' : 'non');
+            } catch {
+                storageError();
+            }
+        }
         setSettings(s);
         void saveSettings(s).catch(storageError);
     };

@@ -234,35 +234,32 @@ it(`${Object.keys(inventaire)
     }
 });
 
-it.fails(
-    '[E263] le mode daltonien résiste à une écriture IndexedDB interrompue et peut être désactivé',
-    async () => {
+it('[E263] le mode daltonien résiste à une écriture IndexedDB interrompue et peut être désactivé', async () => {
+    await mountApp();
+    await click('Options');
+    const checkbox = () =>
+        [...container.querySelectorAll('label')]
+            .find((label) => label.textContent.includes('Mode daltonien'))
+            ?.querySelector('input');
+    const updatePreference = async () => {
+        const put = vi.spyOn(IDBObjectStore.prototype, 'put').mockImplementationOnce(function (
+            this: IDBObjectStore,
+        ) {
+            this.transaction.abort();
+            return {} as IDBRequest<IDBValidKey>;
+        });
+        await update(() => checkbox()?.click());
+        await vi.waitFor(() => expect(put).toHaveBeenCalledTimes(1));
+        put.mockRestore();
+        act(() => root.unmount());
+        root = createRoot(container);
         await mountApp();
         await click('Options');
-        const checkbox = () =>
-            [...container.querySelectorAll('label')]
-                .find((label) => label.textContent.includes('Mode daltonien'))
-                ?.querySelector('input');
-        const updatePreference = async () => {
-            const put = vi.spyOn(IDBObjectStore.prototype, 'put').mockImplementationOnce(function (
-                this: IDBObjectStore,
-            ) {
-                this.transaction.abort();
-                return {} as IDBRequest<IDBValidKey>;
-            });
-            await update(() => checkbox()?.click());
-            await vi.waitFor(() => expect(put).toHaveBeenCalledTimes(1));
-            put.mockRestore();
-            act(() => root.unmount());
-            root = createRoot(container);
-            await mountApp();
-            await click('Options');
-        };
+    };
 
-        expect(checkbox()?.checked).toBe(false);
-        await updatePreference();
-        expect(checkbox()?.checked).toBe(true);
-        await updatePreference();
-        expect(checkbox()?.checked).toBe(false);
-    },
-);
+    expect(checkbox()?.checked).toBe(false);
+    await updatePreference();
+    expect(checkbox()?.checked).toBe(true);
+    await updatePreference();
+    expect(checkbox()?.checked).toBe(false);
+});
