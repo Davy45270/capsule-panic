@@ -16,9 +16,9 @@ import tempfile
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
-from assets_palette import palette_reference, rabattre
+from assets_palette import palette_aplatie, palette_reference, rabattre
 from assets_spec import mesure_palette
-from assets_retouche import RABATTEMENT, retoucher, transformations_derive
+from assets_retouche import RABATTEMENT_FAMILLE, retoucher, transformations_derive
 
 ASSETS = Path("packages/assets")
 PLANCHES_DEFAUT = Path.home() / "Projets/jeux/assets/planches/capsule-panic"
@@ -98,7 +98,9 @@ def construire_groupe(table, planches, outils, aseprite, travail):
                 "-trim", "+repage", "-resize", taille, "-background", "none", "-gravity",
                 "center", "-extent", taille, f"PNG32:{sprite}")
             if fiche.get("rabattement_palette"):
-                rabattre(sprite, palette_reference(planche, fiche["boite"]), fiche.get("rampe") == "luminance")
+                # Dérivés (personnages, rampes luminance) : palette d'avant la palette sans biais, recalculer sur
+                # celle-ci tachait les visages et aplatissait les blocs (contrôle visuel). Redessins : palette sans biais.
+                rabattre(sprite, palette_aplatie(planche, fiche["boite"]), fiche.get("rampe") == "luminance")
             sprites.append(sprite)
             dimensions, x, y = fiche["boite"].split("+")
             largeur, hauteur = dimensions.split("x")
@@ -150,12 +152,12 @@ def construire_groupe(table, planches, outils, aseprite, travail):
             else:
                 run("rsvg-convert", "-w", str(dimension), "-h", str(dimension), svg, "-o", sprite)
             if redessin.get("rabattement_palette"):
-                rabattre(sprite, palette_reference(planche, redessin["boite"]))
+                rabattre(sprite, palette_reference(planche, redessin["boite"]), famille=True)
             sprites.append(sprite)
             transformations = (["crop", "superposition SVG", "resize"] if redessin.get("superposition")
                                else ["rendu SVG"])
             if redessin.get("rabattement_palette"):
-                transformations.append(RABATTEMENT)
+                transformations.append(RABATTEMENT_FAMILLE)
             provenance_redessins.append({
                 "id": f"sprite-{identifiant}", "origine": "redessiné (marque)",
                 "raison": redessin["raison"], "svg": str(svg),

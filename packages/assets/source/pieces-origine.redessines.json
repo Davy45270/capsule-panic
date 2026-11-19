@@ -54,21 +54,25 @@
   {
     "id": "pont-haut",
     "boite": "181x89+333+382",
-    "raison": "Liaison lumineuse entre deux cellules"
+    "raison": "Liaison lumineuse entre deux cellules",
+    "rabattement_palette": true
   },
   {
     "id": "pont-droite",
     "boite": "181x89+333+382",
-    "raison": "Liaison lumineuse entre deux cellules"
+    "raison": "Liaison lumineuse entre deux cellules",
+    "rabattement_palette": true
   },
   {
     "id": "pont-bas",
     "boite": "181x89+333+382",
-    "raison": "Liaison lumineuse entre deux cellules"
+    "raison": "Liaison lumineuse entre deux cellules",
+    "rabattement_palette": true
   },
   {
     "id": "pont-gauche",
     "boite": "181x89+333+382",
-    "raison": "Liaison lumineuse entre deux cellules"
+    "raison": "Liaison lumineuse entre deux cellules",
+    "rabattement_palette": true
   }
 ]

@@ -4,7 +4,7 @@ import subprocess
 
 import numpy as np
 
-from assets_palette import (ENCRE_MARINE, RAYON, TOLERANCE, clarte_teinte_saturation, palette_reference,
+from assets_palette import (ENCRE_MARINE, RAYON, TOLERANCE, clarte_teinte_saturation, palette_aplatie,
                             projeter_rampe, rvb, teinter, ton_source)
 from assets_spec import jetons
 
@@ -100,7 +100,7 @@ def retoucher(planche, fiche, travail, cellules):
         if fiche.get("rampe") == "projection":
             projeter_rampe(original, teinte, h1, h2, couleur, ENCRE_MARINE, CLAIR, pivot(declare))
         elif fiche.get("rampe") == "luminance":
-            teinter(original, couleur, teinte, palette_reference(planche, fiche["boite"]), rouge=bool(region))
+            teinter(original, couleur, teinte, palette_aplatie(planche, fiche["boite"]), rouge=bool(region))
         else:
             milieu = 188 if couleur == "#FBBF24" else 138
             magick(original, "-colorspace", "gray", "-colorspace", "sRGB",
@@ -122,6 +122,10 @@ def retoucher(planche, fiche, travail, cellules):
 
 RABATTEMENT = (f"retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de "
                f"{TOLERANCE:g} de la palette ramenés vers la couleur la plus proche jusqu'à {RAYON:g}, alpha inchangé")
+RABATTEMENT_FAMILLE = (RABATTEMENT.replace("sur la palette de la planche", "sur la palette sans biais de la planche (coupe "
+                                           "médiane des seuls pixels opaques, comme le contrôle de chaîne)")
+                       + " ; un pixel neutre dont la couleur la plus proche est colorée, ou l'inverse, reste tel quel "
+                       "(encrage excepté)")
 RABATTEMENT_TEINTE = RABATTEMENT.replace("la couleur la plus proche", "la couleur neutre ou de même teinte la plus proche")
 
 JETONS_A2 = dict(zip(jetons(), ("cyan", "ambre", "magenta")))
