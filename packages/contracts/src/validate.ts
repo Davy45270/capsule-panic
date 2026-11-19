@@ -18,6 +18,7 @@ const inBounds = (x: number, y: number): boolean => x >= 0 && x < WIDTH && y >= 
 /** Invariants que le schéma ne peut pas exprimer : identifiants, liens des paires, compteurs, capsule active. */
 function invariantErrors(state: GameState): string[] {
     const errors: string[] = [];
+    if (state.rngState.every(word => word === 0)) errors.push('/rngState les quatre mots ne peuvent pas être nuls');
     if (state.nextQueue.length !== 1) errors.push('/nextQueue must contain exactly one capsule');
     const seen = new Set<string>();
     const segments = new Map<string, { cell: SegmentCell; x: number; y: number }>();
