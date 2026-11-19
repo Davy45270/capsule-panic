@@ -56,5 +56,5 @@ export function textureFor(kind: 'obstacle' | 'segment', color: Color, colorBlin
     const shade = colors[color];
     if (kind === 'obstacle') return { art: `cristal-${shade}` as const, form: forms[color] };
     if (colorBlind) return { art: `cellule-${shade}` as const, form: forms[color] };
-    return { art: `cellule-${shade}-unie` as const, form: 'aucune' };
+    return { art: `cellule-${shade}-unie` as const, form: forms[color] };
 }
