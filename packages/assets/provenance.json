@@ -14,6 +14,7 @@
       "element_remplace": "117x107+1196+450",
       "transformations": [
         "rendu SVG",
+        "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé",
         "atlas json-hash"
       ],
       "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
@@ -27,6 +28,7 @@
       "element_remplace": "98x124+1422+438",
       "transformations": [
         "rendu SVG",
+        "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé",
         "atlas json-hash"
       ],
       "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
@@ -40,6 +42,7 @@
       "element_remplace": "113x130+1537+432",
       "transformations": [
         "rendu SVG",
+        "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé",
         "atlas json-hash"
       ],
       "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
@@ -53,6 +56,7 @@
       "element_remplace": "82x130+1312+430",
       "transformations": [
         "rendu SVG",
+        "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé",
         "atlas json-hash"
       ],
       "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
@@ -504,7 +508,7 @@
       "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544",
       "boite": [
         39,
-        25,
+        22,
         1199,
         428
       ],
@@ -521,25 +525,26 @@
     },
     {
       "id": "sprite-fleche-rotation-jeu",
-      "origine": "planche",
+      "origine": "dérivé",
       "planche": "Capsule_Panic_Assets_Gameplay_02.png",
-      "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544",
       "boite": [
-        68,
-        29,
-        1410,
-        426
+        50,
+        39,
+        1423,
+        434
       ],
-      "marge": 4,
-      "ancre": "centre",
+      "transformation": "découpe + composante isolée (capsule voisine retirée, flèche entière)",
+      "source_retouche": "packages/assets/source/effets-jeu.retouches.json",
       "transformations": [
+        "retouche composante connexe seule (alpha > 50 % contenant 17,11, dilatée Disk:3) : voisins de la planche retirés"
+      ],
+      "etapes": [
         "crop",
-        "alpha<4%=0",
-        "trim",
+        "retouche raster ImageMagick",
         "resize",
-        "extent+ancre",
         "atlas json-hash"
-      ]
+      ],
+      "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
     },
     {
       "id": "sprite-cristaux-elimination",
@@ -698,6 +703,7 @@
         "crop",
         "superposition SVG",
         "resize",
+        "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé",
         "atlas json-hash"
       ],
       "masque": "packages/assets/source/svg/logo-jeu-lettres.svg",
@@ -712,6 +718,7 @@
       "element_remplace": "79x77+16+804",
       "transformations": [
         "rendu SVG",
+        "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé",
         "atlas json-hash"
       ],
       "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
@@ -787,12 +794,14 @@
       "source_retouche": "packages/assets/source/plateau-jeu.retouches.json",
       "transformations": [
         "recoloration bleu 196–213°→#38BDF8",
-        "retouche jeton cyan A2 (toute la découpe) : luminance sur la rampe #080e22→#38BDF8→#fff8ff, ombres et reflets conservés"
+        "retouche jeton cyan A2 (toute la découpe) : rampe par correspondance de luminance sur les couleurs de la planche (même teinte, encrage, reflets) et #38BDF8, ton dominant de la planche → #38BDF8 ; sans ton intermédiaire de cette teinte dans la planche, ombres bornées au voisinage du jeton et encrage vers le ton le plus sombre",
+        "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur neutre ou de même teinte la plus proche jusqu'à 44, alpha inchangé"
       ],
       "etapes": [
         "crop",
         "retouche raster ImageMagick",
         "resize",
+        "rabattement palette (numpy)",
         "atlas json-hash"
       ],
       "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
@@ -811,12 +820,14 @@
       "source_retouche": "packages/assets/source/plateau-jeu.retouches.json",
       "transformations": [
         "recoloration rouge 358–2°→#F472B6",
-        "retouche jeton magenta A2 (toute la découpe) : luminance sur la rampe #080e22→#F472B6→#fff8ff, ombres et reflets conservés"
+        "retouche jeton magenta A2 (toute la découpe) : rampe par correspondance de luminance sur les couleurs de la planche (même teinte, encrage, reflets) et #F472B6, ton dominant de la planche → #F472B6 ; sans ton intermédiaire de cette teinte dans la planche, ombres bornées au voisinage du jeton et encrage vers le ton le plus sombre",
+        "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur neutre ou de même teinte la plus proche jusqu'à 44, alpha inchangé"
       ],
       "etapes": [
         "crop",
         "retouche raster ImageMagick",
         "resize",
+        "rabattement palette (numpy)",
         "atlas json-hash"
       ],
       "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
@@ -943,6 +954,7 @@
       "element_remplace": "78x66+1291+279",
       "transformations": [
         "rendu SVG",
+        "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé",
         "atlas json-hash"
       ],
       "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
@@ -956,6 +968,7 @@
       "element_remplace": "135x57+1303+342",
       "transformations": [
         "rendu SVG",
+        "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé",
         "atlas json-hash"
       ],
       "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
@@ -982,6 +995,7 @@
       "element_remplace": "140x73+1302+466",
       "transformations": [
         "rendu SVG",
+        "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé",
         "atlas json-hash"
       ],
       "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
@@ -995,6 +1009,7 @@
       "element_remplace": "280x60+905+500",
       "transformations": [
         "rendu SVG",
+        "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé",
         "atlas json-hash"
       ],
       "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
@@ -1008,6 +1023,7 @@
       "element_remplace": "120x70+915+350",
       "transformations": [
         "rendu SVG",
+        "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé",
         "atlas json-hash"
       ],
       "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
@@ -1540,12 +1556,14 @@
       "source_retouche": "packages/assets/source/effets-maquettes.retouches.json",
       "transformations": [
         "recoloration rouge 345–5°→#F472B6",
-        "retouche jeton magenta A2 (zone 113x29+1+1, pixels R > B seulement) : luminance sur la rampe #080e22→#F472B6→#fff8ff, ombres et reflets conservés"
+        "retouche jeton magenta A2 (zone 113x29+1+1, pixels R > B seulement) : rampe par correspondance de luminance sur les couleurs de la planche (même teinte, encrage, reflets) et #F472B6, ton dominant de la planche → #F472B6 ; sans ton intermédiaire de cette teinte dans la planche, ombres bornées au voisinage du jeton et encrage vers le ton le plus sombre",
+        "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur neutre ou de même teinte la plus proche jusqu'à 44, alpha inchangé"
       ],
       "etapes": [
         "crop",
         "retouche raster ImageMagick",
         "resize",
+        "rabattement palette (numpy)",
         "atlas json-hash"
       ],
       "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
@@ -1649,6 +1667,7 @@
         "crop",
         "superposition SVG",
         "resize",
+        "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé",
         "atlas json-hash"
       ],
       "masque": "packages/assets/source/svg/logo-apercu-lettres.svg",
@@ -1969,12 +1988,14 @@
       "source_retouche": "packages/assets/source/plateau-apercu.retouches.json",
       "transformations": [
         "recoloration bleu 198–217°→#38BDF8",
-        "retouche jeton cyan A2 (toute la découpe) : luminance sur la rampe #080e22→#38BDF8→#fff8ff, ombres et reflets conservés"
+        "retouche jeton cyan A2 (toute la découpe) : rampe par correspondance de luminance sur les couleurs de la planche (même teinte, encrage, reflets) et #38BDF8, ton dominant de la planche → #38BDF8 ; sans ton intermédiaire de cette teinte dans la planche, ombres bornées au voisinage du jeton et encrage vers le ton le plus sombre",
+        "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur neutre ou de même teinte la plus proche jusqu'à 44, alpha inchangé"
       ],
       "etapes": [
         "crop",
         "retouche raster ImageMagick",
         "resize",
+        "rabattement palette (numpy)",
         "atlas json-hash"
       ],
       "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
@@ -1993,12 +2014,14 @@
       "source_retouche": "packages/assets/source/plateau-apercu.retouches.json",
       "transformations": [
         "recoloration rouge 355–2°→#F472B6",
-        "retouche jeton magenta A2 (toute la découpe) : luminance sur la rampe #080e22→#F472B6→#fff8ff, ombres et reflets conservés"
+        "retouche jeton magenta A2 (toute la découpe) : rampe par correspondance de luminance sur les couleurs de la planche (même teinte, encrage, reflets) et #F472B6, ton dominant de la planche → #F472B6 ; sans ton intermédiaire de cette teinte dans la planche, ombres bornées au voisinage du jeton et encrage vers le ton le plus sombre",
+        "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur neutre ou de même teinte la plus proche jusqu'à 44, alpha inchangé"
       ],
       "etapes": [
         "crop",
         "retouche raster ImageMagick",
         "resize",
+        "rabattement palette (numpy)",
         "atlas json-hash"
       ],
       "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
@@ -2041,12 +2064,14 @@
       "source_retouche": "packages/assets/source/plateau-apercu.retouches.json",
       "transformations": [
         "recoloration bleu 199–218°→#38BDF8",
-        "retouche jeton cyan A2 (toute la découpe) : luminance sur la rampe #080e22→#38BDF8→#fff8ff, ombres et reflets conservés"
+        "retouche jeton cyan A2 (toute la découpe) : rampe par correspondance de luminance sur les couleurs de la planche (même teinte, encrage, reflets) et #38BDF8, ton dominant de la planche → #38BDF8 ; sans ton intermédiaire de cette teinte dans la planche, ombres bornées au voisinage du jeton et encrage vers le ton le plus sombre",
+        "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur neutre ou de même teinte la plus proche jusqu'à 44, alpha inchangé"
       ],
       "etapes": [
         "crop",
         "retouche raster ImageMagick",
         "resize",
+        "rabattement palette (numpy)",
         "atlas json-hash"
       ],
       "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
@@ -2065,12 +2090,14 @@
       "source_retouche": "packages/assets/source/plateau-apercu.retouches.json",
       "transformations": [
         "recoloration rouge 355–2°→#F472B6",
-        "retouche jeton magenta A2 (toute la découpe) : luminance sur la rampe #080e22→#F472B6→#fff8ff, ombres et reflets conservés"
+        "retouche jeton magenta A2 (toute la découpe) : rampe par correspondance de luminance sur les couleurs de la planche (même teinte, encrage, reflets) et #F472B6, ton dominant de la planche → #F472B6 ; sans ton intermédiaire de cette teinte dans la planche, ombres bornées au voisinage du jeton et encrage vers le ton le plus sombre",
+        "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur neutre ou de même teinte la plus proche jusqu'à 44, alpha inchangé"
       ],
       "etapes": [
         "crop",
         "retouche raster ImageMagick",
         "resize",
+        "rabattement palette (numpy)",
         "atlas json-hash"
       ],
       "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
@@ -2135,12 +2162,14 @@
       "source_retouche": "packages/assets/source/tutoriel-apercu.retouches.json",
       "transformations": [
         "recoloration rouge 352–3°→#F472B6",
-        "retouche jeton magenta A2 (zone 140x36+10+66, pixels R > B seulement) : luminance sur la rampe #080e22→#F472B6→#fff8ff, ombres et reflets conservés"
+        "retouche jeton magenta A2 (zone 140x36+10+66, pixels R > B seulement) : rampe par correspondance de luminance sur les couleurs de la planche (même teinte, encrage, reflets) et #F472B6, ton dominant de la planche → #F472B6 ; sans ton intermédiaire de cette teinte dans la planche, ombres bornées au voisinage du jeton et encrage vers le ton le plus sombre",
+        "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur neutre ou de même teinte la plus proche jusqu'à 44, alpha inchangé"
       ],
       "etapes": [
         "crop",
         "retouche raster ImageMagick",
         "resize",
+        "rabattement palette (numpy)",
         "atlas json-hash"
       ],
       "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
@@ -2171,6 +2200,7 @@
         "crop",
         "superposition SVG",
         "resize",
+        "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé",
         "atlas json-hash"
       ],
       "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
@@ -2768,6 +2798,7 @@
       "element_remplace": "181x89+333+382",
       "transformations": [
         "rendu SVG",
+        "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé",
         "atlas json-hash"
       ],
       "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254"
@@ -2794,6 +2825,7 @@
       "element_remplace": "181x90+747+382",
       "transformations": [
         "rendu SVG",
+        "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé",
         "atlas json-hash"
       ],
       "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254"
@@ -2807,6 +2839,7 @@
       "element_remplace": "77x151+995+205",
       "transformations": [
         "rendu SVG",
+        "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé",
         "atlas json-hash"
       ],
       "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254"
@@ -2833,6 +2866,7 @@
       "element_remplace": "77x151+1177+205",
       "transformations": [
         "rendu SVG",
+        "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé",
         "atlas json-hash"
       ],
       "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254"
@@ -2852,16 +2886,18 @@
       "transformations": [
         "retouche masque de silhouette (13 sommets) : hors silhouette rendu transparent",
         "retouche gélule bicolore effacée (11 sommets)",
-        "recoloration blanc→#202554",
-        "retouche blouse blanche recolorée (7 polygones) : niveaux de gris colorisés à 74 %, plis et encrage conservés, alpha de la planche",
+        "recoloration blanc→#16203C",
+        "retouche blouse blanche recolorée (7 polygones) : niveaux de gris colorisés à 80 %, plis et encrage conservés, alpha de la planche",
         "retouche badge à fiole masqué (rectangle arrondi #3f4864 cerné #252d45, rabat #49536d)",
         "retouche gélule remplacée par cellule (cellule-cyan.svg, 61 px en +303+171)",
-        "retouche main recomposée au premier plan depuis la planche (10 sommets)"
+        "retouche main recomposée au premier plan depuis la planche (10 sommets)",
+        "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé"
       ],
       "etapes": [
         "crop",
         "retouche raster ImageMagick",
         "resize",
+        "rabattement palette (numpy)",
         "atlas json-hash"
       ],
       "signes_retires": [
@@ -2885,15 +2921,17 @@
       "source_retouche": "packages/assets/source/personnages-origine.retouches.json",
       "transformations": [
         "retouche composante connexe seule (alpha > 50 % contenant 150,250, dilatée Disk:3) : voisins de la planche retirés",
-        "recoloration blanc→#202554",
-        "retouche blouse blanche recolorée (5 polygones) : niveaux de gris colorisés à 74 %, plis et encrage conservés, alpha de la planche",
+        "recoloration blanc→#16203C",
+        "retouche blouse blanche recolorée (5 polygones) : niveaux de gris colorisés à 80 %, plis et encrage conservés, alpha de la planche",
         "retouche badge à fiole masqué (rectangle arrondi #3f4864 cerné #252d45, rabat #49536d)",
-        "retouche masque du gant rétabli (clarté > 0.35, 6 graines, dilaté Disk:2) : pixels de la planche recomposés sur la veste"
+        "retouche masque du gant rétabli (clarté > 0.35, 6 graines, dilaté Disk:2) : pixels de la planche recomposés sur la veste",
+        "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé"
       ],
       "etapes": [
         "crop",
         "retouche raster ImageMagick",
         "resize",
+        "rabattement palette (numpy)",
         "atlas json-hash"
       ],
       "signes_retires": [
@@ -2989,6 +3027,7 @@
       "element_remplace": "192x180+579+13",
       "transformations": [
         "rendu SVG",
+        "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé",
         "atlas json-hash"
       ],
       "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254"
@@ -3015,6 +3054,7 @@
       "element_remplace": "82x144+1097+30",
       "transformations": [
         "rendu SVG",
+        "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé",
         "atlas json-hash"
       ],
       "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254"

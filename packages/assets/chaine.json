@@ -180,7 +180,17 @@
       "decoupe": "packages/assets/source/Capsule_Panic_Assets_Gameplay_02.effets-jeu.decoupe.json",
       "atlas": "packages/assets/atlas/effets-jeu@2x.png",
       "atlas_json": "packages/assets/atlas/effets-jeu@2x.json",
-      "redessines": []
+      "redessines": [],
+      "derives": [
+        {
+          "id": "sprite-fleche-rotation-jeu",
+          "boite": "50x39+1423+434",
+          "element": "packages/assets/sprites/sprite-fleche-rotation-jeu.png",
+          "transformations": [
+            "retouche composante connexe seule (alpha > 50 % contenant 17,11, dilatée Disk:3) : voisins de la planche retirés"
+          ]
+        }
+      ]
     },
     {
       "planche": "Capsule_Panic_Assets_Gameplay_02.png",
@@ -286,7 +296,8 @@
           "element": "packages/assets/sprites/sprite-bloc-bleu-plateau-jeu.png",
           "transformations": [
             "recoloration bleu 196–213°→#38BDF8",
-            "retouche jeton cyan A2 (toute la découpe) : luminance sur la rampe #080e22→#38BDF8→#fff8ff, ombres et reflets conservés"
+            "retouche jeton cyan A2 (toute la découpe) : rampe par correspondance de luminance sur les couleurs de la planche (même teinte, encrage, reflets) et #38BDF8, ton dominant de la planche → #38BDF8 ; sans ton intermédiaire de cette teinte dans la planche, ombres bornées au voisinage du jeton et encrage vers le ton le plus sombre",
+            "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur neutre ou de même teinte la plus proche jusqu'à 44, alpha inchangé"
           ]
         },
         {
@@ -295,7 +306,8 @@
           "element": "packages/assets/sprites/sprite-bloc-rouge-plateau-jeu.png",
           "transformations": [
             "recoloration rouge 358–2°→#F472B6",
-            "retouche jeton magenta A2 (toute la découpe) : luminance sur la rampe #080e22→#F472B6→#fff8ff, ombres et reflets conservés"
+            "retouche jeton magenta A2 (toute la découpe) : rampe par correspondance de luminance sur les couleurs de la planche (même teinte, encrage, reflets) et #F472B6, ton dominant de la planche → #F472B6 ; sans ton intermédiaire de cette teinte dans la planche, ombres bornées au voisinage du jeton et encrage vers le ton le plus sombre",
+            "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur neutre ou de même teinte la plus proche jusqu'à 44, alpha inchangé"
           ]
         },
         {
@@ -451,7 +463,8 @@
           "element": "packages/assets/sprites/sprite-ligne-elimination-apercu.png",
           "transformations": [
             "recoloration rouge 345–5°→#F472B6",
-            "retouche jeton magenta A2 (zone 113x29+1+1, pixels R > B seulement) : luminance sur la rampe #080e22→#F472B6→#fff8ff, ombres et reflets conservés"
+            "retouche jeton magenta A2 (zone 113x29+1+1, pixels R > B seulement) : rampe par correspondance de luminance sur les couleurs de la planche (même teinte, encrage, reflets) et #F472B6, ton dominant de la planche → #F472B6 ; sans ton intermédiaire de cette teinte dans la planche, ombres bornées au voisinage du jeton et encrage vers le ton le plus sombre",
+            "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur neutre ou de même teinte la plus proche jusqu'à 44, alpha inchangé"
           ]
         }
       ]
@@ -530,7 +543,8 @@
           "element": "packages/assets/sprites/sprite-bloc-bleu-plateau-apercu.png",
           "transformations": [
             "recoloration bleu 198–217°→#38BDF8",
-            "retouche jeton cyan A2 (toute la découpe) : luminance sur la rampe #080e22→#38BDF8→#fff8ff, ombres et reflets conservés"
+            "retouche jeton cyan A2 (toute la découpe) : rampe par correspondance de luminance sur les couleurs de la planche (même teinte, encrage, reflets) et #38BDF8, ton dominant de la planche → #38BDF8 ; sans ton intermédiaire de cette teinte dans la planche, ombres bornées au voisinage du jeton et encrage vers le ton le plus sombre",
+            "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur neutre ou de même teinte la plus proche jusqu'à 44, alpha inchangé"
           ]
         },
         {
@@ -539,7 +553,8 @@
           "element": "packages/assets/sprites/sprite-bloc-rouge-plateau-apercu.png",
           "transformations": [
             "recoloration rouge 355–2°→#F472B6",
-            "retouche jeton magenta A2 (toute la découpe) : luminance sur la rampe #080e22→#F472B6→#fff8ff, ombres et reflets conservés"
+            "retouche jeton magenta A2 (toute la découpe) : rampe par correspondance de luminance sur les couleurs de la planche (même teinte, encrage, reflets) et #F472B6, ton dominant de la planche → #F472B6 ; sans ton intermédiaire de cette teinte dans la planche, ombres bornées au voisinage du jeton et encrage vers le ton le plus sombre",
+            "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur neutre ou de même teinte la plus proche jusqu'à 44, alpha inchangé"
           ]
         },
         {
@@ -557,7 +572,8 @@
           "element": "packages/assets/sprites/sprite-segment-bleu-plateau-apercu.png",
           "transformations": [
             "recoloration bleu 199–218°→#38BDF8",
-            "retouche jeton cyan A2 (toute la découpe) : luminance sur la rampe #080e22→#38BDF8→#fff8ff, ombres et reflets conservés"
+            "retouche jeton cyan A2 (toute la découpe) : rampe par correspondance de luminance sur les couleurs de la planche (même teinte, encrage, reflets) et #38BDF8, ton dominant de la planche → #38BDF8 ; sans ton intermédiaire de cette teinte dans la planche, ombres bornées au voisinage du jeton et encrage vers le ton le plus sombre",
+            "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur neutre ou de même teinte la plus proche jusqu'à 44, alpha inchangé"
           ]
         },
         {
@@ -566,7 +582,8 @@
           "element": "packages/assets/sprites/sprite-segment-rouge-plateau-apercu.png",
           "transformations": [
             "recoloration rouge 355–2°→#F472B6",
-            "retouche jeton magenta A2 (toute la découpe) : luminance sur la rampe #080e22→#F472B6→#fff8ff, ombres et reflets conservés"
+            "retouche jeton magenta A2 (toute la découpe) : rampe par correspondance de luminance sur les couleurs de la planche (même teinte, encrage, reflets) et #F472B6, ton dominant de la planche → #F472B6 ; sans ton intermédiaire de cette teinte dans la planche, ombres bornées au voisinage du jeton et encrage vers le ton le plus sombre",
+            "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur neutre ou de même teinte la plus proche jusqu'à 44, alpha inchangé"
           ]
         },
         {
@@ -618,7 +635,8 @@
           "element": "packages/assets/sprites/sprite-tutoriel-aligner.png",
           "transformations": [
             "recoloration rouge 352–3°→#F472B6",
-            "retouche jeton magenta A2 (zone 140x36+10+66, pixels R > B seulement) : luminance sur la rampe #080e22→#F472B6→#fff8ff, ombres et reflets conservés"
+            "retouche jeton magenta A2 (zone 140x36+10+66, pixels R > B seulement) : rampe par correspondance de luminance sur les couleurs de la planche (même teinte, encrage, reflets) et #F472B6, ton dominant de la planche → #F472B6 ; sans ton intermédiaire de cette teinte dans la planche, ombres bornées au voisinage du jeton et encrage vers le ton le plus sombre",
+            "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur neutre ou de même teinte la plus proche jusqu'à 44, alpha inchangé"
           ]
         }
       ]
@@ -768,11 +786,12 @@
           "transformations": [
             "retouche masque de silhouette (13 sommets) : hors silhouette rendu transparent",
             "retouche gélule bicolore effacée (11 sommets)",
-            "recoloration blanc→#202554",
-            "retouche blouse blanche recolorée (7 polygones) : niveaux de gris colorisés à 74 %, plis et encrage conservés, alpha de la planche",
+            "recoloration blanc→#16203C",
+            "retouche blouse blanche recolorée (7 polygones) : niveaux de gris colorisés à 80 %, plis et encrage conservés, alpha de la planche",
             "retouche badge à fiole masqué (rectangle arrondi #3f4864 cerné #252d45, rabat #49536d)",
             "retouche gélule remplacée par cellule (cellule-cyan.svg, 61 px en +303+171)",
-            "retouche main recomposée au premier plan depuis la planche (10 sommets)"
+            "retouche main recomposée au premier plan depuis la planche (10 sommets)",
+            "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé"
           ]
         },
         {
@@ -781,10 +800,11 @@
           "element": "packages/assets/sprites/sprite-responsable-origine.png",
           "transformations": [
             "retouche composante connexe seule (alpha > 50 % contenant 150,250, dilatée Disk:3) : voisins de la planche retirés",
-            "recoloration blanc→#202554",
-            "retouche blouse blanche recolorée (5 polygones) : niveaux de gris colorisés à 74 %, plis et encrage conservés, alpha de la planche",
+            "recoloration blanc→#16203C",
+            "retouche blouse blanche recolorée (5 polygones) : niveaux de gris colorisés à 80 %, plis et encrage conservés, alpha de la planche",
             "retouche badge à fiole masqué (rectangle arrondi #3f4864 cerné #252d45, rabat #49536d)",
-            "retouche masque du gant rétabli (clarté > 0.35, 6 graines, dilaté Disk:2) : pixels de la planche recomposés sur la veste"
+            "retouche masque du gant rétabli (clarté > 0.35, 6 graines, dilaté Disk:2) : pixels de la planche recomposés sur la veste",
+            "retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de 48 de la palette ramenés vers la couleur la plus proche jusqu'à 44, alpha inchangé"
           ]
         }
       ]

@@ -2,6 +2,8 @@
 import re
 import subprocess
 
+from assets_palette import RAYON, TOLERANCE, palette_reference, teinter
+
 
 def magick(*args):
     subprocess.run(["magick", *args], check=True)
@@ -52,7 +54,7 @@ def retoucher(planche, fiche, travail, cellules):
         masque(reference, fiche["veste"], couche)
         # Les plis et l'encrage restent inscrits dans la luminance de la planche.
         magick(resultat, "(", "+clone", "-colorspace", "gray", "-colorspace", "sRGB",
-               "-fill", "#202554", "-colorize", "74%", ")", couche,
+               "-fill", fiche.get("veste_teinte", "#202554"), "-colorize", f"{fiche.get('veste_force', 74)}%", ")", couche,
                "-compose", "Src", "-composite", f"PNG32:{resultat}")
         # La recoloration ne rend jamais opaque un pixel transparent de la planche.
         magick(resultat, reference, "-compose", "DstIn", "-composite", f"PNG32:{resultat}")
@@ -86,12 +88,15 @@ def retoucher(planche, fiche, travail, cellules):
         # Ancre les tons moyens sur le jeton tout en conservant ombres et reflets.
         original = travail / f"couleurs-{identifiant}.png"
         magick(resultat, *source, f"PNG32:{original}")
-        milieu = 188 if couleur == "#FBBF24" else 138
-        magick(original, "-colorspace", "gray", "-colorspace", "sRGB",
-               "(", "-size", f"1x{milieu}", f"gradient:#080e22-{couleur}",
-               "-size", f"1x{256 - milieu}", f"gradient:{couleur}-#fff8ff",
-               "-append", "-rotate", "90", "-flop", ")",
-               "-channel", "RGB", "-clut", "+channel", f"PNG32:{teinte}")
+        if fiche.get("rampe") == "luminance":
+            teinter(original, couleur, teinte, palette_reference(planche, fiche["boite"]), rouge=bool(region))
+        else:
+            milieu = 188 if couleur == "#FBBF24" else 138
+            magick(original, "-colorspace", "gray", "-colorspace", "sRGB",
+                   "(", "-size", f"1x{milieu}", f"gradient:#080e22-{couleur}",
+                   "-size", f"1x{256 - milieu}", f"gradient:{couleur}-#fff8ff",
+                   "-append", "-rotate", "90", "-flop", ")",
+                   "-channel", "RGB", "-clut", "+channel", f"PNG32:{teinte}")
         if region:
             _, x, y = region.split("+")
             # Les pixels bleus du panneau autour des blocs restent intacts.
@@ -103,6 +108,10 @@ def retoucher(planche, fiche, travail, cellules):
             teinte.replace(resultat)
     return reference, resultat
 
+
+RABATTEMENT = (f"retouche rabattement sur la palette de la planche et de la spec, sans tramage : pixels à plus de "
+               f"{TOLERANCE:g} de la palette ramenés vers la couleur la plus proche jusqu'à {RAYON:g}, alpha inchangé")
+RABATTEMENT_TEINTE = RABATTEMENT.replace("la couleur la plus proche", "la couleur neutre ou de même teinte la plus proche")
 
 JETONS_A2 = {"#38BDF8": "cyan", "#F472B6": "magenta", "#FBBF24": "ambre"}
 
@@ -125,9 +134,9 @@ def transformations_derive(fiche):
         if "effacer" in fiche:
             etapes.append(f"retouche gélule bicolore effacée ({_sommets(fiche['effacer'])} sommets)")
     if "veste" in fiche:
-        etapes.append("recoloration blanc→#202554")
+        etapes.append(f"recoloration blanc→{fiche.get('veste_teinte', '#202554')}")
         etapes.append(f"retouche blouse blanche recolorée ({fiche['veste'].count('polygon')} polygones) : niveaux de "
-                      "gris colorisés à 74 %, plis et encrage conservés, alpha de la planche")
+                      f"gris colorisés à {fiche.get('veste_force', 74)} %, plis et encrage conservés, alpha de la planche")
     if "peinture" in fiche:
         etapes.append("retouche badge à fiole masqué (rectangle arrondi #3f4864 cerné #252d45, rabat #49536d)")
     if "gant" in fiche:
@@ -146,8 +155,16 @@ def transformations_derive(fiche):
         de = origine[0] if origine else "teinte d'origine"
         zone = f"zone {region}, pixels R > B seulement" if region else "toute la découpe"
         etapes.append(f"recoloration {de}→{couleur}")
-        etapes.append(f"retouche jeton {JETONS_A2.get(couleur, couleur)} A2 ({zone}) : luminance sur la rampe "
-                      f"#080e22→{couleur}→#fff8ff, ombres et reflets conservés")
+        if fiche.get("rampe") == "luminance":
+            etapes.append(f"retouche jeton {JETONS_A2.get(couleur, couleur)} A2 ({zone}) : rampe par correspondance "
+                          f"de luminance sur les couleurs de la planche (même teinte, encrage, reflets) et {couleur}, "
+                          f"ton dominant de la planche → {couleur} ; sans ton intermédiaire de cette teinte dans la planche, "
+                          "ombres bornées au voisinage du jeton et encrage vers le ton le plus sombre")
+        else:
+            etapes.append(f"retouche jeton {JETONS_A2.get(couleur, couleur)} A2 ({zone}) : luminance sur la rampe "
+                          f"#080e22→{couleur}→#fff8ff, ombres et reflets conservés")
+    if fiche.get("rabattement_palette"):
+        etapes.append(RABATTEMENT_TEINTE if fiche.get("rampe") == "luminance" else RABATTEMENT)
     if not etapes:
         raise ValueError(f"dérivé sans transformation : {fiche['id']}")
     return etapes

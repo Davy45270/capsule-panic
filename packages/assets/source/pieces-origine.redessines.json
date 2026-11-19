@@ -32,7 +32,8 @@
   {
     "id": "cristal-magenta",
     "boite": "192x180+579+13",
-    "raison": "Obstacle à silhouette géométrique"
+    "raison": "Obstacle à silhouette géométrique",
+    "rabattement_palette": true
   },
   {
     "id": "cristal-brise-magenta",
@@ -42,7 +43,8 @@
   {
     "id": "cellule-magenta",
     "boite": "82x144+1097+30",
-    "raison": "Segment carré biseauté et gravé"
+    "raison": "Segment carré biseauté et gravé",
+    "rabattement_palette": true
   },
   {
     "id": "cellule-fantome",

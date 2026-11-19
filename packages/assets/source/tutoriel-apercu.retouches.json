@@ -9,6 +9,8 @@
         "rouge 352–3°"
       ]
     ],
-    "transformation": "découpe + recoloration (jetons A2)"
+    "transformation": "découpe + recoloration (jetons A2)",
+    "rabattement_palette": true,
+    "rampe": "luminance"
   }
 ]

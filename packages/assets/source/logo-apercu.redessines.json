@@ -4,6 +4,7 @@
     "boite": "280x200+12+6",
     "raison": "Lettres peintes isolées, ornements remplacés par des cellules",
     "superposition": true,
-    "masque": "logo-apercu-lettres"
+    "masque": "logo-apercu-lettres",
+    "rabattement_palette": true
   }
 ]

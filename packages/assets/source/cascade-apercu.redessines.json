@@ -2,11 +2,13 @@
   {
     "id": "cascade-apercu",
     "boite": "280x60+905+500",
-    "raison": "Cellules en chute successive"
+    "raison": "Cellules en chute successive",
+    "rabattement_palette": true
   },
   {
     "id": "transformation-apercu",
     "boite": "120x70+915+350",
-    "raison": "Étapes de transformation d’une paire de cellules"
+    "raison": "Étapes de transformation d’une paire de cellules",
+    "rabattement_palette": true
   }
 ]

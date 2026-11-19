@@ -9,7 +9,8 @@
     "id": "tutoriel-pivoter",
     "boite": "138x124+694+797",
     "raison": "Cadre et pastille peints conservés, illustration adaptée",
-    "superposition": true
+    "superposition": true,
+    "rabattement_palette": true
   },
   {
     "id": "tutoriel-eliminer",

@@ -9,7 +9,9 @@
         "bleu 196–213°"
       ]
     ],
-    "transformation": "découpe + recoloration (jetons A2)"
+    "transformation": "découpe + recoloration (jetons A2)",
+    "rabattement_palette": true,
+    "rampe": "luminance"
   },
   {
     "id": "bloc-rouge-plateau-jeu",
@@ -21,7 +23,9 @@
         "rouge 358–2°"
       ]
     ],
-    "transformation": "découpe + recoloration (jetons A2)"
+    "transformation": "découpe + recoloration (jetons A2)",
+    "rabattement_palette": true,
+    "rampe": "luminance"
   },
   {
     "id": "bloc-jaune-plateau-jeu",

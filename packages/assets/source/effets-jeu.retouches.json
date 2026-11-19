@@ -1,0 +1,11 @@
+[
+  {
+    "id": "fleche-rotation-jeu",
+    "boite": "50x39+1423+434",
+    "composante": [
+      17,
+      11
+    ],
+    "transformation": "découpe + composante isolée (capsule voisine retirée, flèche entière)"
+  }
+]

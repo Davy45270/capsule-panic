@@ -16,7 +16,10 @@
       "gélule bicolore"
     ],
     "premier_plan": "polygon 335,231 338,219 345,211 354,213 362,223 362,239 348,253 328,267 316,255 320,244",
-    "effacer": "polygon 309,158 332,142 361,142 375,156 375,209 362,214 346,208 337,216 327,235 306,233 299,218"
+    "effacer": "polygon 309,158 332,142 361,142 375,156 375,209 362,214 346,208 337,216 327,235 306,233 299,218",
+    "rabattement_palette": true,
+    "veste_teinte": "#16203C",
+    "veste_force": 80
   },
   {
     "id": "responsable-origine",
@@ -60,6 +63,9 @@
     "signes_retires": [
       "blouse blanche",
       "badge à fiole"
-    ]
+    ],
+    "rabattement_palette": true,
+    "veste_teinte": "#16203C",
+    "veste_force": 80
   }
 ]

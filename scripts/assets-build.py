@@ -16,7 +16,8 @@ import tempfile
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
-from assets_retouche import retoucher, transformations_derive
+from assets_palette import palette_reference, rabattre
+from assets_retouche import RABATTEMENT, retoucher, transformations_derive
 
 ASSETS = Path("packages/assets")
 PLANCHES_DEFAUT = Path.home() / "Projets/jeux/assets/planches/capsule-panic"
@@ -104,6 +105,8 @@ def construire_groupe(table, planches, outils, aseprite, travail):
             run("magick", raster, "-channel", "A", "-fx", "u<0.04?0:u", "+channel",
                 "-trim", "+repage", "-resize", taille, "-background", "none", "-gravity",
                 "center", "-extent", taille, f"PNG32:{sprite}")
+            if fiche.get("rabattement_palette"):
+                rabattre(sprite, palette_reference(planche, fiche["boite"]), fiche.get("rampe") == "luminance")
             sprites.append(sprite)
             dimensions, x, y = fiche["boite"].split("+")
             largeur, hauteur = dimensions.split("x")
@@ -117,7 +120,9 @@ def construire_groupe(table, planches, outils, aseprite, travail):
                 else fiche["transformation"],
                 "source_retouche": str(liste),
                 "transformations": transformations_derive(fiche),
-                "etapes": ["crop", "retouche raster ImageMagick", "resize", "atlas json-hash"],
+                "etapes": ["crop", "retouche raster ImageMagick", "resize",
+                           *(["rabattement palette (numpy)"] if fiche.get("rabattement_palette") else []),
+                           "atlas json-hash"],
             }
             if personnage:
                 provenance["signes_retires"] = fiche["signes_retires"]
@@ -152,13 +157,18 @@ def construire_groupe(table, planches, outils, aseprite, travail):
                     "-background", "none", "-gravity", "center", "-extent", taille, f"PNG32:{sprite}")
             else:
                 run("rsvg-convert", "-w", str(dimension), "-h", str(dimension), svg, "-o", sprite)
+            if redessin.get("rabattement_palette"):
+                rabattre(sprite, palette_reference(planche, redessin["boite"]))
             sprites.append(sprite)
+            transformations = (["crop", "superposition SVG", "resize"] if redessin.get("superposition")
+                               else ["rendu SVG"])
+            if redessin.get("rabattement_palette"):
+                transformations.append(RABATTEMENT)
             provenance_redessins.append({
                 "id": f"sprite-{identifiant}", "origine": "redessiné (marque)",
                 "raison": redessin["raison"], "svg": str(svg),
                 "planche": data["planche"], "element_remplace": redessin["boite"],
-                "transformations": ["crop", "superposition SVG", "resize", "atlas json-hash"]
-                if redessin.get("superposition") else ["rendu SVG", "atlas json-hash"],
+                "transformations": [*transformations, "atlas json-hash"],
             })
             if redessin.get("masque"):
                 provenance_redessins[-1]["masque"] = str(source_masque)

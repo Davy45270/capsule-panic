@@ -9,7 +9,9 @@
         "bleu 198–217°"
       ]
     ],
-    "transformation": "découpe + recoloration (jetons A2)"
+    "transformation": "découpe + recoloration (jetons A2)",
+    "rabattement_palette": true,
+    "rampe": "luminance"
   },
   {
     "id": "bloc-rouge-plateau-apercu",
@@ -21,7 +23,9 @@
         "rouge 355–2°"
       ]
     ],
-    "transformation": "découpe + recoloration (jetons A2)"
+    "transformation": "découpe + recoloration (jetons A2)",
+    "rabattement_palette": true,
+    "rampe": "luminance"
   },
   {
     "id": "bloc-jaune-plateau-apercu",
@@ -45,7 +49,9 @@
         "bleu 199–218°"
       ]
     ],
-    "transformation": "découpe + recoloration (jetons A2)"
+    "transformation": "découpe + recoloration (jetons A2)",
+    "rabattement_palette": true,
+    "rampe": "luminance"
   },
   {
     "id": "segment-rouge-plateau-apercu",
@@ -57,7 +63,9 @@
         "rouge 355–2°"
       ]
     ],
-    "transformation": "découpe + recoloration (jetons A2)"
+    "transformation": "découpe + recoloration (jetons A2)",
+    "rabattement_palette": true,
+    "rampe": "luminance"
   },
   {
     "id": "segment-jaune-plateau-apercu",

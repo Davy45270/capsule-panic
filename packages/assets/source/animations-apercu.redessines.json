@@ -2,12 +2,14 @@
   {
     "id": "chute-animations-apercu",
     "boite": "78x66+1291+279",
-    "raison": "Mouvement de deux cellules reliées"
+    "raison": "Mouvement de deux cellules reliées",
+    "rabattement_palette": true
   },
   {
     "id": "rotation-animations-apercu",
     "boite": "135x57+1303+342",
-    "raison": "Mouvement de deux cellules reliées"
+    "raison": "Mouvement de deux cellules reliées",
+    "rabattement_palette": true
   },
   {
     "id": "deplacement-animations-apercu",
@@ -17,6 +19,7 @@
   {
     "id": "verrouillage-animations-apercu",
     "boite": "140x73+1302+466",
-    "raison": "Mouvement de deux cellules reliées"
+    "raison": "Mouvement de deux cellules reliées",
+    "rabattement_palette": true
   }
 ]
