@@ -11,7 +11,7 @@
     "apps/*"
   ],
   "engines": {
-    "node": ">=22.12"
+    "node": ">=26.13.0 <27"
   },
   "scripts": {
     "dev": "vite apps/web",
@@ -20,25 +20,36 @@
     "check:precache": "node scripts/check-precache.js",
     "check:licenses": "node scripts/check-licenses.js",
     "typecheck": "tsc --noEmit",
-    "lint": "oxlint --max-warnings=0",
+    "lint": "oxlint --max-warnings=0 && eslint --max-warnings=0 . && prettier --check .prettierrc.json .woodpecker eslint.config.mjs eslint.security.config.mjs scripts/compile-schemas.mjs tests/tooling.test.ts \"docs/adr/*.md\" --no-error-on-unmatched-pattern",
     "test": "vitest run --pool=threads --maxWorkers=2 --coverage",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "compile:schemas": "node scripts/compile-schemas.mjs",
+    "prepare": "npm run compile:schemas",
+    "prebuild": "npm run compile:schemas",
+    "predev": "npm run compile:schemas",
+    "check:sast": "eslint --config eslint.security.config.mjs --max-warnings=0 apps/web/src packages/*/src"
   },
   "devDependencies": {
+    "@babel/core": "8.1.2",
+    "@babel/eslint-parser": "8.1.2",
     "@playwright/test": "1.65.0",
     "@types/node": "26.6.6",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
     "@vitejs/plugin-react": "6.3.0",
     "@vitest/coverage-v8": "5.1.0",
+    "eslint": "10.15.0",
+    "eslint-plugin-security": "4.2.1",
     "fake-indexeddb": "6.2.8",
     "fast-check": "4.10.3",
     "happy-dom": "21.0.4",
     "oxlint": "1.92.0",
     "oxlint-tsgolint": "7.0.2006",
+    "prettier": "3.10.1",
     "typescript": "7.0.2",
     "vite": "8.3.6",
     "vite-plugin-pwa": "2.0.0",
-    "vitest": "5.1.0"
+    "vitest": "5.1.0",
+    "yaml": "2.9.1"
   }
 }

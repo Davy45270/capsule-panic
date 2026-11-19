@@ -1,10 +1,11 @@
+import { propertyRuns } from './property-runs';
 import { describe, it, expect } from 'vitest';
 import fc from 'fast-check';
 import type { Cell } from '@capsule-panic/contracts';
 import { gravityStep, settle } from '../src/gravity';
 import { boardFrom, withPair } from './helpers';
 
-const runs = Number(process.env.FC_RUNS ?? 1000);
+const runs = propertyRuns(process.env);
 const at = (b: readonly Cell[], x: number, y: number): string | null => b[y * 8 + x]?.id ?? null;
 
 describe('gravity of components', () => {

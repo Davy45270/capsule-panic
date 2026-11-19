@@ -1,10 +1,11 @@
+import { propertyRuns } from './property-runs';
 import { describe, it, expect } from 'vitest';
 import fc from 'fast-check';
 import type { Cell } from '@capsule-panic/contracts';
 import { findMatches, getAvailableMoves, resolve, step } from '../src/index';
 import { boardFrom, stateWith } from './helpers';
 
-const runs = Number(process.env.FC_RUNS ?? 1000);
+const runs = propertyRuns(process.env);
 const types = (events: { type: string }[]): string[] => events.map(e => e.type);
 // Column 3 is a full, match-free stack of singletons: the spawn point is blocked.
 const blockedSpawn = (rows: string[]): Cell[] => {

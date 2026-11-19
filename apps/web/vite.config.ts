@@ -7,7 +7,14 @@ import { manifest } from './pwa-manifest.ts';
 export default defineConfig({
     base: './',
     build: { outDir: '../../dist', emptyOutDir: true },
-    plugins: [react(), VitePWA({
+    plugins: [react(), {
+        name: 'csp-vite-dev',
+        apply: 'serve',
+        // Vite injecte ses styles et le préambule React pendant le développement uniquement.
+        transformIndexHtml(html) {
+            return html.replace("script-src 'self'; style-src 'self'", "script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'");
+        }
+    }, VitePWA({
         strategies: 'generateSW',
         registerType: 'autoUpdate',
         manifest,

@@ -1,14 +1,7 @@
 import type { ErrorObject } from 'ajv';
-import Ajv2020 from 'ajv/dist/2020.js';
-import gameSchema from '../schemas/game.schema.json' with { type: 'json' };
-import puzzleSchema from '../schemas/puzzle.schema.json' with { type: 'json' };
+import { checkShape, checkPuzzle } from './schema-validators.mjs';
 import { HEIGHT, ORIENTATION_OFFSETS, WIDTH } from './types';
 import type { GameState, SegmentCell } from './types';
-
-const ajv = new Ajv2020({ allErrors: true, strict: true });
-// Compiler le schéma de partie l'enregistre sous son `$id`, que le schéma de puzzle référence.
-const checkShape = ajv.compile(gameSchema);
-const checkPuzzle = ajv.compile({ ...puzzleSchema, $id: new URL('puzzle.schema.json', gameSchema.$id).href });
 
 function describeErrors(errors: ErrorObject[] | null | undefined): string[] {
     return (errors ?? []).map(error => {
@@ -63,7 +56,7 @@ export function validateGameState(x: unknown): Validation {
     if (!checkShape(x)) {
         return { ok: false, errors: describeErrors(checkShape.errors) };
     }
-    const state = x as unknown as GameState;
+    const state = x;
     const errors = invariantErrors(state);
     return errors.length ? { ok: false, errors } : { ok: true, value: state };
 }

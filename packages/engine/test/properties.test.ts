@@ -1,3 +1,4 @@
+import { propertyRuns } from './property-runs';
 import { describe, it, expect } from 'vitest';
 import fc from 'fast-check';
 import { validateGameState } from '@capsule-panic/contracts';
@@ -5,7 +6,7 @@ import type { GameCommand, GameState } from '@capsule-panic/contracts';
 import { createGame, restore, serialize, step } from '../src/index';
 import { deepFreeze } from './helpers';
 
-const runs = Number(process.env.FC_RUNS ?? 1000);
+const runs = propertyRuns(process.env);
 const command = fc.constantFrom<GameCommand['type']>('MOVE_LEFT', 'MOVE_RIGHT', 'ROTATE_CW', 'ROTATE_CCW', 'SOFT_DROP', 'HARD_DROP', 'TICK', 'PAUSE', 'RESUME');
 const filled = (s: GameState): number => s.board.filter(Boolean).length;
 
@@ -35,6 +36,6 @@ describe('engine properties over random games', () => {
                 expect(t.events.map(e => e.seq)).toEqual(t.events.map((_, i) => i));
                 s = next;
             }
-        }), { numRuns: Math.max(1, Math.floor(runs / 10)) });
+        }), { numRuns: runs });
     });
 });

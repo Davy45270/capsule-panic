@@ -17,6 +17,7 @@
   },
   "include": [
     "apps/web/src",
+    "apps/web/test",
     "apps/web/*.ts",
     "packages/*/src",
     "packages/*/test",
