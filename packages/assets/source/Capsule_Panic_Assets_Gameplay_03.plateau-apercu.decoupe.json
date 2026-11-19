@@ -1,0 +1,77 @@
+{
+  "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+  "marge": 4,
+  "taille": 64,
+  "elements": [
+    {
+      "id": "case-sombre-apercu",
+      "boite": [
+        60,
+        62,
+        1182,
+        49
+      ],
+      "ancre": "centre"
+    },
+    {
+      "id": "bloc-bleu-plateau-apercu",
+      "boite": [
+        60,
+        62,
+        1252,
+        49
+      ],
+      "ancre": "centre"
+    },
+    {
+      "id": "bloc-rouge-plateau-apercu",
+      "boite": [
+        61,
+        62,
+        1321,
+        49
+      ],
+      "ancre": "centre"
+    },
+    {
+      "id": "bloc-jaune-plateau-apercu",
+      "boite": [
+        61,
+        62,
+        1391,
+        49
+      ],
+      "ancre": "centre"
+    },
+    {
+      "id": "segment-bleu-plateau-apercu",
+      "boite": [
+        56,
+        54,
+        938,
+        49
+      ],
+      "ancre": "centre"
+    },
+    {
+      "id": "segment-rouge-plateau-apercu",
+      "boite": [
+        57,
+        54,
+        1009,
+        49
+      ],
+      "ancre": "centre"
+    },
+    {
+      "id": "segment-jaune-plateau-apercu",
+      "boite": [
+        59,
+        54,
+        1081,
+        49
+      ],
+      "ancre": "centre"
+    }
+  ]
+}

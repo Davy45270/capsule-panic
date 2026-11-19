@@ -24,6 +24,10 @@ steps:
       image: *node
       commands:
           - npm run typecheck
+    - name: assets
+      image: *node
+      commands:
+          - npm run assets -- check
     - name: test
       image: *node
       commands:

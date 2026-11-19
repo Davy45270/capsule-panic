@@ -1,0 +1,22 @@
+[
+  {
+    "id": "chute-animations-jeu",
+    "boite": "86x131+1199+430",
+    "raison": "Mouvement de deux cellules reliées"
+  },
+  {
+    "id": "rotation-animations-jeu",
+    "boite": "98x124+1422+438",
+    "raison": "Mouvement de deux cellules reliées"
+  },
+  {
+    "id": "deplacement-animations-jeu",
+    "boite": "113x130+1537+432",
+    "raison": "Mouvement de deux cellules reliées"
+  },
+  {
+    "id": "verrouillage-animations-jeu",
+    "boite": "82x130+1312+430",
+    "raison": "Mouvement de deux cellules reliées"
+  }
+]

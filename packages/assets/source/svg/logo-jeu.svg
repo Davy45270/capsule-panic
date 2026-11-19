@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 344 192">
+<g transform="translate(22 109) rotate(-25) scale(.53)" opacity="1">
+<defs><linearGradient id="motif-0-volume" x2="0" y2="1"><stop stop-color="#38BDF8"/><stop offset="1" stop-color="#1467C8"/></linearGradient></defs>
+<polygon points="19,6 77,6 90,19 90,77 77,90 19,90 6,77 6,19" fill="url(#motif-0-volume)" stroke="#001E40" stroke-width="5" stroke-linejoin="round"/>
+<path d="M22 13H74L83 23V34H13V23Z" fill="#6BCEF3"/>
+<polygon points="48,28 66,38 66,58 48,68 30,58 30,38" fill="#1467C8" stroke="#001E40" stroke-width="3" stroke-linejoin="round"/>
+<path d="M25 17c8-2 13-1 13 2s-11 4-15 4-4-3 2-6z" fill="#FDFDFD"/>
+</g>
+<g transform="translate(39 144) rotate(-18) scale(.58)" opacity="1">
+<defs><linearGradient id="motif-1-volume" x2="0" y2="1"><stop stop-color="#FBBF24"/><stop offset="1" stop-color="#DB7900"/></linearGradient></defs>
+<polygon points="19,6 77,6 90,19 90,77 77,90 19,90 6,77 6,19" fill="url(#motif-1-volume)" stroke="#5A3101" stroke-width="5" stroke-linejoin="round"/>
+<path d="M22 13H74L83 23V34H13V23Z" fill="#FFDE54"/>
+<polygon points="48,28 70,64 26,64" fill="#DB7900" stroke="#5A3101" stroke-width="3" stroke-linejoin="round"/>
+<path d="M25 17c8-2 13-1 13 2s-11 4-15 4-4-3 2-6z" fill="#FDFDFD"/>
+</g>
+<g transform="translate(258 164) rotate(-10) scale(.34)" opacity="1">
+<defs><linearGradient id="motif-2-volume" x2="0" y2="1"><stop stop-color="#F472B6"/><stop offset="1" stop-color="#B71939"/></linearGradient></defs>
+<polygon points="19,6 77,6 90,19 90,77 77,90 19,90 6,77 6,19" fill="url(#motif-2-volume)" stroke="#601523" stroke-width="5" stroke-linejoin="round"/>
+<path d="M22 13H74L83 23V34H13V23Z" fill="#FF806D"/>
+<polygon points="48,26 70,48 48,70 26,48" fill="#B71939" stroke="#601523" stroke-width="3" stroke-linejoin="round"/>
+<path d="M25 17c8-2 13-1 13 2s-11 4-15 4-4-3 2-6z" fill="#FDFDFD"/>
+</g>
+<g transform="translate(40 17) rotate(-12) scale(.36)" opacity="1">
+<defs><linearGradient id="motif-3-volume" x2="0" y2="1"><stop stop-color="#FBBF24"/><stop offset="1" stop-color="#DB7900"/></linearGradient></defs>
+<polygon points="19,6 77,6 90,19 90,77 77,90 19,90 6,77 6,19" fill="url(#motif-3-volume)" stroke="#5A3101" stroke-width="5" stroke-linejoin="round"/>
+<path d="M22 13H74L83 23V34H13V23Z" fill="#FFDE54"/>
+<polygon points="48,28 70,64 26,64" fill="#DB7900" stroke="#5A3101" stroke-width="3" stroke-linejoin="round"/>
+<path d="M25 17c8-2 13-1 13 2s-11 4-15 4-4-3 2-6z" fill="#FDFDFD"/>
+</g>
+</svg>

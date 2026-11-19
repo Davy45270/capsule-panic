@@ -1,0 +1,2300 @@
+{
+  "schemaVersion": 1,
+  "outils": {
+    "magick": "7.1.2-35",
+    "aseprite": "Aseprite 1.3.18.6-dev"
+  },
+  "assets": [
+    {
+      "id": "sprite-chute-animations-jeu",
+      "origine": "redessiné (marque)",
+      "raison": "Mouvement de deux cellules reliées",
+      "svg": "packages/assets/source/svg/chute-animations-jeu.svg",
+      "planche": "Capsule_Panic_Assets_Gameplay_02.png",
+      "element_remplace": "86x131+1199+430",
+      "transformations": [
+        "rendu SVG",
+        "atlas json-hash"
+      ],
+      "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
+    },
+    {
+      "id": "sprite-rotation-animations-jeu",
+      "origine": "redessiné (marque)",
+      "raison": "Mouvement de deux cellules reliées",
+      "svg": "packages/assets/source/svg/rotation-animations-jeu.svg",
+      "planche": "Capsule_Panic_Assets_Gameplay_02.png",
+      "element_remplace": "98x124+1422+438",
+      "transformations": [
+        "rendu SVG",
+        "atlas json-hash"
+      ],
+      "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
+    },
+    {
+      "id": "sprite-deplacement-animations-jeu",
+      "origine": "redessiné (marque)",
+      "raison": "Mouvement de deux cellules reliées",
+      "svg": "packages/assets/source/svg/deplacement-animations-jeu.svg",
+      "planche": "Capsule_Panic_Assets_Gameplay_02.png",
+      "element_remplace": "113x130+1537+432",
+      "transformations": [
+        "rendu SVG",
+        "atlas json-hash"
+      ],
+      "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
+    },
+    {
+      "id": "sprite-verrouillage-animations-jeu",
+      "origine": "redessiné (marque)",
+      "raison": "Mouvement de deux cellules reliées",
+      "svg": "packages/assets/source/svg/verrouillage-animations-jeu.svg",
+      "planche": "Capsule_Panic_Assets_Gameplay_02.png",
+      "element_remplace": "82x130+1312+430",
+      "transformations": [
+        "rendu SVG",
+        "atlas json-hash"
+      ],
+      "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
+    },
+    {
+      "id": "sprite-victoire-bannieres-jeu",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Gameplay_02.png",
+      "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544",
+      "boite": [
+        235,
+        40,
+        1420,
+        796
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-defaite-bannieres-jeu",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Gameplay_02.png",
+      "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544",
+      "boite": [
+        228,
+        40,
+        1423,
+        844
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-pause-bannieres-jeu",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Gameplay_02.png",
+      "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544",
+      "boite": [
+        215,
+        41,
+        1430,
+        892
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-cristaux-compteur-jeu",
+      "origine": "redessiné (marque)",
+      "raison": "Libellé et contenu du compteur adaptés, bord peint conservé",
+      "svg": "packages/assets/source/svg/cristaux-compteur-jeu.svg",
+      "planche": "Capsule_Panic_Assets_Gameplay_02.png",
+      "element_remplace": "133x61+1252+793",
+      "transformations": [
+        "crop",
+        "superposition SVG",
+        "resize",
+        "atlas json-hash"
+      ],
+      "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
+    },
+    {
+      "id": "sprite-cristaux-hud-jeu",
+      "origine": "redessiné (marque)",
+      "raison": "Cadre de partie conservé, libellé adapté",
+      "svg": "packages/assets/source/svg/cristaux-hud-jeu.svg",
+      "planche": "Capsule_Panic_Assets_Gameplay_02.png",
+      "element_remplace": "62x70+502+525",
+      "transformations": [
+        "crop",
+        "superposition SVG",
+        "resize",
+        "atlas json-hash"
+      ],
+      "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
+    },
+    {
+      "id": "sprite-explosion-effets-jeu",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Gameplay_02.png",
+      "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544",
+      "boite": [
+        77,
+        75,
+        1356,
+        337
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-fumee-effets-jeu",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Gameplay_02.png",
+      "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544",
+      "boite": [
+        72,
+        74,
+        1470,
+        336
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-particules-effets-jeu",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Gameplay_02.png",
+      "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544",
+      "boite": [
+        82,
+        48,
+        1576,
+        353
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-cristaux-elimination",
+      "origine": "redessiné (marque)",
+      "raison": "Rangée de cristaux géométriques",
+      "svg": "packages/assets/source/svg/cristaux-elimination.svg",
+      "planche": "Capsule_Panic_Assets_Gameplay_02.png",
+      "element_remplace": "137x47+1181+352",
+      "transformations": [
+        "rendu SVG",
+        "atlas json-hash"
+      ],
+      "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
+    },
+    {
+      "id": "sprite-paillasse-fond-jeu",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Gameplay_02.png",
+      "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544",
+      "boite": [
+        304,
+        113,
+        1169,
+        616
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-touches-horizontales-gestes-jeu",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Gameplay_02.png",
+      "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544",
+      "boite": [
+        79,
+        41,
+        393,
+        800
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-touches-action-gestes-jeu",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Gameplay_02.png",
+      "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544",
+      "boite": [
+        80,
+        42,
+        479,
+        800
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-gestes-gestes-jeu",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Gameplay_02.png",
+      "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544",
+      "boite": [
+        252,
+        124,
+        687,
+        793
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-legende-clavier-gestes-jeu",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Gameplay_02.png",
+      "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544",
+      "boite": [
+        125,
+        72,
+        397,
+        848
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-logo-jeu",
+      "origine": "redessiné (marque)",
+      "raison": "Lettres peintes isolées, ornements remplacés par des cellules",
+      "svg": "packages/assets/source/svg/logo-jeu.svg",
+      "planche": "Capsule_Panic_Assets_Gameplay_02.png",
+      "element_remplace": "344x192+14+14",
+      "transformations": [
+        "crop",
+        "superposition SVG",
+        "resize",
+        "atlas json-hash"
+      ],
+      "masque": "packages/assets/source/svg/logo-jeu-lettres.svg",
+      "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
+    },
+    {
+      "id": "sprite-mode-classique-jeu",
+      "origine": "redessiné (marque)",
+      "raison": "Icône Classique portant une cellule gravée",
+      "svg": "packages/assets/source/svg/mode-classique-jeu.svg",
+      "planche": "Capsule_Panic_Assets_Gameplay_02.png",
+      "element_remplace": "79x77+16+804",
+      "transformations": [
+        "rendu SVG",
+        "atlas json-hash"
+      ],
+      "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
+    },
+    {
+      "id": "sprite-erlenmeyer-objets-jeu",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Gameplay_02.png",
+      "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544",
+      "boite": [
+        66,
+        114,
+        1589,
+        613
+      ],
+      "marge": 4,
+      "ancre": "bas",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-reacteur-vide-jeu",
+      "origine": "redessiné (marque)",
+      "raison": "Récipient de décor rectangulaire à bord cyan",
+      "svg": "packages/assets/source/svg/reacteur-vide-jeu.svg",
+      "planche": "Capsule_Panic_Assets_Gameplay_02.png",
+      "element_remplace": "89x119+1488+611",
+      "transformations": [
+        "rendu SVG",
+        "atlas json-hash"
+      ],
+      "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
+    },
+    {
+      "id": "sprite-chercheurs-jeu",
+      "origine": "redessiné (marque)",
+      "raison": "Duo en tenue de laboratoire",
+      "svg": "packages/assets/source/svg/chercheurs-jeu.svg",
+      "planche": "Capsule_Panic_Assets_Gameplay_02.png",
+      "element_remplace": "269x285+320+10",
+      "transformations": [
+        "rendu SVG",
+        "atlas json-hash"
+      ],
+      "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
+    },
+    {
+      "id": "sprite-chercheuse-accueil",
+      "origine": "redessiné (marque)",
+      "raison": "Chercheuse en tenue de laboratoire",
+      "svg": "packages/assets/source/svg/chercheuse-accueil.svg",
+      "planche": "Capsule_Panic_Assets_Gameplay_02.png",
+      "element_remplace": "150x295+15+425",
+      "transformations": [
+        "rendu SVG",
+        "atlas json-hash"
+      ],
+      "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544"
+    },
+    {
+      "id": "sprite-case-sombre-jeu",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Gameplay_02.png",
+      "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544",
+      "boite": [
+        83,
+        83,
+        1252,
+        53
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-bloc-bleu-plateau-jeu",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Gameplay_02.png",
+      "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544",
+      "boite": [
+        82,
+        83,
+        1359,
+        53
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-bloc-rouge-plateau-jeu",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Gameplay_02.png",
+      "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544",
+      "boite": [
+        82,
+        83,
+        1462,
+        53
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-bloc-jaune-plateau-jeu",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Gameplay_02.png",
+      "planche_sha256": "a50747b0c9b0c8ec89f79898f699e08b5f4af58d3cc61180c1225ac9d534f544",
+      "boite": [
+        83,
+        83,
+        1565,
+        54
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-chute-animations-apercu",
+      "origine": "redessiné (marque)",
+      "raison": "Mouvement de deux cellules reliées",
+      "svg": "packages/assets/source/svg/chute-animations-apercu.svg",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "element_remplace": "135x71+1302+272",
+      "transformations": [
+        "rendu SVG",
+        "atlas json-hash"
+      ],
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
+    },
+    {
+      "id": "sprite-rotation-animations-apercu",
+      "origine": "redessiné (marque)",
+      "raison": "Mouvement de deux cellules reliées",
+      "svg": "packages/assets/source/svg/rotation-animations-apercu.svg",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "element_remplace": "135x57+1303+342",
+      "transformations": [
+        "rendu SVG",
+        "atlas json-hash"
+      ],
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
+    },
+    {
+      "id": "sprite-deplacement-animations-apercu",
+      "origine": "redessiné (marque)",
+      "raison": "Mouvement de deux cellules reliées",
+      "svg": "packages/assets/source/svg/deplacement-animations-apercu.svg",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "element_remplace": "128x47+1311+403",
+      "transformations": [
+        "rendu SVG",
+        "atlas json-hash"
+      ],
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
+    },
+    {
+      "id": "sprite-verrouillage-animations-apercu",
+      "origine": "redessiné (marque)",
+      "raison": "Mouvement de deux cellules reliées",
+      "svg": "packages/assets/source/svg/verrouillage-animations-apercu.svg",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "element_remplace": "140x73+1302+466",
+      "transformations": [
+        "rendu SVG",
+        "atlas json-hash"
+      ],
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
+    },
+    {
+      "id": "sprite-cascade-apercu",
+      "origine": "redessiné (marque)",
+      "raison": "Cellules en chute successive",
+      "svg": "packages/assets/source/svg/cascade-apercu.svg",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "element_remplace": "280x60+905+500",
+      "transformations": [
+        "rendu SVG",
+        "atlas json-hash"
+      ],
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
+    },
+    {
+      "id": "sprite-transformation-apercu",
+      "origine": "redessiné (marque)",
+      "raison": "Étapes de transformation d’une paire de cellules",
+      "svg": "packages/assets/source/svg/transformation-apercu.svg",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "element_remplace": "120x70+915+350",
+      "transformations": [
+        "rendu SVG",
+        "atlas json-hash"
+      ],
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
+    },
+    {
+      "id": "sprite-reacteur-chambre-apercu",
+      "origine": "redessiné (marque)",
+      "raison": "Chambre rectangulaire à grille et bord de verre",
+      "svg": "packages/assets/source/svg/reacteur-chambre-apercu.svg",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "element_remplace": "183x354+1471+7",
+      "transformations": [
+        "rendu SVG",
+        "atlas json-hash"
+      ],
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
+    },
+    {
+      "id": "sprite-jouer-commandes-apercu",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a",
+      "boite": [
+        130,
+        48,
+        416,
+        617
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-niveau-plus-commandes-apercu",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a",
+      "boite": [
+        71,
+        48,
+        557,
+        617
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-options-commandes-apercu",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a",
+      "boite": [
+        77,
+        48,
+        640,
+        616
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-aide-commandes-apercu",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a",
+      "boite": [
+        65,
+        47,
+        727,
+        617
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-quitter-commandes-apercu",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a",
+      "boite": [
+        106,
+        48,
+        803,
+        616
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-pause-commandes-apercu",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a",
+      "boite": [
+        51,
+        48,
+        416,
+        677
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-lecture-commandes-apercu",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a",
+      "boite": [
+        49,
+        48,
+        475,
+        677
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-recommencer-commandes-apercu",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a",
+      "boite": [
+        51,
+        48,
+        531,
+        677
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-accueil-commandes-apercu",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a",
+      "boite": [
+        50,
+        48,
+        590,
+        677
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-plein-ecran-commandes-apercu",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a",
+      "boite": [
+        52,
+        48,
+        832,
+        677
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-cristaux-compteur-apercu",
+      "origine": "redessiné (marque)",
+      "raison": "Libellé et contenu du compteur adaptés, bord peint conservé",
+      "svg": "packages/assets/source/svg/cristaux-compteur-apercu.svg",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "element_remplace": "78x64+1379+616",
+      "transformations": [
+        "crop",
+        "superposition SVG",
+        "resize",
+        "atlas json-hash"
+      ],
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
+    },
+    {
+      "id": "sprite-laboratoire-fonds-apercu",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a",
+      "boite": [
+        201,
+        124,
+        10,
+        798
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-reacteur-fonds-apercu",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a",
+      "boite": [
+        157,
+        126,
+        216,
+        796
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-grille-fonds-apercu",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a",
+      "boite": [
+        140,
+        126,
+        379,
+        796
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-logo-apercu",
+      "origine": "redessiné (marque)",
+      "raison": "Lettres peintes isolées, ornements remplacés par des cellules",
+      "svg": "packages/assets/source/svg/logo-apercu.svg",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "element_remplace": "280x200+12+6",
+      "transformations": [
+        "crop",
+        "superposition SVG",
+        "resize",
+        "atlas json-hash"
+      ],
+      "masque": "packages/assets/source/svg/logo-apercu-lettres.svg",
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
+    },
+    {
+      "id": "sprite-pause-messages-apercu",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a",
+      "boite": [
+        170,
+        32,
+        1483,
+        704
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-victoire-messages-apercu",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a",
+      "boite": [
+        182,
+        36,
+        1476,
+        615
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-defaite-messages-apercu",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a",
+      "boite": [
+        182,
+        30,
+        1476,
+        661
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-fioles-trio-objets-apercu",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a",
+      "boite": [
+        152,
+        54,
+        933,
+        582
+      ],
+      "marge": 4,
+      "ancre": "bas",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-porte-eprouvettes-objets-apercu",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a",
+      "boite": [
+        83,
+        52,
+        1090,
+        581
+      ],
+      "marge": 4,
+      "ancre": "bas",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-trophee-objets-apercu",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a",
+      "boite": [
+        58,
+        53,
+        1069,
+        644
+      ],
+      "marge": 4,
+      "ancre": "bas",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-etoile-objets-apercu",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a",
+      "boite": [
+        50,
+        50,
+        1133,
+        644
+      ],
+      "marge": 4,
+      "ancre": "bas",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-dialogue-panneaux-apercu",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a",
+      "boite": [
+        88,
+        87,
+        1197,
+        800
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-panneaux-panneaux-apercu",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a",
+      "boite": [
+        163,
+        90,
+        1291,
+        802
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-notation-simple-apercu",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a",
+      "boite": [
+        50,
+        42,
+        1470,
+        796
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-notation-double-apercu",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a",
+      "boite": [
+        49,
+        42,
+        1530,
+        796
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-notation-triple-apercu",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a",
+      "boite": [
+        69,
+        42,
+        1589,
+        796
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-carte-classique-apercu",
+      "origine": "redessiné (marque)",
+      "raison": "Carte Classic conservée, icône de cellule",
+      "svg": "packages/assets/source/svg/carte-classique-apercu.svg",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "element_remplace": "93x120+17+608",
+      "transformations": [
+        "crop",
+        "superposition SVG",
+        "resize",
+        "atlas json-hash"
+      ],
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
+    },
+    {
+      "id": "sprite-chercheurs-reussite",
+      "origine": "redessiné (marque)",
+      "raison": "Duo de chercheurs de laboratoire",
+      "svg": "packages/assets/source/svg/chercheurs-reussite.svg",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "element_remplace": "185x105+680+451",
+      "transformations": [
+        "rendu SVG",
+        "atlas json-hash"
+      ],
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
+    },
+    {
+      "id": "sprite-case-sombre-apercu",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a",
+      "boite": [
+        60,
+        62,
+        1182,
+        49
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-bloc-bleu-plateau-apercu",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a",
+      "boite": [
+        60,
+        62,
+        1252,
+        49
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-bloc-rouge-plateau-apercu",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a",
+      "boite": [
+        61,
+        62,
+        1321,
+        49
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-bloc-jaune-plateau-apercu",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a",
+      "boite": [
+        61,
+        62,
+        1391,
+        49
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-segment-bleu-plateau-apercu",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a",
+      "boite": [
+        56,
+        54,
+        938,
+        49
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-segment-rouge-plateau-apercu",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a",
+      "boite": [
+        57,
+        54,
+        1009,
+        49
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-segment-jaune-plateau-apercu",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a",
+      "boite": [
+        59,
+        54,
+        1081,
+        49
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-tutoriel-aligner",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a",
+      "boite": [
+        160,
+        122,
+        843,
+        798
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-tutoriel-deplacer",
+      "origine": "redessiné (marque)",
+      "raison": "Cadre et pastille peints conservés, illustration adaptée",
+      "svg": "packages/assets/source/svg/tutoriel-deplacer.svg",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "element_remplace": "149x124+535+797",
+      "transformations": [
+        "crop",
+        "superposition SVG",
+        "resize",
+        "atlas json-hash"
+      ],
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
+    },
+    {
+      "id": "sprite-tutoriel-pivoter",
+      "origine": "redessiné (marque)",
+      "raison": "Cadre et pastille peints conservés, illustration adaptée",
+      "svg": "packages/assets/source/svg/tutoriel-pivoter.svg",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "element_remplace": "138x124+694+797",
+      "transformations": [
+        "crop",
+        "superposition SVG",
+        "resize",
+        "atlas json-hash"
+      ],
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
+    },
+    {
+      "id": "sprite-tutoriel-eliminer",
+      "origine": "redessiné (marque)",
+      "raison": "Cadre et pastille peints conservés, illustration adaptée",
+      "svg": "packages/assets/source/svg/tutoriel-eliminer.svg",
+      "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+      "element_remplace": "160x125+1015+796",
+      "transformations": [
+        "crop",
+        "superposition SVG",
+        "resize",
+        "atlas json-hash"
+      ],
+      "planche_sha256": "ec2dc7cb11cc5d98f84725663d8f7827b2db1932854e063053b34969bcd1483a"
+    },
+    {
+      "id": "sprite-reacteur-chambre-origine",
+      "origine": "redessiné (marque)",
+      "raison": "Chambre rectangulaire à grille et bord de verre",
+      "svg": "packages/assets/source/svg/reacteur-chambre-origine.svg",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "element_remplace": "258x620+1266+24",
+      "transformations": [
+        "rendu SVG",
+        "atlas json-hash"
+      ],
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254"
+    },
+    {
+      "id": "sprite-gauche-commandes-origine",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254",
+      "boite": [
+        89,
+        85,
+        12,
+        718
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-droite-commandes-origine",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254",
+      "boite": [
+        88,
+        85,
+        110,
+        718
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-bas-commandes-origine",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254",
+      "boite": [
+        88,
+        85,
+        205,
+        718
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-rotation-commandes-origine",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254",
+      "boite": [
+        89,
+        87,
+        301,
+        717
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-pause-commandes-origine",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254",
+      "boite": [
+        94,
+        84,
+        408,
+        718
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-lecture-commandes-origine",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254",
+      "boite": [
+        94,
+        85,
+        511,
+        718
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-reglages-commandes-origine",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254",
+      "boite": [
+        89,
+        85,
+        615,
+        717
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-cristaux-compteur-origine",
+      "origine": "redessiné (marque)",
+      "raison": "Libellé et contenu du compteur adaptés, bord peint conservé",
+      "svg": "packages/assets/source/svg/cristaux-compteur-origine.svg",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "element_remplace": "240x117+1283+692",
+      "transformations": [
+        "crop",
+        "superposition SVG",
+        "resize",
+        "atlas json-hash"
+      ],
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254"
+    },
+    {
+      "id": "sprite-explosion-effets-origine",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254",
+      "boite": [
+        195,
+        174,
+        369,
+        480
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-anneau-etoiles-effets-origine",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254",
+      "boite": [
+        193,
+        162,
+        581,
+        487
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-fumee-effets-origine",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254",
+      "boite": [
+        181,
+        147,
+        785,
+        489
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-eclat-effets-origine",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254",
+      "boite": [
+        265,
+        191,
+        991,
+        406
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-satellite-effets-origine",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254",
+      "boite": [
+        29,
+        29,
+        953,
+        432
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-panneau-score-hud-origine",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254",
+      "boite": [
+        247,
+        117,
+        719,
+        692
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-panneau-niveau-hud-origine",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254",
+      "boite": [
+        272,
+        117,
+        989,
+        692
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-medaillon-cellule",
+      "origine": "redessiné (marque)",
+      "raison": "Médaillon portant une cellule gravée",
+      "svg": "packages/assets/source/svg/medaillon-cellule.svg",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "element_remplace": "109x106+1355+828",
+      "transformations": [
+        "rendu SVG",
+        "atlas json-hash"
+      ],
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254"
+    },
+    {
+      "id": "sprite-jouer-menus-origine",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254",
+      "boite": [
+        332,
+        77,
+        86,
+        944
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-options-menus-origine",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254",
+      "boite": [
+        305,
+        73,
+        446,
+        948
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-aide-menus-origine",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254",
+      "boite": [
+        297,
+        74,
+        787,
+        948
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-quitter-menus-origine",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254",
+      "boite": [
+        300,
+        74,
+        1129,
+        948
+      ],
+      "marge": 4,
+      "ancre": "centre",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-fiole-bleue-objets-origine",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254",
+      "boite": [
+        111,
+        114,
+        53,
+        818
+      ],
+      "marge": 4,
+      "ancre": "bas",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-fiole-rouge-objets-origine",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254",
+      "boite": [
+        108,
+        113,
+        188,
+        820
+      ],
+      "marge": 4,
+      "ancre": "bas",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-fiole-jaune-objets-origine",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254",
+      "boite": [
+        108,
+        112,
+        319,
+        820
+      ],
+      "marge": 4,
+      "ancre": "bas",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-porte-eprouvettes-objets-origine",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254",
+      "boite": [
+        157,
+        104,
+        475,
+        829
+      ],
+      "marge": 4,
+      "ancre": "bas",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-trophee-objets-origine",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254",
+      "boite": [
+        165,
+        116,
+        1009,
+        822
+      ],
+      "marge": 4,
+      "ancre": "bas",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-etoile-objets-origine",
+      "origine": "planche",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254",
+      "boite": [
+        107,
+        103,
+        1206,
+        825
+      ],
+      "marge": 4,
+      "ancre": "bas",
+      "transformations": [
+        "crop",
+        "alpha<4%=0",
+        "trim",
+        "resize",
+        "extent+ancre",
+        "atlas json-hash"
+      ]
+    },
+    {
+      "id": "sprite-paire-horizontale-cyan-magenta",
+      "origine": "redessiné (marque)",
+      "raison": "Deux cellules indépendantes réunies par un pont lumineux",
+      "svg": "packages/assets/source/svg/paire-horizontale-cyan-magenta.svg",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "element_remplace": "181x89+333+382",
+      "transformations": [
+        "rendu SVG",
+        "atlas json-hash"
+      ],
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254"
+    },
+    {
+      "id": "sprite-paire-horizontale-cyan-ambre",
+      "origine": "redessiné (marque)",
+      "raison": "Deux cellules indépendantes réunies par un pont lumineux",
+      "svg": "packages/assets/source/svg/paire-horizontale-cyan-ambre.svg",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "element_remplace": "181x90+540+382",
+      "transformations": [
+        "rendu SVG",
+        "atlas json-hash"
+      ],
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254"
+    },
+    {
+      "id": "sprite-paire-horizontale-magenta-ambre",
+      "origine": "redessiné (marque)",
+      "raison": "Deux cellules indépendantes réunies par un pont lumineux",
+      "svg": "packages/assets/source/svg/paire-horizontale-magenta-ambre.svg",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "element_remplace": "181x90+747+382",
+      "transformations": [
+        "rendu SVG",
+        "atlas json-hash"
+      ],
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254"
+    },
+    {
+      "id": "sprite-paire-verticale-cyan-magenta",
+      "origine": "redessiné (marque)",
+      "raison": "Deux cellules indépendantes réunies par un pont lumineux",
+      "svg": "packages/assets/source/svg/paire-verticale-cyan-magenta.svg",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "element_remplace": "77x151+995+205",
+      "transformations": [
+        "rendu SVG",
+        "atlas json-hash"
+      ],
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254"
+    },
+    {
+      "id": "sprite-paire-verticale-cyan-ambre",
+      "origine": "redessiné (marque)",
+      "raison": "Deux cellules indépendantes réunies par un pont lumineux",
+      "svg": "packages/assets/source/svg/paire-verticale-cyan-ambre.svg",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "element_remplace": "77x151+1086+205",
+      "transformations": [
+        "rendu SVG",
+        "atlas json-hash"
+      ],
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254"
+    },
+    {
+      "id": "sprite-paire-verticale-magenta-ambre",
+      "origine": "redessiné (marque)",
+      "raison": "Deux cellules indépendantes réunies par un pont lumineux",
+      "svg": "packages/assets/source/svg/paire-verticale-magenta-ambre.svg",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "element_remplace": "77x151+1177+205",
+      "transformations": [
+        "rendu SVG",
+        "atlas json-hash"
+      ],
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254"
+    },
+    {
+      "id": "sprite-chercheuse-origine",
+      "origine": "redessiné (marque)",
+      "raison": "Combinaison de laboratoire avec visière et cellule",
+      "svg": "packages/assets/source/svg/chercheuse-origine.svg",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "element_remplace": "375x361+2+11",
+      "transformations": [
+        "rendu SVG",
+        "atlas json-hash"
+      ],
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254"
+    },
+    {
+      "id": "sprite-responsable-origine",
+      "origine": "redessiné (marque)",
+      "raison": "Combinaison de laboratoire avec visière",
+      "svg": "packages/assets/source/svg/responsable-origine.svg",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "element_remplace": "340x310+2+385",
+      "transformations": [
+        "rendu SVG",
+        "atlas json-hash"
+      ],
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254"
+    },
+    {
+      "id": "sprite-cristal-cyan",
+      "origine": "redessiné (marque)",
+      "raison": "Obstacle à silhouette géométrique",
+      "svg": "packages/assets/source/svg/cristal-cyan.svg",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "element_remplace": "191x178+379+14",
+      "transformations": [
+        "rendu SVG",
+        "atlas json-hash"
+      ],
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254"
+    },
+    {
+      "id": "sprite-cristal-brise-cyan",
+      "origine": "redessiné (marque)",
+      "raison": "Fragments après élimination",
+      "svg": "packages/assets/source/svg/cristal-brise-cyan.svg",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "element_remplace": "166x140+399+213",
+      "transformations": [
+        "rendu SVG",
+        "atlas json-hash"
+      ],
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254"
+    },
+    {
+      "id": "sprite-cellule-cyan",
+      "origine": "redessiné (marque)",
+      "raison": "Segment carré biseauté et gravé",
+      "svg": "packages/assets/source/svg/cellule-cyan.svg",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "element_remplace": "83x144+1001+30",
+      "transformations": [
+        "rendu SVG",
+        "atlas json-hash"
+      ],
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254"
+    },
+    {
+      "id": "sprite-cristal-ambre",
+      "origine": "redessiné (marque)",
+      "raison": "Obstacle à silhouette géométrique",
+      "svg": "packages/assets/source/svg/cristal-ambre.svg",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "element_remplace": "199x183+782+10",
+      "transformations": [
+        "rendu SVG",
+        "atlas json-hash"
+      ],
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254"
+    },
+    {
+      "id": "sprite-cristal-brise-ambre",
+      "origine": "redessiné (marque)",
+      "raison": "Fragments après élimination",
+      "svg": "packages/assets/source/svg/cristal-brise-ambre.svg",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "element_remplace": "168x128+788+225",
+      "transformations": [
+        "rendu SVG",
+        "atlas json-hash"
+      ],
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254"
+    },
+    {
+      "id": "sprite-cellule-ambre",
+      "origine": "redessiné (marque)",
+      "raison": "Segment carré biseauté et gravé",
+      "svg": "packages/assets/source/svg/cellule-ambre.svg",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "element_remplace": "82x144+1191+30",
+      "transformations": [
+        "rendu SVG",
+        "atlas json-hash"
+      ],
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254"
+    },
+    {
+      "id": "sprite-cristal-magenta",
+      "origine": "redessiné (marque)",
+      "raison": "Obstacle à silhouette géométrique",
+      "svg": "packages/assets/source/svg/cristal-magenta.svg",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "element_remplace": "192x180+579+13",
+      "transformations": [
+        "rendu SVG",
+        "atlas json-hash"
+      ],
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254"
+    },
+    {
+      "id": "sprite-cristal-brise-magenta",
+      "origine": "redessiné (marque)",
+      "raison": "Fragments après élimination",
+      "svg": "packages/assets/source/svg/cristal-brise-magenta.svg",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "element_remplace": "168x138+591+208",
+      "transformations": [
+        "rendu SVG",
+        "atlas json-hash"
+      ],
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254"
+    },
+    {
+      "id": "sprite-cellule-magenta",
+      "origine": "redessiné (marque)",
+      "raison": "Segment carré biseauté et gravé",
+      "svg": "packages/assets/source/svg/cellule-magenta.svg",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "element_remplace": "82x144+1097+30",
+      "transformations": [
+        "rendu SVG",
+        "atlas json-hash"
+      ],
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254"
+    },
+    {
+      "id": "sprite-cellule-fantome",
+      "origine": "redessiné (marque)",
+      "raison": "Contour de la projection de chute",
+      "svg": "packages/assets/source/svg/cellule-fantome.svg",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "element_remplace": "83x144+1001+30",
+      "transformations": [
+        "rendu SVG",
+        "atlas json-hash"
+      ],
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254"
+    },
+    {
+      "id": "sprite-pont-haut",
+      "origine": "redessiné (marque)",
+      "raison": "Liaison lumineuse entre deux cellules",
+      "svg": "packages/assets/source/svg/pont-haut.svg",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "element_remplace": "181x89+333+382",
+      "transformations": [
+        "rendu SVG",
+        "atlas json-hash"
+      ],
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254"
+    },
+    {
+      "id": "sprite-pont-droite",
+      "origine": "redessiné (marque)",
+      "raison": "Liaison lumineuse entre deux cellules",
+      "svg": "packages/assets/source/svg/pont-droite.svg",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "element_remplace": "181x89+333+382",
+      "transformations": [
+        "rendu SVG",
+        "atlas json-hash"
+      ],
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254"
+    },
+    {
+      "id": "sprite-pont-bas",
+      "origine": "redessiné (marque)",
+      "raison": "Liaison lumineuse entre deux cellules",
+      "svg": "packages/assets/source/svg/pont-bas.svg",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "element_remplace": "181x89+333+382",
+      "transformations": [
+        "rendu SVG",
+        "atlas json-hash"
+      ],
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254"
+    },
+    {
+      "id": "sprite-pont-gauche",
+      "origine": "redessiné (marque)",
+      "raison": "Liaison lumineuse entre deux cellules",
+      "svg": "packages/assets/source/svg/pont-gauche.svg",
+      "planche": "Capsule_Panic_Assets_Planche_01.png",
+      "element_remplace": "181x89+333+382",
+      "transformations": [
+        "rendu SVG",
+        "atlas json-hash"
+      ],
+      "planche_sha256": "860766652804071789fd7822f939a40e940d911851a7fb44eb0211555b83a254"
+    }
+  ]
+}

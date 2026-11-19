@@ -1,0 +1,14 @@
+[
+  {
+    "id": "cristaux-compteur-jeu",
+    "boite": "133x61+1252+793",
+    "raison": "Libellé et contenu du compteur adaptés, bord peint conservé",
+    "superposition": true
+  },
+  {
+    "id": "cristaux-hud-jeu",
+    "boite": "62x70+502+525",
+    "raison": "Cadre de partie conservé, libellé adapté",
+    "superposition": true
+  }
+]

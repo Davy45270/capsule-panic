@@ -1,0 +1,99 @@
+{
+  "frames": {
+    "sprite-touches-horizontales-gestes-jeu": {
+      "frame": {
+        "x": 2,
+        "y": 2,
+        "w": 288,
+        "h": 288
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 288,
+        "h": 288
+      },
+      "sourceSize": {
+        "w": 288,
+        "h": 288
+      },
+      "duration": 100
+    },
+    "sprite-touches-action-gestes-jeu": {
+      "frame": {
+        "x": 292,
+        "y": 2,
+        "w": 288,
+        "h": 288
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 288,
+        "h": 288
+      },
+      "sourceSize": {
+        "w": 288,
+        "h": 288
+      },
+      "duration": 100
+    },
+    "sprite-gestes-gestes-jeu": {
+      "frame": {
+        "x": 582,
+        "y": 2,
+        "w": 288,
+        "h": 288
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 288,
+        "h": 288
+      },
+      "sourceSize": {
+        "w": 288,
+        "h": 288
+      },
+      "duration": 100
+    },
+    "sprite-legende-clavier-gestes-jeu": {
+      "frame": {
+        "x": 2,
+        "y": 292,
+        "w": 288,
+        "h": 288
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 288,
+        "h": 288
+      },
+      "sourceSize": {
+        "w": 288,
+        "h": 288
+      },
+      "duration": 100
+    }
+  },
+  "meta": {
+    "app": "http://www.aseprite.org/",
+    "version": "1.3.18.6-dev",
+    "image": "gestes-jeu@3x.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 1024,
+      "h": 582
+    },
+    "scale": "3"
+  }
+}

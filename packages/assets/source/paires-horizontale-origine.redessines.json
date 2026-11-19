@@ -1,0 +1,17 @@
+[
+  {
+    "id": "paire-horizontale-cyan-magenta",
+    "boite": "181x89+333+382",
+    "raison": "Deux cellules indépendantes réunies par un pont lumineux"
+  },
+  {
+    "id": "paire-horizontale-cyan-ambre",
+    "boite": "181x90+540+382",
+    "raison": "Deux cellules indépendantes réunies par un pont lumineux"
+  },
+  {
+    "id": "paire-horizontale-magenta-ambre",
+    "boite": "181x90+747+382",
+    "raison": "Deux cellules indépendantes réunies par un pont lumineux"
+  }
+]

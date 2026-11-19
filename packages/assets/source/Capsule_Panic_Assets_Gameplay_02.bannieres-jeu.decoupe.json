@@ -1,0 +1,37 @@
+{
+  "planche": "Capsule_Panic_Assets_Gameplay_02.png",
+  "marge": 4,
+  "taille": 160,
+  "elements": [
+    {
+      "id": "victoire-bannieres-jeu",
+      "boite": [
+        235,
+        40,
+        1420,
+        796
+      ],
+      "ancre": "centre"
+    },
+    {
+      "id": "defaite-bannieres-jeu",
+      "boite": [
+        228,
+        40,
+        1423,
+        844
+      ],
+      "ancre": "centre"
+    },
+    {
+      "id": "pause-bannieres-jeu",
+      "boite": [
+        215,
+        41,
+        1430,
+        892
+      ],
+      "ancre": "centre"
+    }
+  ]
+}

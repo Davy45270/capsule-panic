@@ -1,0 +1,17 @@
+{
+  "planche": "Capsule_Panic_Assets_Gameplay_02.png",
+  "marge": 4,
+  "taille": 128,
+  "elements": [
+    {
+      "id": "erlenmeyer-objets-jeu",
+      "boite": [
+        66,
+        114,
+        1589,
+        613
+      ],
+      "ancre": "bas"
+    }
+  ]
+}

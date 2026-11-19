@@ -1,0 +1,37 @@
+{
+  "planche": "Capsule_Panic_Assets_Gameplay_02.png",
+  "marge": 4,
+  "taille": 64,
+  "elements": [
+    {
+      "id": "explosion-effets-jeu",
+      "boite": [
+        77,
+        75,
+        1356,
+        337
+      ],
+      "ancre": "centre"
+    },
+    {
+      "id": "fumee-effets-jeu",
+      "boite": [
+        72,
+        74,
+        1470,
+        336
+      ],
+      "ancre": "centre"
+    },
+    {
+      "id": "particules-effets-jeu",
+      "boite": [
+        82,
+        48,
+        1576,
+        353
+      ],
+      "ancre": "centre"
+    }
+  ]
+}

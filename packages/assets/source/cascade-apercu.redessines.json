@@ -1,0 +1,12 @@
+[
+  {
+    "id": "cascade-apercu",
+    "boite": "280x60+905+500",
+    "raison": "Cellules en chute successive"
+  },
+  {
+    "id": "transformation-apercu",
+    "boite": "120x70+915+350",
+    "raison": "Étapes de transformation d’une paire de cellules"
+  }
+]

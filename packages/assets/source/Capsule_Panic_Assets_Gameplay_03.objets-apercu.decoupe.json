@@ -1,0 +1,47 @@
+{
+  "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+  "marge": 4,
+  "taille": 112,
+  "elements": [
+    {
+      "id": "fioles-trio-objets-apercu",
+      "boite": [
+        152,
+        54,
+        933,
+        582
+      ],
+      "ancre": "bas"
+    },
+    {
+      "id": "porte-eprouvettes-objets-apercu",
+      "boite": [
+        83,
+        52,
+        1090,
+        581
+      ],
+      "ancre": "bas"
+    },
+    {
+      "id": "trophee-objets-apercu",
+      "boite": [
+        58,
+        53,
+        1069,
+        644
+      ],
+      "ancre": "bas"
+    },
+    {
+      "id": "etoile-objets-apercu",
+      "boite": [
+        50,
+        50,
+        1133,
+        644
+      ],
+      "ancre": "bas"
+    }
+  ]
+}

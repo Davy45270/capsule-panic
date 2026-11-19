@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 232">
+<defs>
+  <linearGradient id="tenue" x2="0" y2="1"><stop stop-color="#9392B5"/><stop offset="1" stop-color="#303E56"/></linearGradient>
+  <linearGradient id="visiere" x2="0" y2="1"><stop stop-color="#568FB6"/><stop offset="1" stop-color="#09162A"/></linearGradient>
+</defs>
+<g stroke="#09162A" stroke-width="5" stroke-linejoin="round">
+  <path d="M15 226L23 175Q29 144 60 132L79 121H112L138 132Q169 143 178 173L187 226Z" fill="url(#tenue)"/>
+  <path d="M52 226L57 180 51 163M139 162L134 181 139 226M76 132L84 155H111L121 132" fill="none"/>
+  <path d="M38 77Q38 42 62 29Q96 11 128 32Q151 47 153 76L148 107Q143 124 121 128H69Q48 124 43 107Z" fill="#303E56"/>
+  <path d="M37 68Q30 39 49 27Q64 15 91 18Q118 18 141 43L151 69L128 54H59Z" fill="#DCD2E2"/>
+  <path d="M42 68Q88 50 149 66L147 93Q145 108 130 112H65Q49 111 45 98Z" fill="url(#visiere)"/>
+</g>
+<path d="M50 72Q95 59 141 70L140 78Q95 68 51 82Z" fill="#568FB6"/>
+<path d="M61 76l19-5-12 9-8 1z" fill="#FEFEFE"/>
+<path d="M60 36Q80 19 106 26L94 31Q73 29 60 41Z" fill="#9392B5"/>
+<path d="M84 175h25v22H84z" fill="#303E56" stroke="#09162A" stroke-width="3"/>
+<path d="M89 181h15m-15 6h10" stroke="#FEFEFE" stroke-width="2" stroke-linecap="round"/>
+
+</svg>

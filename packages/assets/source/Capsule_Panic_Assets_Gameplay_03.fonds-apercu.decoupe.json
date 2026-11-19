@@ -1,0 +1,37 @@
+{
+  "planche": "Capsule_Panic_Assets_Gameplay_03.png",
+  "marge": 4,
+  "taille": 144,
+  "elements": [
+    {
+      "id": "laboratoire-fonds-apercu",
+      "boite": [
+        201,
+        124,
+        10,
+        798
+      ],
+      "ancre": "centre"
+    },
+    {
+      "id": "reacteur-fonds-apercu",
+      "boite": [
+        157,
+        126,
+        216,
+        796
+      ],
+      "ancre": "centre"
+    },
+    {
+      "id": "grille-fonds-apercu",
+      "boite": [
+        140,
+        126,
+        379,
+        796
+      ],
+      "ancre": "centre"
+    }
+  ]
+}

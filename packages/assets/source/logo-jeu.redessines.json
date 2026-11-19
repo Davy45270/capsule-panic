@@ -1,0 +1,9 @@
+[
+  {
+    "id": "logo-jeu",
+    "boite": "344x192+14+14",
+    "raison": "Lettres peintes isolées, ornements remplacés par des cellules",
+    "superposition": true,
+    "masque": "logo-jeu-lettres"
+  }
+]

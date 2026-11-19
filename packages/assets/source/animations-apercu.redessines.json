@@ -1,0 +1,22 @@
+[
+  {
+    "id": "chute-animations-apercu",
+    "boite": "135x71+1302+272",
+    "raison": "Mouvement de deux cellules reliées"
+  },
+  {
+    "id": "rotation-animations-apercu",
+    "boite": "135x57+1303+342",
+    "raison": "Mouvement de deux cellules reliées"
+  },
+  {
+    "id": "deplacement-animations-apercu",
+    "boite": "128x47+1311+403",
+    "raison": "Mouvement de deux cellules reliées"
+  },
+  {
+    "id": "verrouillage-animations-apercu",
+    "boite": "140x73+1302+466",
+    "raison": "Mouvement de deux cellules reliées"
+  }
+]

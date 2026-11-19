@@ -1,0 +1,99 @@
+{
+  "frames": {
+    "sprite-chute-animations-apercu": {
+      "frame": {
+        "x": 2,
+        "y": 2,
+        "w": 216,
+        "h": 216
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 216,
+        "h": 216
+      },
+      "sourceSize": {
+        "w": 216,
+        "h": 216
+      },
+      "duration": 100
+    },
+    "sprite-rotation-animations-apercu": {
+      "frame": {
+        "x": 220,
+        "y": 2,
+        "w": 216,
+        "h": 216
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 216,
+        "h": 216
+      },
+      "sourceSize": {
+        "w": 216,
+        "h": 216
+      },
+      "duration": 100
+    },
+    "sprite-deplacement-animations-apercu": {
+      "frame": {
+        "x": 438,
+        "y": 2,
+        "w": 216,
+        "h": 216
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 216,
+        "h": 216
+      },
+      "sourceSize": {
+        "w": 216,
+        "h": 216
+      },
+      "duration": 100
+    },
+    "sprite-verrouillage-animations-apercu": {
+      "frame": {
+        "x": 656,
+        "y": 2,
+        "w": 216,
+        "h": 216
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 216,
+        "h": 216
+      },
+      "sourceSize": {
+        "w": 216,
+        "h": 216
+      },
+      "duration": 100
+    }
+  },
+  "meta": {
+    "app": "http://www.aseprite.org/",
+    "version": "1.3.18.6-dev",
+    "image": "animations-apercu@3x.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 1024,
+      "h": 220
+    },
+    "scale": "3"
+  }
+}
