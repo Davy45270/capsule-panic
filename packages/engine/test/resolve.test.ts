@@ -2,7 +2,7 @@ import { propertyRuns } from './property-runs';
 import { describe, it, expect } from 'vitest';
 import fc from 'fast-check';
 import type { Cell } from '@capsule-panic/contracts';
-import { findMatches, getAvailableMoves, resolve, step } from '../src/index';
+import { canPlace, findMatches, getAvailableMoves, resolve, restore, serialize, SPAWN, step } from '../src/index';
 import { boardFrom, stateWith } from './helpers';
 
 const runs = propertyRuns(process.env);
@@ -15,7 +15,7 @@ const blockedSpawn = (rows: string[]): Cell[] => {
 };
 
 describe('resolution, score, end of level', () => {
-    it('T17 a chain reaction applies multiplier 2', () => {
+    it('[E027][E091][E206][E207][E251][E319] T17 a chain reaction applies multiplier 2', () => {
         const board = boardFrom(['c.......', 'c.......', 'aaa.....', 'CAMAM...', 'CMAMA...']);
         const s = stateWith(board, { x: 3, y: 1, orientation: 1, colors: ['amber', 'magenta'] });
         const t = step(s, { type: 'HARD_DROP' });
@@ -30,38 +30,50 @@ describe('resolution, score, end of level', () => {
         expect(t.state.board[13 * 8 + 4]).toMatchObject({ color: 'magenta', linkedToId: null });
         expect(t.state.phase).toBe('FALLING');
     });
-    it('T18 removing the last obstacle gives WON before the spawn test', () => {
-        const s = stateWith(blockedSpawn(['....Ccc.']), { x: 7, y: 1, orientation: 0, colors: ['cyan', 'amber'] });
+    it('[E036][E088][E090][E252] T18 removing the last obstacle gives WON before the spawn test', () => {
+        const s = restore(serialize(stateWith(blockedSpawn(['....Ccc.']), { x: 7, y: 1, orientation: 0, colors: ['cyan', 'amber'] })));
         const t = step(s, { type: 'HARD_DROP' });
         expect(t.state.phase).toBe('WON');
+        expect(canPlace(t.state.board, SPAWN)).toBe(false);
         expect(t.state.active).toBeNull();
         expect(t.state.obstaclesRemaining).toBe(0);
         expect(types(t.events).at(-1)).toBe('WON');
     });
-    it('T02 a blocked spawn gives LOST', () => {
-        const s = stateWith(blockedSpawn(['....Ccc.']), { x: 7, y: 1, orientation: 0, colors: ['amber', 'amber'] });
+    it('[E065][E089][E236] T02 a blocked spawn gives LOST', () => {
+        const s = restore(serialize(stateWith(blockedSpawn(['....Ccc.']), { x: 7, y: 1, orientation: 0, colors: ['amber', 'amber'] })));
         const t = step(s, { type: 'HARD_DROP' });
         expect(t.state.phase).toBe('LOST');
         expect(t.state.active).toBeNull();
         expect(types(t.events).at(-1)).toBe('LOST');
     });
-    it('T19 no removal spawns the next capsule from the queue', () => {
+    it('[E253] T19 no removal spawns the next capsule from the queue', () => {
         const t = step(stateWith(boardFrom(['M.......'])), { type: 'HARD_DROP' });
         expect(t.state.chainCount).toBe(0);
         expect(t.state.active?.colors).toEqual(['magenta', 'magenta']);
         expect(types(t.events)).toEqual(['LOCKED', 'SPAWNED']);
     });
-    it('the state returned by step is never RESOLVING', () => {
+    it('[E196][E485] the state returned by step is never RESOLVING', () => {
         const board = boardFrom(['c.......', 'c.......', 'aaa.....', 'CAMAM...', 'CMAMA...']);
-        expect(step(stateWith(board, { orientation: 1, colors: ['amber', 'magenta'] }), { type: 'HARD_DROP' }).state.phase).not.toBe('RESOLVING');
+        const initial = stateWith(board, { orientation: 1, colors: ['amber', 'magenta'] });
+        const transition = step(initial, { type: 'HARD_DROP' });
+        const events = types(transition.events);
+        expect(events.slice(0, 2)).toEqual(['LOCKED', 'MATCH_REMOVED']);
+        expect(events.slice(-2)).toEqual(['CASCADE_END', 'SPAWNED']);
+        expect(transition.state.phase).toBe('FALLING');
+        expect(transition.state.active?.colors).toEqual(initial.nextQueue[0]);
+        expect(transition.state.nextQueue).toHaveLength(1);
+        expect(transition.state.rngState).not.toEqual(initial.rngState);
+        expect(findMatches(transition.state.board).size).toBe(0);
     });
-    it('findMatches is empty after resolve, and resolve never increases obstacles', () => {
+    it('[E268][E269][E273] findMatches is empty after resolve, and resolve never increases obstacles', () => {
         const cell = fc.oneof(fc.constant(null), fc.constant(null), fc.constantFrom('C', 'A', 'M', 'c', 'a', 'm'));
         fc.assert(fc.property(fc.array(cell, { minLength: 128, maxLength: 128 }), raw => {
             const rows = Array.from({ length: 16 }, (_, y) => raw.slice(y * 8, y * 8 + 8).map(c => c ?? '.').join(''));
             const board = boardFrom(rows);
             const r = resolve(board);
             expect(findMatches(r.board).size).toBe(0);
+            expect(r.chain).toBeLessThanOrEqual(Math.floor(board.filter(Boolean).length / 4));
+            expect(r.obstaclesRemoved).toBeGreaterThanOrEqual(0);
             expect(r.board.filter(c => c?.kind === 'obstacle').length).toBe(board.filter(c => c?.kind === 'obstacle').length - r.obstaclesRemoved);
             expect(r.scoreDelta).toBeGreaterThanOrEqual(0);
         }), { numRuns: runs });
@@ -69,7 +81,7 @@ describe('resolution, score, end of level', () => {
 });
 
 describe('getAvailableMoves', () => {
-    it('lists the 30 resting placements reachable on an empty board', () => {
+    it('[E137] lists the 30 resting placements reachable on an empty board', () => {
         const moves = getAvailableMoves(stateWith(boardFrom(['.......C'])));
         expect(moves).toHaveLength(30);
         expect(moves).toContainEqual({ x: 0, y: 15, orientation: 0 });

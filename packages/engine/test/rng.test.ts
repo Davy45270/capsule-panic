@@ -7,7 +7,7 @@ import type { RngState } from '../src/rng';
 const runs = propertyRuns(process.env);
 
 describe('PRNG', () => {
-    it('xoshiro128** reference vector', () => {
+    it('[E026][E188] xoshiro128** reference vector', () => {
         let s: RngState = [1, 2, 3, 4];
         const out: number[] = [];
         for (let i = 0; i < 4; i++) { const [v, next] = nextUint32(s); out.push(v); s = next; }

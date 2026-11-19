@@ -4,7 +4,7 @@ import type { Speed } from '@capsule-panic/contracts';
 import { capsuleCells, createGame, SPAWN } from '../src/index';
 
 describe('createGame', () => {
-    it('T01 fresh game shows two segments inside the board, at the spawn', () => {
+    it('[E064][E235] T01 fresh game shows two segments inside the board, at the spawn', () => {
         const s = createGame({ seed: 'capsule', level: 0, speed: 'low' });
         expect(SPAWN).toEqual({ x: 3, y: 1, orientation: 0 });
         expect(s.phase).toBe('FALLING');
@@ -13,7 +13,7 @@ describe('createGame', () => {
         expect(s.nextQueue).toHaveLength(1);
         expect(s).toMatchObject({ score: 0, tick: 0, chainCount: 0, obstaclesRemaining: 4, level: 0, speed: 'low', seed: 'capsule' });
     });
-    it('is deterministic and keeps level and speed', () => {
+    it('[E044][E095] is deterministic and keeps level and speed', () => {
         const a = createGame({ seed: 's', level: 7, speed: 'high' });
         expect(createGame({ seed: 's', level: 7, speed: 'high' })).toEqual(a);
         expect(a).toMatchObject({ level: 7, speed: 'high', obstaclesRemaining: 32 });
@@ -23,9 +23,12 @@ describe('createGame', () => {
         const s = createGame({ seed: 'capsule', level: 0, speed: 'low' });
         expect([s.active?.colors, s.nextQueue[0]]).toEqual(GOLDEN_COLOURS);
     });
-    it('fresh state passes validateGameState at every level', () => {
+    it('[E059] fresh state passes validateGameState at every level', () => {
         for (let level = 0; level <= 20; level++) {
-            const r = validateGameState(createGame({ seed: `v${String(level)}`, level, speed: 'medium' }));
+            const state = createGame({ seed: `v${String(level)}`, level, speed: 'medium' });
+            expect(state.level).toBe(level);
+            expect(state.board.every(cell => cell === null || cell.kind === 'obstacle')).toBe(true);
+            const r = validateGameState(state);
             expect(r.ok ? [] : r.errors).toEqual([]);
         }
     });

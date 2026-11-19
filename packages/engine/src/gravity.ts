@@ -1,48 +1,60 @@
 import { HEIGHT, WIDTH } from '@capsule-panic/contracts';
-import type { Cell } from '@capsule-panic/contracts';
+import type { Cell, SegmentCell } from '@capsule-panic/contracts';
 
-interface Component { id: string; cells: number[] }
+interface PositionedSegment { index: number; cell: SegmentCell }
+interface Priority { bottomY: number; minX: number; id: string }
+interface Component extends Priority { cells: PositionedSegment[] }
 
-/** Composants mobiles : paires intactes (liens réciproques) et segments isolés ; les obstacles ne bougent pas. */
-function components(board: readonly Cell[]): Component[] {
-    const position = new Map<string, number>();
-    board.forEach((c, i) => { if (c?.kind === 'segment') position.set(c.id, i); });
-    const seen = new Set<string>();
-    const out: Component[] = [];
-    board.forEach((c, i) => {
-        if (c?.kind !== 'segment' || seen.has(c.id)) return;
-        seen.add(c.id);
-        const j = c.linkedToId === null ? undefined : position.get(c.linkedToId);
-        const partner = j === undefined ? null : board[j];
-        if (j !== undefined && partner?.kind === 'segment' && partner.linkedToId === c.id) {
-            seen.add(partner.id);
-            out.push({ id: c.id < partner.id ? c.id : partner.id, cells: [i, j] });
-        } else out.push({ id: c.id, cells: [i] });
-    });
-    const bottom = (k: Component): number => Math.max(...k.cells.map(i => Math.floor(i / WIDTH)));
-    const left = (k: Component): number => Math.min(...k.cells.map(i => i % WIDTH));
-    return out.sort((a, b) => bottom(b) - bottom(a) || left(a) - left(b) || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
+export function compareGravityPriority(a: Priority, b: Priority): number {
+    return b.bottomY - a.bottomY || a.minX - b.minX || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0);
 }
 
-/**
- * Un micro-pas synchrone : chaque composant descend d'une case si toutes ses cases de destination sont, dans
- * l'instantané, vides ou à lui, et non réservées par un composant prioritaire du même micro-pas.
- */
+/** Composants mobiles : paires intactes (liens réciproques) et segments isolés. */
+function components(board: readonly Cell[]): Component[] {
+    const segments = board.flatMap((cell, index) => cell?.kind === 'segment' ? [{ index, cell }] : []);
+    const byId = new Map(segments.map(segment => [segment.cell.id, segment]));
+    const seen = new Set<string>();
+    const out: Component[] = [];
+    for (const segment of segments) {
+        const { cell } = segment;
+        if (seen.has(cell.id)) continue;
+        seen.add(cell.id);
+        const partner = cell.linkedToId === null ? undefined : byId.get(cell.linkedToId);
+        const cells = [segment];
+        let id = cell.id;
+        if (partner?.cell.linkedToId === cell.id) {
+            seen.add(partner.cell.id);
+            cells.push(partner);
+            if (partner.cell.id < id) id = partner.cell.id;
+        }
+        const bottomY = Math.max(...cells.map(({ index }) => Math.floor(index / WIDTH)));
+        const minX = Math.min(...cells.map(({ index }) => index % WIDTH));
+        out.push({ id, cells, bottomY, minX });
+    }
+    return out.sort(compareGravityPriority);
+}
+
+/** Destinations d’un composant dans l’instantané, quand aucune des cases n’est bloquée ou réservée. */
+export function gravityTargets(board: readonly Cell[], from: readonly number[], reserved: ReadonlySet<number>): number[] | null {
+    const targets = from.map(index => index + WIDTH);
+    const fits = targets.every(index => index < WIDTH * HEIGHT && (board[index] === null || from.includes(index)) && !reserved.has(index));
+    return fits ? targets : null;
+}
+
+/** Évalue les mouvements dans l’instantané, puis les applique ensemble. */
 export function gravityStep(board: readonly Cell[]): { board: Cell[]; moved: string[] } {
     const reserved = new Set<number>();
     const moving: Component[] = [];
-    for (const k of components(board)) {
-        const own = new Set(k.cells);
-        const targets = k.cells.map(i => i + WIDTH);
-        if (targets.every(t => t < WIDTH * HEIGHT && (board[t] === null || own.has(t)) && !reserved.has(t))) {
-            targets.forEach(t => reserved.add(t));
-            moving.push(k);
-        }
+    for (const component of components(board)) {
+        const targets = gravityTargets(board, component.cells.map(segment => segment.index), reserved);
+        if (!targets) continue;
+        targets.forEach(index => reserved.add(index));
+        moving.push(component);
     }
     const out = [...board];
-    for (const k of moving) for (const i of k.cells) out[i] = null;
-    for (const k of moving) for (const i of k.cells) out[i + WIDTH] = board[i] ?? null;
-    return { board: out, moved: moving.map(k => k.id) };
+    for (const component of moving) for (const { index } of component.cells) out[index] = null;
+    for (const component of moving) for (const { index, cell } of component.cells) out[index + WIDTH] = cell;
+    return { board: out, moved: moving.map(component => component.id) };
 }
 
 export const MAX_GRAVITY_STEPS = 128 * 16;
@@ -50,11 +62,11 @@ export const MAX_GRAVITY_STEPS = 128 * 16;
 /** Répète les micro-pas jusqu'à stabilité ; `onStep` reçoit les composants déplacés à chaque pas. */
 export function settle(board: readonly Cell[], onStep?: (moved: string[]) => void, maxSteps = MAX_GRAVITY_STEPS): { board: Cell[]; steps: number } {
     let current = [...board];
-    for (let steps = 0; steps <= maxSteps; steps++) {
+    for (let steps = 0; ; steps++) {
         const next = gravityStep(current);
         if (next.moved.length === 0) return { board: current, steps };
+        if (steps >= maxSteps) throw new Error('gravity did not settle');
         onStep?.(next.moved);
         current = next.board;
     }
-    throw new Error('gravity did not settle');
 }
