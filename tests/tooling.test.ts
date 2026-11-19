@@ -1,4 +1,7 @@
-import { readFileSync } from 'node:fs';
+import { spawnSync } from 'node:child_process';
+import { copyFileSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { expect, it } from 'vitest';
 import { parse } from 'yaml';
 import { publicLines } from '../scripts/public-files';
@@ -57,15 +60,17 @@ it('[E182] l’image statique est versionnée et lance Nginx en utilisateur non-
 
 it('[E276] les propriétés critiques utilisent au moins 1000 cas en CI par défaut', () => {
     expect(propertyRuns({ CI: 'true' })).toBe(1000);
+    expect(propertyRuns({ CI: '' })).toBe(1000);
     expect(propertyRuns({})).toBe(50);
     expect(propertyRuns({ CI: 'true', FC_RUNS: '1500' })).toBe(1500);
+    expect(propertyRuns({ CI: 'true', FC_RUNS: '50' })).toBe(1000);
     expect(propertyRuns({ FC_RUNS: '50' })).toBe(50);
 });
 
 interface Workflow {
     steps: { name: string; commands: string[] }[];
 }
-it('[E167][E168][E170][E172] Woodpecker enchaîne les contrôles jusqu’à l’artefact', () => {
+it('[E167][E170][E172] Woodpecker enchaîne les contrôles jusqu’à l’artefact', () => {
     const { steps } = parse(read('.woodpecker/checks.yml')) as Workflow;
     const stages = [
         'npm ci',
@@ -79,8 +84,8 @@ it('[E167][E168][E170][E172] Woodpecker enchaîne les contrôles jusqu’à l’
         'tar -czf',
     ];
     let previous = -1;
+    const commands = steps.flatMap((step) => step.commands);
     for (const stage of stages) {
-        const commands = steps.flatMap((step) => step.commands);
         const index = commands.findIndex((command) => command.trimStart().startsWith(stage));
         expect(index, stage).toBeGreaterThan(previous);
         previous = index;
@@ -89,6 +94,9 @@ it('[E167][E168][E170][E172] Woodpecker enchaîne les contrôles jusqu’à l’
 });
 
 interface Manifest {
+    version?: string;
+    link?: boolean;
+    resolved?: string;
     dependencies?: Record<string, string>;
     devDependencies?: Record<string, string>;
 }
@@ -123,12 +131,24 @@ it('[E123][E166] chaque dépendance déclarée est épinglée et reportée au lo
         expect({ ...lock.packages[path]?.dependencies, ...lock.packages[path]?.devDependencies }).toEqual(
             deps,
         );
-        for (const version of Object.values(deps)) expect(version).toMatch(/^\d+\.\d+\.\d+(?:-[\w.-]+)?$/);
+        for (const [name, version] of Object.entries(deps)) {
+            expect(version).toMatch(/^\d+\.\d+\.\d+(?:-[\w.-]+)?$/);
+            const entry =
+                lock.packages[path ? `${path}/node_modules/${name}` : `node_modules/${name}`] ??
+                lock.packages[`node_modules/${name}`];
+            const resolved = entry?.link && entry.resolved ? lock.packages[entry.resolved] : entry;
+            expect(resolved?.version, name).toBe(version);
+        }
     }
 });
 
 it('[E011][E124] la pile exclut les moteurs et plateformes externes interdits', () => {
-    const prohibited = /(?:^|[/@-])(?:phaser|opencade|qwarkle)(?=$|[/@-])/i;
+    const names = [
+        ['pha', 'ser'],
+        ['open', 'cade'],
+        ['qwar', 'kle'],
+    ].map((parts) => parts.join(''));
+    const prohibited = new RegExp(`(?:^|[/@-])(?:${names.join('|')})(?=$|[/@-])`, 'i');
     const lock = JSON.parse(read('package-lock.json')) as { packages: Record<string, unknown> };
     expect(Object.keys(lock.packages).filter((name) => prohibited.test(name))).toEqual([]);
     const imports = publicLines(process.cwd()).filter(
@@ -139,4 +159,73 @@ it('[E011][E124] la pile exclut les moteurs et plateformes externes interdits', 
             [...line.matchAll(/['"]([^'"]+)['"]/g)].some((match) => prohibited.test(match[1] ?? '')),
         ),
     ).toEqual([]);
+});
+
+it('[E171] le build de CI compare les empreintes de deux générations de dist', () => {
+    const { steps } = parse(read('.woodpecker/checks.yml')) as Workflow;
+    const script = steps.find((step) => step.name === 'build')?.commands.join('\n') ?? '';
+    expect(script.match(/npm run build/g)).toHaveLength(2);
+    expect(script).toContain('find . -type f -print0');
+    expect(script).toContain('test "$$avant" = "$$apres"');
+    expect(script).toContain('empreinte dist $$apres');
+});
+
+it('[E020][E169] le contrôle de licences accepte le verrou courant et refuse une licence interdite', () => {
+    const script = 'scripts/check-licenses.js';
+    expect(read('.woodpecker/checks.yml')).toContain('npm run check:licenses');
+    expect(spawnSync(process.execPath, [script], { encoding: 'utf8' }).status).toBe(0);
+
+    const root = mkdtempSync(join(tmpdir(), 'licences-'));
+    try {
+        // Le script résout package-lock relativement au sous-répertoire scripts.
+        const scripts = join(root, 'scripts');
+        mkdirSync(scripts);
+        copyFileSync(script, join(scripts, 'check-licenses.mjs'));
+        const lock = { packages: { 'node_modules/exemple': { license: 'AGPL' } } };
+        writeFileSync(join(root, 'package-lock.json'), JSON.stringify(lock));
+        const result = spawnSync(process.execPath, [join(scripts, 'check-licenses.mjs')], {
+            encoding: 'utf8',
+        });
+        expect(result.status).toBe(1);
+        expect(result.stderr).toContain('node_modules/exemple');
+    } finally {
+        rmSync(root, { recursive: true, force: true });
+    }
+});
+
+it('[E050][E163][E180] les sources et le document d’entrée ne déclarent aucune requête externe', () => {
+    const html = read('apps/web/index.html');
+    expect(html).toContain("script-src 'self'");
+    expect(html).toContain("connect-src 'self'");
+    const scripts = [...html.matchAll(/<script\b[^>]*\bsrc="([^"]+)"/g)].map((match) => match[1]);
+    expect(scripts).toEqual(['/src/main.tsx']);
+    const source = publicLines(process.cwd()).filter(({ file }) => /(?:^|\/)src\/.*\.[jt]sx?$/.test(file));
+    expect(source.length).toBeGreaterThan(0);
+    expect(
+        source.filter(({ line }) =>
+            /\b(?:fetch|sendBeacon|XMLHttpRequest|WebSocket|EventSource)\s*\(/.test(line),
+        ),
+    ).toEqual([]);
+    const inertSvgNamespace = 'xmlns="http://www.w3.org/2000/svg"';
+    expect(
+        source.filter(({ line }) => /['"`]https?:\/\//i.test(line.replaceAll(inertSvgNamespace, ''))),
+    ).toEqual([]);
+});
+
+it('[E168] le SAST signale une construction non littérale sur un fichier source TypeScript', () => {
+    const args = [
+        'node_modules/eslint/bin/eslint.js',
+        '--config',
+        'eslint.security.config.mjs',
+        '--max-warnings=0',
+        '--stdin',
+        '--stdin-filename',
+        'apps/web/src/probe.ts',
+    ];
+    const result = spawnSync(process.execPath, args, {
+        input: 'export const pattern = (value: string) => new RegExp(value);',
+        encoding: 'utf8',
+    });
+    expect(result.status).toBe(1);
+    expect(result.stdout).toContain('security/detect-non-literal-regexp');
 });

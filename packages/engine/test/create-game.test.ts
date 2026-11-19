@@ -13,7 +13,7 @@ describe('createGame', () => {
         expect(s.nextQueue).toHaveLength(1);
         expect(s).toMatchObject({ score: 0, tick: 0, chainCount: 0, obstaclesRemaining: 4, level: 0, speed: 'low', seed: 'capsule' });
     });
-    it('[E044][E095] is deterministic and keeps level and speed', () => {
+    it('[E095] is deterministic and keeps level and speed', () => {
         const a = createGame({ seed: 's', level: 7, speed: 'high' });
         expect(createGame({ seed: 's', level: 7, speed: 'high' })).toEqual(a);
         expect(a).toMatchObject({ level: 7, speed: 'high', obstaclesRemaining: 32 });
@@ -23,7 +23,7 @@ describe('createGame', () => {
         const s = createGame({ seed: 'capsule', level: 0, speed: 'low' });
         expect([s.active?.colors, s.nextQueue[0]]).toEqual(GOLDEN_COLOURS);
     });
-    it('[E059] fresh state passes validateGameState at every level', () => {
+    it('[E044][E059] fresh state passes validateGameState at every level', () => {
         for (let level = 0; level <= 20; level++) {
             const state = createGame({ seed: `v${String(level)}`, level, speed: 'medium' });
             expect(state.level).toBe(level);

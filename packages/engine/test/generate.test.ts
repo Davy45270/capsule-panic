@@ -42,15 +42,15 @@ describe('generation', () => {
         expect([0, 5, 16, 17, 20].map(obstacleCount)).toEqual([4, 24, 68, 72, 72]);
     });
     it('[E032][E097][E259][E260] T25 no initial match, T26 cells in bounds, rows y >= 5 only, exact count and ids', () => {
-        for (const level of [0, 10, 20]) for (const seed of seeds.slice(0, 70)) {
+        for (const [level, count] of [[0, 4], [10, 44], [20, 72]] as const) for (const seed of seeds.slice(0, 70)) {
             const { board } = generateBoard(level, seedToState(seed));
             expect(board).toHaveLength(128);
             expect(canPlace(board, SPAWN)).toBe(true);
             expect(hasInitialRun(board)).toBe(false);
             const placed = board.flatMap((c, i) => (c ? [{ c, i }] : []));
-            expect(placed).toHaveLength(obstacleCount(level));
+            expect(placed).toHaveLength(count);
             expect(placed.every(({ i }) => i >= 40 && i < 128)).toBe(true);
-            expect(placed.map(({ c }) => c.id).sort()).toEqual(Array.from({ length: obstacleCount(level) }, (_, k) => `o${String(k + 1)}`).sort());
+            expect(placed.map(({ c }) => c.id).sort()).toEqual(Array.from({ length: count }, (_, k) => `o${String(k + 1)}`).sort());
         }
     });
     it('level 20 generates for every seed', () => {

@@ -2,8 +2,17 @@ import { readFileSync } from 'node:fs';
 import { expect, it } from 'vitest';
 
 const decisions = [
-    'prng', 'score', 'gravite', 'cadence', 'rotation', 'niveau-20',
-    'identifiants', 'resolution', 'file', 'phase-initiale', 'performance',
+    'prng',
+    'score',
+    'gravite',
+    'cadence',
+    'rotation',
+    'niveau-20',
+    'identifiants',
+    'resolution',
+    'file',
+    'phase-initiale',
+    'performance',
 ];
 
 it('[E015] chaque décision de la passe référence un test discriminant nommé', () => {

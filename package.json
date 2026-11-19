@@ -20,14 +20,15 @@
     "check:precache": "node scripts/check-precache.js",
     "check:licenses": "node scripts/check-licenses.js",
     "typecheck": "tsc --noEmit",
-    "lint": "oxlint --max-warnings=0 && eslint --max-warnings=0 . && prettier --check .prettierrc.json .woodpecker eslint.config.mjs eslint.security.config.mjs scripts/compile-schemas.mjs tests/tooling.test.ts \"docs/adr/*.md\" --no-error-on-unmatched-pattern",
+    "lint": "oxlint --max-warnings=0 && eslint --max-warnings=0 . && prettier --check .prettierrc.json .woodpecker eslint.config.mjs eslint.security.config.mjs scripts/compile-schemas.mjs packages/contracts/src/schema-validators.d.mts packages/engine/src/gravity.ts packages/engine/test/api.test.ts packages/engine/test/performance.test.ts packages/engine/test/property-runs.ts packages/engine/test/rules.test.ts tests/adr.test.ts tests/coverage.test.ts tests/tooling.test.ts tests/build/static.test.ts vitest.build.config.ts \"docs/adr/*.md\"",
     "test": "vitest run --pool=threads --maxWorkers=2 --coverage",
     "test:e2e": "playwright test",
     "compile:schemas": "node scripts/compile-schemas.mjs",
     "prepare": "npm run compile:schemas",
     "prebuild": "npm run compile:schemas",
     "predev": "npm run compile:schemas",
-    "check:sast": "eslint --config eslint.security.config.mjs --max-warnings=0 apps/web/src packages/*/src"
+    "check:sast": "eslint --config eslint.security.config.mjs --max-warnings=0 apps/web/src packages/*/src",
+    "check:static": "vitest run --config vitest.build.config.ts tests/build/static.test.ts"
   },
   "devDependencies": {
     "@babel/core": "8.1.2",

@@ -1,6 +1,13 @@
 import { expectTypeOf, it } from 'vitest';
 import type { GameCommand, GameState, Position, Transition } from '@capsule-panic/contracts';
-import { createGame, getAvailableMoves, getLandingProjection, restore, serialize, step } from '@capsule-panic/engine';
+import {
+    createGame,
+    getAvailableMoves,
+    getLandingProjection,
+    restore,
+    serialize,
+    step,
+} from '@capsule-panic/engine';
 import type { GameConfig, Move } from '@capsule-panic/engine';
 
 it('[E483] un consommateur peut typer ses appels à l’API publique du moteur', () => {
