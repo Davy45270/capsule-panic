@@ -314,6 +314,51 @@ it('quitter pendant la sauvegarde ne redessine pas le réacteur démonté', asyn
     expect(renderer.render).not.toHaveBeenCalled();
 });
 
+it.each([false, true])(
+    '[E152] sauvegarde la pause affichée quand l’onglet se masque (écriture en cours : %s)',
+    async (writing) => {
+        const initial = createGame({ seed: 'reprise', level: 0, speed: 'low' });
+        const checkpoint = Promise.withResolvers<undefined>();
+        const onSave = vi
+            .fn<(state: GameState) => Promise<void>>()
+            .mockImplementation((state) =>
+                state.phase === 'FALLING' ? checkpoint.promise : saveGame(state).then(() => undefined),
+            );
+        const hidden = vi.spyOn(document, 'hidden', 'get').mockReturnValue(false);
+        await update(() =>
+            root.render(
+                createElement(Game, {
+                    initial,
+                    settings: defaultSettings(),
+                    onSave,
+                    onMenu: noop,
+                    onEnd: noop,
+                    onRestart: noop,
+                    onError: noop,
+                }),
+            ),
+        );
+        if (writing) {
+            await update(() => window.dispatchEvent(new KeyboardEvent('keydown', { key: ' ' })));
+            expect(onSave).toHaveBeenCalledTimes(1);
+            expect(onSave.mock.lastCall?.[0].phase).toBe('FALLING');
+        }
+        await update(() => {
+            hidden.mockReturnValue(true);
+            document.dispatchEvent(new Event('visibilitychange'));
+        });
+        if (writing) {
+            expect(onSave).toHaveBeenCalledTimes(1);
+            await update(() => checkpoint.resolve(undefined));
+        }
+        expect(container.querySelector('dialog[open]')).not.toBeNull();
+        const displayed = renderer.render.mock.lastCall?.[0];
+        expect(displayed?.phase).toBe('PAUSED');
+        expect(onSave.mock.lastCall?.[0]).toBe(displayed);
+        await vi.waitFor(async () => expect(await loadGame()).toEqual(displayed));
+    },
+);
+
 it('la fin de partie conserve le meilleur combo et les poses d’avant le rechargement', async () => {
     await saveGame(createGame({ seed: cascade.seed, level: 0, speed: 'low' }));
     await resumeSaved();
