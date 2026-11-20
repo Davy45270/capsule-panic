@@ -3,7 +3,7 @@ import { rmSync, writeFileSync } from 'node:fs';
 import { it, expect } from 'vitest';
 
 // The pure packages must not reach the clock, the DOM, randomness or the UI libraries: oxlint enforces it.
-it('[E006][E012][E062][E189] engine purity is enforced by lint', () => {
+it('[E006][E320][E012][E062][E189] engine purity is enforced by lint', () => {
     const probe = 'packages/engine/src/__lint_probe.ts';
     writeFileSync(probe, "import 'react';\nimport '@capsule-panic/renderer';\nimport 'pixi.js';\nexport const a = Math.random();\nexport const b = new Date();\n");
     try {

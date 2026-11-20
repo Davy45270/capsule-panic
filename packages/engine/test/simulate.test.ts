@@ -9,7 +9,7 @@ const GAMES = Number(process.env.SIM_GAMES ?? 10_000);
 const MAX_COMMANDS = 4000;
 const POLICY: GameCommand['type'][] = ['MOVE_LEFT', 'MOVE_RIGHT', 'ROTATE_CW', 'ROTATE_CCW', 'SOFT_DROP', 'HARD_DROP', 'TICK', 'TICK'];
 
-it(`[E109][E274] simulates ${String(GAMES)} games without crash`, () => {
+it(`[E109][E323][E274] simulates ${String(GAMES)} games without crash`, () => {
     const ends = { WON: 0, LOST: 0, open: 0 };
     for (let g = 0; g < GAMES; g++) {
         const seed = `sim-${String(g)}`;
