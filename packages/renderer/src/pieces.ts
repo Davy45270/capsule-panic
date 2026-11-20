@@ -19,13 +19,13 @@ import etincellesApercu from '../../assets/runtime/sprite-etincelles-apercu.webp
 import particulesEffetsJeu from '../../assets/runtime/sprite-particules-effets-jeu.webp';
 import cristalCyan from '../../assets/sprites/sprite-cristal-cyan.png';
 import celluleCyan from '../../assets/sprites/sprite-cellule-cyan.png';
-import celluleCyanUnie from '../../assets/source/svg/cellule-cyan-unie.svg';
+import segmentCyan from '../../assets/sprites/sprite-segment-bleu-plateau-apercu.png';
 import cristalAmbre from '../../assets/sprites/sprite-cristal-ambre.png';
 import celluleAmbre from '../../assets/sprites/sprite-cellule-ambre.png';
-import celluleAmbreUnie from '../../assets/source/svg/cellule-ambre-unie.svg';
+import segmentAmbre from '../../assets/sprites/sprite-segment-jaune-plateau-apercu.png';
 import cristalMagenta from '../../assets/sprites/sprite-cristal-magenta.png';
 import celluleMagenta from '../../assets/sprites/sprite-cellule-magenta.png';
-import celluleMagentaUnie from '../../assets/source/svg/cellule-magenta-unie.svg';
+import segmentMagenta from '../../assets/sprites/sprite-segment-rouge-plateau-apercu.png';
 
 export const pieceArtwork = {
     'trainee-deplacement-apercu': traineeDeplacementApercu,
@@ -48,23 +48,27 @@ export const pieceArtwork = {
     'particules-effets-jeu': particulesEffetsJeu,
     'cristal-cyan': cristalCyan,
     'cellule-cyan': celluleCyan,
-    'cellule-cyan-unie': celluleCyanUnie,
+    'segment-cyan': segmentCyan,
     'cristal-ambre': cristalAmbre,
     'cellule-ambre': celluleAmbre,
-    'cellule-ambre-unie': celluleAmbreUnie,
+    'segment-ambre': segmentAmbre,
     'cristal-magenta': cristalMagenta,
     'cellule-magenta': celluleMagenta,
-    'cellule-magenta-unie': celluleMagentaUnie,
+    'segment-magenta': segmentMagenta,
 };
 export type Artwork = keyof typeof pieceArtwork;
 
 const colors = { cyan: 'cyan', amber: 'ambre', magenta: 'magenta' } as const;
 const forms = { cyan: 'hexagone', amber: 'triangle', magenta: 'losange' } as const;
 
-/** Le nom du motif et la texture sont choisis ensemble, pour le rendu et son miroir accessible. */
+/**
+ * Le nom du motif et la texture sont choisis ensemble, pour le rendu et son miroir accessible.
+ * [E422] Par défaut, un segment est le segment uni carré de la planche Gameplay 03 recoloré au jeton de sa
+ * couleur ; le mode daltonien garde les cellules à motif (hexagone, triangle, losange).
+ */
 export function textureFor(kind: 'obstacle' | 'segment', color: Color, colorBlind: boolean) {
     const shade = colors[color];
     if (kind === 'obstacle') return { art: `cristal-${shade}` as const, form: forms[color] };
     if (colorBlind) return { art: `cellule-${shade}` as const, form: forms[color] };
-    return { art: `cellule-${shade}-unie` as const, form: 'aucune' };
+    return { art: `segment-${shade}` as const, form: 'aucune' };
 }
