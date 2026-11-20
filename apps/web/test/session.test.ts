@@ -223,7 +223,10 @@ it('la vue ne reçoit pas le plateau final avant les effets de cascade', async (
     expect(frames).toEqual([initial, session.state]);
 });
 
-it('[E152] [E531] laisse la pose se terminer avant d’enregistrer et de montrer la capsule suivante', async () => {
+// Arbitrage du relecteur (20/11, revue c8fc449 n° 1) : comportement publié à 5f2553b — seule la cascade bloque l'entrée
+// (T28). L'éclat de pose est purement visuel : il ne retient ni la capsule suivante, ni sa sauvegarde, ni les commandes,
+// et le résultat ne dépend pas du mouvement réduit (PRD l.28).
+it('[E152] [E531] la pose se joue sans retenir la capsule suivante : montrée et enregistrée tout de suite', async () => {
     const before = createGame({ seed: 'reprise', level: 0, speed: 'low' });
     const pose = Promise.withResolvers<undefined>();
     const shown: GameState[] = [];
@@ -241,30 +244,41 @@ it('[E152] [E531] laisse la pose se terminer avant d’enregistrer et de montrer
     const session = new GameSession(before, hooks);
     const expected = step(before, { type: 'HARD_DROP' }).state;
     session.command('HARD_DROP');
-    expect(session.state).toEqual(expected);
-    expect(shown).toEqual([before]);
-    expect(saved).toEqual([]);
+    await flush();
+    expect(session.animating).toBe(false);
+    expect(shown.at(-1)).toEqual(expected);
+    expect(saved).toEqual([expected]);
     pose.resolve(undefined);
     await flush();
-    expect(shown).toEqual([before, expected]);
     expect(saved).toEqual([expected]);
 });
 
-it('[E106] [E262] la capsule suivante ne tombe ni ne bouge avant la fin de la pose, et les commandes sont refusées', async () => {
-    const before = createGame({ seed: 'reprise', level: 0, speed: 'low' });
-    const pose = Promise.withResolvers<undefined>();
-    const session = new GameSession(before, { ...fakeView().hooks, playPlacement: () => pose.promise });
-    session.command('HARD_DROP');
-    const spawned = session.state;
-    session.tick();
-    session.tick();
-    expect(session.command('MOVE_LEFT')).toBe(false);
-    expect(session.command('HARD_DROP')).toBe(false);
-    expect(session.state).toBe(spawned);
-    pose.resolve(undefined);
-    await flush();
-    expect(session.state).toEqual(spawned);
-});
+it.each([
+    ['avec animation', true],
+    ['en mouvement réduit', false],
+] as const)(
+    '[E106] [E262] une commande juste après une pose ordinaire est acceptée (%s), même état dans les deux modes',
+    async (_mode, anime) => {
+        const before = createGame({ seed: 'reprise', level: 0, speed: 'low' });
+        const pose = Promise.withResolvers<undefined>();
+        const session = new GameSession(before, {
+            ...fakeView().hooks,
+            playPlacement: anime ? () => pose.promise : () => undefined,
+        });
+        session.command('HARD_DROP');
+        await flush();
+        const spawned = step(before, { type: 'HARD_DROP' }).state;
+        expect(session.command('MOVE_LEFT')).toBe(true);
+        session.tick();
+        expect(session.command('ROTATE_CW')).toBe(true);
+        pose.resolve(undefined);
+        await flush();
+        const attendu = step(step(step(spawned, { type: 'MOVE_LEFT' }).state, { type: 'TICK' }).state, {
+            type: 'ROTATE_CW',
+        }).state;
+        expect(session.state).toEqual(attendu);
+    },
+);
 
 // Revue P7 (6d97d47) : une PAUSE demandée pendant la pose, puis un onglet masqué, relançait la partie (la PAUSE en file
 // devenait RESUME une fois la pause de masquage appliquée).
