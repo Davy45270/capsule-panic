@@ -21,7 +21,7 @@ test('[E038] [E110] keyboard: hard drop scores, P pauses and resumes', async ({ 
     await expect(page.getByRole('dialog', { name: 'Pause' })).toBeHidden();
 });
 
-test('touch buttons are at least 48 px and play the game', async ({ page }, info) => {
+test('[E033] [E321] touch buttons are at least 48 px and play the game', async ({ page }, info) => {
     await startGame(page);
     for (const name of ['Gauche', 'Pivoter', 'Descendre', 'Poser', 'Droite']) {
         const box = await page.getByRole('button', { name, exact: true }).boundingBox();

@@ -18,7 +18,7 @@ beforeEach(async () => {
 });
 
 describe('IndexedDB storage', () => {
-    it('[E049][E111][E256] T22 reprend exactement à la frontière entre deux capsules', async () => {
+    it('[E049][E111][E256][E322] T22 reprend exactement à la frontière entre deux capsules', async () => {
         let s = createGame({ seed: 'sauvegarde', level: 4, speed: 'medium' });
         for (const type of ['MOVE_LEFT', 'ROTATE_CW'] as const) s = step(s, { type }).state;
         const boundary = step(s, { type: 'HARD_DROP' });

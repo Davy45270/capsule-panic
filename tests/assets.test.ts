@@ -115,7 +115,7 @@ it('[E301] chaque atlas est décliné et la cellule cyan mesure 64 puis 96 pixel
     }
 });
 
-it('[E009] [E018] [E310] provenance, sources et licence couvrent chaque cadre', () => {
+it('[E009] [E018] [E288] [E308] [E310] provenance, sources et licence couvrent chaque cadre', () => {
     const { assets } = JSON.parse(lire('provenance.json').toString()) as {
         assets: {
             id: string;

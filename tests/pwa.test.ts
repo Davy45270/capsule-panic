@@ -24,7 +24,7 @@ it('ships three PNG icons with the declared sizes', () => {
 });
 // Le précache est versionné et complet ; le seul cache à l'exécution est celui que la spec impose
 // (manifeste en network-first, assets hashés en cache-first), vérifié en détail par tests/build/static.test.ts.
-it('uses a relative, versioned, complete precache', () => {
+it('[E008] uses a relative, versioned, complete precache', () => {
     const config = readFileSync('apps/web/vite.config.ts', 'utf8');
     expect(config).toContain("base: './'");
     expect(config).toContain("strategies: 'generateSW'");

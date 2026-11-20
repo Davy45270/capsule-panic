@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { gestureCommands, mapKey } from '../src/index';
 
-describe('keyboard', () => {
+describe('[E129] keyboard', () => {
     it('maps arrows, X, Z, Space, P and Escape', () => {
         expect(['ArrowLeft', 'ArrowRight', 'ArrowDown', 'ArrowUp', ' ', 'x', 'X', 'z', 'Z', 'p', 'P', 'Escape'].map(mapKey)).toEqual([
             'MOVE_LEFT', 'MOVE_RIGHT', 'SOFT_DROP', 'ROTATE_CW', 'HARD_DROP', 'ROTATE_CW', 'ROTATE_CW', 'ROTATE_CCW', 'ROTATE_CCW', 'PAUSE', 'PAUSE', 'PAUSE'
