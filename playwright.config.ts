@@ -49,6 +49,21 @@ const projects: Project[] = [
     },
 ];
 
+// Témoin de cadence avec GPU (E156) : projet ajouté seulement quand E2E_GPU=1, hors CI. Sur tank01, Chromium n'atteint le
+// GPU (Intel Arc, /dev/dri) que par ANGLE sur EGL ; ses options par défaut retombent sur SwiftShader (rendu logiciel).
+if (process.env.E2E_GPU === '1') {
+    projects.push({
+        name: 'chromium-gpu',
+        use: {
+            browserName: 'chromium',
+            viewport: BUREAU,
+            launchOptions: {
+                args: ['--use-angle=gl-egl', '--use-gl=angle', '--ignore-gpu-blocklist', '--enable-gpu'],
+            },
+        },
+    });
+}
+
 export default defineConfig({
     testDir: 'tests/e2e',
     workers: 1,
