@@ -14,11 +14,10 @@ const WIDTH = 8;
 const HEIGHT = 16;
 const GUTTER = 16; // packages/renderer/src/layout.ts : marge autour du réacteur
 const DROP_MS = 120; // packages/renderer/src/art.ts : durée « gravity », celle de la descente animée
-// Pour la graine preuve-0, après déplacement, rotation et 300 ms d'attente : la capsule horizontale part
-// de (2,3)-(3,3) et se pose en (2,9)-(3,9). Constaté sur la planche de captures, vérifié ci-dessous.
-const AVANT_POSE = 'c1 2,3,1';
-const POSE = { x: 2, y: 3 };
-const ARRIVEE = 9;
+// Les cases de départ et d'arrivée de la pose ne sont pas écrites en dur : le nombre de pas de gravité avant la
+// pose dépend de la cadence de la machine (temps réel écoulé avant que l'horloge soit figée). Le départ se lit
+// dans data-capsule, l'arrivée se déduit des images (voir sequence).
+const CHUTE_MIN = 4; // cases : assez de chute pour voir la capsule à plus de deux cases de son départ
 
 interface Image {
     largeur: number;
@@ -203,17 +202,65 @@ async function demarrer(page: Page, reduit: boolean) {
     return { serie, zone, englobe, cote, oy, erreurs };
 }
 
+/** Médiane de chaque pixel d'un rectangle sur une suite d'images (hors du rectangle : noir). */
+function mediane(images: Image[], r: Rect): Image {
+    const [premiere] = images;
+    if (!premiere) throw new Error('aucune image');
+    const fond = {
+        largeur: premiere.largeur,
+        hauteur: premiere.hauteur,
+        rgba: new Uint8Array(premiere.rgba.length),
+    };
+    const pile: number[] = [];
+    for (let y = r.y0; y < r.y1; y++)
+        for (let x = r.x0; x < r.x1; x++)
+            for (let k = 0; k < 3; k++) {
+                pile.length = 0;
+                for (const image of images) pile.push(px(image, x, y, k));
+                pile.sort((a, b) => a - b);
+                fond.rgba[(y * premiere.largeur + x) * 4 + k] = pile[Math.floor(pile.length / 2)] ?? 0;
+            }
+    return fond;
+}
+
 /** Même séquence que la planche de captures : déplacement, rotation, puis pose de la capsule. */
 async function sequence(page: Page, reduit: boolean) {
     const jeu = await demarrer(page, reduit);
     const deplacement = await jeu.serie('ArrowLeft', 160);
     await jeu.serie('ArrowUp', 160);
     const pose = await jeu.serie(' ', 320);
-    expect(pose.capsuleAvant, 'état de départ de la pose (graine preuve-0)').toBe(AVANT_POSE);
     const final = pose.images.at(-1)?.image;
     if (!final) throw new Error('aucune image de pose');
-    const arrivee = [0, 1].map((i) => jeu.zone(POSE.x + i, ARRIVEE, POSE.x + i + 1, ARRIVEE + 1));
-    return { jeu, deplacement, pose, final, arrivee };
+    // La pose a bien eu lieu : une nouvelle capsule est apparue.
+    const id = (capsule: string) => capsule.split(' ')[0] ?? '';
+    expect(pose.capsuleAvant, 'capsule active avant la pose').not.toBe('');
+    expect(id(pose.capsuleApres), 'une nouvelle capsule après la pose').not.toBe(id(pose.capsuleAvant));
+    const depart = cases(pose.capsuleAvant);
+    const gauche = Math.min(...depart.map((c) => c.x));
+    const droite = Math.max(...depart.map((c) => c.x)) + 1;
+    const haut = Math.min(...depart.map((c) => c.y));
+    const bas = Math.max(...depart.map((c) => c.y)) + 1;
+    // Arrivée : le fond (médiane sur la pose) montre la capsule posée, qui occupe la majorité des images.
+    // L'image « avant » y montre le fantôme d'arrivée et, partout ailleurs sous le départ, la même chose que le
+    // fond. La chute est donc le plus grand décalage d dont les cases décalées s'écartent franchement du fond.
+    const fond = mediane(
+        pose.images.map(({ image }) => image),
+        jeu.zone(gauche, haut, droite, HEIGHT, 0),
+    );
+    let chute = 0;
+    for (let d = 1; bas + d <= HEIGHT; d++) {
+        const ecarts = depart.map(({ x, y }) =>
+            p90(valeurs(jeu.zone(x, y + d, x + 1, y + d + 1), (px_, py) => ecart(pose.avant, fond, px_, py))),
+        );
+        if (Math.min(...ecarts) > 60) chute = d;
+    }
+    expect(chute, `chute de la capsule ${pose.capsuleAvant} (en cases)`).toBeGreaterThanOrEqual(CHUTE_MIN);
+    const arrivee = depart.map(({ x, y }) => jeu.zone(x, y + chute, x + 1, y + chute + 1));
+    const geometrie = { gauche, droite, haut, bas, chute };
+    console.log(
+        `MESURE pose ${test.info().project.name} ${pose.capsuleAvant} -> ${pose.capsuleApres} chute ${String(chute)}`,
+    );
+    return { jeu, deplacement, pose, final, arrivee, geometrie };
 }
 
 test.describe('animations visibles en jeu', () => {
@@ -269,32 +316,19 @@ test.describe('animations visibles en jeu', () => {
     });
 
     test('[E531] la traînée de chute suit la capsule', async ({ page }) => {
-        const { jeu, pose } = await sequence(page, false);
+        const { jeu, pose, geometrie: g } = await sequence(page, false);
         const images = pose.images.map(({ image }) => image);
-        const first = images[0];
-        if (!first) throw new Error('aucune image');
         // Bande des colonnes de la capsule, une colonne de marge de chaque côté, de la ligne au-dessus du départ
-        // jusqu'à la ligne d'arrivée exclue.
-        const bande = jeu.zone(POSE.x - 1, POSE.y - 1, POSE.x + 3, ARRIVEE, 0);
-        const colonnes = jeu.zone(POSE.x, POSE.y - 1, POSE.x + 2, ARRIVEE, 0);
+        // jusqu'au haut de la capsule posée (exclu). Le haut de la capsule se cherche à partir de la ligne de départ :
+        // la nouvelle capsule, qui apparaît au-dessus, n'y entre pas.
+        const bande = jeu.zone(g.gauche - 1, g.haut - 1, g.droite + 1, g.haut + g.chute, 0);
+        const colonnes = jeu.zone(g.gauche, g.haut, g.droite, g.haut + g.chute, 0);
         // Fond : médiane de chaque pixel sur toute la pose. La capsule et sa traînée ne passent que quelques
         // images sur un pixel donné ; la médiane rend donc la case vide.
-        const fond = {
-            largeur: first.largeur,
-            hauteur: first.hauteur,
-            rgba: new Uint8Array(first.rgba.length),
-        };
-        const pile: number[] = [];
-        for (let y = bande.y0; y < bande.y1; y++)
-            for (let x = bande.x0; x < bande.x1; x++)
-                for (let k = 0; k < 3; k++) {
-                    pile.length = 0;
-                    for (const image of images) pile.push(px(image, x, y, k));
-                    pile.sort((a, b) => a - b);
-                    fond.rgba[(y * first.largeur + x) * 4 + k] = pile[Math.floor(pile.length / 2)] ?? 0;
-                }
+        const fond = mediane(images, bande);
         const releves: { t: number; hautCapsule: number; loin: number; pixelsLoin: number }[] = [];
-        for (const { t, image } of pose.images) {
+        // Seules comptent les images de la descente (120 ms) : ensuite la nouvelle capsule apparaît.
+        for (const { t, image } of pose.images.filter(({ t: temps }) => temps <= DROP_MS)) {
             // Haut de la capsule : première ligne de pixels où plus de la moitié des colonnes de la capsule
             // s'écartent du fond de plus de 100.
             let haut = -1;
@@ -329,45 +363,60 @@ test.describe('animations visibles en jeu', () => {
     });
 
     test('[E438] [E531] en mouvement réduit, aucune image intermédiaire ni effet', async ({ page }) => {
-        const { jeu, deplacement, pose, final, arrivee } = await sequence(page, true);
-        // Déplacement : dès la première image rendue, la capsule est à sa place ; tant que l'état ne change pas,
-        // les images suivantes sont identiques (aucune interpolation, aucune traînée).
+        const { jeu, deplacement, pose, final, arrivee, geometrie: g } = await sequence(page, true);
+        // Le canevas peut avoir une ou deux images de retard sur data-capsule, ou l'inverse quand la machine est
+        // chargée ; un pas de gravité tombe aussi parfois dans la fenêtre (une chute toutes les 750 ms en Lente).
+        // On ne se fie donc pas à l'attribut : on découpe les images en paliers d'images identiques (écart ≤ 2).
+        // En mouvement réduit, chaque changement est un saut d'un palier à l'autre, et chaque palier dure au moins
+        // trois images (24 ms), sauf le dernier, coupé par la fin de la fenêtre. Une interpolation, elle, change
+        // l'image à chaque rendu (toutes les 16 ms, soit deux images) : elle laisse des paliers trop courts.
+        const paliers = (images: Image[], r: Rect): number[] => {
+            const longueurs: number[] = [];
+            images.forEach((image, i) => {
+                const precedente = images[i - 1];
+                const meme =
+                    precedente !== undefined &&
+                    Math.max(...valeurs(r, (x, y) => ecart(image, precedente, x, y))) <= 2;
+                if (meme && longueurs.length > 0)
+                    longueurs[longueurs.length - 1] = (longueurs.at(-1) ?? 0) + 1;
+                else longueurs.push(1);
+            });
+            return longueurs;
+        };
+        const courts = (longueurs: number[]) => longueurs.slice(0, -1).filter((n) => n < 3).length;
+
+        // Déplacement : dès la troisième image, la capsule a quitté sa place (le canevas a reçu le geste).
         const zoneDep = jeu.englobe([...cases(deplacement.capsuleAvant), ...cases(deplacement.capsuleApres)]);
-        const premiere = deplacement.images.find(
-            ({ t, capsule }, i) =>
-                t >= 3 * PAS && [1, 2].every((k) => deplacement.images[i + k]?.capsule === capsule),
-        );
+        const apres = deplacement.images.filter(({ t }) => t >= 3 * PAS);
+        const [premiere] = apres;
         if (!premiere) throw new Error('image absente');
         expect(
             p90(valeurs(zoneDep, (x, y) => ecart(premiere.image, deplacement.avant, x, y))),
         ).toBeGreaterThan(100);
-        // data-capsule est publié par React, qui peut avoir une image de retard sur le canevas : une image
-        // n'est retenue que si l'état reste le même sur elle et sur les deux suivantes (aucune chute pendant).
-        const stable = (i: number) =>
-            [0, 1, 2].every((k) => deplacement.images[i + k]?.capsule === premiere.capsule);
-        const suivantes = deplacement.images.filter(({ t }, i) => t > premiere.t && stable(i));
-        expect(suivantes.length).toBeGreaterThan(0);
-        const bougeDep = Math.max(
-            ...suivantes.map(({ image }) =>
-                Math.max(...valeurs(zoneDep, (x, y) => ecart(image, premiere.image, x, y))),
+        const paliersDep = paliers(
+            apres.map(({ image }) => image),
+            zoneDep,
+        );
+        // Pose : dès la troisième image, les cases d'arrivée sont celles de l'image finale (ni descente ni éclat) ;
+        // la case de départ et celle du dessus (traînée) ne passent que par des paliers.
+        const depart = jeu.zone(g.gauche, g.haut - 1, g.droite, g.bas);
+        const imagesPose = pose.images.filter(({ t }) => t >= 3 * PAS).map(({ image }) => image);
+        const bougeArrivee = Math.max(
+            ...imagesPose.flatMap((image) =>
+                arrivee.map((r) => Math.max(...valeurs(r, (x, y) => ecart(image, final, x, y)))),
             ),
         );
-        // Pose : dès la troisième image, les cases de départ et d'arrivée sont celles de l'image finale.
-        const depart = jeu.zone(POSE.x, POSE.y - 1, POSE.x + 2, POSE.y + 1);
-        const bougePose = Math.max(
-            ...pose.images
-                .filter(({ t }) => t >= 3 * PAS)
-                .flatMap(({ image }) =>
-                    [...arrivee, depart].map((r) =>
-                        Math.max(...valeurs(r, (x, y) => ecart(image, final, x, y))),
-                    ),
-                ),
-        );
-        console.log(
-            `MESURE réduit ${test.info().project.name} ${JSON.stringify({ bougeDep, bougePose, etats: deplacement.images.map(({ t, capsule }) => `${String(t)}:${capsule}`) })}`,
-        );
-        expect(bougeDep).toBeLessThanOrEqual(2);
-        expect(bougePose).toBeLessThanOrEqual(2);
+        const paliersPose = paliers(imagesPose, depart);
+        const mesures = {
+            paliersDep,
+            paliersPose,
+            bougeArrivee,
+            etats: deplacement.images.map(({ t, capsule }) => `${String(t)}:${capsule}`),
+        };
+        console.log(`MESURE réduit ${test.info().project.name} ${JSON.stringify(mesures)}`);
+        expect(courts(paliersDep), 'paliers trop courts pendant le déplacement').toBe(0);
+        expect(courts(paliersPose), 'paliers trop courts au départ de la pose').toBe(0);
+        expect(bougeArrivee).toBeLessThanOrEqual(2);
         expect(jeu.erreurs).toEqual([]);
     });
 });
