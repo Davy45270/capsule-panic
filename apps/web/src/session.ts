@@ -47,9 +47,14 @@ export class GameSession {
         return this.#playback !== undefined || this.#saving;
     }
 
-    /** Applique une commande ou la met en attente pendant une animation ou une écriture. */
+    /** Diffère la pause, refuse les autres commandes pendant la lecture et les conserve pendant l'écriture. */
     command(type: CommandType): boolean {
-        if (this.animating) {
+        if (type === 'PAUSE' && this.animating) {
+            this.#pauseWhenReady = true;
+            return true;
+        }
+        if (this.#playback) return false;
+        if (this.#saving) {
             this.#pendingCommands.push(type);
             return true;
         }
