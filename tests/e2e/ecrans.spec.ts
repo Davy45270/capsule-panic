@@ -383,10 +383,15 @@ test('[E101] [E102] [E294] [E528] deux réactions successives affichent les poin
     await expect(combo).toHaveCSS('font-weight', '950');
     await expect(combo).toHaveCSS('text-shadow', /rgb\(246, 80, 28\).*14px/);
     await capture(page, info, 'partie-combo', errors);
-    await expect(page.locator('.reactor')).toHaveAttribute('data-ready', 'oui');
-    // Le score est publié à la fin des effets : le temps avance jusqu'à lui, puis recoule normalement.
-    await avancer(page, async () => (await page.getByTestId('score').textContent()) === '000494');
+    // La fin des effets et le score suivent la fin de la cascade : le temps avance jusqu'à eux, puis recoule.
+    await avancer(
+        page,
+        async () =>
+            (await page.locator('.reactor').getAttribute('data-ready')) === 'oui' &&
+            (await page.getByTestId('score').textContent()) === '000494',
+    );
     await page.clock.resume();
+    await expect(page.locator('.reactor')).toHaveAttribute('data-ready', 'oui');
     await expect(page.getByTestId('score')).toHaveText('000494');
     expect(errors).toEqual([]);
 });
