@@ -11,7 +11,7 @@ export class EventLog {
             tick: this.tick,
             type,
             ...(payload === undefined ? {} : { payload }),
-            ...(board === undefined ? {} : { board }),
+            ...(board === undefined ? {} : { board: board.map((cell) => (cell === null ? null : { ...cell })) }),
         });
     }
 }

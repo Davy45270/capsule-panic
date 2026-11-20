@@ -52,19 +52,22 @@ describe('game session', () => {
         expect(session.command('MOVE_LEFT')).toBe(false);
         expect(session.state.active?.x).toBe(0);
     });
-    it('[E106] [E152] suspend la chute et met en file les commandes pendant une cascade, puis les rejoue', async () => {
+    // T28 « commandes pendant RESOLVING refusées » ; arbitrage du relecteur (20/11) : « suspendus » ne voulait pas dire
+    // « mis en file ». Les commandes sont refusées pendant l'animation, comme à 5f2553b ; seule une PAUSE est différée.
+    it('[E106] [E152] [E262] refuse les commandes pendant une cascade (T28) et suspend la chute', async () => {
         const v = fakeView();
         const session = new GameSession(aboutToMatch(), v.hooks);
         expect(session.command('HARD_DROP')).toBe(true);
         expect(session.animating).toBe(true);
         const dropped = session.state;
-        expect(session.command('MOVE_LEFT')).toBe(true);
+        expect(session.command('MOVE_LEFT')).toBe(false);
+        expect(session.command('HARD_DROP')).toBe(false);
         session.tick();
         expect(session.state).toBe(dropped);
         v.release();
         await flush();
         expect(session.animating).toBe(false);
-        expect(session.state).toEqual(step(dropped, { type: 'MOVE_LEFT' }).state);
+        expect(session.state).toEqual(dropped);
     });
     it('visibility hidden pauses the game, and only an explicit resume restarts it', () => {
         const session = new GameSession(createGame({ seed: 's', level: 0, speed: 'low' }), fakeView().hooks);
@@ -247,7 +250,7 @@ it('[E152] [E531] laisse la pose se terminer avant d’enregistrer et de montrer
     expect(saved).toEqual([expected]);
 });
 
-it('[E106] la capsule suivante ne tombe ni ne bouge avant la fin de la pose, et les commandes sont rejouées', async () => {
+it('[E106] [E262] la capsule suivante ne tombe ni ne bouge avant la fin de la pose, et les commandes sont refusées', async () => {
     const before = createGame({ seed: 'reprise', level: 0, speed: 'low' });
     const pose = Promise.withResolvers<undefined>();
     const session = new GameSession(before, { ...fakeView().hooks, playPlacement: () => pose.promise });
@@ -255,14 +258,36 @@ it('[E106] la capsule suivante ne tombe ni ne bouge avant la fin de la pose, et 
     const spawned = session.state;
     session.tick();
     session.tick();
-    expect(session.command('MOVE_LEFT')).toBe(true);
-    expect(session.command('HARD_DROP')).toBe(true);
+    expect(session.command('MOVE_LEFT')).toBe(false);
+    expect(session.command('HARD_DROP')).toBe(false);
     expect(session.state).toBe(spawned);
     pose.resolve(undefined);
     await flush();
-    const moved = step(spawned, { type: 'MOVE_LEFT' }).state;
-    expect(session.state).toEqual(step(moved, { type: 'HARD_DROP' }).state);
+    expect(session.state).toEqual(spawned);
 });
+
+// Revue P7 (6d97d47) : une PAUSE demandée pendant la pose, puis un onglet masqué, relançait la partie (la PAUSE en file
+// devenait RESUME une fois la pause de masquage appliquée).
+it.each(['pose', 'sauvegarde'] as const)(
+    '[E046] [E152] une pause demandée pendant la %s, puis l’onglet masqué, laisse la partie en pause',
+    async (moment) => {
+        const before = createGame({ seed: 'reprise', level: 0, speed: 'low' });
+        const attente = Promise.withResolvers<undefined>();
+        const session = new GameSession(before, {
+            ...fakeView().hooks,
+            ...(moment === 'pose'
+                ? { playPlacement: () => attente.promise }
+                : { onSpawn: () => attente.promise }),
+        });
+        session.command('HARD_DROP');
+        expect(session.command('PAUSE')).toBe(true);
+        session.visibilityChanged(true);
+        attente.resolve(undefined);
+        await flush();
+        await flush();
+        expect(session.state.phase).toBe('PAUSED');
+    },
+);
 
 it.each([
     [victoire, 704],
