@@ -12,6 +12,7 @@ import {
     TOKENS,
 } from '../src/art';
 import { boardLayout } from '../src/layout';
+import { pieceArtwork, textureFor } from '../src/pieces';
 
 const hexes = (svg: string): string[] => [...svg.matchAll(/#[0-9a-f]{6}\b/gi)].map((m) => m[0].toLowerCase());
 const allowed = new Set(Object.values(TOKENS).map((v) => v.toLowerCase()));
@@ -73,15 +74,58 @@ describe('purity of the engine', () => {
     });
 });
 
-// Règle de l'auteur de la spec : cellules UNIES par défaut, comme sur la planche de gameplay ; la forme
-// ne distingue les couleurs qu'en mode daltonien (PRD « options de contraste et formes additionnelles », T29).
-it('les textures par défaut sont unies et les formes sont réservées au mode daltonien', () => {
+// [E422] Décision de l'auteur de la spec : par défaut, les segments sont les segments unis carrés de la planche
+// Gameplay 03 (ancre 200x55+938+49), recolorés aux jetons A2 ; la forme ne distingue les couleurs qu'en mode
+// daltonien (PRD « options de contraste et formes additionnelles », T29), dont les textures ne changent pas.
+it('[E422] les segments par défaut sont les segments carrés recolorés de Gameplay 03, le mode daltonien est inchangé', () => {
+    const provenance = (
+        JSON.parse(readFileSync('packages/assets/provenance.json', 'utf8')) as {
+            assets: { id: string; planche: string; boite: number[]; transformations?: string[] }[];
+        }
+    ).assets;
+    const attendu = {
+        cyan: {
+            art: 'segment-cyan',
+            sprite: 'sprite-segment-bleu-plateau-apercu',
+            jeton: '#38BDF8',
+            forme: 'hexagone',
+        },
+        amber: {
+            art: 'segment-ambre',
+            sprite: 'sprite-segment-jaune-plateau-apercu',
+            jeton: '#FBBF24',
+            forme: 'triangle',
+        },
+        magenta: {
+            art: 'segment-magenta',
+            sprite: 'sprite-segment-rouge-plateau-apercu',
+            jeton: '#F472B6',
+            forme: 'losange',
+        },
+    } as const;
+    const shade = { cyan: 'cyan', amber: 'ambre', magenta: 'magenta' } as const;
+    for (const color of COLORS) {
+        const { art, sprite, jeton, forme } = attendu[color];
+        expect(textureFor('segment', color, false)).toEqual({ art, form: 'aucune' });
+        expect(pieceArtwork[textureFor('segment', color, false).art]).toContain(`/sprites/${sprite}.png`);
+        // Provenance : découpe de Gameplay 03 centrée dans l'ancre 200x55+938+49 (la boîte de l'ambre déborde
+        // de 2 px à droite), recolorée au jeton de la spec.
+        const origine = provenance.find((item) => item.id === sprite);
+        expect(origine?.planche).toBe('Capsule_Panic_Assets_Gameplay_03.png');
+        const [w = 0, h = 0, x = 0, y = 0] = origine?.boite ?? [];
+        expect(x + w / 2).toBeGreaterThan(938);
+        expect(x + w / 2).toBeLessThan(938 + 200);
+        expect(y + h / 2).toBeGreaterThan(49);
+        expect(y + h / 2).toBeLessThan(49 + 55);
+        expect(origine?.transformations?.join(' ')).toContain(`→${jeton}`);
+        // Mode daltonien inchangé : cellule à motif de la couleur.
+        expect(textureFor('segment', color, true)).toEqual({ art: `cellule-${shade[color]}`, form: forme });
+    }
     const polygons = (name: string) =>
         [
             ...readFileSync(`packages/assets/source/svg/${name}.svg`, 'utf8').matchAll(
                 /<polygon points="([^"]+)"/g,
             ),
         ].map((m) => m[1]?.split(' ').length);
-    for (const shade of ['cyan', 'ambre', 'magenta']) expect(polygons(`cellule-${shade}-unie`)).toEqual([8]);
-    expect(['cyan', 'ambre', 'magenta'].map((shade) => polygons(`cellule-${shade}`)[1])).toEqual([6, 3, 4]);
+    expect(['cyan', 'ambre', 'magenta'].map((s) => polygons(`cellule-${s}`)[1])).toEqual([6, 3, 4]);
 });
