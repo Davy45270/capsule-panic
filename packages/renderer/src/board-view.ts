@@ -4,6 +4,7 @@ import { HEIGHT, WIDTH } from '@capsule-panic/contracts';
 import type { ActiveCapsule, Cell, Color, BoardEvent, GameState, Position } from '@capsule-panic/contracts';
 import { animationDuration, cellPoints, TOKENS } from './art';
 import { boardLayout } from './layout';
+import { LockFlashSprite, lockFlashTexture } from './lock-flash';
 import { pieceArtwork, textureFor } from './pieces';
 import type { Artwork } from './pieces';
 
@@ -66,12 +67,13 @@ export async function createBoardView(host: HTMLElement, initial: ViewOptions): 
         for (let x = 0; x < WIDTH; x++) sprite(tiles, 'case-sombre-jeu', x, y, 1);
     }
     const clearSprites = (layer: Container): void => {
-        for (const child of layer.removeChildren()) child.destroy();
+        for (const child of layer.removeChildren()) child.destroy({ children: true });
     };
-    const draw = (kind: 'obstacle' | 'segment', color: Color, x: number, y: number, s: number): void => {
-        sprite(pieces, textureFor(kind, color, options.colorBlind ?? false).art, x, y, s);
+    const draw = (kind: 'obstacle' | 'segment', color: Color, x: number, y: number, s: number): Sprite => {
+        const image = sprite(pieces, textureFor(kind, color, options.colorBlind ?? false).art, x, y, s);
         if (options.highContrast)
             board.poly(cellPoints(x + 1, y + 1, s - 2)).stroke({ width: 2, color: TOKENS.texte });
+        return image;
     };
     const drawBridge = (a: Position, b: Position, ox: number, oy: number, s: number): void => {
         const horizontal = a.y === b.y;
@@ -87,7 +89,7 @@ export async function createBoardView(host: HTMLElement, initial: ViewOptions): 
         );
     };
 
-    function drawFrame(state: GameState, ghost: readonly Position[], angle?: number): void {
+    function drawFrame(state: GameState, ghost: readonly Position[], angle?: number): (Sprite | undefined)[] {
         last = { state, ghost, angle };
         const { cell: s, originX: ox, originY: oy } = geometry();
         clearSprites(pieces);
@@ -101,11 +103,11 @@ export async function createBoardView(host: HTMLElement, initial: ViewOptions): 
         state.board.forEach((c, i) => {
             if (c?.kind === 'segment') byId.set(c.id, { x: i % WIDTH, y: Math.floor(i / WIDTH) });
         });
-        state.board.forEach((c: Cell, i) => {
-            if (!c) return;
+        const cells = state.board.map((c: Cell, i) => {
+            if (!c) return undefined;
             const x = i % WIDTH,
                 y = Math.floor(i / WIDTH);
-            draw(c.kind, c.color, ox + x * s, oy + y * s, s);
+            return draw(c.kind, c.color, ox + x * s, oy + y * s, s);
         });
         state.board.forEach((c) => {
             if (c?.kind !== 'segment' || c.part !== 0 || c.linkedToId === null) return;
@@ -142,6 +144,7 @@ export async function createBoardView(host: HTMLElement, initial: ViewOptions): 
                 }
             }
         }
+        return cells;
     }
 
     function render(state: GameState, ghost: readonly Position[], before?: GameState): void {
@@ -190,18 +193,24 @@ export async function createBoardView(host: HTMLElement, initial: ViewOptions): 
             trail.scale.x *= -1;
         }
         const frame = (progress: number): void => {
+            const x = from.x + (to.x - from.x) * progress;
+            const y = from.y + (to.y - from.y) * progress;
             drawFrame(
                 {
                     ...state,
                     active: {
                         ...to,
-                        x: from.x + (to.x - from.x) * progress,
-                        y: from.y + (to.y - from.y) * progress,
+                        x,
+                        y,
                     },
                 },
                 ghost,
                 rotating ? start + turn * progress : undefined,
             );
+            if (art === 'trainee-chute-jeu') {
+                const top = y + Math.min(0, ORIENT[to.orientation].y);
+                trail.position.set(ox + (x - 0.25) * s, oy + (top - 0.5) * s);
+            }
             trail.alpha = 0.65 * (1 - progress);
         };
         frame(0);
@@ -241,24 +250,61 @@ export async function createBoardView(host: HTMLElement, initial: ViewOptions): 
                     if (stopped()) return;
                 }
                 frame = { ...frame, board: [...event.board] };
-                drawFrame(frame, []);
-                if (landing >= 0) {
-                    const { cell: s, originX: ox, originY: oy } = geometry();
-                    const flash = sprite(
-                        effects,
-                        'trainee-verrouillage-jeu',
-                        ox + (landing % WIDTH) * s,
-                        oy + Math.floor(landing / WIDTH) * s,
-                        s,
-                    );
-                    await animate(animationDuration('lock', false), (progress) => {
-                        flash.alpha = 1 - progress;
-                    });
+                const cells = drawFrame(frame, []);
+                if (active && landing >= 0) {
+                    const offset = ORIENT[active.orientation];
+                    const partner = landing + offset.x + offset.y * WIDTH;
+                    await flashLock(cells, landing, partner);
                 }
             }
             if (stopped()) return;
             if (event.type === 'GRAVITY_STEP') await animate(animationDuration('gravity', false));
         }
+    }
+
+    let layoutLock: ((cells: (Sprite | undefined)[]) => void) | undefined;
+
+    async function flashLock(
+        cells: (Sprite | undefined)[],
+        pivotIndex: number,
+        partnerIndex: number,
+    ): Promise<void> {
+        const pivot = cells[pivotIndex];
+        const partner = cells[partnerIndex];
+        if (!pivot || !partner) return;
+
+        const light = new Container();
+        const accent = sprite(effects, 'trainee-verrouillage-jeu', pivot.x, pivot.y, pivot.width);
+        const mask = effects.addChild(new Sprite(pivot.texture));
+        accent.setMask({ mask, channel: 'alpha' });
+        effects.addChild(light);
+
+        const pivotFlash = light.addChild(new LockFlashSprite(pivot.texture));
+        const partnerFlash = light.addChild(new LockFlashSprite(partner.texture));
+        for (const flash of [pivotFlash, partnerFlash]) flash.blendMode = 'add';
+
+        const align = (image: Sprite, segment: Sprite): void => {
+            image.position.copyFrom(segment.position);
+            image.setSize(segment.width, segment.height);
+        };
+        layoutLock = (next) => {
+            const first = next[pivotIndex];
+            const second = next[partnerIndex];
+            if (!first || !second) return;
+            mask.texture = first.texture;
+            pivotFlash.texture = lockFlashTexture(first.texture, app.renderer.name);
+            partnerFlash.texture = lockFlashTexture(second.texture, app.renderer.name);
+            for (const image of [pivotFlash, mask, accent]) align(image, first);
+            align(partnerFlash, second);
+        };
+        layoutLock(cells);
+
+        light.alpha = 0.74;
+        accent.alpha = 0.35;
+        await animate(animationDuration('lock', false), (progress) => {
+            light.alpha = 0.74 * (1 - progress);
+            accent.alpha = 0.35 * (1 - progress);
+        });
     }
 
     let playbackVersion = 0;
@@ -303,6 +349,7 @@ export async function createBoardView(host: HTMLElement, initial: ViewOptions): 
             let elapsed = 0;
             const finish = (): void => {
                 app.ticker.remove(frame);
+                layoutLock = undefined;
                 clearSprites(effects);
                 stopEffect = undefined;
                 if (!disposed) onFinish?.();
@@ -320,7 +367,10 @@ export async function createBoardView(host: HTMLElement, initial: ViewOptions): 
     }
 
     const onResize = (): void => {
-        if (last) drawFrame(last.state, last.ghost, last.angle);
+        if (last) {
+            const cells = drawFrame(last.state, last.ghost, last.angle);
+            layoutLock?.(cells);
+        }
     };
     app.renderer.on('resize', onResize);
     return {
