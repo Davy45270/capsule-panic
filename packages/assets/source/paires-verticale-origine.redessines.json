@@ -2,8 +2,7 @@
   {
     "id": "paire-verticale-cyan-magenta",
     "boite": "77x151+995+205",
-    "raison": "Deux cellules indépendantes réunies par un pont lumineux",
-    "rabattement_palette": true
+    "raison": "Deux cellules indépendantes réunies par un pont lumineux"
   },
   {
     "id": "paire-verticale-cyan-ambre",
@@ -14,7 +13,6 @@
   {
     "id": "paire-verticale-magenta-ambre",
     "boite": "77x151+1177+205",
-    "raison": "Deux cellules indépendantes réunies par un pont lumineux",
-    "rabattement_palette": true
+    "raison": "Deux cellules indépendantes réunies par un pont lumineux"
   }
 ]
