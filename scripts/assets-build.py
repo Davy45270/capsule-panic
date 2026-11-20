@@ -277,9 +277,11 @@ def main():
 def optimiser_sprites(dossier):
     # TOUS les sprites, petits compris : `--strip safe` retire les blocs tIME et tEXt (dates d'écriture
     # d'ImageMagick), sans quoi deux constructions successives ne rendent pas les mêmes octets.
+    # `-o max` : sans perte (ni --alpha ni réduction avec perte), les pixels décodés restent identiques ;
+    # les sprites importés par le jeu partent au précache, chaque octet gagné y compte.
     sprites = sorted(dossier.glob("*.png"))
     if sprites:
-        run("oxipng", "-q", "-o", "2", "--strip", "safe", *sprites)
+        run("oxipng", "-q", "-o", "max", "--strip", "safe", *sprites)
 
 
 def installer(travail):
