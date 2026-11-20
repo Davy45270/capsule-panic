@@ -2,6 +2,7 @@ import {
     BatchableSprite,
     Batcher,
     BatchGeometry,
+    CanvasSource,
     colorBit,
     colorBitGl,
     compileHighShaderGlProgram,
@@ -16,10 +17,57 @@ import {
     roundPixelsBitGl,
     Shader,
     Sprite,
+    Texture,
 } from 'pixi.js';
 import type { BatcherOptions, InstructionSet, Renderer, RenderLayer } from 'pixi.js';
 
 const batchName = 'capsule-lock-flash';
+
+const silhouettes = new WeakMap<Texture, Texture>();
+const sources = new WeakMap<Texture, Texture>();
+
+export function silhouetteSource(texture: Texture): Texture | undefined {
+    return sources.get(texture);
+}
+
+export function blanchirSilhouette(source: ImageData): ImageData {
+    const pixels = new Uint8ClampedArray(source.data);
+    for (let i = 0; i < pixels.length; i += 4) {
+        pixels[i] = pixels[i]! * 0.07 + 255 * 0.93;
+        pixels[i + 1] = pixels[i + 1]! * 0.07 + 255 * 0.93;
+        pixels[i + 2] = pixels[i + 2]! * 0.07 + 255 * 0.93;
+    }
+    return new ImageData(pixels, source.width, source.height, { colorSpace: source.colorSpace });
+}
+
+export function lockFlashTexture(texture: Texture, rendererName: Renderer['name']): Texture {
+    if (rendererName !== 'canvas') return texture;
+    const cached = silhouettes.get(texture);
+    if (cached) return cached;
+
+    const { pixelWidth, pixelHeight, resolution } = texture.source;
+    const resource: unknown = texture.source.resource;
+    const canvas = document.createElement('canvas');
+    canvas.width = pixelWidth;
+    canvas.height = pixelHeight;
+    const context = canvas.getContext('2d');
+    if (!context) throw new Error('Contexte Canvas 2D indisponible pour l’éclat de verrouillage');
+    // Le chargeur Pixi fournit les PNG des segments sous forme d’ImageBitmap ou d’image HTML.
+    context.drawImage(resource as CanvasImageSource, 0, 0);
+    const pixels = context.getImageData(0, 0, pixelWidth, pixelHeight);
+    context.putImageData(blanchirSilhouette(pixels), 0, 0);
+
+    const derived = new Texture({
+        source: new CanvasSource({ resource: canvas, resolution }),
+        frame: texture.frame,
+        orig: texture.orig,
+        trim: texture.trim,
+        rotate: texture.rotate,
+    });
+    silhouettes.set(texture, derived);
+    sources.set(derived, texture);
+    return derived;
+}
 
 class LockFlashBatcher extends Batcher {
     readonly name = batchName;

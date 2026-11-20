@@ -4,7 +4,7 @@ import { HEIGHT, WIDTH } from '@capsule-panic/contracts';
 import type { ActiveCapsule, Cell, Color, BoardEvent, GameState, Position } from '@capsule-panic/contracts';
 import { animationDuration, cellPoints, TOKENS } from './art';
 import { boardLayout } from './layout';
-import { LockFlashSprite } from './lock-flash';
+import { LockFlashSprite, lockFlashTexture } from './lock-flash';
 import { pieceArtwork, textureFor } from './pieces';
 import type { Artwork } from './pieces';
 
@@ -291,8 +291,9 @@ export async function createBoardView(host: HTMLElement, initial: ViewOptions): 
             const first = next[pivotIndex];
             const second = next[partnerIndex];
             if (!first || !second) return;
-            pivotFlash.texture = mask.texture = first.texture;
-            partnerFlash.texture = second.texture;
+            mask.texture = first.texture;
+            pivotFlash.texture = lockFlashTexture(first.texture, app.renderer.name);
+            partnerFlash.texture = lockFlashTexture(second.texture, app.renderer.name);
             for (const image of [pivotFlash, mask, accent]) align(image, first);
             align(partnerFlash, second);
         };
