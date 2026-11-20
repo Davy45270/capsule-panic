@@ -2,9 +2,10 @@
 // spec comme le contrôle de chaîne, et chaque recoloration déclarée est lisible par une machine (plage de teintes
 // source, cible, ton source).
 import { execFileSync } from 'node:child_process';
-import { mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { inflateSync } from 'node:zlib';
 import { expect, it } from 'vitest';
 import { TOKENS } from '../packages/renderer/src/art.ts';
 
@@ -143,4 +144,95 @@ it('les redessins des tables rouges sont rabattus sur la palette sans biais, san
         );
     for (const id of rabattus) expect(sansBiais(id), id).toHaveLength(1);
     expect(sansBiais('medaillon-cellule')).toEqual([]);
+});
+
+/** Pixels RGBA d'un PNG 8 bits RGBA ou RGB non entrelacé (les sprites de la chaîne). */
+function pixels(chemin: string): Uint8Array {
+    const png = readFileSync(chemin);
+    const largeur = png.readUInt32BE(16);
+    const hauteur = png.readUInt32BE(20);
+    const type = png[25];
+    const canaux = type === 6 ? 4 : type === 2 ? 3 : 0;
+    expect(png[24], chemin).toBe(8);
+    expect(canaux, chemin).toBeGreaterThan(0);
+    expect(png[28], chemin).toBe(0);
+    const morceaux: Buffer[] = [];
+    for (let i = 8; i < png.length;) {
+        const taille = png.readUInt32BE(i);
+        if (png.toString('latin1', i + 4, i + 8) === 'IDAT')
+            morceaux.push(png.subarray(i + 8, i + 8 + taille));
+        i += taille + 12;
+    }
+    const brut = inflateSync(Buffer.concat(morceaux));
+    const ligne = largeur * canaux;
+    const sortie = new Uint8Array(largeur * hauteur * 4);
+    let precedente = new Uint8Array(ligne);
+    for (let y = 0; y < hauteur; y++) {
+        const filtre = brut[y * (ligne + 1)] ?? 0;
+        const courante = new Uint8Array(brut.subarray(y * (ligne + 1) + 1, (y + 1) * (ligne + 1)));
+        for (let i = 0; i < ligne; i++) {
+            const a = i >= canaux ? (courante[i - canaux] ?? 0) : 0;
+            const b = precedente[i] ?? 0;
+            const c = i >= canaux ? (precedente[i - canaux] ?? 0) : 0;
+            const p = a + b - c;
+            const [pa, pb, pc] = [Math.abs(p - a), Math.abs(p - b), Math.abs(p - c)];
+            const paeth = pa <= pb && pa <= pc ? a : pb <= pc ? b : c;
+            const ajout = [0, a, b, (a + b) >> 1, paeth][filtre] ?? 0;
+            courante[i] = ((courante[i] ?? 0) + ajout) & 0xff;
+        }
+        for (let x = 0; x < largeur; x++)
+            for (let k = 0; k < 4; k++)
+                sortie[(y * largeur + x) * 4 + k] = k < canaux ? (courante[x * canaux + k] ?? 0) : 255;
+        precedente = courante;
+    }
+    return sortie;
+}
+
+/** Teinte moyenne (circulaire, en degrés) des pixels opaques colorés : sans contour sombre ni reflet blanc. */
+function teinteMoyenne(rgba: Uint8Array): { teinte: number; saturation: number } {
+    let [x, y, saturation, n] = [0, 0, 0, 0];
+    for (let i = 0; i < rgba.length; i += 4) {
+        if ((rgba[i + 3] ?? 0) < 128) continue;
+        const [r, g, b] = [rgba[i] ?? 0, rgba[i + 1] ?? 0, rgba[i + 2] ?? 0].map((v) => v / 255) as [
+            number,
+            number,
+            number,
+        ];
+        const [max, min] = [Math.max(r, g, b), Math.min(r, g, b)];
+        const l = (max + min) / 2;
+        const s = max === min ? 0 : (max - min) / (1 - Math.abs(2 * l - 1));
+        if (l < 0.25 || l > 0.9 || s < 0.25) continue;
+        const d = max - min;
+        const h = max === r ? ((g - b) / d + 6) % 6 : max === g ? (b - r) / d + 2 : (r - g) / d + 4;
+        x += Math.cos((h * Math.PI) / 3);
+        y += Math.sin((h * Math.PI) / 3);
+        saturation += s;
+        n++;
+    }
+    return { teinte: ((Math.atan2(y, x) * 180) / Math.PI + 360) % 360, saturation: saturation / n };
+}
+
+// [E304] [E422] Décision de l'auteur de la spec : tout le magenta du jeu est le rose de la spec (#F472B6, teinte
+// 329°), et non plus le framboise (#B71939, teinte 348°). Le segment carré, déjà conforme, sert de témoin : la
+// tolérance (6° de teinte) le laisse passer et refuse le framboise.
+it('[E304] [E422] la cellule, le cristal et le cristal brisé magenta portent le rose de la spec, comme le segment', () => {
+    const cible = teinteMoyenne(new Uint8Array([0xf4, 0x72, 0xb6, 255])).teinte;
+    for (const id of [
+        'segment-rouge-plateau-apercu',
+        'cellule-magenta',
+        'cristal-magenta',
+        'cristal-brise-magenta',
+    ]) {
+        const { teinte, saturation } = teinteMoyenne(pixels(`packages/assets/sprites/sprite-${id}.png`));
+        const ecart = Math.abs(((teinte - cible + 540) % 360) - 180);
+        expect(ecart, `${id} : teinte ${teinte.toFixed(1)}° pour ${cible.toFixed(1)}°`).toBeLessThanOrEqual(
+            6,
+        );
+        expect(saturation, id).toBeGreaterThanOrEqual(0.6);
+    }
+    // Les sources qui dessinent ces mêmes objets (paires, animations, tutoriels) n'ont plus la rampe framboise.
+    const framboise = readdirSync('packages/assets/source/svg').filter((f) =>
+        /#(B71939|FF806D)\b/iu.test(readFileSync(`packages/assets/source/svg/${f}`, 'utf8')),
+    );
+    expect(framboise).toEqual([]);
 });
