@@ -1,5 +1,5 @@
 // Rendu PixiJS du réacteur. Aucune règle ici : on dessine un état et on anime des événements déjà résolus.
-import { Application, Assets, Container, Graphics, loadTextures, Sprite } from 'pixi.js';
+import { Application, Assets, Container, Graphics, loadTextures, Sprite, Texture } from 'pixi.js';
 import { HEIGHT, WIDTH } from '@capsule-panic/contracts';
 import type { ActiveCapsule, Cell, Color, BoardEvent, GameState, Position } from '@capsule-panic/contracts';
 import { animationDuration, cellPoints, TOKENS } from './art';
@@ -190,18 +190,24 @@ export async function createBoardView(host: HTMLElement, initial: ViewOptions): 
             trail.scale.x *= -1;
         }
         const frame = (progress: number): void => {
+            const x = from.x + (to.x - from.x) * progress;
+            const y = from.y + (to.y - from.y) * progress;
             drawFrame(
                 {
                     ...state,
                     active: {
                         ...to,
-                        x: from.x + (to.x - from.x) * progress,
-                        y: from.y + (to.y - from.y) * progress,
+                        x,
+                        y,
                     },
                 },
                 ghost,
                 rotating ? start + turn * progress : undefined,
             );
+            if (art === 'trainee-chute-jeu') {
+                const top = y + Math.min(0, ORIENT[to.orientation].y);
+                trail.position.set(ox + (x - 0.25) * s, oy + (top - 0.5) * s);
+            }
             trail.alpha = 0.65 * (1 - progress);
         };
         frame(0);
@@ -242,17 +248,20 @@ export async function createBoardView(host: HTMLElement, initial: ViewOptions): 
                 }
                 frame = { ...frame, board: [...event.board] };
                 drawFrame(frame, []);
-                if (landing >= 0) {
+                if (active && landing >= 0) {
                     const { cell: s, originX: ox, originY: oy } = geometry();
-                    const flash = sprite(
-                        effects,
-                        'trainee-verrouillage-jeu',
-                        ox + (landing % WIDTH) * s,
-                        oy + Math.floor(landing / WIDTH) * s,
-                        s,
-                    );
+                    const x = ox + (landing % WIDTH) * s;
+                    const y = oy + Math.floor(landing / WIDTH) * s;
+                    const offset = ORIENT[active.orientation];
+                    const accent = sprite(effects, 'trainee-verrouillage-jeu', x, y, s);
+                    const flash = new Sprite(Texture.WHITE);
+                    flash.position.set(x + Math.min(0, offset.x) * s, y + Math.min(0, offset.y) * s);
+                    flash.setSize((1 + Math.abs(offset.x)) * s, (1 + Math.abs(offset.y)) * s);
+                    flash.blendMode = 'add';
+                    effects.addChild(flash);
                     await animate(animationDuration('lock', false), (progress) => {
                         flash.alpha = 1 - progress;
+                        accent.alpha = 1 - progress;
                     });
                 }
             }
