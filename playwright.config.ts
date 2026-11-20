@@ -51,7 +51,8 @@ const projects: Project[] = [
 
 // Témoin de cadence avec GPU (E156) : projet ajouté seulement quand E2E_GPU=1, hors CI. Sur tank01, Chromium n'atteint le
 // GPU (Intel Arc, /dev/dri) que par ANGLE sur EGL ; ses options par défaut retombent sur SwiftShader (rendu logiciel).
-if (process.env.E2E_GPU === '1') {
+// Jamais sous Vitest : tests/tooling-playwright.test.ts vérifie la matrice de la CI, même dans un job lancé avec E2E_GPU=1.
+if (process.env.E2E_GPU === '1' && !process.env.VITEST) {
     projects.push({
         name: 'chromium-gpu',
         use: {
