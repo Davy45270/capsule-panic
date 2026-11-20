@@ -53,7 +53,7 @@ test('a corrupt save shows a readable message and offers a new game', async ({ p
     await expect(page.getByRole('button', { name: 'Jouer' })).toBeVisible();
 });
 
-test('no network request besides the application files', async ({ page, baseURL }) => {
+test('[E107] no network request besides the application files', async ({ page, baseURL }) => {
     const foreign: string[] = [];
     page.on('request', r => { if (!r.url().startsWith(baseURL ?? '') && !r.url().startsWith('data:') && !r.url().startsWith('blob:')) foreign.push(r.url()); });
     await startGame(page);
