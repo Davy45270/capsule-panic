@@ -1,9 +1,10 @@
 // Rendu PixiJS du réacteur. Aucune règle ici : on dessine un état et on anime des événements déjà résolus.
-import { Application, Assets, ColorMatrixFilter, Container, Graphics, loadTextures, Sprite } from 'pixi.js';
+import { Application, Assets, Container, Graphics, loadTextures, Sprite } from 'pixi.js';
 import { HEIGHT, WIDTH } from '@capsule-panic/contracts';
 import type { ActiveCapsule, Cell, Color, BoardEvent, GameState, Position } from '@capsule-panic/contracts';
 import { animationDuration, cellPoints, TOKENS } from './art';
 import { boardLayout } from './layout';
+import { LockFlashSprite } from './lock-flash';
 import { pieceArtwork, textureFor } from './pieces';
 import type { Artwork } from './pieces';
 
@@ -261,7 +262,6 @@ export async function createBoardView(host: HTMLElement, initial: ViewOptions): 
         }
     }
 
-    let lockFilter: ColorMatrixFilter | undefined;
     let layoutLock: ((cells: (Sprite | undefined)[]) => void) | undefined;
 
     async function flashLock(
@@ -273,18 +273,14 @@ export async function createBoardView(host: HTMLElement, initial: ViewOptions): 
         const partner = cells[partnerIndex];
         if (!pivot || !partner) return;
 
-        lockFilter ??= new ColorMatrixFilter();
-        lockFilter.blendMode = 'add';
-        // Mélange chaque canal avec 93 % de blanc, en conservant l’alpha de la texture.
-        lockFilter.matrix = [0.07, 0, 0, 0, 0.93, 0, 0.07, 0, 0, 0.93, 0, 0, 0.07, 0, 0.93, 0, 0, 0, 1, 0];
-        const light = new Container({ filters: [lockFilter] });
+        const light = new Container();
         const accent = sprite(effects, 'trainee-verrouillage-jeu', pivot.x, pivot.y, pivot.width);
         const mask = effects.addChild(new Sprite(pivot.texture));
         accent.setMask({ mask, channel: 'alpha' });
         effects.addChild(light);
 
-        const pivotFlash = light.addChild(new Sprite(pivot.texture));
-        const partnerFlash = light.addChild(new Sprite(partner.texture));
+        const pivotFlash = light.addChild(new LockFlashSprite(pivot.texture));
+        const partnerFlash = light.addChild(new LockFlashSprite(partner.texture));
         for (const flash of [pivotFlash, partnerFlash]) flash.blendMode = 'add';
 
         const align = (image: Sprite, segment: Sprite): void => {
@@ -387,7 +383,6 @@ export async function createBoardView(host: HTMLElement, initial: ViewOptions): 
         destroy() {
             disposed = true;
             stopEffect?.();
-            lockFilter?.destroy();
             app.renderer.off('resize', onResize);
             app.destroy(true, { children: true });
         },
