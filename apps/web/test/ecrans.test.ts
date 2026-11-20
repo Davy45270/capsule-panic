@@ -161,29 +161,30 @@ it('[E104] [E305] les durées sont bornées et la préférence système rejoint 
     }
 });
 
+const importJson = async (content: string) => {
+    const input = container.querySelector('input[type=file]');
+    if (!input) throw new Error('Import absent');
+    Object.defineProperty(input, 'files', {
+        configurable: true,
+        value: [new File([content], 'partie.json')],
+    });
+    await update(() => {
+        input.dispatchEvent(new Event('change', { bubbles: true }));
+    });
+};
+
 it('[E154] les sauvegardes JSON importées sont validées et la précédente survit à un refus', async () => {
     const saved = createGame({ seed: 'locale', level: 1, speed: 'low' });
     await saveGame(saved);
     history.replaceState(null, '', '/#settings');
     await mountApp();
-    const input = container.querySelector('input[type=file]');
-    if (!input) throw new Error('Import absent');
-    const send = async (content: string) => {
-        Object.defineProperty(input, 'files', {
-            configurable: true,
-            value: [new File([content], 'partie.json')],
-        });
-        await update(() => {
-            input.dispatchEvent(new Event('change', { bubbles: true }));
-        });
-    };
-    await send('{');
+    await importJson('{');
     await vi.waitFor(() =>
         expect(container.querySelector('[role=alert]')?.textContent).toContain('JSON invalide'),
     );
     expect(await loadGame()).toEqual(saved);
 
-    await send(JSON.stringify({ ...saved, active: null }));
+    await importJson(JSON.stringify({ ...saved, active: null }));
     await vi.waitFor(() => expect(container.querySelector('[role=alert]')?.textContent).toContain('/active'));
     expect(await loadGame()).toEqual(saved);
 
@@ -191,11 +192,62 @@ it('[E154] les sauvegardes JSON importées sont validées et la précédente sur
     const fallen = step(step(other, { type: 'TICK' }).state, { type: 'SOFT_DROP' }).state;
     const replacement = step(fallen, { type: 'PAUSE' }).state;
     expect(replacement).not.toEqual(saved);
-    await send(serialize(replacement));
+    await importJson(serialize(replacement));
     await vi.waitFor(() =>
         expect(container.querySelector('[role=alert]')?.textContent).toContain('Partie importée'),
     );
     expect(await loadGame()).toEqual(replacement);
+});
+
+it.each(['RESOLVING', 'WON', 'LOST'] as const)(
+    '[E139] refuse une sauvegarde en phase %s et conserve la précédente',
+    async (phase) => {
+        const saved = createGame({ seed: 'locale', level: 1, speed: 'low' });
+        await saveGame(saved);
+        history.replaceState(null, '', '/#settings');
+        await mountApp();
+        await importJson(serialize({ ...saved, seed: 'import', phase, active: null }));
+        await vi.waitFor(() =>
+            expect(container.querySelector('[role=alert]')?.textContent).toContain('reprise impossible'),
+        );
+        expect(await loadGame()).toEqual(saved);
+    },
+);
+
+it.each(['READY', 'FALLING', 'PAUSED'] as const)(
+    '[E154] reprend et déplace la capsule importée en phase %s',
+    async (phase) => {
+        vi.spyOn(history, 'pushState').mockImplementation(noop);
+        history.replaceState(null, '', '/#settings');
+        await mountApp();
+        const imported = { ...createGame({ seed: 'reprise importée', level: 0, speed: 'low' }), phase };
+        await importJson(serialize(imported));
+        await vi.waitFor(() =>
+            expect(container.querySelector('[role=alert]')?.textContent).toContain('Partie importée'),
+        );
+        expect(await loadGame()).toEqual(imported);
+        await click('Menu');
+        await click('Reprendre la partie');
+        await click('Reprendre');
+        await pressKeys(['ArrowLeft']);
+        expect(renderer.render.mock.lastCall?.[0]).toMatchObject({
+            seed: imported.seed,
+            phase: 'FALLING',
+            active: { x: 2 },
+        });
+    },
+);
+
+it('[E061] l’import refuse le générateur nul et conserve la sauvegarde courante', async () => {
+    const saved = createGame({ seed: 'locale', level: 1, speed: 'low' });
+    await saveGame(saved);
+    history.replaceState(null, '', '/#settings');
+    await mountApp();
+    await importJson(serialize({ ...saved, rngState: [0, 0, 0, 0] }));
+    await vi.waitFor(() =>
+        expect(container.querySelector('[role=alert]')?.textContent).toContain('/rngState'),
+    );
+    expect(await loadGame()).toEqual(saved);
 });
 
 it('[E178] [E179] le journal est opt-in et les métriques sont locales et agrégées', () => {
@@ -313,6 +365,51 @@ it('quitter pendant la sauvegarde ne redessine pas le réacteur démonté', asyn
     await checkpoint.promise;
     expect(renderer.render).not.toHaveBeenCalled();
 });
+
+it.each([false, true])(
+    '[E152] sauvegarde la pause affichée quand l’onglet se masque (écriture en cours : %s)',
+    async (writing) => {
+        const initial = createGame({ seed: 'reprise', level: 0, speed: 'low' });
+        const checkpoint = Promise.withResolvers<undefined>();
+        const onSave = vi
+            .fn<(state: GameState) => Promise<void>>()
+            .mockImplementation((state) =>
+                state.phase === 'FALLING' ? checkpoint.promise : saveGame(state).then(() => undefined),
+            );
+        const hidden = vi.spyOn(document, 'hidden', 'get').mockReturnValue(false);
+        await update(() =>
+            root.render(
+                createElement(Game, {
+                    initial,
+                    settings: defaultSettings(),
+                    onSave,
+                    onMenu: noop,
+                    onEnd: noop,
+                    onRestart: noop,
+                    onError: noop,
+                }),
+            ),
+        );
+        if (writing) {
+            await update(() => window.dispatchEvent(new KeyboardEvent('keydown', { key: ' ' })));
+            expect(onSave).toHaveBeenCalledTimes(1);
+            expect(onSave.mock.lastCall?.[0].phase).toBe('FALLING');
+        }
+        await update(() => {
+            hidden.mockReturnValue(true);
+            document.dispatchEvent(new Event('visibilitychange'));
+        });
+        if (writing) {
+            expect(onSave).toHaveBeenCalledTimes(1);
+            await update(() => checkpoint.resolve(undefined));
+        }
+        expect(container.querySelector('dialog[open]')).not.toBeNull();
+        const displayed = renderer.render.mock.lastCall?.[0];
+        expect(displayed?.phase).toBe('PAUSED');
+        expect(onSave.mock.lastCall?.[0]).toBe(displayed);
+        await vi.waitFor(async () => expect(await loadGame()).toEqual(displayed));
+    },
+);
 
 it('la fin de partie conserve le meilleur combo et les poses d’avant le rechargement', async () => {
     await saveGame(createGame({ seed: cascade.seed, level: 0, speed: 'low' }));

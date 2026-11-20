@@ -1,3 +1,7 @@
+import traineeDeplacementApercu from '../../assets/sprites/sprite-trainee-deplacement-apercu.png';
+import traineeChuteJeu from '../../assets/sprites/sprite-trainee-chute-jeu.png';
+import flecheRotationJeu from '../../assets/sprites/sprite-fleche-rotation-jeu.png';
+import traineeVerrouillageJeu from '../../assets/sprites/sprite-trainee-verrouillage-jeu.png';
 import caseSombreJeu from '../../assets/sprites/sprite-case-sombre-jeu.png';
 import reacteurChambreOrigine from '../../assets/runtime/sprite-reacteur-chambre-origine.webp';
 import pontGauche from '../../assets/sprites/sprite-pont-gauche.png';
@@ -24,6 +28,10 @@ import celluleMagenta from '../../assets/sprites/sprite-cellule-magenta.png';
 import celluleMagentaUnie from '../../assets/source/svg/cellule-magenta-unie.svg';
 
 export const pieceArtwork = {
+    'trainee-deplacement-apercu': traineeDeplacementApercu,
+    'trainee-chute-jeu': traineeChuteJeu,
+    'fleche-rotation-jeu': flecheRotationJeu,
+    'trainee-verrouillage-jeu': traineeVerrouillageJeu,
     'case-sombre-jeu': caseSombreJeu,
     'reacteur-chambre-origine': reacteurChambreOrigine,
     'pont-gauche': pontGauche,

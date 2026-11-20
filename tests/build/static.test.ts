@@ -1,4 +1,5 @@
-import { readFileSync, statSync } from 'node:fs';
+import { readdirSync, readFileSync, statSync } from 'node:fs';
+import { runInNewContext } from 'node:vm';
 import { expect, it } from 'vitest';
 
 const dist = new URL('../../dist/', import.meta.url);
@@ -50,4 +51,40 @@ it('[E183] [E184] le manifeste public utilise le réseau et a un secours version
     expect(worker).not.toContain('url:"manifest.webmanifest"');
     expect(worker).toMatch(/NetworkFirst\(\{cacheName:"capsule-panic-manifeste-v1"/);
     expect(worker).toMatch(/CacheFirst\(\{cacheName:"capsule-panic-assets-v1"/);
+});
+
+it('[E184] le routeur du worker sélectionne CacheFirst pour les fichiers hachés livrés', () => {
+    class Strategy {
+        constructor(readonly options?: { cacheName?: string }) {}
+    }
+    const routes: { matches: RegExp; strategy: Strategy; method: string }[] = [];
+    const noop = () => undefined;
+    const workbox = {
+        setCacheNameDetails: noop,
+        clientsClaim: noop,
+        precacheAndRoute: noop,
+        cleanupOutdatedCaches: noop,
+        createHandlerBoundToURL: noop,
+        NavigationRoute: Strategy,
+        NetworkFirst: Strategy,
+        CacheFirst: Strategy,
+        PrecacheFallbackPlugin: Strategy,
+        ExpirationPlugin: Strategy,
+        registerRoute(matcher: unknown, strategy: Strategy, method: string) {
+            if (Object.prototype.toString.call(matcher) === '[object RegExp]') {
+                routes.push({ matches: matcher as RegExp, strategy, method });
+            }
+        },
+    };
+    const define = (_modules: readonly string[], factory: (api: typeof workbox) => void) => factory(workbox);
+    runInNewContext(readFileSync(asset('sw.js'), 'utf8'), { define, self: { define, skipWaiting: noop } });
+    const route = routes.find(({ strategy }) => strategy.options?.cacheName === 'capsule-panic-assets-v1');
+    expect(route?.method).toBe('GET');
+    const files = readdirSync(new URL('assets/', dist));
+    expect(files.length).toBeGreaterThan(0);
+    for (const name of files) {
+        const url = new URL(`assets/${name}`, 'https://jeu.example/capsule/');
+        expect(route?.matches.test(url.href), url.pathname).toBe(true);
+    }
+    expect(route?.matches.test('https://jeu.example/capsule/icons/capsule-panic-192.png')).toBe(false);
 });

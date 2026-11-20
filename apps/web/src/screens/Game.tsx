@@ -7,7 +7,7 @@ import type { BoardView, Match } from '@capsule-panic/renderer';
 import { createLoop } from '../loop';
 import { recordFrames } from '../diagnostics';
 import { GameSession } from '../session';
-import type { LevelStats } from '../session';
+import type { LevelStats, SessionHooks } from '../session';
 import type { Settings } from '../settings';
 import { Art, ArtButton } from '../Artwork';
 import type { ArtworkName } from '../Artwork';
@@ -42,6 +42,7 @@ export function Game({
 }) {
     const host = useRef<HTMLDivElement>(null);
     const sessionRef = useRef<GameSession | null>(null);
+    const loopRef = useRef<ReturnType<typeof createLoop> | null>(null);
     const [state, setState] = useState(initial);
     const dialog = useRef<HTMLDialogElement>(null);
     const [animating, setAnimating] = useState(false);
@@ -75,7 +76,7 @@ export function Game({
         const motion = matchMedia('(prefers-reduced-motion: reduce)');
         const viewOptions = () => ({
             ...callbacks.current.settings,
-            reducedMotion: callbacks.current.settings.reducedMotion || motion.matches,
+            reducedMotion: callbacks.current.settings.reducedMotion || motion.matches || document.hidden,
         });
         const onMotion = () => view?.setOptions(viewOptions());
         motion.addEventListener('change', onMotion);
@@ -87,43 +88,40 @@ export function Game({
                 }
                 view = v;
                 let published = initial;
+                let checkpoint = initial;
+                const play: SessionHooks['play'] = async (events, before) => {
+                    setAnimating(true);
+                    setCombo(null);
+                    await v.play(events, before, setCombo);
+                };
                 const session = new GameSession(
                     initial,
                     {
-                        render: (s, ghost) => {
-                            if (!cancelled) v.render(s, ghost);
+                        render: (s, ghost, before) => {
+                            if (cancelled) return;
+                            v.render(s, ghost, before);
+                            setState(s);
+                            setCombo(null);
+                            setAnimating(false);
                         },
-                        play: async (events, before) => {
-                            setAnimating(true);
-                            try {
-                                await v.play(events, before, setCombo);
-                            } finally {
-                                if (!cancelled) {
-                                    setCombo(null);
-                                }
-                            }
-                        },
+                        play,
+                        playPlacement: (events, before) =>
+                            viewOptions().reducedMotion ? undefined : play(events, before),
                         onChange: (s, spawned) => {
                             if (cancelled) return;
                             if (spawned) {
                                 loop.resetCadence();
                                 setSpawns((n) => n + 1);
                             }
-                            // La pause de visibilité peut accompagner un rechargement en pleine chute.
-                            if (
-                                s.phase === 'PAUSED' &&
-                                published.phase === 'FALLING' &&
-                                !spawned &&
-                                !document.hidden
-                            )
+                            if (s.phase === 'PAUSED' && published.phase === 'FALLING' && s !== checkpoint)
                                 void callbacks.current.onSave(s, session.stats);
+                            if (s.phase === 'PAUSED' || published.phase === 'PAUSED') setState(s);
                             published = s;
-                            setState(s);
-                            setAnimating(false);
                         },
                         onSpawn: (s) => {
                             if (cancelled) return;
                             setAnimating(true);
+                            checkpoint = s;
                             return callbacks.current.onSave(s, session.stats);
                         },
                         onEnd: (s) => {
@@ -136,6 +134,7 @@ export function Game({
                     initialStats,
                 );
                 sessionRef.current = session;
+                loopRef.current = loop;
                 loop.start();
                 setReady(true);
             })
@@ -144,12 +143,14 @@ export function Game({
             });
         const onVisibility = (): void => {
             sessionRef.current?.visibilityChanged(document.hidden);
+            onMotion();
         };
         document.addEventListener('visibilitychange', onVisibility);
         window.addEventListener('pagehide', flushMetrics);
         return () => {
             cancelled = true;
             loop.stop();
+            loopRef.current = null;
             flushMetrics();
             window.removeEventListener('pagehide', flushMetrics);
             document.removeEventListener('visibilitychange', onVisibility);
@@ -162,6 +163,7 @@ export function Game({
     const send = (type: CommandType): void => {
         const session = sessionRef.current;
         if (!session) return;
+        loopRef.current?.sync();
         session.command(type);
     };
 

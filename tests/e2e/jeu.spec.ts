@@ -32,3 +32,16 @@ test('touch buttons are at least 48 px and play the game', async ({ page }, info
     else await poser.click();
     await expect.poll(() => score(page)).toBeGreaterThan(0);
 });
+
+test('[E531] une pose ordinaire précède l’apparition de la capsule suivante', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'no-preference' });
+    await startGame(page);
+    const reactor = page.locator('.reactor');
+    const capsule = await reactor.getAttribute('data-capsule');
+    await page.keyboard.press('Space');
+    await expect(reactor).toHaveAttribute('data-ready', 'non');
+    expect(await reactor.getAttribute('data-capsule')).toBe(capsule);
+    await expect(reactor).toHaveAttribute('data-ready', 'oui');
+    await expect.poll(() => score(page)).toBeGreaterThan(0);
+    await expect(reactor).not.toHaveAttribute('data-capsule', capsule ?? '');
+});

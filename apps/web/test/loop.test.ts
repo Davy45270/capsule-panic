@@ -46,3 +46,39 @@ describe('fixed-step loop', () => {
         expect(ticks).toBeLessThanOrEqual(1);
     });
 });
+
+it('synchronise une commande arrivée après un tick, même entre deux images', () => {
+    for (const lastFrame of [700, 750]) {
+        let time = 0;
+        let draw = (_time: number): void => undefined;
+        let ticks = 0;
+        const loop = createLoop({
+            speed: 'low',
+            now: () => time,
+            schedule: (callback) => {
+                draw = callback;
+                return 1;
+            },
+            onTick: () => {
+                ticks++;
+            },
+        });
+        loop.start();
+        for (time = 100; time <= 700; time += 100) draw(time);
+        time = lastFrame;
+        draw(time);
+        time = 760;
+        loop.sync();
+        expect(ticks).toBe(1);
+        time = 800;
+        draw(time);
+        expect(ticks).toBe(1);
+        time = 1000;
+        draw(time);
+        time = 1250;
+        draw(time);
+        time = 1500;
+        draw(time);
+        expect(ticks).toBe(2);
+    }
+});
