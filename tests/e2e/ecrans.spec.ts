@@ -31,12 +31,56 @@ function errorsOn(page: Page): string[] {
     return errors;
 }
 
-async function play(page: Page, placements: string[][]): Promise<void> {
+const PAS = 16;
+
+/**
+ * Fige l'horloge de la page (installée avant le chargement) : seul `avancer` fait ensuite passer le temps du jeu.
+ * En temps réel, une chute (un pas toutes les 750 ms en vitesse lente) pouvait s'intercaler entre l'apparition d'une
+ * capsule et la chute rapide sur une machine chargée, et le score perdait 2 points.
+ */
+async function figer(page: Page): Promise<void> {
+    // L'horodatage passé à requestAnimationFrame par l'horloge factice ne suit pas performance.now() : on le repasse.
+    await page.evaluate(() => {
+        const raf = window.requestAnimationFrame.bind(window);
+        window.requestAnimationFrame = (cb) => raf(() => cb(performance.now()));
+    });
+    for (let essai = 1; ; essai++) {
+        try {
+            await page.clock.pauseAt((await page.evaluate(() => Date.now())) + 50);
+            break;
+        } catch (erreur) {
+            // Machine chargée : plus de 50 ms entre la lecture de l'heure et la pause ; on relit l'heure.
+            if (essai >= 3 || !String(erreur).includes('to the past')) throw erreur;
+        }
+    }
+}
+
+/** Fait passer le temps du jeu image par image jusqu'à `fini`, au plus `ms` millisecondes. */
+async function avancer(page: Page, fini: () => Promise<boolean>, ms = 10_000): Promise<void> {
+    for (let t = 0; t < ms && !(await fini()); t += PAS) await page.clock.runFor(PAS);
+}
+
+/**
+ * Joue les poses, l'horloge figée pendant la saisie. `lent` attend ce temps réel avant la dernière touche de chaque
+ * pose (contre-épreuve : la saisie lente ne doit rien changer). Après la dernière pose, le temps avance jusqu'à `jusqua`.
+ */
+async function play(
+    page: Page,
+    placements: string[][],
+    { lent = 0, jusqua }: { lent?: number; jusqua?: () => Promise<boolean> } = {},
+): Promise<void> {
+    await figer(page);
     const reactor = page.locator('.reactor');
     for (const [index, keys] of placements.entries()) {
-        for (const key of keys) await page.keyboard.press(key);
-        if (index < placements.length - 1)
-            await expect(reactor).toHaveAttribute('data-spawns', String(index + 1));
+        for (const [rang, key] of keys.entries()) {
+            if (lent && rang === keys.length - 1) await page.waitForTimeout(lent);
+            await page.keyboard.press(key);
+        }
+        if (index < placements.length - 1) {
+            const attendu = String(index + 1);
+            await avancer(page, async () => (await reactor.getAttribute('data-spawns')) === attendu);
+            await expect(reactor).toHaveAttribute('data-spawns', attendu);
+        } else if (jusqua) await avancer(page, jusqua);
     }
 }
 
@@ -72,8 +116,11 @@ test('[E048] [E094] [E313] [E385] [E386] [E387] [E388] [E526] [E529] la partie g
     page,
 }, info) => {
     const errors = errorsOn(page);
+    await page.clock.install();
     await startGame(page, victoire);
-    await play(page, victoire.placements);
+    const reussi = page.getByRole('heading', { name: 'Niveau réussi !' });
+    await play(page, victoire.placements, { jusqua: () => reussi.isVisible() });
+    await page.clock.resume();
     await expect(page.getByRole('heading', { name: 'Niveau réussi !' })).toBeVisible();
     await expect(page.getByText('Tous les cristaux éliminés')).toBeVisible();
     await expect(page.getByTestId('final-score')).toHaveText('704');
@@ -87,12 +134,28 @@ test('[E048] [E094] [E313] [E385] [E386] [E387] [E388] [E526] [E529] la partie g
     expect(errors).toEqual([]);
 });
 
+test('[E048] contre-épreuve : une saisie lente ne change pas le score de la partie gagnée', async ({
+    page,
+}, info) => {
+    test.skip(info.project.name !== 'chromium-bureau', 'contre-épreuve de la course, un seul projet suffit');
+    await page.clock.install();
+    await startGame(page, victoire);
+    const reussi = page.getByRole('heading', { name: 'Niveau réussi !' });
+    // 1 s réelle entre l'apparition et la chute rapide : en temps réel, plus d'un pas de chute (750 ms).
+    await play(page, victoire.placements, { lent: 1000, jusqua: () => reussi.isVisible() });
+    await page.clock.resume();
+    await expect(page.getByTestId('final-score')).toHaveText('704');
+});
+
 test('[E047] [E313] [E416] la pile ferme la chambre et Rejouer repart du même niveau', async ({
     page,
 }, info) => {
     const errors = errorsOn(page);
+    await page.clock.install();
     await startGame(page, defaite);
-    await play(page, defaite.placements);
+    const perdu = page.getByRole('heading', { name: 'Défaite !' });
+    await play(page, defaite.placements, { jusqua: () => perdu.isVisible() });
+    await page.clock.resume();
     await expect(page.getByRole('heading', { name: 'Défaite !' })).toBeVisible();
     await expect(page.getByRole('button', { name: 'Menu' })).toBeVisible();
     await expect(page.locator('[data-art="defaite-bannieres-jeu"]')).toBeVisible();
@@ -285,15 +348,23 @@ test('[E101] [E102] [E294] [E528] deux réactions successives affichent les poin
 }, info) => {
     const errors = errorsOn(page);
     await page.emulateMedia({ reducedMotion: 'no-preference' });
+    await page.clock.install();
     await startGame(page, cascade);
-    await play(page, cascade.placements);
     const combo = page.locator('.combo');
+    // Le temps avance jusqu'au second combo : la capture le montre pendant qu'il est affiché.
+    await play(page, cascade.placements, {
+        jusqua: async () =>
+            (await combo.count()) > 0 && /COMBO ×2/.test((await combo.first().textContent()) ?? ''),
+    });
     await expect(combo).toHaveText(/COMBO ×2\s*\+80/);
     await expect(combo).toHaveAttribute('data-match', '92 100 108 116');
     await expect(combo).toHaveCSS('font-weight', '950');
     await expect(combo).toHaveCSS('text-shadow', /rgb\(246, 80, 28\).*14px/);
     await capture(page, info, 'partie-combo', errors);
     await expect(page.locator('.reactor')).toHaveAttribute('data-ready', 'oui');
+    // Le score est publié à la fin des effets : le temps avance jusqu'à lui, puis recoule normalement.
+    await avancer(page, async () => (await page.getByTestId('score').textContent()) === '000494');
+    await page.clock.resume();
     await expect(page.getByTestId('score')).toHaveText('000494');
     expect(errors).toEqual([]);
 });
@@ -306,6 +377,7 @@ for (const { system, user } of [
         page,
     }) => {
         await page.emulateMedia({ reducedMotion: system });
+        await page.clock.install();
         await page.goto(`./?graine=${victoire.seed}`);
         await page.getByRole('button', { name: 'Options', exact: true }).click();
         await page.getByRole('checkbox', { name: 'Animations réduites' }).setChecked(user);
@@ -330,7 +402,10 @@ for (const { system, user } of [
             }).observe(document.body, { childList: true, subtree: true });
             return seen;
         });
-        await play(page, victoire.placements.slice(0, 4));
+        await play(page, victoire.placements.slice(0, 4), {
+            jusqua: async () => (await reactor.getAttribute('data-spawns')) === '4',
+        });
+        await page.clock.resume();
         await expect(page.getByTestId('score')).toHaveText('000180');
         await expect(reactor).toHaveAttribute('data-spawns', '4');
         expect(await showedCombo.evaluate((seen) => seen.value)).toBe(false);
