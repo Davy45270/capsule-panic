@@ -51,7 +51,9 @@ async function activerDaltonien(page: Page): Promise<void> {
     await expect(caseDaltonien).toBeChecked();
 }
 
-test('[E042] [E263] T29 colour-blind mode gives each of the three colours its own shape', async ({ page }) => {
+test('[E042] [E263] T29 colour-blind mode gives each of the three colours its own shape', async ({
+    page,
+}) => {
     await activerDaltonien(page);
     const errors = await startGame(page, { level: 3, seed: 'daltonien' });
     const reacteur = page.locator('.reactor');

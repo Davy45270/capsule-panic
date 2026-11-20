@@ -14,7 +14,11 @@
 import { test, expect } from '@playwright/test';
 import { score, startGame } from './helpers';
 
-test('[E008] [E033] [E112] [E264] [E322] T30 the installed PWA reloads and plays offline', async ({ page, context, browserName }) => {
+test('[E008] [E033] [E112] [E264] [E322] T30 the installed PWA reloads and plays offline', async ({
+    page,
+    context,
+    browserName,
+}) => {
     test.skip(browserName !== 'chromium', 'service workers observables sous Chromium seulement');
 
     // Première visite en ligne : installation du service worker et précache.
