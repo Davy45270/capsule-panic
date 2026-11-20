@@ -10,6 +10,10 @@
       [
         "12x12+213+32",
         "225x12+0+32"
+      ],
+      [
+        "3x44+226+0",
+        "40x44+229+0"
       ]
     ],
     "transformation": "découpe + nettoyage raster"
