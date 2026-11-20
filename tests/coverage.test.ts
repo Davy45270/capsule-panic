@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { expect, it } from 'vitest';
 import config from '../vitest.config';
 
-it('[E275] la couverture de branches protège les règles, les alignements, la gravité et le score', () => {
+it('[E275][E323] la couverture de branches protège les règles, les alignements, la gravité et le score', () => {
     expect(config.test?.coverage).toMatchObject({
         include: ['packages/engine/src/**'],
         thresholds: {

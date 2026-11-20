@@ -11,7 +11,7 @@ const command = fc.constantFrom<GameCommand['type']>('MOVE_LEFT', 'MOVE_RIGHT', 
 const filled = (s: GameState): number => s.board.filter(Boolean).length;
 
 describe('engine properties over random games', () => {
-    it('[E093][E144][E265][E266][E267][E270][E271] every step keeps the invariants, never mutates its input, and is roundtrip-stable', () => {
+    it('[E093][E323][E144][E265][E266][E267][E270][E271] every step keeps the invariants, never mutates its input, and is roundtrip-stable', () => {
         fc.assert(fc.property(fc.string({ minLength: 1 }), fc.integer({ min: 0, max: 20 }), fc.array(command, { maxLength: 120 }), (seed, level, commands) => {
             let s = createGame({ seed, level, speed: 'low' });
             for (const type of commands) {
