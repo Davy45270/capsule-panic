@@ -7,10 +7,10 @@
 <path d="M25 17c8-2 13-1 13 2s-11 4-15 4-4-3 2-6z" fill="#FDFDFD"/>
 </g>
 <g transform="translate(0 96)">
-<defs><linearGradient id="volume-magenta" x2="0" y2="1"><stop stop-color="#F472B6"/><stop offset="1" stop-color="#B71939"/></linearGradient></defs>
-<polygon points="19,6 77,6 90,19 90,77 77,90 19,90 6,77 6,19" fill="url(#volume-magenta)" stroke="#601523" stroke-width="5" stroke-linejoin="round"/>
-<path d="M22 13H74L83 23V34H13V23Z" fill="#FF806D"/>
-<polygon points="48,26 70,48 48,70 26,48" fill="#B71939" stroke="#601523" stroke-width="3" stroke-linejoin="round"/>
+<defs><linearGradient id="volume-magenta" x2="0" y2="1"><stop stop-color="#F472B6"/><stop offset="1" stop-color="#BB1B6F"/></linearGradient></defs>
+<polygon points="19,6 77,6 90,19 90,77 77,90 19,90 6,77 6,19" fill="url(#volume-magenta)" stroke="#450828" stroke-width="5" stroke-linejoin="round"/>
+<path d="M22 13H74L83 23V34H13V23Z" fill="#F99FCE"/>
+<polygon points="48,26 70,48 48,70 26,48" fill="#BB1B6F" stroke="#450828" stroke-width="3" stroke-linejoin="round"/>
 <path d="M25 17c8-2 13-1 13 2s-11 4-15 4-4-3 2-6z" fill="#FDFDFD"/>
 </g>
 <path d="M36 80h24v32H36Z" fill="#001E40"/>
