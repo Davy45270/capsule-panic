@@ -1,6 +1,6 @@
 // @vitest-environment happy-dom
 import { afterEach, expect, it, vi } from 'vitest';
-import { Assets, Graphics, Sprite, Texture } from 'pixi.js';
+import { Assets, CanvasSource, Graphics, Sprite, Texture } from 'pixi.js';
 import type { Container } from 'pixi.js';
 import { createGame, getLandingProjection, step } from '@capsule-panic/engine';
 import type { BoardEvent, GameState, Position } from '@capsule-panic/contracts';
@@ -8,14 +8,22 @@ import expectTrail from '../../assets/sprites/sprite-trainee-deplacement-apercu.
 import expectRotation from '../../assets/sprites/sprite-fleche-rotation-jeu.png';
 import expectLock from '../../assets/sprites/sprite-trainee-verrouillage-jeu.png';
 import { createBoardView } from '../src/board-view';
+import * as lockFlash from '../src/lock-flash';
 import { pieceArtwork, textureFor } from '../src/pieces';
 import { animationDuration, cellPoints, TOKENS } from '../src/art';
 import { boardFrom, stateWith } from '../../engine/test/helpers';
 import { boardLayout } from '../src/layout';
 import expectCase from '../../assets/sprites/sprite-case-sombre-jeu.png';
 
+// Les exports sont absents du moteur de rendu avant le correctif.
+const { blanchirSilhouette, silhouetteSource } = lockFlash as unknown as {
+    blanchirSilhouette?: (pixels: ImageData) => ImageData;
+    silhouetteSource?: (texture: Texture) => Texture | undefined;
+};
+
 const display = vi.hoisted(() => ({
     stage: undefined as Container | undefined,
+    rendererName: 'webgl',
     frames: new Set<(ticker: { deltaMS: number }) => void>(),
 }));
 
@@ -26,7 +34,7 @@ vi.mock('pixi.js', async (original) => {
         Application: class {
             canvas = document.createElement('canvas');
             screen = { width: 390, height: 600 };
-            renderer = { on: vi.fn(), off: vi.fn() };
+            renderer = { name: display.rendererName, on: vi.fn(), off: vi.fn() };
             stage = new pixi.Container();
             ticker = {
                 add: (frame: (ticker: { deltaMS: number }) => void) => display.frames.add(frame),
@@ -44,6 +52,7 @@ vi.mock('pixi.js', async (original) => {
 });
 
 afterEach(() => {
+    display.rendererName = 'webgl';
     vi.restoreAllMocks();
 });
 
@@ -535,10 +544,100 @@ it('[E438] [E531] l’éclat de verrouillage suit la forme des segments', async 
         expect(segments).toHaveLength(2);
         expect(flashes).toHaveLength(2);
         for (const { texture, x, y } of segments) {
-            expect(flashes.some((flash) => flash.texture === texture && flash.x === x && flash.y === y)).toBe(
-                true,
-            );
+            expect(
+                flashes.some(
+                    (flash) =>
+                        (flash.texture === texture || silhouetteSource?.(flash.texture) === texture) &&
+                        flash.x === x &&
+                        flash.y === y,
+                ),
+            ).toBe(true);
         }
+        await finish(played);
+    } finally {
+        fixture.view.destroy();
+    }
+});
+
+function segmentPixels(): ImageData {
+    return new ImageData(
+        new Uint8ClampedArray([0, 63, 255, 255, 159, 0, 70, 127, 21, 72, 139, 1, 200, 30, 90, 0]),
+        4,
+        1,
+    );
+}
+
+it('blanchit chaque canal RVB de la silhouette en conservant exactement son alpha', () => {
+    const source = segmentPixels();
+    const original = source.data.slice();
+    expect(blanchirSilhouette).toBeTypeOf('function');
+    if (!blanchirSilhouette) throw new Error('Dérivation de silhouette attendue');
+    const derived = blanchirSilhouette(source);
+    expect([derived.width, derived.height]).toEqual([source.width, source.height]);
+    expect(source.data).toEqual(original);
+    for (let i = 0; i < original.length; i += 1) {
+        const channel = original[i]!;
+        if (i % 4 === 3) {
+            expect(derived.data[i]).toBe(channel);
+        } else {
+            expect(Math.abs(derived.data[i]! - (channel * 0.07 + 255 * 0.93))).toBeLessThanOrEqual(1);
+        }
+    }
+    expect(derived.data[15]).toBe(0);
+});
+
+it.each(['canvas', 'webgl'])('sélectionne les textures des deux éclats en %s', async (backend) => {
+    display.rendererName = backend;
+    const pixels = segmentPixels();
+    const drawImage = vi.fn();
+    const context = { drawImage, getImageData: vi.fn(() => pixels), putImageData: vi.fn() };
+    const canvasPrototype: { getContext(kind: '2d'): CanvasRenderingContext2D | null } =
+        HTMLCanvasElement.prototype;
+    vi.spyOn(canvasPrototype, 'getContext').mockReturnValue(
+        context as unknown as CanvasRenderingContext2D,
+    );
+    const fixture = await createView();
+    try {
+        const factory = vi.spyOn(Sprite, 'from');
+        const from = factory.getMockImplementation();
+        if (!from) throw new Error('Fabrique de sprites attendue');
+        const arts = [pieceArtwork['segment-cyan'], pieceArtwork['segment-magenta']];
+        const textures = new Map(
+            arts.map((art) => {
+                const canvas = document.createElement('canvas');
+                canvas.width = pixels.width;
+                canvas.height = pixels.height;
+                return [art, new Texture({ source: new CanvasSource({ resource: canvas, resolution: 1 }) })];
+            }),
+        );
+        factory.mockImplementation((asset) => {
+            const sprite = from(asset);
+            const texture = typeof asset === 'string' ? textures.get(asset) : undefined;
+            if (texture) sprite.texture = texture;
+            return sprite;
+        });
+        const { before, events } = dropFixture();
+        fixture.view.render(before, []);
+        const played = fixture.view.play(events, before, () => undefined);
+        advance(animationDuration('gravity', false));
+        await Promise.resolve();
+        const flashes = drawOrder().filter((sprite) => LIGHTENING.has(sprite.blendMode));
+        expect(flashes).toHaveLength(2);
+        for (const { texture, x, y } of arts.flatMap((art) => fixture.sprites(art))) {
+            const flash = flashes.find((image) => image.x === x && image.y === y);
+            expect(flash).toBeDefined();
+            if (backend === 'canvas') {
+                expect(flash?.texture).not.toBe(texture);
+                expect(silhouetteSource?.(flash!.texture)).toBe(texture);
+                expect([flash?.texture.width, flash?.texture.height]).toEqual([
+                    texture.width,
+                    texture.height,
+                ]);
+            } else {
+                expect(flash?.texture).toBe(texture);
+            }
+        }
+        expect(drawImage).toHaveBeenCalledTimes(backend === 'canvas' ? 2 : 0);
         await finish(played);
     } finally {
         fixture.view.destroy();
