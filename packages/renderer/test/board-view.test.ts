@@ -411,7 +411,7 @@ it('[E531] la traînée de chute suit la capsule pendant la descente', async () 
             return { bounds: sprite.getBounds(), alpha: effectiveAlpha(sprite) };
         };
         // Haut de la capsule : segment magenta, au-dessus du cyan (orientation 0).
-        const capsuleTop = () => fixture.sprites(pieceArtwork['cellule-magenta-unie']).at(0)?.y ?? NaN;
+        const capsuleTop = () => fixture.sprites(pieceArtwork['segment-magenta']).at(0)?.y ?? NaN;
 
         advance(30);
         const early = trail();
@@ -447,8 +447,8 @@ it('[E438] [E531] le verrouillage fait un éclat clair au-dessus des deux segmen
         await Promise.resolve();
         // Les deux segments posés, verticaux en colonne 3 : magenta au-dessus du cyan.
         const segments = [
-            ...fixture.sprites(pieceArtwork['cellule-cyan-unie']),
-            ...fixture.sprites(pieceArtwork['cellule-magenta-unie']),
+            ...fixture.sprites(pieceArtwork['segment-cyan']),
+            ...fixture.sprites(pieceArtwork['segment-magenta']),
         ];
         expect(segments.map(({ x, y }) => [x, y]).sort()).toEqual(
             [
@@ -515,7 +515,7 @@ it('[E438] [E531] l’éclat de verrouillage suit la forme des segments', async 
         const factory = vi.spyOn(Sprite, 'from');
         const from = factory.getMockImplementation();
         if (!from) throw new Error('Fabrique de sprites attendue');
-        const arts = [pieceArtwork['cellule-cyan-unie'], pieceArtwork['cellule-magenta-unie']];
+        const arts = [pieceArtwork['segment-cyan'], pieceArtwork['segment-magenta']];
         const textures = new Map(arts.map((art) => [art, new Texture({ source: Texture.EMPTY.source })]));
         factory.mockImplementation((asset) => {
             const sprite = from(asset);
