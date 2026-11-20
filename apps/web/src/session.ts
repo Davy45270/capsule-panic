@@ -21,7 +21,7 @@ export function initialLevelStats(state: GameState): LevelStats {
     return { capsules: 0, bestChain: state.chainCount, crystalsAtStart: obstacleCount(state.level) };
 }
 
-/** Applique les transitions du moteur et publie les effets visuels à leur propre cadence. */
+/** Suspend les transitions du moteur pendant la lecture visuelle et l'écriture du point de reprise. */
 export class GameSession {
     #state: GameState;
     #playback: Promise<void> | undefined;
@@ -47,9 +47,9 @@ export class GameSession {
         return this.#playback !== undefined || this.#saving;
     }
 
-    /** Applique une commande ou la met en attente pendant une écriture. */
+    /** Applique une commande ou la met en attente pendant une animation ou une écriture. */
     command(type: CommandType): boolean {
-        if (this.#saving) {
+        if (this.animating) {
             this.#pendingCommands.push(type);
             return true;
         }
@@ -57,7 +57,7 @@ export class GameSession {
         return this.#apply(type);
     }
     tick(): void {
-        if (!this.#saving) this.#apply('TICK');
+        if (!this.animating) this.#apply('TICK');
     }
     togglePause(): void {
         this.command('PAUSE');
@@ -65,7 +65,7 @@ export class GameSession {
     /** Onglet caché : la partie se met en pause et y reste jusqu'à une reprise explicite. */
     visibilityChanged(hidden: boolean): void {
         if (!hidden || this.#state.phase !== 'FALLING') return;
-        if (this.#saving) this.#pauseWhenReady = true;
+        if (this.animating) this.#pauseWhenReady = true;
         else this.#apply('PAUSE');
     }
 
@@ -81,21 +81,6 @@ export class GameSession {
         }
         const spawned = t.events.some((event) => event.type === 'SPAWNED');
         const motion = t.events.some((e) => e.type === 'MOVED' || e.type === 'ROTATED') ? before : undefined;
-        if (locked) {
-            const matched = t.events.some((e) => e.type === 'MATCH_REMOVED');
-            const playback = matched
-                ? this.hooks.play(t.events, before)
-                : this.hooks.playPlacement?.(t.events, before);
-            this.#playback = playback;
-            if (playback) {
-                const finish = (): void => {
-                    if (this.#playback !== playback) return;
-                    this.#playback = undefined;
-                    this.#showIfReady();
-                };
-                void playback.then(finish, finish);
-            }
-        }
         const publish = (): void => {
             this.#saving = false;
             this.#pauseIfRequested();
@@ -103,17 +88,28 @@ export class GameSession {
             this.#showIfReady(motion);
             this.#drainCommands();
         };
-        const checkpoint = spawned ? this.hooks.onSpawn?.(this.#state) : undefined;
-        if (checkpoint) {
-            this.#saving = true;
-            void checkpoint.then(publish, publish);
-        } else publish();
+        const finishPlayback = (): void => {
+            this.#playback = undefined;
+            const checkpoint = spawned ? this.hooks.onSpawn?.(this.#state) : undefined;
+            if (checkpoint) {
+                this.#saving = true;
+                void checkpoint.then(publish, publish);
+            } else publish();
+        };
+        if (locked) {
+            const matched = t.events.some((e) => e.type === 'MATCH_REMOVED');
+            this.#playback = matched
+                ? this.hooks.play(t.events, before)
+                : this.hooks.playPlacement?.(t.events, before);
+        }
+        if (this.#playback) void this.#playback.then(finishPlayback, finishPlayback);
+        else finishPlayback();
         return true;
     }
     #drainCommands(): void {
         if (this.#drainingCommands) return;
         this.#drainingCommands = true;
-        while (!this.#saving) {
+        while (!this.animating) {
             const type = this.#pendingCommands.shift();
             if (!type) break;
             this.command(type);
