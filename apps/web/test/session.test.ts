@@ -5,6 +5,9 @@ import { mapKey } from '@capsule-panic/input';
 import { cascade, victoire } from '../../../tests/e2e/parcours';
 import { GameSession } from '../src/session';
 
+/** Laisse se terminer les promesses en cours (lecture visuelle, écriture, commandes rejouées). */
+const flush = (): Promise<void> => new Promise((resolve) => setTimeout(resolve, 0));
+
 function fakeView() {
     let release: () => void = () => undefined;
     const played: GameEvent[][] = [];
@@ -49,22 +52,19 @@ describe('game session', () => {
         expect(session.command('MOVE_LEFT')).toBe(false);
         expect(session.state.active?.x).toBe(0);
     });
-    it('les commandes et les ticks s’appliquent pendant une cascade', async () => {
+    it('[E106] [E152] suspend la chute et met en file les commandes pendant une cascade, puis les rejoue', async () => {
         const v = fakeView();
         const session = new GameSession(aboutToMatch(), v.hooks);
         expect(session.command('HARD_DROP')).toBe(true);
         expect(session.animating).toBe(true);
-        const moved = step(session.state, { type: 'MOVE_LEFT' }).state;
+        const dropped = session.state;
         expect(session.command('MOVE_LEFT')).toBe(true);
-        expect(session.state).toEqual(moved);
-        const fallen = step(moved, { type: 'TICK' }).state;
         session.tick();
-        expect(session.state).toEqual(fallen);
+        expect(session.state).toBe(dropped);
         v.release();
-        await Promise.resolve();
-        await Promise.resolve();
+        await flush();
         expect(session.animating).toBe(false);
-        expect(session.state).toEqual(fallen);
+        expect(session.state).toEqual(step(dropped, { type: 'MOVE_LEFT' }).state);
     });
     it('visibility hidden pauses the game, and only an explicit resume restarts it', () => {
         const session = new GameSession(createGame({ seed: 's', level: 0, speed: 'low' }), fakeView().hooks);
@@ -116,7 +116,7 @@ describe('game session', () => {
     });
 });
 
-it('[E152] sauvegarde l’apparition et permet la pause pendant la résolution', async () => {
+it('[E152] sauvegarde après la résolution, jamais pendant, et applique ensuite la pause demandée', async () => {
     const v = fakeView();
     const saved: GameState[] = [];
     const session = new GameSession(aboutToMatch(), {
@@ -128,11 +128,11 @@ it('[E152] sauvegarde l’apparition et permet la pause pendant la résolution',
     session.command('HARD_DROP');
     const spawned = session.state;
     session.visibilityChanged(true);
-    expect(saved).toEqual([spawned]);
-    expect(session.state.phase).toBe('PAUSED');
+    expect(saved).toEqual([]);
     v.release();
-    await Promise.resolve();
-    expect(saved).toEqual([spawned]);
+    await flush();
+    expect(saved).toHaveLength(1);
+    expect(saved[0]?.active?.id).toBe(spawned.active?.id);
     expect(session.state.phase).toBe('PAUSED');
 });
 
@@ -220,7 +220,7 @@ it('la vue ne reçoit pas le plateau final avant les effets de cascade', async (
     expect(frames).toEqual([initial, session.state]);
 });
 
-it('[E531] enregistre à l’apparition et laisse la pose se terminer avant de montrer la capsule suivante', async () => {
+it('[E152] [E531] laisse la pose se terminer avant d’enregistrer et de montrer la capsule suivante', async () => {
     const before = createGame({ seed: 'reprise', level: 0, speed: 'low' });
     const pose = Promise.withResolvers<undefined>();
     const shown: GameState[] = [];
@@ -240,11 +240,28 @@ it('[E531] enregistre à l’apparition et laisse la pose se terminer avant de m
     session.command('HARD_DROP');
     expect(session.state).toEqual(expected);
     expect(shown).toEqual([before]);
-    expect(saved).toEqual([expected]);
+    expect(saved).toEqual([]);
     pose.resolve(undefined);
-    await pose.promise;
+    await flush();
     expect(shown).toEqual([before, expected]);
     expect(saved).toEqual([expected]);
+});
+
+it('[E106] la capsule suivante ne tombe ni ne bouge avant la fin de la pose, et les commandes sont rejouées', async () => {
+    const before = createGame({ seed: 'reprise', level: 0, speed: 'low' });
+    const pose = Promise.withResolvers<undefined>();
+    const session = new GameSession(before, { ...fakeView().hooks, playPlacement: () => pose.promise });
+    session.command('HARD_DROP');
+    const spawned = session.state;
+    session.tick();
+    session.tick();
+    expect(session.command('MOVE_LEFT')).toBe(true);
+    expect(session.command('HARD_DROP')).toBe(true);
+    expect(session.state).toBe(spawned);
+    pose.resolve(undefined);
+    await flush();
+    const moved = step(spawned, { type: 'MOVE_LEFT' }).state;
+    expect(session.state).toEqual(step(moved, { type: 'HARD_DROP' }).state);
 });
 
 it.each([
@@ -268,7 +285,7 @@ it.each([
                         const command = mapKey(key === 'Space' ? ' ' : key);
                         if (command) session.command(command);
                         positions.push(session.state.active);
-                        await vi.advanceTimersByTimeAsync(1);
+                        await vi.advanceTimersByTimeAsync(duration + 1);
                     }
                 }
                 const beforeTick = session.state;
