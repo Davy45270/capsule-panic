@@ -21,3 +21,6 @@ SHA
 )
 CAPSULE_PLANCHES="$(realpath "$planches")" python3 -B scripts/assets-build.py "$outils" "$aseprite"
 python3 -B scripts/assets-runtime.py
+# Icônes de l'application (scripts/make-icons.js, rsvg-convert) : livrées au précache, optimisées sans perte
+# comme les sprites. oxipng n'écrit un fichier que s'il le rend plus léger : la passe est idempotente.
+oxipng -q -o max --strip safe apps/web/public/icons/*.png

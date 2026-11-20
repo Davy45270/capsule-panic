@@ -105,12 +105,13 @@ it('ignored and untracked files are never read, including without git', () => {
 });
 
 // Empreintes des deux sprites et de l’atlas comparés pixel pour pixel avec la planche de contrôle.
+// Sprites réempreints après `oxipng -o max --strip safe` : octets changés, décodage RGBA identique.
 it('[E002] [E284] les chercheurs contrôlés sont sans croix, blouse médicale, stéthoscope, seringue ou pilule', () => {
     const approved = {
         'sprites/sprite-chercheuse-origine.png':
-            '20575eb47bafb0a8941e6c4a73303b370835911699569d005e733c3b5efb2de6',
+            'c7479e37f2aa8d8e66c4bc47be9b053b4518bbe5664bc9b197ef79265fb1afe1',
         'sprites/sprite-responsable-origine.png':
-            'ef2828c1b62bd2735dd641ef919bae7e9b1edd39eec3c4d30caf5e072ee856d7',
+            '1596d381e6ae3ee0b1e4253d120d744c6173c4d8b91f83abdbeb4c25001f0418',
         'atlas/personnages-origine@3x.webp':
             'b1443119e6bf42d76874cd6029507b694e9b79ba43a189caa8e02baeb4738e2f',
         'atlas/personnages-origine@3x.json':
