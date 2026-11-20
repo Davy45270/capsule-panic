@@ -508,3 +508,39 @@ it('[E438] [E531] en mouvement réduit, ni traînée de chute ni éclat de verro
         fixture.view.destroy();
     }
 });
+
+it('[E438] [E531] l’éclat de verrouillage suit la forme des segments', async () => {
+    const fixture = await createView();
+    try {
+        const factory = vi.spyOn(Sprite, 'from');
+        const from = factory.getMockImplementation();
+        if (!from) throw new Error('Fabrique de sprites attendue');
+        const arts = [pieceArtwork['cellule-cyan-unie'], pieceArtwork['cellule-magenta-unie']];
+        const textures = new Map(arts.map((art) => [art, new Texture({ source: Texture.EMPTY.source })]));
+        factory.mockImplementation((asset) => {
+            const sprite = from(asset);
+            const texture = typeof asset === 'string' ? textures.get(asset) : undefined;
+            if (texture) sprite.texture = texture;
+            return sprite;
+        });
+
+        const { before, events } = dropFixture();
+        fixture.view.render(before, []);
+        const played = fixture.view.play(events, before, () => undefined);
+        advance(animationDuration('gravity', false));
+        await Promise.resolve();
+        const flashes = drawOrder().filter((sprite) => LIGHTENING.has(sprite.blendMode));
+        expect(flashes.some((sprite) => sprite.texture === Texture.WHITE)).toBe(false);
+        const segments = arts.flatMap((art) => fixture.sprites(art));
+        expect(segments).toHaveLength(2);
+        expect(flashes).toHaveLength(2);
+        for (const { texture, x, y } of segments) {
+            expect(flashes.some((flash) => flash.texture === texture && flash.x === x && flash.y === y)).toBe(
+                true,
+            );
+        }
+        await finish(played);
+    } finally {
+        fixture.view.destroy();
+    }
+});
