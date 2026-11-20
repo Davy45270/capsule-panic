@@ -21,7 +21,7 @@ export function initialLevelStats(state: GameState): LevelStats {
     return { capsules: 0, bestChain: state.chainCount, crystalsAtStart: obstacleCount(state.level) };
 }
 
-/** Suspend les transitions du moteur pendant la lecture visuelle et l'écriture du point de reprise. */
+/** Suspend les transitions du moteur pendant la lecture d'une cascade et l'écriture du point de reprise. */
 export class GameSession {
     #state: GameState;
     #playback: Promise<void> | undefined;
@@ -103,9 +103,11 @@ export class GameSession {
         };
         if (locked) {
             const matched = t.events.some((e) => e.type === 'MATCH_REMOVED');
-            this.#playback = matched
-                ? this.hooks.play(t.events, before)
-                : this.hooks.playPlacement?.(t.events, before);
+            if (matched) this.#playback = this.hooks.play(t.events, before);
+            else {
+                const placement = this.hooks.playPlacement?.(t.events, before);
+                void placement?.catch(() => undefined);
+            }
         }
         if (this.#playback) void this.#playback.then(finishPlayback, finishPlayback);
         else finishPlayback();
