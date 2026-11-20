@@ -115,8 +115,8 @@ it('[E263] dessine les textures à motif renforcé sur les deux segments actifs'
             { ...state, active: { id: 'c1', colors: ['cyan', 'magenta'], x: 3, y: 1, orientation: 0 } },
             [],
         );
-        expect(fixture.sprites(pieceArtwork['cellule-cyan-unie'])).toHaveLength(1);
-        expect(fixture.sprites(pieceArtwork['cellule-magenta-unie'])).toHaveLength(1);
+        expect(fixture.sprites(pieceArtwork['segment-cyan'])).toHaveLength(1);
+        expect(fixture.sprites(pieceArtwork['segment-magenta'])).toHaveLength(1);
 
         fixture.view.setOptions({ colorBlind: true, highContrast: false, reducedMotion: false });
         const { cell, originX, originY } = boardLayout(390, 600);
@@ -126,8 +126,8 @@ it('[E263] dessine les textures à motif renforcé sur les deux segments actifs'
         expect(fixture.sprites(pieceArtwork['cellule-magenta']).map(({ x, y }) => [x, y])).toEqual([
             [originX + 3 * cell, originY],
         ]);
-        expect(fixture.sprites(pieceArtwork['cellule-cyan-unie'])).toHaveLength(0);
-        expect(fixture.sprites(pieceArtwork['cellule-magenta-unie'])).toHaveLength(0);
+        expect(fixture.sprites(pieceArtwork['segment-cyan'])).toHaveLength(0);
+        expect(fixture.sprites(pieceArtwork['segment-magenta'])).toHaveLength(0);
     } finally {
         fixture.view.destroy();
     }
@@ -152,7 +152,7 @@ it.each([
             const after = step(before, { type: command }).state;
             const render: (state: GameState, ghost: readonly Position[], before?: GameState) => void =
                 fixture.view.render.bind(fixture.view);
-            const position = () => fixture.sprites(pieceArtwork['cellule-magenta-unie']).at(0)?.[axis] ?? NaN;
+            const position = () => fixture.sprites(pieceArtwork['segment-magenta']).at(0)?.[axis] ?? NaN;
             fixture.view.render(before, []);
             const start = position();
             fixture.view.render(after, []);
@@ -201,7 +201,7 @@ it('[E531] montre une descente puis le verrouillage avant de permettre l’appar
                 finished = true;
             });
         advance(60);
-        const cyan = () => fixture.sprites(pieceArtwork['cellule-cyan-unie']).at(0)?.y ?? NaN;
+        const cyan = () => fixture.sprites(pieceArtwork['segment-cyan']).at(0)?.y ?? NaN;
         expect(cyan()).toBeGreaterThan(originY + cell);
         expect(cyan()).toBeLessThan(originY + landing * cell);
         advance(60);

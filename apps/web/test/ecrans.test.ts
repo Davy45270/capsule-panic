@@ -123,8 +123,8 @@ it('[E099] [E100] [E103] [E304] [E530] le miroir du réacteur reflète la textur
     expect(mirror).toContain('cyan,hexagone');
     expect(mirror).toContain('amber,triangle');
     expect(mirror).toContain('magenta,losange');
-    // Cellules unies par défaut (règle de l'auteur de la spec) ; la forme vient du mode daltonien.
-    expect(textureFor('segment', 'cyan', false)).toEqual({ art: 'cellule-cyan-unie', form: 'aucune' });
+    // [E422] Segments carrés de Gameplay 03 par défaut (règle de l'auteur de la spec) ; la forme vient du mode daltonien.
+    expect(textureFor('segment', 'cyan', false)).toEqual({ art: 'segment-cyan', form: 'aucune' });
     expect(textureFor('segment', 'cyan', true)).toEqual({ art: 'cellule-cyan', form: 'hexagone' });
 });
 
@@ -480,7 +480,7 @@ it('[E099] affiche dans l’ordre les deux textures distinctes de la prochaine c
     };
     await mountGame(initial);
     expect([...container.querySelectorAll('.preview img')].map((image) => image.getAttribute('src'))).toEqual(
-        [pieceArtwork['cellule-magenta-unie'], pieceArtwork['cellule-ambre-unie']],
+        [pieceArtwork['segment-magenta'], pieceArtwork['segment-ambre']],
     );
 });
 
