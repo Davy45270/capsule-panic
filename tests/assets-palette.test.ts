@@ -123,16 +123,14 @@ it('les blocs et segments du plateau sont recolorés par la seule rampe projeté
 // Redessins des tables rouges au contrôle (animations, cascade, logos, paires, ponts, mode) : rabattus sur la palette
 // SANS biais de leur planche, en ne déplaçant que les pixels hors tolérance et jamais un neutre vers une couleur (un
 // reflet blanc ne vire pas au saumon). Le médaillon reste tel quel : rabattu, son biseau se postérisait.
+// Exception : les redessins qui portent du magenta. Décision de l'auteur de la spec : tout le magenta est le rose de
+// la spec (#F472B6) ; rabattus sur leur élément de planche, rouge, ils retombaient sur le framboise.
 it('les redessins des tables rouges sont rabattus sur la palette sans biais, sans changer de famille de couleur', () => {
     const provenance = JSON.parse(readFileSync('packages/assets/provenance.json', 'utf8')) as {
         assets: { id: string; transformations?: string[] }[];
     };
     const rabattus = [
-        'chute-animations-jeu', 'rotation-animations-jeu', 'deplacement-animations-jeu', 'verrouillage-animations-jeu',
-        'chute-animations-apercu', 'rotation-animations-apercu', 'deplacement-animations-apercu',
-        'verrouillage-animations-apercu', 'cascade-apercu', 'transformation-apercu', 'logo-jeu', 'logo-apercu',
-        'mode-classique-jeu', 'paire-horizontale-cyan-magenta', 'paire-horizontale-magenta-ambre',
-        'paire-verticale-cyan-magenta', 'paire-verticale-cyan-ambre', 'paire-verticale-magenta-ambre',
+        'deplacement-animations-jeu', 'logo-jeu', 'logo-apercu', 'mode-classique-jeu', 'paire-verticale-cyan-ambre',
         'pont-haut', 'pont-droite', 'pont-bas', 'pont-gauche',
     ];
     const sansBiais = (id: string) =>
@@ -143,8 +141,17 @@ it('les redessins des tables rouges sont rabattus sur la palette sans biais, san
                 t.includes("un pixel neutre dont la couleur la plus proche est colorée, ou l'inverse, reste tel quel"),
         );
     for (const id of rabattus) expect(sansBiais(id), id).toHaveLength(1);
-    expect(sansBiais('medaillon-cellule')).toEqual([]);
+    for (const id of ['medaillon-cellule', ...DERIVES_MAGENTA]) expect(sansBiais(id), id).toEqual([]);
 });
+
+/** Redessins qui portent du magenta (paires, animations, cascade, transformation, tutoriels). */
+const DERIVES_MAGENTA = [
+    'paire-horizontale-cyan-magenta', 'paire-horizontale-magenta-ambre', 'paire-verticale-cyan-magenta',
+    'paire-verticale-magenta-ambre', 'chute-animations-jeu', 'rotation-animations-jeu', 'verrouillage-animations-jeu',
+    'chute-animations-apercu', 'rotation-animations-apercu', 'deplacement-animations-apercu',
+    'verrouillage-animations-apercu', 'cascade-apercu', 'transformation-apercu', 'tutoriel-deplacer',
+    'tutoriel-eliminer', 'tutoriel-pivoter',
+];
 
 /** Pixels RGBA d'un PNG 8 bits RGBA ou RGB non entrelacé (les sprites de la chaîne). */
 function pixels(chemin: string): Uint8Array {
@@ -189,7 +196,7 @@ function pixels(chemin: string): Uint8Array {
 }
 
 /** Teinte moyenne (circulaire, en degrés) des pixels opaques colorés : sans contour sombre ni reflet blanc. */
-function teinteMoyenne(rgba: Uint8Array): { teinte: number; saturation: number } {
+function teinteMoyenne(rgba: Uint8Array, zone = (_teinte: number) => true): { teinte: number; saturation: number } {
     let [x, y, saturation, n] = [0, 0, 0, 0];
     for (let i = 0; i < rgba.length; i += 4) {
         if ((rgba[i + 3] ?? 0) < 128) continue;
@@ -204,6 +211,7 @@ function teinteMoyenne(rgba: Uint8Array): { teinte: number; saturation: number }
         if (l < 0.25 || l > 0.9 || s < 0.25) continue;
         const d = max - min;
         const h = max === r ? ((g - b) / d + 6) % 6 : max === g ? (b - r) / d + 2 : (r - g) / d + 4;
+        if (!zone(h * 60)) continue;
         x += Math.cos((h * Math.PI) / 3);
         y += Math.sin((h * Math.PI) / 3);
         saturation += s;
@@ -235,4 +243,16 @@ it('[E304] [E422] la cellule, le cristal et le cristal brisé magenta portent le
         /#(B71939|FF806D)\b/iu.test(readFileSync(`packages/assets/source/svg/${f}`, 'utf8')),
     );
     expect(framboise).toEqual([]);
+});
+
+// [E304] [E422] Même décision pour les redessins qui portent ces objets : leur zone magenta (teintes de 290° à 20°,
+// où tombent le rose comme le framboise ; le cyan et l'ambre en sont loin) est à 6° au plus de #F472B6.
+it('[E304] [E422] la zone magenta des paires, animations, cascade, transformation et tutoriels porte le rose de la spec', () => {
+    const cible = teinteMoyenne(new Uint8Array([0xf4, 0x72, 0xb6, 255])).teinte;
+    const magenta = (teinte: number) => teinte >= 290 || teinte <= 20;
+    for (const id of DERIVES_MAGENTA) {
+        const { teinte } = teinteMoyenne(pixels(`packages/assets/sprites/sprite-${id}.png`), magenta);
+        const ecart = Math.abs(((teinte - cible + 540) % 360) - 180);
+        expect(ecart, `${id} : teinte ${teinte.toFixed(1)}° pour ${cible.toFixed(1)}°`).toBeLessThanOrEqual(6);
+    }
 });
