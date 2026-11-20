@@ -7,6 +7,28 @@ import { startGame } from './helpers';
 async function capture(page: Page, info: TestInfo, name: string, errors: string[]): Promise<void> {
     const before = errors.length;
     const path = info.outputPath(`${name}.png`);
+    // Une image dont la boîte est posée compte comme « visible » avant d'être décodée : sans cette attente, la
+    // capture de la défaite en 1280×800 est sortie sans bannière ni boutons alors que l'écran les affiche.
+    await page.evaluate(() =>
+        Promise.all(
+            [...document.images]
+                .filter((image) => image.getClientRects().length > 0)
+                .map((image) =>
+                    image.complete
+                        ? image.decode().catch(() => undefined)
+                        : new Promise<void>((resolve) => {
+                              image.addEventListener(
+                                  'load',
+                                  () => void image.decode().then(resolve, resolve),
+                                  {
+                                      once: true,
+                                  },
+                              );
+                              image.addEventListener('error', () => resolve(), { once: true });
+                          }),
+                ),
+        ),
+    );
     await page.screenshot({ path, animations: 'disabled', fullPage: true });
     if (info.project.use.browserName === 'webkit') {
         // Le moteur de capture ajoute puis retire <style>body {}</style> pour synchroniser les animations.
