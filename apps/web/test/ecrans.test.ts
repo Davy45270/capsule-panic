@@ -696,7 +696,7 @@ it('présente les commandes et les légendes du tutoriel en texte HTML', async (
     await click('Aide');
     const help = container.querySelector('.help');
     expect(help?.querySelector('[data-art="legende-clavier-gestes-jeu"]')).toBeNull();
-    for (const label of ['← → Déplacer', '↓ Chute rapide', '↑ Rotation', '↓ descend d’une case']) {
+    for (const label of ['← → Déplacer', '↓ Descendre d’une case', 'Espace Poser d’un coup', 'X ou ↑ Pivoter']) {
         expect(help?.textContent).toContain(label);
     }
     expect([...(help?.querySelectorAll('.tutorial li') ?? [])]).toHaveLength(4);
