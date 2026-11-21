@@ -5,7 +5,6 @@ import reacteurChambreOrigine from '../../../packages/assets/runtime/sprite-reac
 import barrePartie from '../../../packages/assets/runtime/sprite-barre-partie.webp';
 import panneauSuivantPartie from '../../../packages/assets/runtime/sprite-panneau-suivant-partie.webp';
 import cristauxHudJeu from '../../../packages/assets/runtime/sprite-cristaux-hud-jeu.webp';
-import cadreStatistiquesReussite from '../../../packages/assets/runtime/sprite-cadre-statistiques-reussite.webp';
 import rubanReussite from '../../../packages/assets/runtime/sprite-ruban-reussite.webp';
 import jouerAccueil from '../../../packages/assets/runtime/sprite-jouer-accueil.webp';
 import optionsAccueil from '../../../packages/assets/runtime/sprite-options-accueil.webp';
@@ -20,10 +19,9 @@ import tutorielDeplacer from '../../../packages/assets/runtime/sprite-tutoriel-d
 import tutorielPivoter from '../../../packages/assets/runtime/sprite-tutoriel-pivoter.webp';
 import tutorielAligner from '../../../packages/assets/runtime/sprite-tutoriel-aligner.webp';
 import tutorielEliminer from '../../../packages/assets/runtime/sprite-tutoriel-eliminer.webp';
+import touchesHorizontalesJeu from '../../../packages/assets/runtime/sprite-touches-horizontales-gestes-jeu.webp';
+import touchesActionJeu from '../../../packages/assets/runtime/sprite-touches-action-gestes-jeu.webp';
 import gestesGestesJeu from '../../../packages/assets/runtime/sprite-gestes-gestes-jeu.webp';
-import legendeClavierGestesJeu from '../../../packages/assets/runtime/sprite-legende-clavier-gestes-jeu.webp';
-import touchesActionGestesJeu from '../../../packages/assets/runtime/sprite-touches-action-gestes-jeu.webp';
-import touchesHorizontalesGestesJeu from '../../../packages/assets/runtime/sprite-touches-horizontales-gestes-jeu.webp';
 import gaucheCommandesOrigine from '../../../packages/assets/runtime/sprite-gauche-commandes-origine.webp';
 import droiteCommandesOrigine from '../../../packages/assets/runtime/sprite-droite-commandes-origine.webp';
 import basCommandesOrigine from '../../../packages/assets/runtime/sprite-bas-commandes-origine.webp';
@@ -36,7 +34,7 @@ import niveauPlusCommandesApercu from '../../../packages/assets/runtime/sprite-n
 import pleinEcranCommandesApercu from '../../../packages/assets/runtime/sprite-plein-ecran-commandes-apercu.webp';
 import panneauxPanneauxApercu from '../../../packages/assets/runtime/sprite-panneaux-panneaux-apercu.webp';
 import pauseCommandesOrigine from '../../../packages/assets/runtime/sprite-pause-commandes-origine.webp';
-import aideCommandesApercu from '../../../packages/assets/runtime/sprite-aide-commandes-apercu.webp';
+import aideAccueil from '../../../packages/assets/runtime/sprite-aide-accueil.webp';
 import fiolesSousLogo from '../../../packages/assets/runtime/sprite-fioles-sous-logo.webp';
 import carteClassiqueApercu from '../../../packages/assets/runtime/sprite-carte-classique-apercu.webp';
 
@@ -48,7 +46,6 @@ export const artwork = {
     'barre-partie': barrePartie,
     'panneau-suivant-partie': panneauSuivantPartie,
     'cristaux-hud-jeu': cristauxHudJeu,
-    'cadre-statistiques-reussite': cadreStatistiquesReussite,
     'ruban-reussite': rubanReussite,
     'jouer-accueil': jouerAccueil,
     'options-accueil': optionsAccueil,
@@ -63,10 +60,9 @@ export const artwork = {
     'tutoriel-pivoter': tutorielPivoter,
     'tutoriel-aligner': tutorielAligner,
     'tutoriel-eliminer': tutorielEliminer,
+    'touches-horizontales-gestes-jeu': touchesHorizontalesJeu,
+    'touches-action-gestes-jeu': touchesActionJeu,
     'gestes-gestes-jeu': gestesGestesJeu,
-    'legende-clavier-gestes-jeu': legendeClavierGestesJeu,
-    'touches-action-gestes-jeu': touchesActionGestesJeu,
-    'touches-horizontales-gestes-jeu': touchesHorizontalesGestesJeu,
     'gauche-commandes-origine': gaucheCommandesOrigine,
     'droite-commandes-origine': droiteCommandesOrigine,
     'bas-commandes-origine': basCommandesOrigine,
@@ -79,7 +75,7 @@ export const artwork = {
     'plein-ecran-commandes-apercu': pleinEcranCommandesApercu,
     'panneaux-panneaux-apercu': panneauxPanneauxApercu,
     'pause-commandes-origine': pauseCommandesOrigine,
-    'aide-commandes-apercu': aideCommandesApercu,
+    'aide-accueil': aideAccueil,
     'fioles-sous-logo': fiolesSousLogo,
     'carte-classique-apercu': carteClassiqueApercu,
 };

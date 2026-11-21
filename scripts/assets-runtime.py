@@ -14,9 +14,49 @@ RUNTIME = ASSETS / "runtime"
 SIZE = 28
 COLUMNS = 12
 
+# Découpes dans les sprites détourés : seules les illustrations sont utilisées dans l'aide.
+ILLUSTRATIONS = {
+    "tutoriel-deplacer": "142x76+13+62",
+    "tutoriel-pivoter": "96x88+36+55",
+    "tutoriel-aligner": "154x44+8+63",
+    "tutoriel-eliminer": "150x72+9+53",
+    "gestes-gestes-jeu": "288x93+0+0",
+}
+PILULES = {
+    "jouer-accueil", "options-accueil", "credits-accueil", "aide-accueil",
+    "suivant-reussite", "rejouer-reussite", "menu-reussite",
+}
+# Bandes de matière sans lettrage, après normalisation en 126 × 28.
+RACCORDS_PILULE = {
+    "aide-accueil": ("3x20+57+4", "24x20+14+4"),
+    "suivant-reussite": ("3x13+55+7", "29x13+9+7"),
+}
+
 
 def run(*args):
     subprocess.run(args, check=True)
+
+
+def sprite_runtime(name, work):
+    identifiant = name.removeprefix("sprite-")
+    source = "sprite-options-accueil" if identifiant == "aide-accueil" else name
+    trimmed = work / f"{name}.png"
+    run("magick", ASSETS / "sprites" / f"{source}.png", "-trim", "+repage", trimmed)
+    if identifiant in ILLUSTRATIONS:
+        run("magick", trimmed, "-crop", ILLUSTRATIONS[identifiant], "+repage", trimmed)
+    if identifiant in PILULES:
+        run("magick", trimmed, "-resize", "126x28!", trimmed)
+        if identifiant in RACCORDS_PILULE:
+            sample, destination = RACCORDS_PILULE[identifiant]
+            width, height, x, y = re.split("[x+]", destination)
+            run("magick", trimmed, "(", "+clone", "-crop", sample, "+repage",
+                "-resize", f"{width}x{height}!", ")", "-geometry", f"+{x}+{y}",
+                "-compose", "Over", "-composite", trimmed)
+        # Détourage de la pilule peinte, avec un bord anticrénelé.
+        run("magick", trimmed, "(", "-size", "126x28", "xc:black", "-fill", "white",
+            "-draw", "roundrectangle 1,1 124,26 12,12", "-alpha", "copy", ")",
+            "-compose", "CopyAlpha", "-composite", trimmed)
+    return trimmed
 
 
 def main():
@@ -33,8 +73,7 @@ def main():
     with tempfile.TemporaryDirectory(prefix="capsule-runtime-") as work:
         work = Path(work)
         for name in used:
-            trimmed = work / f"{name}.png"
-            run("magick", ASSETS / "sprites" / f"{name}.png", "-trim", "+repage", trimmed)
+            trimmed = sprite_runtime(name, work)
             run("cwebp", "-quiet", "-q", "85", "-m", "6", trimmed, "-o", RUNTIME / f"{name}.webp")
 
         tiles = [ASSETS / "sprites" / f"{name}.png" for name in licences]

@@ -39,17 +39,19 @@ export function End({
                         : `${stats.crystalsAtStart - state.obstaclesRemaining} cristaux éliminés sur ${stats.crystalsAtStart}`}
                 </li>
                 <li>
-                    Score <strong data-testid="final-score">{state.score.toLocaleString('fr-FR')}</strong>
+                    <span>
+                        Score <strong data-testid="final-score">{state.score.toLocaleString('fr-FR')}</strong>
+                    </span>
                 </li>
                 <li>Combo max ×{stats.bestChain}</li>
                 {!won && <li>Capsules jouées {stats.capsules}</li>}
             </ul>
             <nav className="menu">
                 {won && !final && (
-                    <ArtButton name="suivant-reussite" label="Niveau suivant" onClick={onNext} />
+                    <ArtButton labelled name="suivant-reussite" label="Niveau suivant" onClick={onNext} />
                 )}
-                <ArtButton name="rejouer-reussite" label="Rejouer" onClick={onRetry} />
-                <ArtButton name="menu-reussite" label="Menu" onClick={onMenu} />
+                <ArtButton labelled name="rejouer-reussite" label="Rejouer" onClick={onRetry} />
+                <ArtButton labelled name="menu-reussite" label="Menu" onClick={onMenu} />
             </nav>
             {won && (
                 <div className="end-characters">

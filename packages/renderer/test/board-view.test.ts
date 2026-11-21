@@ -1,6 +1,6 @@
 // @vitest-environment happy-dom
 import { afterEach, expect, it, vi } from 'vitest';
-import { Assets, CanvasSource, Graphics, Sprite, Texture } from 'pixi.js';
+import { Assets, Cache, CanvasSource, Graphics, Sprite, Texture, TextureSource } from 'pixi.js';
 import type { Container } from 'pixi.js';
 import { createGame, getLandingProjection, step } from '@capsule-panic/engine';
 import type { BoardEvent, GameState, Position } from '@capsule-panic/contracts';
@@ -24,6 +24,7 @@ const { blanchirSilhouette, silhouetteSource } = lockFlash as unknown as {
 const display = vi.hoisted(() => ({
     stage: undefined as Container | undefined,
     rendererName: 'webgl',
+    screen: { width: 390, height: 600 },
     frames: new Set<(ticker: { deltaMS: number }) => void>(),
 }));
 
@@ -33,7 +34,7 @@ vi.mock('pixi.js', async (original) => {
         ...pixi,
         Application: class {
             canvas = document.createElement('canvas');
-            screen = { width: 390, height: 600 };
+            screen = display.screen;
             renderer = { name: display.rendererName, on: vi.fn(), off: vi.fn() };
             stage = new pixi.Container();
             ticker = {
@@ -53,12 +54,19 @@ vi.mock('pixi.js', async (original) => {
 
 afterEach(() => {
     display.rendererName = 'webgl';
+    display.screen = { width: 390, height: 600 };
+    const frame = pieceArtwork['reacteur-chambre-origine'];
+    if (Cache.has(frame)) Cache.remove(frame);
     vi.restoreAllMocks();
 });
 
 async function createView(colorBlind = false) {
     const textures = new Map<Sprite, unknown>();
     vi.spyOn(Assets, 'load').mockResolvedValue({});
+    Cache.set(
+        pieceArtwork['reacteur-chambre-origine'],
+        new Texture({ source: new TextureSource({ width: 615, height: 619 }) }),
+    );
     vi.spyOn(Sprite, 'from').mockImplementation((asset) => {
         const sprite = new Sprite(Texture.EMPTY);
         textures.set(sprite, asset);
@@ -639,6 +647,64 @@ it.each(['canvas', 'webgl'])('sélectionne les textures des deux éclats en %s',
         }
         expect(drawImage).toHaveBeenCalledTimes(backend === 'canvas' ? 2 : 0);
         await finish(played);
+    } finally {
+        fixture.view.destroy();
+    }
+});
+
+
+it.each([
+    [302, 620],
+    [242, 654],
+    [220, 550],
+])('logement de %d × %d : les cases d’angle restent au-delà des coins du cadre', async (width, height) => {
+    display.screen = { width, height };
+    const { view } = await createView();
+    try {
+        view.render(createGame({ seed: 'angle', level: 0, speed: 'low' }), []);
+        const frame = display.stage?.children[0]?.getBounds();
+        const { cell, originX, originY } = boardLayout(width, height);
+        expect(frame?.minX).toBeLessThanOrEqual(originX - 16);
+        expect(frame?.minY).toBeLessThanOrEqual(originY - 16);
+        expect(frame?.maxX).toBeGreaterThanOrEqual(originX + 8 * cell + 16);
+        expect(frame?.maxY).toBeGreaterThanOrEqual(originY + 16 * cell + 16);
+        expect(frame?.minX).toBeGreaterThanOrEqual(0);
+        expect(frame?.minY).toBeGreaterThanOrEqual(0);
+        expect(frame?.maxX).toBeLessThanOrEqual(width);
+        expect(frame?.maxY).toBeLessThanOrEqual(height);
+    } finally {
+        view.destroy();
+    }
+});
+
+it.each([
+    [302, 620],
+    [242, 654],
+    [220, 550],
+])('logement de %d × %d : un sprite repeint toute la grille sous les cases', async (width, height) => {
+    display.screen = { width, height };
+    const fixture = await createView();
+    try {
+        fixture.view.render(createGame({ seed: 'fond', level: 0, speed: 'low' }), []);
+        const texture = Assets.get<Texture>(pieceArtwork['reacteur-chambre-origine']);
+        const order = drawOrder();
+        const center = order.find(({ texture: slice }) =>
+            slice.source === texture.source && slice.frame.x === 80 && slice.frame.y === 80
+        );
+        expect(center, 'tranche centrale du cadre dessinée par un sprite').toBeDefined();
+        if (!center) throw new Error('Fond du réacteur attendu');
+        expect(center.texture.frame).toMatchObject({ width: 455, height: 459 });
+        expect(effectiveAlpha(center)).toBe(1);
+        expect(center.blendMode).toBe('normal');
+        const { cell, originX, originY } = boardLayout(width, height);
+        const { minX, minY, maxX, maxY } = center.getBounds();
+        expect(minX).toBeCloseTo(originX);
+        expect(minY).toBeCloseTo(originY);
+        expect(maxX).toBeCloseTo(originX + 8 * cell);
+        expect(maxY).toBeCloseTo(originY + 16 * cell);
+        for (const tile of fixture.sprites(expectCase)) {
+            expect(order.indexOf(center)).toBeLessThan(order.indexOf(tile));
+        }
     } finally {
         fixture.view.destroy();
     }

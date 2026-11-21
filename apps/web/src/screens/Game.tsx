@@ -294,7 +294,7 @@ export function Game({
                 {BUTTONS.map(([type, name, label]) => (
                     <ArtButton key={type} name={name} label={label} onClick={() => send(type)} />
                 ))}
-                <button aria-label="Poser" onClick={() => send('HARD_DROP')}>
+                <button aria-label="Poser" title="Poser" onClick={() => send('HARD_DROP')}>
                     ⤓
                 </button>
             </nav>

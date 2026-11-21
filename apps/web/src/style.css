@@ -216,15 +216,37 @@ input[type='radio'] {
     gap: 4px;
 }
 .art-button {
+    display: grid;
+    place-items: center;
     padding: 0;
-    border-color: transparent;
+    border: 0;
     background: transparent;
-    min-height: 48px;
+    color: var(--texte);
+    font-size: clamp(14px, 4vw, 23px);
+    font-weight: 900;
+    line-height: 1;
+    text-transform: uppercase;
+    text-shadow:
+        0 1px 2px #071224,
+        0 0 3px #071224,
+        1px 1px #071224,
+        -1px -1px #071224;
+}
+.art-button > * {
+    grid-area: 1 / 1;
 }
 .art-button img {
     width: 100%;
-    max-height: 61px;
-    object-fit: contain;
+}
+.art-button span {
+    z-index: 0;
+    margin-inline: 31% 5%;
+}
+.art-button:has([data-art='aide-accueil']) span {
+    margin-inline: 5%;
+}
+.art-button:has([data-art='suivant-reussite']) span {
+    margin-inline: 5% 21%;
 }
 .art-button:hover img {
     filter: brightness(1.16);
@@ -413,9 +435,20 @@ button:disabled {
     font-weight: 650;
 }
 .end .checks {
-    padding-inline-start: 16%;
-    background: #0d2948 url('../../../packages/assets/runtime/sprite-cadre-statistiques-reussite.webp') 0 0 /
-        100% 100% no-repeat;
+    list-style: none;
+    background: linear-gradient(#134369, #0d2948);
+    box-shadow: inset 0 0 0 2px #214e72;
+}
+.end .checks li {
+    display: grid;
+    grid-template-columns: 1.25em minmax(0, 1fr);
+    column-gap: 10px;
+}
+.end .checks li::before {
+    content: '✓';
+    color: #adfa73;
+    font-weight: 900;
+    text-align: center;
 }
 .end-characters {
     display: flex;
@@ -434,29 +467,63 @@ button:disabled {
 .help {
     max-width: 620px;
     width: 100%;
+    color: var(--texte);
+    background: #142044;
+    font-size: 16px;
+    line-height: 1.4;
 }
 .help h2,
-.help h3,
-.help p {
+.help h3 {
     margin: 4px 0;
 }
-.tutorial {
+.tutorial,
+.keyboard-legend,
+.touch-legend ul {
     list-style: none;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 6px;
+    gap: 8px;
     padding: 0;
     margin: 0;
 }
-.key-art {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
+.tutorial {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
 }
-.key-art img {
-    width: 44%;
+.tutorial li {
+    display: grid;
+    align-content: start;
+    justify-items: center;
+    gap: 6px;
+    padding: 8px;
+    border: 1px solid #8194c6;
+    border-radius: 10px;
+    background: #1f2937;
+}
+.tutorial img {
+    width: 100%;
+    height: 64px;
     object-fit: contain;
+}
+.keyboard-art {
+    display: flex;
+    gap: 8px;
+    width: min(100%, 176px);
+}
+.keyboard-art img {
+    width: calc((100% - 8px) / 2);
+    object-fit: contain;
+}
+.touch-legend {
+    width: min(100%, 340px);
+}
+.touch-legend img {
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 6px;
+}
+.touch-legend ul {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    font-size: 14px;
 }
 .options-panel {
     background: var(--panneau);
@@ -488,10 +555,6 @@ button:disabled {
     right: 7%;
     width: 35%;
     z-index: -2;
-}
-.home-menu .art-button img,
-.end .art-button img {
-    max-height: none;
 }
 .board-screen .home-menu {
     gap: 2px;

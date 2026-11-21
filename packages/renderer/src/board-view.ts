@@ -1,9 +1,9 @@
 // Rendu PixiJS du réacteur. Aucune règle ici : on dessine un état et on anime des événements déjà résolus.
-import { Application, Assets, Container, Graphics, loadTextures, Sprite } from 'pixi.js';
+import { Application, Assets, Container, Graphics, loadTextures, Rectangle, Sprite, Texture } from 'pixi.js';
 import { HEIGHT, WIDTH } from '@capsule-panic/contracts';
 import type { ActiveCapsule, Cell, Color, BoardEvent, GameState, Position } from '@capsule-panic/contracts';
 import { animationDuration, cellPoints, TOKENS } from './art';
-import { boardLayout } from './layout';
+import { boardLayout, GUTTER } from './layout';
 import { LockFlashSprite, lockFlashTexture } from './lock-flash';
 import { pieceArtwork, textureFor } from './pieces';
 import type { Artwork } from './pieces';
@@ -48,13 +48,36 @@ export async function createBoardView(host: HTMLElement, initial: ViewOptions): 
         resolution: Math.min(globalThis.devicePixelRatio || 1, 2),
     });
     host.appendChild(app.canvas);
-    const chamber = Sprite.from(pieceArtwork['reacteur-chambre-origine']);
+    // Les sprites ordinaires repeignent les neuf tranches sans passer par le maillage du cadre.
+    // Les 80 pixels du bord peint tiennent dans la marge, coins arrondis compris.
+    const frameEdge = 80;
+    const { source, frame } = Assets.get<Texture>(pieceArtwork['reacteur-chambre-origine']);
+    const columns = [frame.x, frame.x + frameEdge, frame.right - frameEdge, frame.right] as const;
+    const rows = [frame.y, frame.y + frameEdge, frame.bottom - frameEdge, frame.bottom] as const;
+    const indices = [0, 1, 2] as const;
+    const chamber = new Container();
+    const slices = indices.flatMap((row) =>
+        indices.map((column) => {
+            const region = new Rectangle(
+                columns[column],
+                rows[row],
+                columns[column + 1]! - columns[column],
+                rows[row + 1]! - rows[row],
+            );
+            const image = chamber.addChild(
+                new Sprite({ texture: new Texture({ source, frame: region }), blendMode: 'normal' }),
+            );
+            return { image, row, column };
+        }),
+    );
     const tiles = new Container();
     const board = new Graphics();
     const pieces = new Container();
     const effects = new Container();
     app.stage.addChild(chamber, tiles, board, pieces, effects);
     let last: { state: GameState; ghost: readonly Position[]; angle?: number } | null = null;
+    let screenWidth = 0;
+    let screenHeight = 0;
     const geometry = (): ReturnType<typeof boardLayout> => boardLayout(app.screen.width, app.screen.height);
     function sprite(layer: Container, art: Artwork, x: number, y: number, w: number, h = w): Sprite {
         const image = Sprite.from(pieceArtwork[art]);
@@ -92,12 +115,20 @@ export async function createBoardView(host: HTMLElement, initial: ViewOptions): 
     function drawFrame(state: GameState, ghost: readonly Position[], angle?: number): (Sprite | undefined)[] {
         last = { state, ghost, angle };
         const { cell: s, originX: ox, originY: oy } = geometry();
+        if (screenWidth !== app.screen.width || screenHeight !== app.screen.height) {
+            screenWidth = app.screen.width;
+            screenHeight = app.screen.height;
+            chamber.position.set(ox - GUTTER, oy - GUTTER);
+            const columns = [0, GUTTER, GUTTER + s * WIDTH, 2 * GUTTER + s * WIDTH] as const;
+            const rows = [0, GUTTER, GUTTER + s * HEIGHT, 2 * GUTTER + s * HEIGHT] as const;
+            for (const { image, row, column } of slices) {
+                image.position.set(columns[column], rows[row]);
+                image.setSize(columns[column + 1]! - columns[column], rows[row + 1]! - rows[row]);
+            }
+            tiles.position.set(ox, oy);
+            tiles.scale.set(s);
+        }
         clearSprites(pieces);
-        const border = Math.min(10, s * 0.4);
-        chamber.position.set(ox - border, oy - border);
-        chamber.setSize(s * WIDTH + 2 * border, s * HEIGHT + 2 * border);
-        tiles.position.set(ox, oy);
-        tiles.scale.set(s);
         board.clear();
         const byId = new Map<string, Position>();
         state.board.forEach((c, i) => {
@@ -385,6 +416,7 @@ export async function createBoardView(host: HTMLElement, initial: ViewOptions): 
             disposed = true;
             stopEffect?.();
             app.renderer.off('resize', onResize);
+            chamber.destroy({ children: true, texture: true });
             app.destroy(true, { children: true });
         },
         get canvas() {
