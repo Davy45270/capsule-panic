@@ -24,6 +24,7 @@ const { blanchirSilhouette, silhouetteSource } = lockFlash as unknown as {
 const display = vi.hoisted(() => ({
     stage: undefined as Container | undefined,
     rendererName: 'webgl',
+    screen: { width: 390, height: 600 },
     frames: new Set<(ticker: { deltaMS: number }) => void>(),
 }));
 
@@ -33,7 +34,7 @@ vi.mock('pixi.js', async (original) => {
         ...pixi,
         Application: class {
             canvas = document.createElement('canvas');
-            screen = { width: 390, height: 600 };
+            screen = display.screen;
             renderer = { name: display.rendererName, on: vi.fn(), off: vi.fn() };
             stage = new pixi.Container();
             ticker = {
@@ -53,6 +54,7 @@ vi.mock('pixi.js', async (original) => {
 
 afterEach(() => {
     display.rendererName = 'webgl';
+    display.screen = { width: 390, height: 600 };
     vi.restoreAllMocks();
 });
 
@@ -641,5 +643,30 @@ it.each(['canvas', 'webgl'])('sélectionne les textures des deux éclats en %s',
         await finish(played);
     } finally {
         fixture.view.destroy();
+    }
+});
+
+
+it.each([
+    [302, 620],
+    [242, 654],
+    [220, 550],
+])('logement de %d × %d : les cases d’angle restent au-delà des coins du cadre', async (width, height) => {
+    display.screen = { width, height };
+    const { view } = await createView();
+    try {
+        view.render(createGame({ seed: 'angle', level: 0, speed: 'low' }), []);
+        const frame = display.stage?.children[0]?.getBounds();
+        const { cell, originX, originY } = boardLayout(width, height);
+        expect(frame?.minX).toBeLessThanOrEqual(originX - 16);
+        expect(frame?.minY).toBeLessThanOrEqual(originY - 16);
+        expect(frame?.maxX).toBeGreaterThanOrEqual(originX + 8 * cell + 16);
+        expect(frame?.maxY).toBeGreaterThanOrEqual(originY + 16 * cell + 16);
+        expect(frame?.minX).toBeGreaterThanOrEqual(0);
+        expect(frame?.minY).toBeGreaterThanOrEqual(0);
+        expect(frame?.maxX).toBeLessThanOrEqual(width);
+        expect(frame?.maxY).toBeLessThanOrEqual(height);
+    } finally {
+        view.destroy();
     }
 });

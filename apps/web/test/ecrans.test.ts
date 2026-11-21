@@ -1,5 +1,6 @@
 // @vitest-environment happy-dom
 import 'fake-indexeddb/auto';
+import { execFileSync, spawnSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { act, createElement } from 'react';
 import { createRoot } from 'react-dom/client';
@@ -15,7 +16,15 @@ import { Game } from '../src/screens/Game';
 import { End } from '../src/screens/End';
 import { cascade, victoire } from '../../../tests/e2e/parcours';
 import { defaultSettings } from '../src/settings';
-import { clearGame, loadGame, loadSettings, saveGame, saveSettings, topScores } from '../src/storage';
+import {
+    clearGame,
+    loadGame,
+    loadSettings,
+    saveGame,
+    saveScore,
+    saveSettings,
+    topScores,
+} from '../src/storage';
 
 const renderer = vi.hoisted(() => ({
     create: vi.fn<(host: HTMLElement, options: ViewOptions) => void>(),
@@ -590,4 +599,140 @@ it.each([
         reducedMotion: user,
     });
     expect(renderer.create.mock.lastCall?.[1]).toMatchObject({ reducedMotion: true });
+});
+
+it('affiche le nom accessible en texte sur chaque pilule', async () => {
+    const labels = () =>
+        [...container.querySelectorAll('.art-button')].map((button) => [
+            button.getAttribute('aria-label'),
+            button.textContent.trim(),
+        ]);
+    await mountApp();
+    const actual = [labels()];
+    const state = createGame({ seed: 'bilan', level: 1, speed: 'low' });
+    for (const phase of ['WON', 'LOST'] as const) {
+        await update(() =>
+            root.render(
+                createElement(End, {
+                    state: { ...state, phase },
+                    stats: { capsules: 1, bestChain: 1, crystalsAtStart: state.obstaclesRemaining },
+                    onNext: noop,
+                    onRetry: noop,
+                    onMenu: noop,
+                }),
+            ),
+        );
+        actual.push(labels());
+    }
+    expect(actual).toEqual(
+        [
+            ['Jouer', 'Options', 'Crédits', 'Aide'],
+            ['Niveau suivant', 'Rejouer', 'Menu'],
+            ['Rejouer', 'Menu'],
+        ].map((row) => row.map((label) => [label, label])),
+    );
+});
+
+const magickDisponible = spawnSync('magick', ['-version']).status === 0;
+
+function mesureSprite(name: string, format: string) {
+    return execFileSync(
+        'magick',
+        [`packages/assets/runtime/sprite-${name}.webp`, '-format', format, 'info:'],
+        { encoding: 'utf8' },
+    ).trim();
+}
+
+it.skipIf(!magickDisponible)('les quatre pilules de l’accueil ont les mêmes dimensions', async () => {
+    await mountApp();
+    const sizes = [...container.querySelectorAll('.home-menu .art-button [data-art]')].map((image) =>
+        mesureSprite(image.getAttribute('data-art') ?? '', '%w %h'),
+    );
+    expect(sizes).toHaveLength(4);
+    expect(sizes).toEqual(Array.from({ length: 4 }, () => '126 28'));
+});
+
+it
+    .skipIf(!magickDisponible)
+    .each([
+        'jouer-accueil',
+        'options-accueil',
+        'credits-accueil',
+        'suivant-reussite',
+        'rejouer-reussite',
+        'menu-reussite',
+    ])('la pilule %s a quatre coins transparents et un centre opaque', (name) => {
+    expect(
+        mesureSprite(
+            name,
+            [
+                '%[fx:p{0,0}.a]',
+                '%[fx:p{w-1,0}.a]',
+                '%[fx:p{0,h-1}.a]',
+                '%[fx:p{w-1,h-1}.a]',
+                '%[fx:p{w/2,h/2}.a]',
+            ].join(' '),
+        ),
+    ).toBe('0 0 0 0 1');
+});
+
+function declaration(selector: string): CSSStyleDeclaration | undefined {
+    const sheet = new CSSStyleSheet();
+    sheet.replaceSync(readFileSync('apps/web/src/style.css', 'utf8'));
+    return [...sheet.cssRules].find(
+        (rule): rule is CSSStyleRule => 'selectorText' in rule && rule.selectorText === selector,
+    )?.style;
+}
+
+it('réserve une colonne aux coches et un espace avant les libellés du bilan', () => {
+    const row = declaration('.end .checks li');
+    expect(row?.display).toBe('grid');
+    expect(parseFloat(row?.columnGap ?? '')).toBeGreaterThanOrEqual(8);
+    expect(declaration('.end .checks li::before')?.content).toContain('✓');
+});
+
+it('présente les commandes et les légendes du tutoriel en texte HTML', async () => {
+    await mountApp();
+    await click('Aide');
+    const help = container.querySelector('.help');
+    expect(help?.querySelector('[data-art="legende-clavier-gestes-jeu"]')).toBeNull();
+    for (const label of ['← → Déplacer', '↓ Chute rapide', '↑ Rotation', '↓ descend d’une case']) {
+        expect(help?.textContent).toContain(label);
+    }
+    expect([...(help?.querySelectorAll('.tutorial li') ?? [])]).toHaveLength(4);
+    expect(help?.querySelector('.tutorial li:last-child')?.textContent).toContain(
+        'Élimine tous les cristaux',
+    );
+});
+
+it.skipIf(!magickDisponible)('la quatrième illustration du tutoriel est recadrée sous le texte peint', () => {
+    expect(Number(mesureSprite('tutoriel-eliminer', '%h'))).toBeLessThan(80);
+});
+
+it('applique un minimum de 14 px au texte de l’aide', () => {
+    expect(parseFloat(declaration('.help')?.fontSize ?? '')).toBeGreaterThanOrEqual(14);
+});
+
+it('conserve les scores déjà enregistrés quand une partie exportée est importée', async () => {
+    const state = createGame({ seed: 'export', level: 11, speed: 'high' });
+    await saveGame(state);
+    await saveScore(11, 'high', 820);
+    await saveScore(11, 'high', 360);
+    await saveScore(12, 'low', 240);
+    const exportUrl = vi.spyOn(URL, 'createObjectURL');
+    vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(noop);
+    history.replaceState(null, '', '/#settings');
+    await mountApp();
+    await click('Exporter la partie JSON');
+    const blob = exportUrl.mock.calls[0]?.[0];
+    expect(blob).toBeInstanceOf(Blob);
+    if (!(blob instanceof Blob)) throw new Error('Export absent');
+    await clearGame();
+    await importJson(await blob.text());
+    await vi.waitFor(() =>
+        expect(container.querySelector('[role=alert]')?.textContent).toContain('Partie importée'),
+    );
+    expect(await loadGame()).toEqual(state);
+    expect(await topScores(11, 'high')).toEqual([820, 360]);
+    expect(await topScores(12, 'low')).toEqual([240]);
 });
