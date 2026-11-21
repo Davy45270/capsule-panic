@@ -224,9 +224,10 @@ it('la vue ne reçoit pas le plateau final avant les effets de cascade', async (
 });
 
 // Arbitrage du relecteur (20/11, revue c8fc449 n° 1) : comportement publié à 5f2553b — seule la cascade bloque l'entrée
-// (T28). L'éclat de pose est purement visuel : il ne retient ni la capsule suivante, ni sa sauvegarde, ni les commandes,
-// et le résultat ne dépend pas du mouvement réduit (PRD l.28).
-it('[E152] [E531] la pose se joue sans retenir la capsule suivante : montrée et enregistrée tout de suite', async () => {
+// (T28). L'éclat de pose est purement visuel : il ne retient ni le moteur, ni la sauvegarde, ni les commandes, et le
+// résultat ne dépend pas du mouvement réduit (PRD l.28). Seul l'AFFICHAGE de la capsule suivante attend la fin de la
+// pose (E531, tests/e2e/jeu.spec.ts « une pose ordinaire précède l'apparition de la capsule suivante »).
+it('[E152] [E531] la pose ne retient que l’affichage : moteur, sauvegarde et commandes avancent tout de suite', async () => {
     const before = createGame({ seed: 'reprise', level: 0, speed: 'low' });
     const pose = Promise.withResolvers<undefined>();
     const shown: GameState[] = [];
@@ -246,10 +247,15 @@ it('[E152] [E531] la pose se joue sans retenir la capsule suivante : montrée et
     session.command('HARD_DROP');
     await flush();
     expect(session.animating).toBe(false);
-    expect(shown.at(-1)).toEqual(expected);
     expect(saved).toEqual([expected]);
+    expect(shown).toEqual([before]);
+    expect(session.command('MOVE_LEFT')).toBe(true);
+    const deplace = step(expected, { type: 'MOVE_LEFT' }).state;
+    expect(session.state).toEqual(deplace);
+    expect(shown).toEqual([before]);
     pose.resolve(undefined);
     await flush();
+    expect(shown.at(-1)).toEqual(deplace);
     expect(saved).toEqual([expected]);
 });
 
