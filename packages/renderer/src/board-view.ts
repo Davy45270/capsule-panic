@@ -1,5 +1,5 @@
 // Rendu PixiJS du réacteur. Aucune règle ici : on dessine un état et on anime des événements déjà résolus.
-import { Application, Assets, Container, Graphics, loadTextures, NineSliceSprite, Sprite } from 'pixi.js';
+import { Application, Assets, Container, Graphics, loadTextures, Rectangle, Sprite, Texture } from 'pixi.js';
 import { HEIGHT, WIDTH } from '@capsule-panic/contracts';
 import type { ActiveCapsule, Cell, Color, BoardEvent, GameState, Position } from '@capsule-panic/contracts';
 import { animationDuration, cellPoints, TOKENS } from './art';
@@ -48,18 +48,28 @@ export async function createBoardView(host: HTMLElement, initial: ViewOptions): 
         resolution: Math.min(globalThis.devicePixelRatio || 1, 2),
     });
     host.appendChild(app.canvas);
-    // Les 80 pixels du bord peint contiennent le rayon des coins de la texture.
-    // Chaque coin occupe la marge de la grille, quelle que soit la taille des cases.
+    // Les sprites ordinaires repeignent les neuf tranches sans passer par le maillage du cadre.
+    // Les 80 pixels du bord peint tiennent dans la marge, coins arrondis compris.
     const frameEdge = 80;
-    const frameScale = GUTTER / frameEdge;
-    const chamber = new NineSliceSprite({
-        texture: Assets.get(pieceArtwork['reacteur-chambre-origine']),
-        leftWidth: frameEdge,
-        rightWidth: frameEdge,
-        topHeight: frameEdge,
-        bottomHeight: frameEdge,
-    });
-    chamber.scale.set(frameScale);
+    const { source, frame } = Assets.get<Texture>(pieceArtwork['reacteur-chambre-origine']);
+    const columns = [frame.x, frame.x + frameEdge, frame.right - frameEdge, frame.right] as const;
+    const rows = [frame.y, frame.y + frameEdge, frame.bottom - frameEdge, frame.bottom] as const;
+    const indices = [0, 1, 2] as const;
+    const chamber = new Container();
+    const slices = indices.flatMap((row) =>
+        indices.map((column) => {
+            const region = new Rectangle(
+                columns[column],
+                rows[row],
+                columns[column + 1]! - columns[column],
+                rows[row + 1]! - rows[row],
+            );
+            const image = chamber.addChild(
+                new Sprite({ texture: new Texture({ source, frame: region }), blendMode: 'normal' }),
+            );
+            return { image, row, column };
+        }),
+    );
     const tiles = new Container();
     const board = new Graphics();
     const pieces = new Container();
@@ -105,12 +115,16 @@ export async function createBoardView(host: HTMLElement, initial: ViewOptions): 
     function drawFrame(state: GameState, ghost: readonly Position[], angle?: number): (Sprite | undefined)[] {
         last = { state, ghost, angle };
         const { cell: s, originX: ox, originY: oy } = geometry();
-        // setSize invalide le maillage du cadre même si les dimensions sont identiques.
         if (screenWidth !== app.screen.width || screenHeight !== app.screen.height) {
             screenWidth = app.screen.width;
             screenHeight = app.screen.height;
             chamber.position.set(ox - GUTTER, oy - GUTTER);
-            chamber.setSize((s * WIDTH + 2 * GUTTER) / frameScale, (s * HEIGHT + 2 * GUTTER) / frameScale);
+            const columns = [0, GUTTER, GUTTER + s * WIDTH, 2 * GUTTER + s * WIDTH] as const;
+            const rows = [0, GUTTER, GUTTER + s * HEIGHT, 2 * GUTTER + s * HEIGHT] as const;
+            for (const { image, row, column } of slices) {
+                image.position.set(columns[column], rows[row]);
+                image.setSize(columns[column + 1]! - columns[column], rows[row + 1]! - rows[row]);
+            }
             tiles.position.set(ox, oy);
             tiles.scale.set(s);
         }
@@ -402,6 +416,7 @@ export async function createBoardView(host: HTMLElement, initial: ViewOptions): 
             disposed = true;
             stopEffect?.();
             app.renderer.off('resize', onResize);
+            chamber.destroy({ children: true, texture: true });
             app.destroy(true, { children: true });
         },
         get canvas() {
