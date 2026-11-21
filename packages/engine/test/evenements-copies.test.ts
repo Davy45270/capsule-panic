@@ -30,10 +30,12 @@ it('[E140] les plateaux des chutes de cascade sont des copies : les modifier ne 
     const state = stateWith(board, { x: 3, y: 1, orientation: 1, colors: ['amber', 'magenta'] });
     const transition = step(state, { type: 'HARD_DROP' });
     const apres = JSON.stringify(transition.state);
-    const chutes = transition.events.filter((event) => event.type === 'GRAVITY_STEP');
+    const chutes = transition.events.flatMap((event) =>
+        event.type === 'GRAVITY_STEP' && 'board' in event && Array.isArray(event.board) ? [event.board] : [],
+    );
     expect(chutes.length).toBeGreaterThan(0);
     for (const chute of chutes) {
-        for (const cell of chute.board ?? []) {
+        for (const cell of chute) {
             if (cell && typeof cell === 'object') (cell as { color: string }).color = 'altere';
         }
     }
