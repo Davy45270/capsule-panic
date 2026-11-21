@@ -66,6 +66,8 @@ export async function createBoardView(host: HTMLElement, initial: ViewOptions): 
     const effects = new Container();
     app.stage.addChild(chamber, tiles, board, pieces, effects);
     let last: { state: GameState; ghost: readonly Position[]; angle?: number } | null = null;
+    let screenWidth = 0;
+    let screenHeight = 0;
     const geometry = (): ReturnType<typeof boardLayout> => boardLayout(app.screen.width, app.screen.height);
     function sprite(layer: Container, art: Artwork, x: number, y: number, w: number, h = w): Sprite {
         const image = Sprite.from(pieceArtwork[art]);
@@ -103,11 +105,16 @@ export async function createBoardView(host: HTMLElement, initial: ViewOptions): 
     function drawFrame(state: GameState, ghost: readonly Position[], angle?: number): (Sprite | undefined)[] {
         last = { state, ghost, angle };
         const { cell: s, originX: ox, originY: oy } = geometry();
+        // setSize invalide le maillage du cadre même si les dimensions sont identiques.
+        if (screenWidth !== app.screen.width || screenHeight !== app.screen.height) {
+            screenWidth = app.screen.width;
+            screenHeight = app.screen.height;
+            chamber.position.set(ox - GUTTER, oy - GUTTER);
+            chamber.setSize((s * WIDTH + 2 * GUTTER) / frameScale, (s * HEIGHT + 2 * GUTTER) / frameScale);
+            tiles.position.set(ox, oy);
+            tiles.scale.set(s);
+        }
         clearSprites(pieces);
-        chamber.position.set(ox - GUTTER, oy - GUTTER);
-        chamber.setSize((s * WIDTH + 2 * GUTTER) / frameScale, (s * HEIGHT + 2 * GUTTER) / frameScale);
-        tiles.position.set(ox, oy);
-        tiles.scale.set(s);
         board.clear();
         const byId = new Map<string, Position>();
         state.board.forEach((c, i) => {
