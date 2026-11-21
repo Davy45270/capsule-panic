@@ -25,6 +25,7 @@ export function initialLevelStats(state: GameState): LevelStats {
 export class GameSession {
     #state: GameState;
     #playback: Promise<void> | undefined;
+    #placement: symbol | undefined;
     #pauseWhenReady = false;
     #saving = false;
     #pendingCommands: CommandType[] = [];
@@ -38,6 +39,7 @@ export class GameSession {
         this.#state = state;
         this.stats = { ...stats };
         this.#showIfReady();
+        this.#notifyEnd();
         this.hooks.onChange?.(this.#state, false);
     }
     get state(): GameState {
@@ -91,6 +93,7 @@ export class GameSession {
             this.#pauseIfRequested();
             this.hooks.onChange?.(this.#state, spawned);
             this.#showIfReady(motion);
+            this.#notifyEnd();
             this.#drainCommands();
         };
         const finishPlayback = (): void => {
@@ -102,11 +105,21 @@ export class GameSession {
             } else publish();
         };
         if (locked) {
+            this.#placement = undefined;
             const matched = t.events.some((e) => e.type === 'MATCH_REMOVED');
             if (matched) this.#playback = this.hooks.play(t.events, before);
             else {
                 const placement = this.hooks.playPlacement?.(t.events, before);
-                void placement?.catch(() => undefined);
+                if (placement) {
+                    const token = Symbol();
+                    this.#placement = token;
+                    const finishPlacement = (): void => {
+                        if (!Object.is(this.#placement, token)) return;
+                        this.#placement = undefined;
+                        this.#showIfReady();
+                    };
+                    void placement.then(finishPlacement, finishPlacement);
+                }
             }
         }
         if (this.#playback) void this.#playback.then(finishPlayback, finishPlayback);
@@ -129,8 +142,10 @@ export class GameSession {
         this.#state = step(this.#state, { type: 'PAUSE' }).state;
     }
     #showIfReady(before?: GameState): void {
-        if (this.animating) return;
+        if (this.animating || this.#placement) return;
         this.hooks.render(this.#state, getLandingProjection(this.#state), before);
+    }
+    #notifyEnd(): void {
         if (this.#state.phase === 'WON' || this.#state.phase === 'LOST') this.hooks.onEnd?.(this.#state);
     }
 }
