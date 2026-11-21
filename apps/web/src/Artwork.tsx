@@ -8,11 +8,26 @@ export function Art({ name, alt = '', className }: { name: ArtworkName; alt?: st
     return <img src={artwork[name]} data-art={name} alt={alt} className={className} draggable={false} />;
 }
 
-export function ArtButton({ name, label, onClick }: { name: ArtworkName; label: string; onClick(): void }) {
+export function ArtButton({
+    name,
+    label,
+    labelled = false,
+    onClick,
+}: {
+    name: ArtworkName;
+    label: string;
+    labelled?: boolean;
+    onClick(): void;
+}) {
     return (
-        <button className="art-button" aria-label={label} onClick={onClick}>
+        <button
+            className="art-button"
+            aria-label={label}
+            title={labelled ? undefined : label}
+            onClick={onClick}
+        >
             <Art name={name} />
-            <span>{label}</span>
+            {labelled && <span>{label}</span>}
         </button>
     );
 }

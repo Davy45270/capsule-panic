@@ -19,6 +19,8 @@ import tutorielDeplacer from '../../../packages/assets/runtime/sprite-tutoriel-d
 import tutorielPivoter from '../../../packages/assets/runtime/sprite-tutoriel-pivoter.webp';
 import tutorielAligner from '../../../packages/assets/runtime/sprite-tutoriel-aligner.webp';
 import tutorielEliminer from '../../../packages/assets/runtime/sprite-tutoriel-eliminer.webp';
+import touchesHorizontalesJeu from '../../../packages/assets/runtime/sprite-touches-horizontales-gestes-jeu.webp';
+import touchesActionJeu from '../../../packages/assets/runtime/sprite-touches-action-gestes-jeu.webp';
 import gestesGestesJeu from '../../../packages/assets/runtime/sprite-gestes-gestes-jeu.webp';
 import gaucheCommandesOrigine from '../../../packages/assets/runtime/sprite-gauche-commandes-origine.webp';
 import droiteCommandesOrigine from '../../../packages/assets/runtime/sprite-droite-commandes-origine.webp';
@@ -58,6 +60,8 @@ export const artwork = {
     'tutoriel-pivoter': tutorielPivoter,
     'tutoriel-aligner': tutorielAligner,
     'tutoriel-eliminer': tutorielEliminer,
+    'touches-horizontales-gestes-jeu': touchesHorizontalesJeu,
+    'touches-action-gestes-jeu': touchesActionJeu,
     'gestes-gestes-jeu': gestesGestesJeu,
     'gauche-commandes-origine': gaucheCommandesOrigine,
     'droite-commandes-origine': droiteCommandesOrigine,

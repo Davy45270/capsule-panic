@@ -21,12 +21,17 @@ export function Help({ onBack }: { onBack(): void }) {
                 ))}
             </ol>
             <h3>Clavier</h3>
+            <div className="keyboard-art">
+                <Art name="touches-horizontales-gestes-jeu" />
+                <Art name="touches-action-gestes-jeu" />
+            </div>
             <ul className="keyboard-legend">
                 <li>← → Déplacer</li>
-                <li>↓ Chute rapide</li>
-                <li>↑ Rotation</li>
+                <li>↓ Descendre d’une case</li>
+                <li>Espace Poser d’un coup</li>
+                <li>X ou ↑ Pivoter (Z dans l’autre sens)</li>
+                <li>P ou Échap Pause</li>
             </ul>
-            <p>↓ descend d’une case. Espace pose la capsule d’un coup. P ou Échap met en pause.</p>
             <h3>Gestes tactiles</h3>
             <div className="touch-legend">
                 <Art name="gestes-gestes-jeu" />

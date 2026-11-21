@@ -28,10 +28,10 @@ export function Home({
                         Reprendre la partie
                     </button>
                 )}
-                <ArtButton name="jouer-accueil" label="Jouer" onClick={onPlay} />
-                <ArtButton name="options-accueil" label="Options" onClick={onOptions} />
-                <ArtButton name="credits-accueil" label="Crédits" onClick={onAbout} />
-                <ArtButton name="aide-accueil" label="Aide" onClick={onHelp} />
+                <ArtButton labelled name="jouer-accueil" label="Jouer" onClick={onPlay} />
+                <ArtButton labelled name="options-accueil" label="Options" onClick={onOptions} />
+                <ArtButton labelled name="credits-accueil" label="Crédits" onClick={onAbout} />
+                <ArtButton labelled name="aide-accueil" label="Aide" onClick={onHelp} />
             </nav>
         </section>
     );

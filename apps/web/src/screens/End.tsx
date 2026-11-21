@@ -48,10 +48,10 @@ export function End({
             </ul>
             <nav className="menu">
                 {won && !final && (
-                    <ArtButton name="suivant-reussite" label="Niveau suivant" onClick={onNext} />
+                    <ArtButton labelled name="suivant-reussite" label="Niveau suivant" onClick={onNext} />
                 )}
-                <ArtButton name="rejouer-reussite" label="Rejouer" onClick={onRetry} />
-                <ArtButton name="menu-reussite" label="Menu" onClick={onMenu} />
+                <ArtButton labelled name="rejouer-reussite" label="Rejouer" onClick={onRetry} />
+                <ArtButton labelled name="menu-reussite" label="Menu" onClick={onMenu} />
             </nav>
             {won && (
                 <div className="end-characters">
