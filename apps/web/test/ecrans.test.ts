@@ -736,3 +736,73 @@ it('conserve les scores déjà enregistrés quand une partie exportée est impor
     expect(await topScores(11, 'high')).toEqual([820, 360]);
     expect(await topScores(12, 'low')).toEqual([240]);
 });
+
+it('affiche uniquement les icônes des commandes de jeu et renseigne leurs libellés', async () => {
+    const initial = createGame({ seed: 'commandes', level: 0, speed: 'low' });
+    await update(() =>
+        root.render(
+            createElement(Game, {
+                initial,
+                settings: defaultSettings(),
+                onSave: noop,
+                onMenu: noop,
+                onEnd: noop,
+                onRestart: noop,
+                onError: noop,
+            }),
+        ),
+    );
+    const buttons = [...container.querySelectorAll<HTMLButtonElement>('nav.pad button')];
+    const labels = ['Gauche', 'Droite', 'Descendre', 'Pivoter', 'Poser'];
+    expect(buttons.map((button) => button.getAttribute('aria-label'))).toEqual(labels);
+    expect.soft(buttons.map((button) => button.title)).toEqual(labels);
+    expect(buttons.map((button) => button.textContent.trim())).toEqual(['', '', '', '', '⤓']);
+});
+
+it('affiche uniquement les sprites des commandes de pause et renseigne leurs libellés', async () => {
+    const initial = createGame({ seed: 'commandes-pause', level: 0, speed: 'low' });
+    await update(() =>
+        root.render(
+            createElement(Game, {
+                initial,
+                settings: defaultSettings(),
+                onSave: noop,
+                onMenu: noop,
+                onEnd: noop,
+                onRestart: noop,
+                onError: noop,
+            }),
+        ),
+    );
+    await click('Pause');
+    const buttons = [...container.querySelectorAll<HTMLButtonElement>('.pause-controls button')];
+    const labels = ['Reprendre', 'Recommencer', 'Accueil', 'Quitter'];
+    expect(buttons.map((button) => button.getAttribute('aria-label'))).toEqual(labels);
+    expect.soft(buttons.map((button) => button.title)).toEqual(labels);
+    expect.soft(buttons.map((button) => button.textContent.trim())).toEqual(['', '', '', '']);
+    expect(buttons[3]?.querySelector('span')).toBeNull();
+});
+
+it('illustre les touches dans l’aide au-dessus de leur légende HTML', async () => {
+    await mountApp();
+    await click('Aide');
+    const legend = container.querySelector('.keyboard-legend');
+    const images = [...(legend?.previousElementSibling?.querySelectorAll('img') ?? [])];
+    expect(images.map((image) => image.dataset.art)).toEqual([
+        'touches-horizontales-gestes-jeu',
+        'touches-action-gestes-jeu',
+    ]);
+});
+
+it('décrit les commandes clavier réelles dans l’aide sans légende contradictoire', async () => {
+    await mountApp();
+    await click('Aide');
+    expect([...container.querySelectorAll('.keyboard-legend li')].map((line) => line.textContent)).toEqual([
+        '← → Déplacer',
+        '↓ Descendre d’une case',
+        'Espace Poser d’un coup',
+        'X ou ↑ Pivoter (Z dans l’autre sens)',
+        'P ou Échap Pause',
+    ]);
+    expect(container.querySelector('.help')?.textContent).not.toMatch(/Chute rapide|↓ descend d’une case/u);
+});
