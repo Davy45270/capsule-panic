@@ -676,3 +676,36 @@ it.each([
         view.destroy();
     }
 });
+
+it.each([
+    [302, 620],
+    [242, 654],
+    [220, 550],
+])('logement de %d × %d : un sprite repeint toute la grille sous les cases', async (width, height) => {
+    display.screen = { width, height };
+    const fixture = await createView();
+    try {
+        fixture.view.render(createGame({ seed: 'fond', level: 0, speed: 'low' }), []);
+        const texture = Assets.get<Texture>(pieceArtwork['reacteur-chambre-origine']);
+        const order = drawOrder();
+        const center = order.find(({ texture: slice }) =>
+            slice.source === texture.source && slice.frame.x === 80 && slice.frame.y === 80
+        );
+        expect(center, 'tranche centrale du cadre dessinée par un sprite').toBeDefined();
+        if (!center) throw new Error('Fond du réacteur attendu');
+        expect(center.texture.frame).toMatchObject({ width: 455, height: 459 });
+        expect(effectiveAlpha(center)).toBe(1);
+        expect(center.blendMode).toBe('normal');
+        const { cell, originX, originY } = boardLayout(width, height);
+        const { minX, minY, maxX, maxY } = center.getBounds();
+        expect(minX).toBeCloseTo(originX);
+        expect(minY).toBeCloseTo(originY);
+        expect(maxX).toBeCloseTo(originX + 8 * cell);
+        expect(maxY).toBeCloseTo(originY + 16 * cell);
+        for (const tile of fixture.sprites(expectCase)) {
+            expect(order.indexOf(center)).toBeLessThan(order.indexOf(tile));
+        }
+    } finally {
+        fixture.view.destroy();
+    }
+});
