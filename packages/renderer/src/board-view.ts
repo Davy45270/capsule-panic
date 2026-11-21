@@ -1,9 +1,9 @@
 // Rendu PixiJS du réacteur. Aucune règle ici : on dessine un état et on anime des événements déjà résolus.
-import { Application, Assets, Container, Graphics, loadTextures, Sprite } from 'pixi.js';
+import { Application, Assets, Container, Graphics, loadTextures, NineSliceSprite, Sprite } from 'pixi.js';
 import { HEIGHT, WIDTH } from '@capsule-panic/contracts';
 import type { ActiveCapsule, Cell, Color, BoardEvent, GameState, Position } from '@capsule-panic/contracts';
 import { animationDuration, cellPoints, TOKENS } from './art';
-import { boardLayout } from './layout';
+import { boardLayout, GUTTER } from './layout';
 import { LockFlashSprite, lockFlashTexture } from './lock-flash';
 import { pieceArtwork, textureFor } from './pieces';
 import type { Artwork } from './pieces';
@@ -48,7 +48,18 @@ export async function createBoardView(host: HTMLElement, initial: ViewOptions): 
         resolution: Math.min(globalThis.devicePixelRatio || 1, 2),
     });
     host.appendChild(app.canvas);
-    const chamber = Sprite.from(pieceArtwork['reacteur-chambre-origine']);
+    // Les 80 pixels du bord peint contiennent le rayon des coins de la texture.
+    // Chaque coin occupe la marge de la grille, quelle que soit la taille des cases.
+    const frameEdge = 80;
+    const frameScale = GUTTER / frameEdge;
+    const chamber = new NineSliceSprite({
+        texture: Assets.get(pieceArtwork['reacteur-chambre-origine']),
+        leftWidth: frameEdge,
+        rightWidth: frameEdge,
+        topHeight: frameEdge,
+        bottomHeight: frameEdge,
+    });
+    chamber.scale.set(frameScale);
     const tiles = new Container();
     const board = new Graphics();
     const pieces = new Container();
@@ -93,9 +104,8 @@ export async function createBoardView(host: HTMLElement, initial: ViewOptions): 
         last = { state, ghost, angle };
         const { cell: s, originX: ox, originY: oy } = geometry();
         clearSprites(pieces);
-        const border = Math.min(10, s * 0.4);
-        chamber.position.set(ox - border, oy - border);
-        chamber.setSize(s * WIDTH + 2 * border, s * HEIGHT + 2 * border);
+        chamber.position.set(ox - GUTTER, oy - GUTTER);
+        chamber.setSize((s * WIDTH + 2 * GUTTER) / frameScale, (s * HEIGHT + 2 * GUTTER) / frameScale);
         tiles.position.set(ox, oy);
         tiles.scale.set(s);
         board.clear();

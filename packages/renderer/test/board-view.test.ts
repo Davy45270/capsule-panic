@@ -1,6 +1,6 @@
 // @vitest-environment happy-dom
 import { afterEach, expect, it, vi } from 'vitest';
-import { Assets, CanvasSource, Graphics, Sprite, Texture } from 'pixi.js';
+import { Assets, Cache, CanvasSource, Graphics, Sprite, Texture, TextureSource } from 'pixi.js';
 import type { Container } from 'pixi.js';
 import { createGame, getLandingProjection, step } from '@capsule-panic/engine';
 import type { BoardEvent, GameState, Position } from '@capsule-panic/contracts';
@@ -55,12 +55,18 @@ vi.mock('pixi.js', async (original) => {
 afterEach(() => {
     display.rendererName = 'webgl';
     display.screen = { width: 390, height: 600 };
+    const frame = pieceArtwork['reacteur-chambre-origine'];
+    if (Cache.has(frame)) Cache.remove(frame);
     vi.restoreAllMocks();
 });
 
 async function createView(colorBlind = false) {
     const textures = new Map<Sprite, unknown>();
     vi.spyOn(Assets, 'load').mockResolvedValue({});
+    Cache.set(
+        pieceArtwork['reacteur-chambre-origine'],
+        new Texture({ source: new TextureSource({ width: 615, height: 619 }) }),
+    );
     vi.spyOn(Sprite, 'from').mockImplementation((asset) => {
         const sprite = new Sprite(Texture.EMPTY);
         textures.set(sprite, asset);

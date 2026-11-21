@@ -39,7 +39,9 @@ export function End({
                         : `${stats.crystalsAtStart - state.obstaclesRemaining} cristaux éliminés sur ${stats.crystalsAtStart}`}
                 </li>
                 <li>
-                    Score <strong data-testid="final-score">{state.score.toLocaleString('fr-FR')}</strong>
+                    <span>
+                        Score <strong data-testid="final-score">{state.score.toLocaleString('fr-FR')}</strong>
+                    </span>
                 </li>
                 <li>Combo max ×{stats.bestChain}</li>
                 {!won && <li>Capsules jouées {stats.capsules}</li>}

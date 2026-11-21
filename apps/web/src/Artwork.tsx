@@ -12,6 +12,7 @@ export function ArtButton({ name, label, onClick }: { name: ArtworkName; label: 
     return (
         <button className="art-button" aria-label={label} onClick={onClick}>
             <Art name={name} />
+            <span>{label}</span>
         </button>
     );
 }

@@ -31,7 +31,7 @@ export function Home({
                 <ArtButton name="jouer-accueil" label="Jouer" onClick={onPlay} />
                 <ArtButton name="options-accueil" label="Options" onClick={onOptions} />
                 <ArtButton name="credits-accueil" label="Crédits" onClick={onAbout} />
-                <ArtButton name="aide-commandes-apercu" label="Aide" onClick={onHelp} />
+                <ArtButton name="aide-accueil" label="Aide" onClick={onHelp} />
             </nav>
         </section>
     );

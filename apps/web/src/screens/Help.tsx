@@ -15,22 +15,27 @@ export function Help({ onBack }: { onBack(): void }) {
             <ol className="tutorial">
                 {cards.map(([name, text]) => (
                     <li key={name}>
-                        <Art name={name} alt={text} />
+                        <Art name={name} />
+                        <span>{text}</span>
                     </li>
                 ))}
             </ol>
             <h3>Clavier</h3>
-            <div className="key-art">
-                <Art name="touches-horizontales-gestes-jeu" />
-                <Art name="touches-action-gestes-jeu" />
-            </div>
-            <Art name="legende-clavier-gestes-jeu" />
+            <ul className="keyboard-legend">
+                <li>← → Déplacer</li>
+                <li>↓ Chute rapide</li>
+                <li>↑ Rotation</li>
+            </ul>
             <p>↓ descend d’une case. Espace pose la capsule d’un coup. P ou Échap met en pause.</p>
             <h3>Gestes tactiles</h3>
-            <Art
-                name="gestes-gestes-jeu"
-                alt="Glisse pour déplacer, touche pour pivoter, balaie vers le bas pour poser."
-            />
+            <div className="touch-legend">
+                <Art name="gestes-gestes-jeu" />
+                <ul>
+                    <li>Glisse pour déplacer</li>
+                    <li>Touche pour pivoter</li>
+                    <li>Balaie vers le bas pour poser</li>
+                </ul>
+            </div>
             <nav className="menu">
                 <button className="primary" onClick={onBack}>
                     Menu
