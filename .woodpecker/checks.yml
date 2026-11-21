@@ -32,6 +32,14 @@ steps:
     - name: test
       image: *node
       commands:
+          - |
+              # oxipng (tests/assets-png-optimises.test.ts) : binaire musl de la version de l'atelier, empreinte vérifiée.
+              # Absent de l'image Node (ni Debian trixie) : sans lui le test serait sauté au lieu de tourner.
+              V=10.2.1
+              curl -sSfL -o /tmp/oxipng.tgz "https://github.com/oxipng/oxipng/releases/download/v$$V/oxipng-$$V-x86_64-unknown-linux-musl.tar.gz"
+              echo "1813750ef592c5350ca79c88f98b2c0876d05c826dc7156245256d4255c1ad17  /tmp/oxipng.tgz" | sha256sum -c -
+              tar xzf /tmp/oxipng.tgz -C /usr/local/bin --strip-components=1 "oxipng-$$V-x86_64-unknown-linux-musl/oxipng"
+              oxipng --version
           - npm test
     - name: build
       image: *node
