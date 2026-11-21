@@ -7,6 +7,7 @@ import { join } from 'node:path';
 import process from 'node:process';
 import { inflateSync } from 'node:zlib';
 import { expect, it } from 'vitest';
+import { alphaSprite } from '../apps/web/test/mesure-sprite';
 import { dimensions } from '../scripts/assets.js';
 import inventaire from '../packages/assets/source/inventaire.json';
 
@@ -271,4 +272,8 @@ it('la commande échoue sur les budgets par image, par côté et au total', () =
     } finally {
         rmSync(temporaire, { recursive: true, force: true });
     }
+});
+
+it('détoure les quatre coins du ruban de réussite livré', () => {
+    expect(alphaSprite('ruban-reussite').split(' ').slice(0, 4)).toEqual(['0', '0', '0', '0']);
 });

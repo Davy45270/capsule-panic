@@ -662,6 +662,10 @@ function declaration(selector: string): CSSStyleDeclaration | undefined {
     )?.style;
 }
 
+it('conserve les proportions des sprites des commandes du pavé', () => {
+    expect(declaration('.pad button img')?.objectFit).toBe('contain');
+});
+
 it('réserve une colonne aux coches et un espace avant les libellés du bilan', () => {
     const row = declaration('.end .checks li');
     expect(row?.display).toBe('grid');

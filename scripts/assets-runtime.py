@@ -42,6 +42,12 @@ def sprite_runtime(name, work):
     source = "sprite-options-accueil" if identifiant == "aide-accueil" else name
     trimmed = work / f"{name}.png"
     run("magick", ASSETS / "sprites" / f"{source}.png", "-trim", "+repage", trimmed)
+    if identifiant == "ruban-reussite":
+        # Le rognage laisse le fond bleu peint autour des étoiles et du ruban.
+        run("magick", trimmed, "-alpha", "on", "-channel", "RGBA", "-fuzz", "18%",
+            "-fill", "none", "-draw",
+            "alpha 0,0 floodfill alpha 125,0 floodfill alpha 0,64 floodfill alpha 125,64 floodfill",
+            "+channel", trimmed)
     if identifiant in ILLUSTRATIONS:
         run("magick", trimmed, "-crop", ILLUSTRATIONS[identifiant], "+repage", trimmed)
     if identifiant in PILULES:

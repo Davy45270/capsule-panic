@@ -359,6 +359,7 @@ button:disabled {
 }
 .pad button img {
     height: 48px;
+    object-fit: contain;
 }
 .combo {
     pointer-events: none;
