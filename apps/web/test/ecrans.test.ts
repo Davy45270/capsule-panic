@@ -1,7 +1,7 @@
 // @vitest-environment happy-dom
 import 'fake-indexeddb/auto';
-import { execFileSync, spawnSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
+import { alphaSprite, dimensionsSprite } from './mesure-sprite';
 import { act, createElement } from 'react';
 import { createRoot } from 'react-dom/client';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
@@ -633,47 +633,25 @@ it('affiche le nom accessible en texte sur chaque pilule', async () => {
     );
 });
 
-const magickDisponible = spawnSync('magick', ['-version']).status === 0;
-
-function mesureSprite(name: string, format: string) {
-    return execFileSync(
-        'magick',
-        [`packages/assets/runtime/sprite-${name}.webp`, '-format', format, 'info:'],
-        { encoding: 'utf8' },
-    ).trim();
-}
-
-it.skipIf(!magickDisponible)('les quatre pilules de l’accueil ont les mêmes dimensions', async () => {
+it('les quatre pilules de l’accueil ont les mêmes dimensions', async () => {
     await mountApp();
-    const sizes = [...container.querySelectorAll('.home-menu .art-button [data-art]')].map((image) =>
-        mesureSprite(image.getAttribute('data-art') ?? '', '%w %h'),
-    );
+    const sizes = [...container.querySelectorAll('.home-menu .art-button [data-art]')].map((image) => {
+        const { width, height } = dimensionsSprite(image.getAttribute('data-art') ?? '');
+        return `${width} ${height}`;
+    });
     expect(sizes).toHaveLength(4);
     expect(sizes).toEqual(Array.from({ length: 4 }, () => '126 28'));
 });
 
-it
-    .skipIf(!magickDisponible)
-    .each([
-        'jouer-accueil',
-        'options-accueil',
-        'credits-accueil',
-        'suivant-reussite',
-        'rejouer-reussite',
-        'menu-reussite',
-    ])('la pilule %s a quatre coins transparents et un centre opaque', (name) => {
-    expect(
-        mesureSprite(
-            name,
-            [
-                '%[fx:p{0,0}.a]',
-                '%[fx:p{w-1,0}.a]',
-                '%[fx:p{0,h-1}.a]',
-                '%[fx:p{w-1,h-1}.a]',
-                '%[fx:p{w/2,h/2}.a]',
-            ].join(' '),
-        ),
-    ).toBe('0 0 0 0 1');
+it.each([
+    'jouer-accueil',
+    'options-accueil',
+    'credits-accueil',
+    'suivant-reussite',
+    'rejouer-reussite',
+    'menu-reussite',
+])('la pilule %s a quatre coins transparents et un centre opaque', (name) => {
+    expect(alphaSprite(name)).toBe('0 0 0 0 1');
 });
 
 function declaration(selector: string): CSSStyleDeclaration | undefined {
@@ -696,7 +674,12 @@ it('présente les commandes et les légendes du tutoriel en texte HTML', async (
     await click('Aide');
     const help = container.querySelector('.help');
     expect(help?.querySelector('[data-art="legende-clavier-gestes-jeu"]')).toBeNull();
-    for (const label of ['← → Déplacer', '↓ Descendre d’une case', 'Espace Poser d’un coup', 'X ou ↑ Pivoter']) {
+    for (const label of [
+        '← → Déplacer',
+        '↓ Descendre d’une case',
+        'Espace Poser d’un coup',
+        'X ou ↑ Pivoter',
+    ]) {
         expect(help?.textContent).toContain(label);
     }
     expect([...(help?.querySelectorAll('.tutorial li') ?? [])]).toHaveLength(4);
@@ -705,8 +688,8 @@ it('présente les commandes et les légendes du tutoriel en texte HTML', async (
     );
 });
 
-it.skipIf(!magickDisponible)('la quatrième illustration du tutoriel est recadrée sous le texte peint', () => {
-    expect(Number(mesureSprite('tutoriel-eliminer', '%h'))).toBeLessThan(80);
+it('la quatrième illustration du tutoriel est recadrée sous le texte peint', () => {
+    expect(dimensionsSprite('tutoriel-eliminer').height).toBeLessThan(80);
 });
 
 it('applique un minimum de 14 px au texte de l’aide', () => {
